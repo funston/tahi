@@ -1,0 +1,28 @@
+{
+  "cases": [
+    {
+      "case_id": "demo_caffeine_positive",
+      "observed_mz": 195.0877,
+      "polarity": "positive",
+      "instrument_mode": "LC-MS positive mode",
+      "sample_type": "Plasma metabolomics sample",
+      "question": "What best explains this positive-mode peak?"
+    },
+    {
+      "case_id": "demo_glucose_sodium",
+      "observed_mz": 203.0526,
+      "polarity": "positive",
+      "instrument_mode": "LC-MS positive mode",
+      "sample_type": "Plasma metabolomics sample",
+      "question": "Rank plausible analyte-adduct explanations for this observed feature."
+    },
+    {
+      "case_id": "demo_salicylic_negative",
+      "observed_mz": 137.0244,
+      "polarity": "negative",
+      "instrument_mode": "LC-MS negative mode",
+      "sample_type": "Plasma metabolomics sample",
+      "question": "Explain this negative-mode feature."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+flowchart TD
+    U[User Query] --> L[LLM Perception Layer]
+    L --> E[Embedding / Semantic Cue Extraction]
+    E --> R[Graph Retrieval Index
+FAISS / HNSW]
+    R --> W[World Model Graph]
+    W --> X[Reasoning + Planning]
+    X --> S[Simulation Layer]
+    S --> C[Cognitive State Packet]
+    C --> F[Fusion / Coprocessor Loop]
+    F --> O[LLM Response Synthesis]

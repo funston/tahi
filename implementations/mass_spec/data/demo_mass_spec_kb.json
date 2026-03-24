@@ -1,0 +1,158 @@
+{
+  "sources": [
+    {
+      "source_id": "source:esi_adduct_reference",
+      "title": "ESI Adduct Reference",
+      "source_type": "reference",
+      "summary": "Common LC-MS electrospray adducts include protonated and sodiated ions in positive mode and deprotonated ions in negative mode.",
+      "citation": "Demo reference summary",
+      "keywords": ["esi", "adduct", "positive mode", "negative mode"]
+    },
+    {
+      "source_id": "source:caffeine_note",
+      "title": "Caffeine Standard Note",
+      "source_type": "lab_note",
+      "summary": "Caffeine commonly appears as a protonated species in positive-mode LC-MS around m/z 195.0877.",
+      "citation": "Demo standard note",
+      "keywords": ["caffeine", "positive mode", "standard"]
+    },
+    {
+      "source_id": "source:glucose_note",
+      "title": "Glucose Sodium Adduct Note",
+      "source_type": "lab_note",
+      "summary": "Glucose often appears as a sodium adduct in positive-mode measurements around m/z 203.0526.",
+      "citation": "Demo standard note",
+      "keywords": ["glucose", "sodium adduct", "positive mode"]
+    }
+  ],
+  "entities": [
+    {
+      "entity_id": "instrument:lcms_positive",
+      "label": "LC-MS positive mode",
+      "entity_type": "instrument_mode",
+      "summary": "Positive-mode LC-MS is commonly used for protonated and sodiated analytes.",
+      "aliases": ["ESI positive", "positive mode"],
+      "keywords": ["lcms", "positive", "esi"],
+      "metadata": {"polarity": "positive"}
+    },
+    {
+      "entity_id": "instrument:lcms_negative",
+      "label": "LC-MS negative mode",
+      "entity_type": "instrument_mode",
+      "summary": "Negative-mode LC-MS often favors deprotonated species.",
+      "aliases": ["ESI negative", "negative mode"],
+      "keywords": ["lcms", "negative", "esi"],
+      "metadata": {"polarity": "negative"}
+    },
+    {
+      "entity_id": "adduct:m_plus_h",
+      "label": "[M+H]+",
+      "entity_type": "adduct",
+      "summary": "Protonated molecular ion common in positive-mode electrospray.",
+      "aliases": ["protonated", "M+H"],
+      "keywords": ["adduct", "protonated", "positive"],
+      "metadata": {"polarity": "positive", "mass_shift": 1.007276, "charge": 1}
+    },
+    {
+      "entity_id": "adduct:m_plus_na",
+      "label": "[M+Na]+",
+      "entity_type": "adduct",
+      "summary": "Sodiated molecular ion common in positive-mode electrospray, especially with sugars and salt-rich matrices.",
+      "aliases": ["sodiated", "M+Na"],
+      "keywords": ["adduct", "sodium", "positive"],
+      "metadata": {"polarity": "positive", "mass_shift": 22.989218, "charge": 1}
+    },
+    {
+      "entity_id": "adduct:m_minus_h",
+      "label": "[M-H]-",
+      "entity_type": "adduct",
+      "summary": "Deprotonated molecular ion common in negative-mode electrospray.",
+      "aliases": ["deprotonated", "M-H"],
+      "keywords": ["adduct", "deprotonated", "negative"],
+      "metadata": {"polarity": "negative", "mass_shift": -1.007276, "charge": 1}
+    },
+    {
+      "entity_id": "analyte:caffeine",
+      "label": "Caffeine",
+      "entity_type": "analyte",
+      "summary": "Small molecule stimulant frequently used as a reference analyte in LC-MS demos.",
+      "keywords": ["caffeine", "alkaloid", "standard"],
+      "metadata": {"neutral_mass": 194.0804}
+    },
+    {
+      "entity_id": "analyte:glucose",
+      "label": "Glucose",
+      "entity_type": "analyte",
+      "summary": "Common sugar with frequent sodium-adduct behavior in positive-mode LC-MS.",
+      "keywords": ["glucose", "sugar", "metabolite"],
+      "metadata": {"neutral_mass": 180.0634}
+    },
+    {
+      "entity_id": "analyte:salicylic_acid",
+      "label": "Salicylic acid",
+      "entity_type": "analyte",
+      "summary": "Acidic small molecule that often appears in negative mode as a deprotonated ion.",
+      "aliases": ["2-hydroxybenzoic acid"],
+      "keywords": ["salicylic acid", "negative mode", "acid"],
+      "metadata": {"neutral_mass": 138.0317}
+    },
+    {
+      "entity_id": "sample:metabolomics_plasma",
+      "label": "Plasma metabolomics sample",
+      "entity_type": "sample_type",
+      "summary": "Typical small-molecule metabolomics sample with salt matrix effects that can influence adduct prevalence.",
+      "keywords": ["plasma", "metabolomics", "sample"]
+    }
+  ],
+  "relations": [
+    {
+      "source_id": "instrument:lcms_positive",
+      "relation": "supports_adduct",
+      "target_id": "adduct:m_plus_h",
+      "confidence": 0.97,
+      "source_refs": ["source:esi_adduct_reference"]
+    },
+    {
+      "source_id": "instrument:lcms_positive",
+      "relation": "supports_adduct",
+      "target_id": "adduct:m_plus_na",
+      "confidence": 0.93,
+      "source_refs": ["source:esi_adduct_reference"]
+    },
+    {
+      "source_id": "instrument:lcms_negative",
+      "relation": "supports_adduct",
+      "target_id": "adduct:m_minus_h",
+      "confidence": 0.97,
+      "source_refs": ["source:esi_adduct_reference"]
+    },
+    {
+      "source_id": "analyte:caffeine",
+      "relation": "commonly_forms",
+      "target_id": "adduct:m_plus_h",
+      "confidence": 0.98,
+      "source_refs": ["source:caffeine_note"]
+    },
+    {
+      "source_id": "analyte:glucose",
+      "relation": "commonly_forms",
+      "target_id": "adduct:m_plus_na",
+      "confidence": 0.96,
+      "source_refs": ["source:glucose_note"]
+    },
+    {
+      "source_id": "analyte:salicylic_acid",
+      "relation": "commonly_forms",
+      "target_id": "adduct:m_minus_h",
+      "confidence": 0.95,
+      "source_refs": ["source:esi_adduct_reference"]
+    },
+    {
+      "source_id": "sample:metabolomics_plasma",
+      "relation": "can_bias_toward",
+      "target_id": "adduct:m_plus_na",
+      "confidence": 0.84,
+      "source_refs": ["source:esi_adduct_reference"]
+    }
+  ]
+}

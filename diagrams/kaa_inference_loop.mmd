@@ -1,0 +1,8 @@
+flowchart LR
+    H[Hidden State or Query Embedding] --> I[World-Model Index Search]
+    I --> G[Retrieved Graph Neighborhood]
+    G --> K[Graph Keys/Values]
+    T[Token Keys/Values] --> M[Attention Mixer]
+    K --> M
+    M --> C[Updated Cognitive Signal]
+    C --> N[Next Decode Step]
