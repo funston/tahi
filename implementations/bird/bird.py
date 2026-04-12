@@ -3,16 +3,21 @@ from __future__ import annotations
 import json
 import re
 import sqlite3
+import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
+import urllib.request
 
 import sqlglot
 from sqlglot import exp
 from sqlglot.errors import ParseError
 
+from bender.benchmarking import BenchmarkCaseResult, benchmark_report_to_dict, render_markdown_summary_table, summarize_system_results
 from bender.database import SQLColumnProfile, SQLForeignKey, SQLSchemaSnapshot, SQLTableProfile
-from bender.sql_coprocessor import SQLSchemaCoprocessor
+from bender.repair.sql import SQLRepairAttempt
+from implementations.sql import SQLSchemaCoprocessor
+from bender.validators.sql import SQLResultMatcher
 from bender.world_state import WorldModel
 
 
@@ -68,6 +73,20 @@ def _infer_gold_tables_from_sql(sql: str) -> list[str]:
         if table_name not in tables:
             tables.append(table_name)
     return tables
+
+
+def _extract_sql(text: str) -> str:
+    stripped = text.strip()
+    fenced = re.findall(r"```(?:sql)?\s*(.*?)```", stripped, flags=re.IGNORECASE | re.DOTALL)
+    if fenced:
+        stripped = fenced[0].strip()
+    match = re.search(r"((WITH|SELECT)\b.*)", stripped, flags=re.IGNORECASE | re.DOTALL)
+    if match:
+        stripped = match.group(1).strip()
+    stripped = stripped.split("\n\n", 1)[0].strip()
+    if "SELECT" not in stripped.upper() and "WITH" not in stripped.upper():
+        return ""
+    return stripped
 
 
 @dataclass
@@ -210,7 +229,16 @@ class BirdWorkspace:
                 continue
             if path.suffix.lower() not in {".csv", ".txt", ".md", ".json"}:
                 continue
-            documents[str(path.relative_to(description_dir))] = path.read_text(encoding="utf-8")
+            try:
+                # Try UTF-8 first, fallback to latin-1 which accepts all bytes
+                try:
+                    content = path.read_text(encoding="utf-8")
+                except UnicodeDecodeError:
+                    content = path.read_text(encoding="latin-1")
+                documents[str(path.relative_to(description_dir))] = content
+            except Exception:
+                # Skip files that can't be read
+                continue
         return documents
 
     def load_snapshot_manifest(self, path: str | Path) -> dict[str, SQLSchemaSnapshot]:
@@ -231,6 +259,105 @@ class BirdWorkspace:
             resolved = (self.repo_root / world_path).resolve()
             worlds[str(db_id)] = WorldModel.load_json(resolved)
         return worlds
+
+
+@dataclass
+class BirdHFWorkspace:
+    repo_id: str = "Sudnya/bird-sql"
+    cache_dir: Path | str = ".local/bird_hf"
+
+    def __post_init__(self) -> None:
+        self.cache_dir = Path(self.cache_dir)
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+
+    def _dataset_cache_dir(self) -> Path:
+        path = self.cache_dir / "hf_datasets"
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+
+    def _hub_cache_dir(self) -> Path:
+        path = self.cache_dir / "hf_hub"
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+
+    def _problem_split(self, split: str) -> str:
+        return "validation" if split in {"dev", "validation"} else split
+
+    def _database_zip_name(self, split: str) -> str:
+        return "dev_databases.zip" if split in {"dev", "validation"} else f"{split}_databases.zip"
+
+    def load_tasks(self, split: str = "dev") -> list[BirdTask]:
+        from datasets import load_dataset
+
+        dataset = load_dataset(
+            self.repo_id,
+            split=self._problem_split(split),
+            cache_dir=str(self._dataset_cache_dir()),
+        )
+        tasks: list[BirdTask] = []
+        for index, record in enumerate(dataset, start=1):
+            task = BirdTask.from_record(dict(record))
+            if task.task_id == "task":
+                task.task_id = f"{task.db_id}_{index:04d}"
+            tasks.append(task)
+        return tasks
+
+    def ensure_database_cache(self, split: str = "dev", force_download: bool = False) -> Path:
+        extract_dir = self.cache_dir / split
+        if not force_download and any(extract_dir.rglob("*.sqlite")):
+            return extract_dir
+        if not force_download and any(extract_dir.rglob("*.db")):
+            return extract_dir
+
+        from huggingface_hub import hf_hub_download
+
+        zip_path = hf_hub_download(
+            repo_id=self.repo_id,
+            filename=f"databases/{self._database_zip_name(split)}",
+            repo_type="dataset",
+            cache_dir=str(self._hub_cache_dir()),
+        )
+        extract_dir.mkdir(parents=True, exist_ok=True)
+        with zipfile.ZipFile(zip_path, "r") as archive:
+            archive.extractall(extract_dir)
+        return extract_dir
+
+    def resolve_local_sqlite_db(self, db_id: str, split: str = "dev") -> Path:
+        db_root = self.ensure_database_cache(split=split)
+        normalized_target = _normalize_identifier(db_id)
+        candidates = sorted(
+            candidate
+            for candidate in db_root.rglob("*")
+            if candidate.is_file() and candidate.suffix.lower() in {".sqlite", ".db"}
+        )
+        for candidate in candidates:
+            names = {
+                _normalize_identifier(candidate.stem),
+                _normalize_identifier(candidate.parent.name),
+            }
+            if normalized_target in names:
+                return candidate
+        raise FileNotFoundError(f"Could not resolve BIRD SQLite database for db_id={db_id} in repo_id={self.repo_id}")
+
+    def load_database_documents(self, db_id: str, split: str = "dev") -> dict[str, str]:
+        """Load database description CSV files as metadata documents"""
+        # Databases are extracted to cache_dir/split/dev_databases/db_id/
+        split_dir = self.cache_dir / split
+        db_base_path = split_dir / "dev_databases" / db_id / "database_description"
+        if not db_base_path.exists():
+            return {}
+
+        documents = {}
+        for csv_file in db_base_path.glob("*.csv"):
+            try:
+                # Read entire CSV as text for now (could parse as structured data later)
+                with open(csv_file, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                documents[csv_file.name] = content
+            except Exception:
+                continue  # Skip files that can't be read
+
+        return documents
 
 
 class BirdSQLiteDatabaseLoader:
@@ -347,6 +474,282 @@ class BirdSQLiteDatabaseLoader:
         return [str(row[0]) for row in rows]
 
 
+class BirdSQLiteExecutionEngine:
+    def __init__(self, db_path: str | Path):
+        self.db_path = str(Path(db_path))
+
+    def execute(self, sql: str) -> tuple[list[dict[str, Any]], str | None]:
+        try:
+            connection = sqlite3.connect(self.db_path)
+            connection.row_factory = sqlite3.Row
+            try:
+                rows = connection.execute(sql).fetchall()
+                return [dict(row) for row in rows], None
+            finally:
+                connection.close()
+        except Exception as exc:  # noqa: BLE001
+            return [], f"{type(exc).__name__}: {exc}"
+
+
+@dataclass
+class BirdSQLCandidate:
+    sql: str
+    strategy: str
+    rationale: str = ""
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class BirdExecutionPacket:
+    task_id: str
+    db_id: str
+    question: str
+    evidence: str
+    candidate_tables: list[str]
+    snapshot: SQLSchemaSnapshot
+    include_evidence: bool = False
+
+    def to_prompt(self) -> str:
+        allowed = {_normalize_identifier(name) for name in self.candidate_tables} if self.candidate_tables else set()
+        table_blocks: list[str] = []
+        for table in self.snapshot.tables:
+            if allowed and _normalize_identifier(table.name) not in allowed:
+                continue
+            columns = ", ".join(f"{column.name} {column.data_type}" for column in table.columns)
+            table_blocks.append(f"TABLE {table.name} ({columns})")
+        schema_text = "\n".join(table_blocks) if table_blocks else "(no filtered tables available)"
+        evidence_text = f"\nEvidence: {self.evidence.strip()}" if self.include_evidence and self.evidence.strip() else ""
+        return (
+            "You are writing SQLite SQL for the BIRD benchmark.\n"
+            "Return only SQL.\n"
+            "Use only the tables shown below when possible.\n\n"
+            f"Database: {self.db_id}\n"
+            f"Schema:\n{schema_text}\n\n"
+            f"Question: {self.question}{evidence_text}\n"
+        )
+
+
+class BirdSQLCandidateGenerator(Protocol):
+    def generate(self, packet: BirdExecutionPacket, *, max_candidates: int = 4) -> list[BirdSQLCandidate]:
+        ...
+
+
+class BirdHeuristicSQLCandidateGenerator:
+    def generate(self, packet: BirdExecutionPacket, *, max_candidates: int = 4) -> list[BirdSQLCandidate]:
+        question = packet.question.lower()
+        candidate_tables = packet.candidate_tables or [table.name for table in packet.snapshot.tables]
+        table_name = candidate_tables[0] if candidate_tables else ""
+        if not table_name:
+            return []
+        aggregate_column = self._best_aggregate_column(packet.snapshot, table_name, question)
+        if "how many" in question or "count" in question:
+            sql = f"SELECT COUNT(*) AS count FROM {table_name}"
+        elif aggregate_column and ("average" in question or "avg" in question):
+            sql = f"SELECT AVG({aggregate_column}) AS average_value FROM {table_name}"
+        elif aggregate_column and ("total" in question or "sum" in question):
+            sql = f"SELECT SUM({aggregate_column}) AS total_value FROM {table_name}"
+        else:
+            sql = f"SELECT * FROM {table_name} LIMIT 10"
+        return [
+            BirdSQLCandidate(
+                sql=sql,
+                strategy="heuristic",
+                rationale="Simple heuristic SQL fallback for BIRD execution benchmarking.",
+            )
+        ]
+
+    def _best_aggregate_column(self, snapshot: SQLSchemaSnapshot, table_name: str, question: str) -> str | None:
+        for table in snapshot.tables:
+            if table.name != table_name:
+                continue
+            numeric = [column.name for column in table.columns if any(tok in column.data_type.upper() for tok in ("INT", "REAL", "NUM", "DEC", "FLOAT", "DOUBLE"))]
+            if not numeric:
+                return None
+            for preferred in ("count", "amount", "value", "price", "score", "total", "salary", "diff"):
+                for column in numeric:
+                    if preferred in column.lower() or preferred in question:
+                        return column
+            return numeric[0]
+        return None
+
+
+class BirdPromptedSQLCandidateGenerator:
+    def __init__(
+        self,
+        *,
+        base_url: str,
+        model: str,
+        timeout: int = 120,
+        temperature: float = 0.0,
+        max_tokens: int = 256,
+        strict: bool = False,
+        fallback: BirdSQLCandidateGenerator | None = None,
+    ) -> None:
+        self.base_url = base_url.rstrip("/")
+        self.model = model
+        self.timeout = timeout
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+        self.strict = strict
+        self.fallback = fallback or BirdHeuristicSQLCandidateGenerator()
+
+    def generate(self, packet: BirdExecutionPacket, *, max_candidates: int = 4) -> list[BirdSQLCandidate]:
+        texts: list[str] = []
+        last_error: Exception | None = None
+        try:
+            payload = {
+                "prompt": {"text": packet.to_prompt()},
+                "model": self.model,
+                "max_tokens": self.max_tokens,
+                "temperature": self.temperature,
+                "n": max_candidates,
+            }
+            response = self._post_json(f"{self.base_url}/v1/generate", payload)
+            texts.extend(self._extract_texts(response))
+        except Exception as exc:  # noqa: BLE001
+            last_error = exc
+        candidates = self._texts_to_candidates(texts)
+        candidates.extend(self.fallback.generate(packet, max_candidates=max_candidates))
+        deduped: list[BirdSQLCandidate] = []
+        seen: set[str] = set()
+        for candidate in candidates:
+            sql = candidate.sql.strip()
+            if not sql or sql in seen:
+                continue
+            seen.add(sql)
+            deduped.append(candidate)
+        if deduped:
+            return deduped[:max_candidates]
+        if self.strict:
+            detail = f"{type(last_error).__name__}: {last_error}" if last_error is not None else "empty_candidate_set"
+            raise RuntimeError(
+                f"bird_prompted_candidate_generation_failed model={self.model} base_url={self.base_url} detail={detail}"
+            )
+        return []
+
+    def _post_json(self, url: str, payload: dict[str, Any]) -> dict[str, Any]:
+        request = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            return json.loads(response.read().decode("utf-8"))
+
+    def _extract_texts(self, payload: dict[str, Any]) -> list[str]:
+        texts: list[str] = []
+        for key in ("results", "outputs", "choices"):
+            value = payload.get(key)
+            if not isinstance(value, list):
+                continue
+            for item in value:
+                if isinstance(item, dict):
+                    if isinstance(item.get("response"), str):
+                        texts.append(item["response"])
+                    if isinstance(item.get("text"), str):
+                        texts.append(item["text"])
+                    message = item.get("message")
+                    if isinstance(message, dict) and isinstance(message.get("content"), str):
+                        texts.append(message["content"])
+                else:
+                    texts.append(str(item))
+        for key in ("text", "generated_text"):
+            value = payload.get(key)
+            if value:
+                texts.append(str(value))
+        return texts
+
+    def _texts_to_candidates(self, texts: list[str]) -> list[BirdSQLCandidate]:
+        candidates: list[BirdSQLCandidate] = []
+        for index, text in enumerate(texts):
+            sql = _extract_sql(text)
+            if not sql:
+                continue
+            candidates.append(
+                BirdSQLCandidate(
+                    sql=sql,
+                    strategy="prompted",
+                    rationale="Candidate generated by prompted SQL backend.",
+                    metadata={"candidate_index": index},
+                )
+            )
+        return candidates
+
+
+class BirdOllamaSQLCandidateGenerator:
+    def __init__(
+        self,
+        *,
+        base_url: str = "http://127.0.0.1:11435",
+        model: str = "qwen2.5-coder:latest",
+        timeout: int = 240,
+        strict: bool = True,
+        temperatures: tuple[float, ...] = (0.0, 0.1, 0.2),
+        fallback: BirdSQLCandidateGenerator | None = None,
+    ) -> None:
+        self.base_url = base_url.rstrip("/")
+        self.model = model
+        self.timeout = timeout
+        self.strict = strict
+        self.temperatures = temperatures
+        self.fallback = fallback or BirdHeuristicSQLCandidateGenerator()
+
+    def generate(self, packet: BirdExecutionPacket, *, max_candidates: int = 4) -> list[BirdSQLCandidate]:
+        candidates: list[BirdSQLCandidate] = []
+        errors: list[str] = []
+        for index in range(max_candidates):
+            temperature = self.temperatures[index % len(self.temperatures)]
+            try:
+                payload = {
+                    "model": self.model,
+                    "prompt": packet.to_prompt(),
+                    "stream": False,
+                    "options": {"temperature": temperature},
+                }
+                response = self._post_json(f"{self.base_url}/api/generate", payload)
+                sql = _extract_sql(str(response.get("response", "")))
+                if not sql:
+                    continue
+                candidates.append(
+                    BirdSQLCandidate(
+                        sql=sql,
+                        strategy="ollama",
+                        rationale=f"Ollama SQL candidate {index + 1}",
+                        metadata={"temperature": temperature},
+                    )
+                )
+            except Exception as exc:  # noqa: BLE001
+                errors.append(f"{type(exc).__name__}: {exc}")
+        candidates.extend(self.fallback.generate(packet, max_candidates=max_candidates))
+        deduped: list[BirdSQLCandidate] = []
+        seen: set[str] = set()
+        for candidate in candidates:
+            sql = candidate.sql.strip()
+            if not sql or sql in seen:
+                continue
+            seen.add(sql)
+            deduped.append(candidate)
+        if deduped:
+            return deduped[:max_candidates]
+        if self.strict:
+            detail = "; ".join(errors) if errors else "empty_candidate_set"
+            raise RuntimeError(
+                f"bird_ollama_candidate_generation_failed model={self.model} base_url={self.base_url} detail={detail}"
+            )
+        return []
+
+    def _post_json(self, url: str, payload: dict[str, Any]) -> dict[str, Any]:
+        request = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            return json.loads(response.read().decode("utf-8"))
+
+
 def enrich_world_with_bird_metadata(
     world_model: WorldModel,
     *,
@@ -383,6 +786,7 @@ class BirdBenchmarkAdapter:
     snapshots_by_db: dict[str, SQLSchemaSnapshot]
     worlds_by_db: dict[str, WorldModel] | None = None
     top_k: int = 8
+    include_evidence: bool = False
 
     def run_task(self, task: BirdTask) -> dict[str, Any]:
         if task.db_id not in self.snapshots_by_db:
@@ -396,7 +800,10 @@ class BirdBenchmarkAdapter:
             top_k=self.top_k,
             world_model=world_model,
         )
-        result = coprocessor.ask(task.question, trace=True)
+        query = task.question
+        if self.include_evidence and task.evidence.strip():
+            query = f"{task.question}\nEvidence: {task.evidence.strip()}"
+        result = coprocessor.ask(query, trace=True)
         candidate_tables = result.get("constraints", {}).get("candidate_tables", [])
         table_recall = None
         gold_table_names = task.gold_tables or _infer_gold_tables_from_sql(task.gold_sql)
@@ -409,6 +816,7 @@ class BirdBenchmarkAdapter:
             "task_id": task.task_id,
             "db_id": task.db_id,
             "question": task.question,
+            "query": query,
             "candidate_tables": candidate_tables,
             "candidate_join_path": result.get("constraints", {}).get("candidate_join_path", []),
             "recommended_bridge_tables": result.get("constraints", {}).get("recommended_bridge_tables", []),
@@ -431,3 +839,146 @@ class BirdBenchmarkAdapter:
             ),
             "results": results,
         }
+
+
+@dataclass
+class BirdABBenchmarkRunner:
+    baseline_adapter: BirdBenchmarkAdapter
+    bender_adapter: BirdBenchmarkAdapter
+    evidence_adapter: BirdBenchmarkAdapter | None = None
+
+    def run(self, tasks: list[BirdTask]) -> dict[str, Any]:
+        naive_results: list[BenchmarkCaseResult] = []
+        baseline_results: list[BenchmarkCaseResult] = []
+        bender_results: list[BenchmarkCaseResult] = []
+        evidence_results: list[BenchmarkCaseResult] = []
+        for task in tasks:
+            naive = _run_bird_naive_baseline(self.baseline_adapter.snapshots_by_db[task.db_id], task)
+            baseline = self.baseline_adapter.run_task(task)
+            bender = self.bender_adapter.run_task(task)
+            evidence = self.evidence_adapter.run_task(task) if self.evidence_adapter is not None else None
+            naive_results.append(
+                BenchmarkCaseResult(
+                    case_id=task.task_id,
+                    system="naive_lexical",
+                    correct=bool((naive.get("table_recall") or 0.0) >= 1.0),
+                    metrics={
+                        "table_recall": naive.get("table_recall"),
+                        "top1_hit": _bird_top1_hit(naive),
+                    },
+                    detail=naive,
+                )
+            )
+            baseline_results.append(
+                BenchmarkCaseResult(
+                    case_id=task.task_id,
+                    system="schema_only",
+                    correct=bool((baseline.get("table_recall") or 0.0) >= 1.0),
+                    metrics={
+                        "table_recall": baseline.get("table_recall"),
+                        "top1_hit": _bird_top1_hit(baseline),
+                    },
+                    detail=baseline,
+                )
+            )
+            bender_results.append(
+                BenchmarkCaseResult(
+                    case_id=task.task_id,
+                    system="bender",
+                    correct=bool((bender.get("table_recall") or 0.0) >= 1.0),
+                    metrics={
+                        "table_recall": bender.get("table_recall"),
+                        "top1_hit": _bird_top1_hit(bender),
+                    },
+                    detail=bender,
+                )
+            )
+            if evidence is not None:
+                evidence_results.append(
+                    BenchmarkCaseResult(
+                        case_id=task.task_id,
+                        system="bender_with_evidence",
+                        correct=bool((evidence.get("table_recall") or 0.0) >= 1.0),
+                        metrics={
+                            "table_recall": evidence.get("table_recall"),
+                            "top1_hit": _bird_top1_hit(evidence),
+                        },
+                        detail=evidence,
+                    )
+                )
+
+        summaries = [
+            summarize_system_results("naive_lexical", naive_results, metric_names=["table_recall", "top1_hit"]),
+            summarize_system_results("schema_only", baseline_results, metric_names=["table_recall", "top1_hit"]),
+            summarize_system_results("bender", bender_results, metric_names=["table_recall", "top1_hit"]),
+        ]
+        if evidence_results:
+            summaries.append(
+                summarize_system_results(
+                    "bender_with_evidence",
+                    evidence_results,
+                    metric_names=["table_recall", "top1_hit"],
+                )
+            )
+        results_by_system: dict[str, list[BenchmarkCaseResult]] = {
+            "naive_lexical": naive_results,
+            "schema_only": baseline_results,
+            "bender": bender_results,
+        }
+        if evidence_results:
+            results_by_system["bender_with_evidence"] = evidence_results
+        payload = benchmark_report_to_dict(
+            benchmark_name="bird_ab_grounding",
+            summaries=summaries,
+            results_by_system=results_by_system,
+        )
+        payload["markdown_summary"] = render_markdown_summary_table(summaries)
+        return payload
+
+
+def _bird_top1_hit(result: dict[str, Any]) -> float:
+    candidate_tables = result.get("candidate_tables", [])
+    gold_tables = result.get("gold_tables", [])
+    if not candidate_tables or not gold_tables:
+        return 0.0
+    predicted = _normalize_identifier(candidate_tables[0])
+    gold = {_normalize_identifier(name) for name in gold_tables}
+    return 1.0 if predicted in gold else 0.0
+
+
+def _run_bird_naive_baseline(snapshot: SQLSchemaSnapshot, task: BirdTask) -> dict[str, Any]:
+    question_tokens = set(re.findall(r"[a-z0-9_]+", task.question.lower()))
+    scored: list[tuple[float, str]] = []
+    for table in snapshot.tables:
+        table_tokens = set(re.findall(r"[a-z0-9_]+", table.name.lower()))
+        column_tokens = {
+            token
+            for column in table.columns
+            for token in re.findall(r"[a-z0-9_]+", column.name.lower())
+        }
+        score = len(question_tokens & table_tokens) * 2.0 + len(question_tokens & column_tokens) * 0.5
+        scored.append((score, table.name))
+    scored.sort(key=lambda item: (-item[0], item[1]))
+    candidate_tables = [name for score, name in scored if score > 0.0][:3]
+    gold_table_names = task.gold_tables or _infer_gold_tables_from_sql(task.gold_sql)
+    table_recall = None
+    if gold_table_names:
+        gold_tables = {_normalize_identifier(name) for name in gold_table_names}
+        predicted_tables = {_normalize_identifier(name) for name in candidate_tables}
+        table_recall = len(gold_tables & predicted_tables) / len(gold_tables) if gold_tables else None
+    return {
+        "task_id": task.task_id,
+        "db_id": task.db_id,
+        "question": task.question,
+        "candidate_tables": candidate_tables,
+        "candidate_join_path": [],
+        "recommended_bridge_tables": [],
+        "table_recall": table_recall,
+        "gold_tables": gold_table_names,
+        "evidence": task.evidence,
+        "difficulty": task.difficulty,
+        "trace": [],
+        "raw_result": {
+            "baseline": "naive_lexical",
+        },
+    }

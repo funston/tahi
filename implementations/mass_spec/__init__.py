@@ -1,4 +1,5 @@
 from .mass_spec import (
+    MassSpecABBenchmarkRunner,
     MassSpecAnalyteProfileRequest,
     MassSpecCaseLoader,
     MassSpecEntity,
@@ -15,6 +16,7 @@ from .mass_spec import (
 )
 
 __all__ = [
+    "MassSpecABBenchmarkRunner",
     "MassSpecAnalyteProfileRequest",
     "MassSpecCaseLoader",
     "MassSpecEntity",

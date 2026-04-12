@@ -6,7 +6,9 @@
       "polarity": "positive",
       "instrument_mode": "LC-MS positive mode",
       "sample_type": "Plasma metabolomics sample",
-      "question": "What best explains this positive-mode peak?"
+      "question": "What best explains this positive-mode peak?",
+      "expected_analyte_id": "analyte:caffeine",
+      "expected_adduct_id": "adduct:m_plus_h"
     },
     {
       "case_id": "demo_glucose_sodium",
@@ -14,7 +16,9 @@
       "polarity": "positive",
       "instrument_mode": "LC-MS positive mode",
       "sample_type": "Plasma metabolomics sample",
-      "question": "Rank plausible analyte-adduct explanations for this observed feature."
+      "question": "Rank plausible analyte-adduct explanations for this observed feature.",
+      "expected_analyte_id": "analyte:glucose",
+      "expected_adduct_id": "adduct:m_plus_na"
     },
     {
       "case_id": "demo_salicylic_negative",
@@ -22,7 +26,9 @@
       "polarity": "negative",
       "instrument_mode": "LC-MS negative mode",
       "sample_type": "Plasma metabolomics sample",
-      "question": "Explain this negative-mode feature."
+      "question": "Explain this negative-mode feature.",
+      "expected_analyte_id": "analyte:salicylic_acid",
+      "expected_adduct_id": "adduct:m_minus_h"
     }
   ]
 }

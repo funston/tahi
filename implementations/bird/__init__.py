@@ -1,5 +1,9 @@
 from .bird import (
+    BirdABBenchmarkRunner,
     BirdBenchmarkAdapter,
+    BirdHFWorkspace,
+    BirdHeuristicSQLCandidateGenerator,
+    BirdOllamaSQLCandidateGenerator,
     BirdSQLiteDatabaseLoader,
     BirdTask,
     BirdTaskLoader,
@@ -8,7 +12,11 @@ from .bird import (
 )
 
 __all__ = [
+    "BirdABBenchmarkRunner",
     "BirdBenchmarkAdapter",
+    "BirdHFWorkspace",
+    "BirdHeuristicSQLCandidateGenerator",
+    "BirdOllamaSQLCandidateGenerator",
     "BirdSQLiteDatabaseLoader",
     "BirdTask",
     "BirdTaskLoader",

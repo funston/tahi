@@ -31,7 +31,7 @@ Note:
 
 - these quick-start demos use **structured control mode**
 - they do **not** require the native ScalarLM backend
-- native coprocessor mode is documented separately in [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md) and [Native ScalarLM Backend](/Users/richiek/work/bender/docs/NATIVE_SCALARLM.md)
+- native coprocessor mode is documented in [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md)
 
 ## Run A Knowledge-Heavy Demo
 

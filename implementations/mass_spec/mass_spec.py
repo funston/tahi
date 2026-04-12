@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from bender.benchmarking import BenchmarkCaseResult, benchmark_report_to_dict, render_markdown_summary_table, summarize_system_results
 from bender.models import Hypothesis
 from bender.world_state import WorldModel
 
@@ -71,6 +72,8 @@ class MassSpecSpectrumCase:
     instrument_mode: str
     sample_type: str = ""
     question: str = ""
+    expected_analyte_id: str = ""
+    expected_adduct_id: str = ""
 
     def semantic_query(self) -> str:
         parts = [
@@ -91,6 +94,8 @@ class MassSpecSpectrumCase:
             instrument_mode=str(payload.get("instrument_mode") or ""),
             sample_type=str(payload.get("sample_type") or ""),
             question=str(payload.get("question") or ""),
+            expected_analyte_id=str(payload.get("expected_analyte_id") or ""),
+            expected_adduct_id=str(payload.get("expected_adduct_id") or ""),
         )
 
 
@@ -444,6 +449,41 @@ class MassSpecInterpretationAdapter:
             "provenance": provenance,
         }
 
+    def run_retrieval_baseline(self, case: MassSpecSpectrumCase, *, top_k: int = 8) -> dict[str, Any]:
+        retrievals = self.world_model.retrieve(case.semantic_query(), top_k=top_k)
+        analyte = next((item for item in retrievals if item.node_type == "analyte"), None)
+        adduct = next(
+            (
+                item
+                for item in retrievals
+                if item.node_type == "adduct"
+                and str(item.attributes.get("polarity", "")).lower() == case.polarity.lower()
+            ),
+            None,
+        )
+        candidate = None
+        if analyte is not None and adduct is not None:
+            candidate = {
+                "analyte_id": analyte.node_id,
+                "analyte_label": analyte.label,
+                "adduct_id": adduct.node_id,
+                "adduct_label": adduct.label,
+                "confidence": round((analyte.score + adduct.score) / 2.0, 4),
+            }
+        return {
+            "case_id": case.case_id,
+            "retrieved_entities": [
+                {
+                    "node_id": item.node_id,
+                    "label": item.label,
+                    "type": item.node_type,
+                    "score": item.score,
+                }
+                for item in retrievals
+            ],
+            "candidate_explanation": candidate,
+        }
+
     def run_analyte_profile(self, request: MassSpecAnalyteProfileRequest, *, top_k: int = 8) -> dict[str, Any]:
         analyte_id = self._resolve_entity(request.analyte, entity_type="analyte")
         retrievals = self.world_model.retrieve(request.semantic_query(), top_k=top_k)
@@ -649,3 +689,61 @@ def render_mass_spec_rag_baseline(case: MassSpecSpectrumCase) -> dict[str, Any]:
             "trust the model to apply polarity, adduct chemistry, and mass arithmetic correctly in-context",
         ],
     }
+
+
+@dataclass
+class MassSpecABBenchmarkRunner:
+    adapter: MassSpecInterpretationAdapter
+
+    def run(self, cases: list[MassSpecSpectrumCase]) -> dict[str, Any]:
+        retrieval_results: list[BenchmarkCaseResult] = []
+        bender_results: list[BenchmarkCaseResult] = []
+        for case in cases:
+            retrieval = self.adapter.run_retrieval_baseline(case)
+            bender = self.adapter.run_spectrum_case(case)
+            retrieval_candidate = retrieval.get("candidate_explanation") or {}
+            bender_candidates = bender.get("candidate_explanations", [])
+            bender_candidate = bender_candidates[0] if bender_candidates else {}
+            retrieval_correct = (
+                retrieval_candidate.get("analyte_id") == case.expected_analyte_id
+                and retrieval_candidate.get("adduct_id") == case.expected_adduct_id
+            )
+            bender_correct = (
+                bender_candidate.get("analyte_id") == case.expected_analyte_id
+                and bender_candidate.get("adduct_id") == case.expected_adduct_id
+            )
+            retrieval_results.append(
+                BenchmarkCaseResult(
+                    case_id=case.case_id,
+                    system="retrieval_only",
+                    correct=retrieval_correct,
+                    metrics={"top1_exact": 1.0 if retrieval_correct else 0.0},
+                    detail=retrieval,
+                )
+            )
+            bender_results.append(
+                BenchmarkCaseResult(
+                    case_id=case.case_id,
+                    system="bender",
+                    correct=bender_correct,
+                    metrics={
+                        "top1_exact": 1.0 if bender_correct else 0.0,
+                        "top1_mass_error_da": bender_candidate.get("mass_error_da"),
+                    },
+                    detail=bender,
+                )
+            )
+        summaries = [
+            summarize_system_results("retrieval_only", retrieval_results, metric_names=["top1_exact"]),
+            summarize_system_results("bender", bender_results, metric_names=["top1_exact", "top1_mass_error_da"]),
+        ]
+        payload = benchmark_report_to_dict(
+            benchmark_name="mass_spec_ab_peak_assignment",
+            summaries=summaries,
+            results_by_system={
+                "retrieval_only": retrieval_results,
+                "bender": bender_results,
+            },
+        )
+        payload["markdown_summary"] = render_markdown_summary_table(summaries)
+        return payload

@@ -20,6 +20,7 @@ Primary components:
 
 - `BenderRuntime`
 - `WorldModel`
+- `WorldModelStore` (FTI Feature Pipeline)
 - `Planner`
 - `RuleEngine`
 - `Simulator`
@@ -34,6 +35,33 @@ The runtime contract is:
 3. `Planner`, `RuleEngine`, `Simulator`
 4. `FusionModule.mix(...)`
 5. `ModelIntegration.inject(...)`
+
+## FTI MLOps Architecture
+
+BENDER adopts the Feature/Training/Inference (FTI) MLOps pattern for world model management:
+
+**World Model Pipeline** (Feature Pipeline analog):
+- Pre-build versioned world models from domain data
+- Store with semantic versioning (e.g., `bird-dev:v1.0.0`)
+- Reproducible builds with metadata tracking
+
+**Coprocessor Pipeline** (Inference Pipeline analog):
+- Load pre-built world models on demand
+- Runtime retrieval, planning, and fusion
+- Point-in-time consistency with versioned models
+
+**No Training Pipeline**:
+- BENDER is model-agnostic by design (no fine-tuning)
+- Domain logic lives in graphs, not weights
+- Maintains architectural purity
+
+**WorldModelStore** provides:
+- Versioned storage with gzip compression
+- Lazy loading (`get_or_build`)
+- Manifest tracking (build date, metadata, model counts)
+- 3x faster benchmarks (pre-built vs rebuilt on every run)
+
+Reference: https://www.hopsworks.ai/post/mlops-to-ml-systems-with-fti-pipelines
 
 ## Repository Boundary
 
@@ -104,5 +132,5 @@ That is the key architectural distinction. The goal is not merely better retriev
 - [Quick Start](/Users/richiek/work/bender/docs/QUICKSTART.md)
 - [Tutorial](/Users/richiek/work/bender/docs/TUTORIAL.md)
 - [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md)
-- [Native ScalarLM Backend](/Users/richiek/work/bender/docs/NATIVE_SCALARLM.md)
+- scalarLM-specific backend notes now live in [docs/legacy/NATIVE_SCALARLM.md](/Users/richiek/work/bender/docs/legacy/NATIVE_SCALARLM.md)
 - [Whitepaper Guide](/Users/richiek/work/bender/docs/WHITEPAPER.md)
