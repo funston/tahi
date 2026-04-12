@@ -4,6 +4,7 @@ import sqlite3
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
@@ -20,7 +21,9 @@ from bender import (  # noqa: E402
     snapshot_to_world_model,
 )
 from implementations.bird import (  # noqa: E402
+    BirdABBenchmarkRunner,
     BirdBenchmarkAdapter,
+    BirdHFWorkspace,
     BirdSQLiteDatabaseLoader,
     BirdTaskLoader,
     BirdWorkspace,
@@ -119,6 +122,38 @@ class BirdTests(unittest.TestCase):
         self.assertEqual(tasks[0].db_id, "california_schools")
         self.assertEqual(os.path.basename(resolved_db), "california_schools.sqlite")
         self.assertIn("schools.csv", docs)
+
+    def test_hf_workspace_uses_validation_split_and_cached_database(self):
+        records = [
+            {
+                "db_id": "california_schools",
+                "question": "How many schools are there?",
+                "evidence": "Use schools.",
+                "SQL": "SELECT COUNT(*) FROM schools",
+            }
+        ]
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db_dir = os.path.join(tmpdir, "dev", "california_schools")
+            os.makedirs(db_dir, exist_ok=True)
+            db_path = os.path.join(db_dir, "california_schools.sqlite")
+            connection = sqlite3.connect(db_path)
+            try:
+                connection.execute("CREATE TABLE schools (school_id INTEGER PRIMARY KEY, name TEXT)")
+                connection.commit()
+            finally:
+                connection.close()
+
+            workspace = BirdHFWorkspace(repo_id="Sudnya/bird-sql", cache_dir=tmpdir)
+            with patch("datasets.load_dataset", return_value=records) as mock_load_dataset:
+                tasks = workspace.load_tasks(split="dev")
+
+            resolved_db = workspace.resolve_local_sqlite_db("california_schools", split="dev")
+
+        self.assertEqual(tasks[0].db_id, "california_schools")
+        self.assertEqual(os.path.basename(resolved_db), "california_schools.sqlite")
+        mock_load_dataset.assert_called_once()
+        self.assertEqual(mock_load_dataset.call_args.kwargs["split"], "validation")
 
     def test_sqlite_loader_builds_snapshot_from_bird_db(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -228,6 +263,62 @@ class BirdTests(unittest.TestCase):
 
         self.assertEqual(result["gold_tables"], ["course"])
         self.assertEqual(result["table_recall"], 1.0)
+
+    def test_ab_benchmark_runner_produces_comparison_report(self):
+        snapshot = SQLSchemaSnapshot(
+            database_name="california_schools",
+            tables=[
+                SQLTableProfile(
+                    schema="main",
+                    name="schools",
+                    columns=[
+                        SQLColumnProfile(schema="main", table="schools", name="name", data_type="TEXT"),
+                    ],
+                )
+            ],
+            foreign_keys=[],
+        )
+        baseline_world = snapshot_to_world_model(snapshot)
+        bender_world = enrich_world_with_bird_metadata(
+            snapshot_to_world_model(snapshot),
+            db_id="california_schools",
+            metadata_documents={"schools.csv": "table,column,description\nschools,name,School name\n"},
+        )
+        task = type(
+            "Task",
+            (),
+            {
+                "task_id": "1",
+                "db_id": "california_schools",
+                "question": "Which table contains school names?",
+                "evidence": "Use schools.",
+                "difficulty": "easy",
+                "gold_tables": ["schools"],
+                "gold_sql": "",
+            },
+        )()
+        report = BirdABBenchmarkRunner(
+            baseline_adapter=BirdBenchmarkAdapter(
+                snapshots_by_db={"california_schools": snapshot},
+                worlds_by_db={"california_schools": baseline_world},
+                top_k=8,
+            ),
+            bender_adapter=BirdBenchmarkAdapter(
+                snapshots_by_db={"california_schools": snapshot},
+                worlds_by_db={"california_schools": bender_world},
+                top_k=8,
+            ),
+            evidence_adapter=BirdBenchmarkAdapter(
+                snapshots_by_db={"california_schools": snapshot},
+                worlds_by_db={"california_schools": bender_world},
+                top_k=8,
+                include_evidence=True,
+            ),
+        ).run([task])
+
+        self.assertEqual(report["benchmark_name"], "bird_ab_grounding")
+        self.assertEqual(len(report["systems"]), 4)
+        self.assertIn("| System | Tasks | Accuracy |", report["markdown_summary"])
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
 from implementations.mass_spec import (  # noqa: E402
+    MassSpecABBenchmarkRunner,
     MassSpecAnalyteProfileRequest,
     MassSpecInterpretationAdapter,
     MassSpecWorkspace,
@@ -78,3 +79,16 @@ class MassSpecImplementationTests(unittest.TestCase):
 
         self.assertTrue(any(entity.entity_id == "analyte:glucose" for entity in knowledge_base.entities))
         self.assertIn("retrieve top-k adduct and analyte passages from a vector database", rag["steps"][0])
+
+    def test_ab_benchmark_runner_reports_retrieval_vs_bender(self):
+        workspace = MassSpecWorkspace(os.path.join(ROOT, "implementations", "mass_spec"))
+        world = build_mass_spec_world_model(workspace.load_knowledge_base())
+        cases = workspace.load_cases()
+
+        report = MassSpecABBenchmarkRunner(
+            adapter=MassSpecInterpretationAdapter(world)
+        ).run(cases)
+
+        self.assertEqual(report["benchmark_name"], "mass_spec_ab_peak_assignment")
+        self.assertEqual(len(report["systems"]), 2)
+        self.assertIn("| System | Tasks | Accuracy |", report["markdown_summary"])

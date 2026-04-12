@@ -1,5 +1,12 @@
 from ._version import __version__
 from .adapter import wrap_llm
+from .benchmarking import (
+    BenchmarkCaseResult,
+    BenchmarkSystemSummary,
+    benchmark_report_to_dict,
+    render_markdown_summary_table,
+    summarize_system_results,
+)
 from .compiler.sql import SQLCompilerPipeline
 from .database import (
     DatabaseSchemaSnapshot,
@@ -27,8 +34,6 @@ from .integration import (
     BlackBoxIntegration,
     ModelIntegration,
     NativeIntegration,
-    NativeTokenformerIntegration,
-    TokenformerCoprocessorContext,
 )
 from .runtime import BenderRuntime
 from .repair.sql import SQLRepairAttempt, SQLRepairLoop, SQLRepairOutcome
@@ -39,18 +44,21 @@ from .schema_compression import (
     build_schema_compression_plan,
     score_schema_families,
 )
-from .sql_coprocessor import SQLSchemaCoprocessor, SQLSchemaPlanner, SQLSchemaRuleEngine
+# SQL coprocessor moved to implementations/sql/
+# from .sql_coprocessor import SQLSchemaCoprocessor, SQLSchemaPlanner, SQLSchemaRuleEngine
 from .validators.sql import SQLExecutionEngine, SQLResultMatcher, SQLValidationResult
 from .world_state import WorldModel
+from .world_model_store import WorldModelStore, WorldModelManifest
 
 __all__ = [
     "BenderRuntime",
+    "BenchmarkCaseResult",
+    "BenchmarkSystemSummary",
     "BlackBoxIntegration",
     "ComparisonCase",
     "FusionModule",
     "ModelIntegration",
     "NativeIntegration",
-    "NativeTokenformerIntegration",
     "DatabaseSchemaSnapshot",
     "PostgresColumnProfile",
     "PostgresForeignKey",
@@ -63,10 +71,7 @@ __all__ = [
     "SQLRepairAttempt",
     "SQLRepairLoop",
     "SQLRepairOutcome",
-    "SQLSchemaCoprocessor",
     "SQLSchemaIntrospector",
-    "SQLSchemaPlanner",
-    "SQLSchemaRuleEngine",
     "SQLSchemaSnapshot",
     "SQLTableProfile",
     "SQLResultMatcher",
@@ -76,14 +81,18 @@ __all__ = [
     "SchemaFamilyMember",
     "build_schema_compression_plan",
     "score_schema_families",
-    "TokenformerCoprocessorContext",
     "WeightedBlendFusion",
     "WorldModel",
+    "WorldModelManifest",
+    "WorldModelStore",
     "__version__",
+    "benchmark_report_to_dict",
     "build_pagila_fixture_snapshot",
     "comparison_suite_to_dict",
     "evaluate_comparison_suite",
     "format_connection_help",
+    "render_markdown_summary_table",
+    "summarize_system_results",
     "snapshot_to_world_model",
     "summarize_snapshot",
     "wrap_llm",

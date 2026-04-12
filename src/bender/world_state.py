@@ -180,6 +180,7 @@ class WorldModel:
             "domain": self.domain,
             "nodes": self.nodes,
             "edges": self.edges,
+            "use_ann": self.use_ann,
         }
 
     @classmethod
@@ -187,7 +188,8 @@ class WorldModel:
         return cls(
             domain=data.get("domain", "general"),
             nodes=data.get("nodes", {}),
-            edges=[tuple(edge) for edge in data.get("edges", [])],
+            edges=[tuple(edge) if isinstance(edge, list) else edge for edge in data.get("edges", [])],
+            use_ann=data.get("use_ann", False),
         )
 
     def save_json(self, path: str | Path) -> None:

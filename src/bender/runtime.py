@@ -6,7 +6,6 @@ from .models import CognitiveState
 from .planner import Planner
 from .rules import RuleEngine
 from .simulator import Simulator
-from .sql_knowledge import SQLKnowledgeModel
 from .world_state import WorldModel
 
 
@@ -15,7 +14,6 @@ class BenderRuntime:
         self,
         world_model: WorldModel,
         integration: Optional[ModelIntegration] = None,
-        sql_model: Optional[SQLKnowledgeModel] = None,
         fusion: Optional[FusionModule] = None,
         planner: Optional[Planner] = None,
         rules: Optional[RuleEngine] = None,
@@ -23,7 +21,6 @@ class BenderRuntime:
         top_k: int = 3,
     ):
         self.world_model = world_model
-        self.sql_model = sql_model or SQLKnowledgeModel()
         self.integration = integration or BlackBoxIntegration()
         self.fusion = fusion or WeightedBlendFusion()
         self.planner = planner or Planner()
@@ -66,29 +63,11 @@ class BenderRuntime:
             query_embedding=frame.hidden_state or frame.text_embedding,
         )
         state.retrievals = retrievals
-        
-        # 1. Primary Reasoning (Identify Domain/DB and Intent)
         self.planner.plan(query, state)
-
-        # 2. SQL Solving Guidance (Secondary Coprocessor)
-        # Use the planner's extracted intent to find the right SQL pattern
-        intent = state.constraints.get("query_intent", frame.semantic_query or query)
-        sql_guidance = self.sql_model.get_solving_guidance(intent)
-        state.retrievals.extend(sql_guidance)
 
         seen_relations = set()
         for retrieval in state.retrievals:
-            # Resolve the entity reference from the appropriate model (Primary or SQL Solver)
-            if retrieval.node_id in self.world_model.nodes:
-                state.entities.append(self.world_model.entity_ref(retrieval.node_id, score=retrieval.score))
-            elif self.sql_model and retrieval.node_id in self.sql_model.nodes:
-                state.entities.append(self.sql_model.entity_ref(retrieval.node_id, score=retrieval.score))
-            else:
-                # Fallback for dynamic nodes
-                from .models import EntityRef
-                state.entities.append(EntityRef(id=retrieval.node_id, label=retrieval.label, type="concept", score=retrieval.score))
-            
-            # Re-fetch relations if it was a late-added SQL guidance node
+            state.entities.append(self.world_model.entity_ref(retrieval.node_id, score=retrieval.score))
             for relation in retrieval.relations:
                 relation_key = (relation.source, relation.relation, relation.target)
                 if relation_key in seen_relations:
