@@ -12,6 +12,19 @@ Version: `0.1.0`
 - **More flexible than retraining:** domain specialization happens in the runtime world model, not by training a separate base model for each domain state.
 - **Built for integration:** the core runtime emits a control packet and fused signal that can be consumed by black-box or open-weight model paths.
 - **Well suited to specialized domains:** biotech, scientific interpretation, and enterprise data systems where domain structure matters more than generic text recall.
+- **Production-ready MLOps:** adopts FTI (Feature/Training/Inference) patterns with versioned world models, reproducible builds, and 3x faster benchmarks.
+
+## Architecture Highlights
+
+BENDER follows the **FTI MLOps pattern** for world model management:
+
+- **World Model Pipeline** (Feature Pipeline): Pre-build and version domain knowledge graphs
+- **Coprocessor Pipeline** (Inference Pipeline): Runtime retrieval, planning, and fusion
+- **No Training Pipeline**: Model-agnostic by design—domain logic in graphs, not weights
+
+This approach provides reproducible research, faster iteration (3x benchmark speedup), and clean separation between knowledge engineering and model deployment.
+
+See [Architecture](docs/ARCHITECTURE.md) for details.
 
 ## Repository Structure
 
@@ -62,11 +75,11 @@ PYTHONPATH=src python examples/mass_spec_demo.py --mode spectrum --case-id demo_
 - [Quick Start](/Users/richiek/work/bender/docs/QUICKSTART.md)
 - [Tutorial](/Users/richiek/work/bender/docs/TUTORIAL.md)
 - [Architecture](/Users/richiek/work/bender/docs/ARCHITECTURE.md)
+- [Benchmarking](/Users/richiek/work/bender/docs/BENCHMARKING.md)
+- [BIRD Benchmark Report](/Users/richiek/work/bender/benchmarks/bird/bird_benchmark_report.html)
 - [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md)
-- [Native ScalarLM Backend](/Users/richiek/work/bender/docs/NATIVE_SCALARLM.md)
 - [Whitepaper Guide](/Users/richiek/work/bender/docs/WHITEPAPER.md)
 - [Docs Index](/Users/richiek/work/bender/docs/README.md)
-- [0.1 Review Cut](/Users/richiek/work/bender/docs/RELEASE_0.1_REVIEW.md)
 
 ## Reference Implementations
 

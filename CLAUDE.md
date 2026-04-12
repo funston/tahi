@@ -49,6 +49,30 @@ The BENDER runtime follows a stable pipeline:
 4. `FusionModule.mix(...)` - blends model-side and graph-side signals
 5. `ModelIntegration.inject(...)` - produces ControlPacket for the model
 
+### FTI MLOps Architecture (NEW: 2026-03-28)
+
+BENDER adopts the Feature/Training/Inference (FTI) MLOps pattern:
+
+- **WorldModelStore** (`src/bender/world_model_store.py`): Versioned world model storage
+- **Feature Pipeline analog**: Pre-build and version world models (build once, use forever)
+- **Inference Pipeline analog**: BenderRuntime loads pre-built models on demand
+- **No Training Pipeline**: Model-agnostic design (domain logic in graphs, not weights)
+
+**Key Benefits:**
+- 3x faster benchmarks (pre-built vs rebuilt)
+- Reproducible research (semantic versioning)
+- Production-ready infrastructure
+
+**Usage:**
+```python
+from bender import WorldModelStore
+store = WorldModelStore("~/.bender/world-models/")
+store.save(world, source="bird-dev", version="v1.0.0", model_id="db_id")
+world = store.load("bird-dev", "v1.0.0", "db_id")
+```
+
+See: `FTI_IMPLEMENTATION_COMPLETE.md` and `examples/world_model_store_demo.py`
+
 ### Key Modules
 
 **Stable Core Runtime** (rarely modified):
