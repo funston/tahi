@@ -1,0 +1,28 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Inter, system-ui, sans-serif', 'fontSize': '15px', 'primaryColor': '#0d9488', 'primaryTextColor': '#ffffff', 'primaryBorderColor': '#115e59', 'lineColor': '#64748b', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#fff7ed' }}}%%
+flowchart LR
+    Q["💬 User Query"] --> CAP["1️⃣ Capture"]
+    CAP --> SF["Semantic Frame"]
+    SF --> RET["2️⃣ Retrieve"]
+    RET --> RM["Entities & Relations"]
+    RM --> PLN["3️⃣ Plan"]
+    PLN --> CS1["CognitiveState"]
+    CS1 --> RE["4️⃣ Apply Rules"]
+    RE --> CS2["State + Constraints"]
+    CS2 --> SIM["5️⃣ Simulate"]
+    SIM --> CS3["Validated State"]
+    CS3 --> FUS["6️⃣ Fuse"]
+    FUS --> FS["Fused Signal"]
+    FS --> INJ["7️⃣ Inject"]
+    INJ --> CP["Control Packet"]
+    CP --> LLM["🤖 LLM Generation"]
+    LLM --> R["✅ Grounded Response"]
+
+    classDef step fill:#0d9488,stroke:#115e59,stroke-width:2px,color:#fff,font-size:15px
+    classDef data fill:#f0fdfa,stroke:#0d9488,stroke-width:2px,color:#134e4a,font-size:14px
+    classDef llm fill:#fff7ed,stroke:#f97316,stroke-width:2px,color:#7c2d12,font-size:15px
+    classDef output fill:#f0fdf4,stroke:#22c55e,stroke-width:2px,color:#14532d,font-size:15px
+
+    class CAP,RET,PLN,RE,SIM,FUS,INJ step
+    class SF,RM,CS1,CS2,CS3,FS,CP data
+    class LLM llm
+    class R output

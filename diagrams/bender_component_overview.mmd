@@ -1,0 +1,65 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Inter, system-ui, sans-serif', 'fontSize': '15px', 'primaryColor': '#0d9488', 'primaryTextColor': '#ffffff', 'primaryBorderColor': '#115e59', 'lineColor': '#64748b', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#fff7ed' }}}%%
+flowchart TB
+    subgraph Core["🚀 Bender Core Runtime"]
+        direction TB
+        RT["⚙️ BenderRuntime"]
+        INT["🔌 ModelIntegration"]
+        WM["🗺️ WorldModel"]
+        PLN["📋 Planner"]
+        RE["📐 RuleEngine"]
+        SIM["🔬 Simulator"]
+        FUS["🧩 FusionModule"]
+    end
+
+    subgraph Models["🤖 Model Integrations"]
+        direction LR
+        BB["Black Box"]
+        NI["Native Adapter"]
+        NTI["Native Tokenformer"]
+    end
+
+    subgraph Storage["💾 Storage"]
+        direction LR
+        WMS["WorldModelStore"]
+        IDX["Graph / Vector Index"]
+    end
+
+    subgraph Domains["🌍 Reference Domains"]
+        direction LR
+        BIO["🧬 Bio"]
+        MS["🧪 Mass Spec"]
+        BIRD["🐦 BIRD"]
+        SPIDER["🕷️ Spider"]
+        SQL["🗄️ SQL"]
+    end
+
+    RT --> INT
+    RT --> WM
+    RT --> PLN
+    RT --> RE
+    RT --> SIM
+    RT --> FUS
+
+    INT --> BB
+    INT --> NI
+    INT --> NTI
+
+    WM --> WMS
+    WM --> IDX
+
+    BIO --> WM
+    MS --> WM
+    BIRD --> WM
+    SPIDER --> WM
+    SQL --> WM
+
+    classDef core fill:#0d9488,stroke:#115e59,stroke-width:2px,color:#fff,font-size:15px
+    classDef model fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,font-size:14px
+    classDef storage fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,color:#581c87,font-size:14px
+    classDef domain fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d,font-size:14px
+    classDef group fill:none,stroke:#94a3b8,stroke-width:1px,stroke-dasharray: 5 5
+
+    class RT,INT,WM,PLN,RE,SIM,FUS core
+    class BB,NI,NTI model
+    class WMS,IDX storage
+    class BIO,MS,BIRD,SPIDER,SQL domain

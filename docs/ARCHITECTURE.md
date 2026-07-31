@@ -127,10 +127,30 @@ That is the key architectural distinction. The goal is not merely better retriev
 - `spider`
   Stress-test benchmark implementation kept outside core
 
+## Relationship to RETRO / Large-Scale ANN RAG
+
+BENDER is not a competitor to RETRO, InstructRetro, or massive ANN retrieval systems. Those systems optimize for **recall coverage** over unstructured corpora. BENDER optimizes for **correctness, structure, and provenance** in constrained domains.
+
+Where RETRO/ANN engineering is directly useful to BENDER:
+
+- **Level 2/3 native integration:** Gated Chunked Cross-Attention (GCCA) adapters are a concrete recipe for BENDER's native coprocessor mode. The `tanh(α)` gate, frozen base model, and 1-chunk causal offset are all applicable.
+- **Late chunking:** improves document evidence ingestion in world-model builders.
+- **Out-of-core vector storage:** `WorldModelStore` can adopt DiskANN/Starling-style backends if a world model grows beyond RAM.
+- **Async prefetch:** hides retrieval latency in token-time native mode.
+- **Embedding-space alignment:** Procrustes or MLP projection lets BENDER upgrade embedding models without rebuilding adapters.
+
+See the full comparison in [RETRO/ANN vs. BENDER](/Users/richiek/work/bender/docs/RETRO_ANN_VS_BENDER.md).
+
+## Cost Model
+
+BENDER's cost is dominated by **domain curation and ontology engineering**, not by storage or embedding compute. A structured SQL world model for an enterprise schema is typically megabytes to gigabytes, not petabytes. This is the opposite of a 10 PB RETRO corpus, where the dominant costs are embedding compute, NVMe storage, and specialized serving hardware.
+
 ## Recommended Reading
 
 - [Quick Start](/Users/richiek/work/bender/docs/QUICKSTART.md)
 - [Tutorial](/Users/richiek/work/bender/docs/TUTORIAL.md)
 - [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md)
+- [Benchmarking](/Users/richiek/work/bender/docs/BENCHMARKING.md)
+- [RETRO/ANN vs. BENDER](/Users/richiek/work/bender/docs/RETRO_ANN_VS_BENDER.md)
 - scalarLM-specific backend notes now live in [docs/legacy/NATIVE_SCALARLM.md](/Users/richiek/work/bender/docs/legacy/NATIVE_SCALARLM.md)
 - [Whitepaper Guide](/Users/richiek/work/bender/docs/WHITEPAPER.md)

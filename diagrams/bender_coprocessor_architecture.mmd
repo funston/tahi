@@ -1,11 +1,43 @@
-flowchart TD
-    U[User Query] --> L[LLM Perception Layer]
-    L --> E[Embedding / Semantic Cue Extraction]
-    E --> R[Graph Retrieval Index
-FAISS / HNSW]
-    R --> W[World Model Graph]
-    W --> X[Reasoning + Planning]
-    X --> S[Simulation Layer]
-    S --> C[Cognitive State Packet]
-    C --> F[Fusion / Coprocessor Loop]
-    F --> O[LLM Response Synthesis]
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Inter, system-ui, sans-serif', 'fontSize': '15px', 'primaryColor': '#0d9488', 'primaryTextColor': '#ffffff', 'primaryBorderColor': '#115e59', 'lineColor': '#64748b', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#fff7ed' }}}%%
+flowchart TB
+    subgraph User["👤 User"]
+        U["Natural Language Query"]
+    end
+
+    subgraph LLM_Layer["🤖 LLM — Frozen, General-Purpose"]
+        L["Perception & Generation"]
+    end
+
+    subgraph Bender["🧠 Bender World Coprocessor"]
+        direction TB
+        E["🔍 Embedding / Semantic Cue Extraction"]
+        R["📚 Graph Retrieval Index"]
+        W["🗺️ World Model Graph"]
+        X["🧭 Reasoning + Planning"]
+        S["🔬 Simulation Layer"]
+        C["📦 Cognitive State Packet"]
+        F["⚡ Fusion / Coprocessor Loop"]
+    end
+
+    U --> L
+    L --> E
+    E --> R
+    R --> W
+    W --> X
+    X --> S
+    S --> C
+    C --> F
+    F -->|Control Signal| L
+    L --> O["Grounded Answer + Provenance"]
+
+    classDef user fill:#e0e7ff,stroke:#4f46e5,stroke-width:2px,color:#312e81,font-size:15px
+    classDef llm fill:#fff7ed,stroke:#f97316,stroke-width:3px,color:#7c2d12,font-size:15px
+    classDef bender fill:#f0fdfa,stroke:#0d9488,stroke-width:2px,color:#134e4a,font-size:14px
+    classDef output fill:#f0fdf4,stroke:#22c55e,stroke-width:2px,color:#14532d,font-size:15px
+    classDef highlight fill:#ccfbf1,stroke:#0d9488,stroke-width:3px,color:#134e4a,font-size:15px
+
+    class U user
+    class L llm
+    class E,R,W,X,S,C,F bender
+    class F highlight
+    class O output

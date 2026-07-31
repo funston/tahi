@@ -84,6 +84,18 @@ In the current design, this is represented by:
 
 in [integration.py](/Users/richiek/work/bender/src/bender/integration.py#L58).
 
+### Concrete native mechanism: Gated Chunked Cross-Attention (GCCA)
+
+RETRO and InstructRetro provide a proven recipe for Level 2/3 integration:
+
+- Keep the base LLM frozen.
+- Insert trainable cross-attention adapters (WK, WV projection layers) at selected Transformer layers.
+- Initialize a scalar gate `tanh(α)` to 0, so the model starts identical to the base LLM.
+- Retrieve neighbor vectors for the previous chunk and feed them as Keys/Values into the cross-attention layer.
+- Enforce the 1-chunk causal offset: chunk `Ci` attends only to retrievals from `Ci-1`.
+
+This maps directly onto BENDER's native coprocessor mode, where the retrieved "neighbors" are entities and relations from the world model rather than raw text chunks. BENDER can adopt the gating, adapter, and causality machinery while keeping its structured graph signal as the retrieval source.
+
 ## What Requires Backend Changes
 
 The following require backend changes:
@@ -93,15 +105,11 @@ The following require backend changes:
 - exposing it in the worker/model-runner path
 - applying it in the model forward pass
 
-That is why the current native reference backend depends on the ScalarLM branch.
+That is why the current native reference backend targets a vLLM-compatible inference server.
 
-## ScalarLM Status
+## vLLM Status
 
-The current native reference backend is the local ScalarLM branch:
-
-- `rschiavi/bender`
-
-That backend is required for the strongest current form of BENDER.
+The current native reference backend is a vLLM-compatible adapter path. vLLM is required for the strongest current form of BENDER.
 
 ## What Spider Used
 

@@ -1,0 +1,54 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Inter, system-ui, sans-serif', 'fontSize': '14px', 'primaryColor': '#0d9488', 'primaryTextColor': '#ffffff', 'primaryBorderColor': '#115e59', 'lineColor': '#64748b', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#fff7ed' }}}%%
+flowchart LR
+    subgraph L0["Level 0 — Plain Retrieval"]
+        direction TB
+        Q0["Query"] --> V0["Vector Search"]
+        V0 --> P0["Prompt Stuffing"]
+        P0 --> LLM0["LLM"]
+    end
+
+    subgraph L1["Level 1 — Structured Control ✅ Shipping"]
+        direction TB
+        Q1["Query"] --> C1["Capture"]
+        C1 --> R1["Retrieve World State"]
+        R1 --> RS1["Rules / Simulation"]
+        RS1 --> CP1["Control Packet"]
+        CP1 --> PR1["Prompt / Orchestration"]
+        PR1 --> LLM1["LLM"]
+    end
+
+    subgraph L2["Level 2 — Adapter Native"]
+        direction TB
+        Q2["Query"] --> C2["Capture"]
+        C2 --> R2["Retrieve World State"]
+        R2 --> RS2["Rules / Simulation"]
+        RS2 --> FS2["Fused Vector"]
+        FS2 --> AD2["Trainable Adapter"]
+        AD2 --> LLM2["Frozen LLM"]
+    end
+
+    subgraph L3["Level 3 — Residual Native"]
+        direction TB
+        Q3["Query"] --> C3["Capture"]
+        C3 --> R3["Retrieve World State"]
+        R3 --> RS3["Rules / Simulation"]
+        RS3 --> FS3["Fused Vector"]
+        FS3 --> RES3["Residual Injection"]
+        RES3 --> LLM3["LLM Forward Pass"]
+    end
+
+    L0 -->|↑ deeper integration| L1
+    L1 -->|↑ native control| L2
+    L2 -->|↑ full coprocessor| L3
+
+    classDef l0 fill:#f1f5f9,stroke:#94a3b8,stroke-width:2px,color:#475569,font-size:13px
+    classDef l1 fill:#f0fdfa,stroke:#0d9488,stroke-width:3px,color:#134e4a,font-size:13px
+    classDef l2 fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,font-size:13px
+    classDef l3 fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,color:#581c87,font-size:13px
+    classDef shipping fill:#22c55e,stroke:#15803d,stroke-width:2px,color:#fff,font-size:13px,font-weight:bold
+
+    class Q0,V0,P0,LLM0 l0
+    class Q1,C1,R1,RS1,CP1,PR1,LLM1 l1
+    class Q2,C2,R2,RS2,FS2,AD2,LLM2 l2
+    class Q3,C3,R3,RS3,FS3,RES3,LLM3 l3
+    class L1 shipping

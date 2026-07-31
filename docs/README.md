@@ -9,6 +9,7 @@ This directory is the public documentation surface for BENDER.
 - [Architecture](/Users/richiek/work/bender/docs/ARCHITECTURE.md)
 - [Benchmarking](/Users/richiek/work/bender/docs/BENCHMARKING.md)
 - [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md)
+- [RETRO/ANN vs. BENDER](/Users/richiek/work/bender/docs/RETRO_ANN_VS_BENDER.md)
 - [Whitepaper Guide](/Users/richiek/work/bender/docs/WHITEPAPER.md)
 
 ## Release And Planning
