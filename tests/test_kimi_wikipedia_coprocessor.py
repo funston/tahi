@@ -75,7 +75,7 @@ class TestKimiWikipediaCoprocessor(unittest.TestCase):
         coprocessor = KimiWikipediaCoprocessor.from_world_model(world, top_k=5, max_hops=4)
 
         result = coprocessor.ask(
-            "Where was the author of Pride and Prejudice born?",
+            "What is the capital of the country where Jane Austen was born?",
             trace=True,
         )
 

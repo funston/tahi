@@ -20,7 +20,7 @@ from typing import Any, Optional
 
 from bender.adapter import WrappedLLM, wrap_llm
 from bender.integration import BlackBoxIntegration, ModelIntegration
-from bender.models import CognitiveState, EntityRef, Hypothesis, RelationRef
+from bender.models import CognitiveState, EntityRef, Hypothesis
 from bender.planner import Planner
 from bender.rules import RuleEngine
 from bender.world_state import WorldModel
@@ -56,30 +56,37 @@ def traverse_graph(
     world_model: WorldModel,
     start_node_id: str,
     target_terms: set[str],
+    seed_ids: set[str] | None = None,
     max_depth: int = 4,
     max_width: int = 20,
 ) -> list[list[str]]:
     """
     Breadth-first search over wiki_page links and entity relations.
-    Returns paths (lists of node IDs) whose final node label matches target terms.
+    Returns paths (lists of node IDs) whose final node label matches target terms
+    and is not a seed entity.
     """
+    seed_ids = seed_ids or set()
     paths: list[list[str]] = []
-    seen: set[tuple[str, ...]] = set()
+    visited: set[tuple[str, ...]] = set()
+    output_paths: set[tuple[str, ...]] = set()
     queue: deque[tuple[str, list[str]]] = deque([(start_node_id, [start_node_id])])
+    visited.add((start_node_id,))
 
     while queue and len(paths) < max_width:
         current, path = queue.popleft()
-        if len(path) > max_depth:
+        # max_depth is the number of edges from start; path length is nodes
+        if len(path) - 1 > max_depth:
             continue
 
-        # check if current node looks like an answer candidate
-        node = world_model.nodes.get(current, {})
-        label = (node.get("label", "") + " " + node.get("summary", "")).lower()
-        if target_terms and target_terms & set(label.split()):
-            path_tuple = tuple(path)
-            if path_tuple not in seen:
-                seen.add(path_tuple)
-                paths.append(path)
+        # check if current node looks like an answer candidate (and is not the seed)
+        if current not in seed_ids or len(path) > 1:
+            node = world_model.nodes.get(current, {})
+            label = (node.get("label", "") + " " + node.get("summary", "")).lower()
+            if target_terms and target_terms & set(label.split()):
+                path_tuple = tuple(path)
+                if path_tuple not in output_paths:
+                    output_paths.add(path_tuple)
+                    paths.append(path)
 
         # expand neighbors
         for src, rel, dst, attrs in world_model.neighbors(current):
@@ -88,8 +95,8 @@ def traverse_graph(
                 continue
             new_path = path + [neighbor]
             path_tuple = tuple(new_path)
-            if path_tuple not in seen:
-                seen.add(path_tuple)
+            if path_tuple not in visited:
+                visited.add(path_tuple)
                 queue.append((neighbor, new_path))
 
     return paths
@@ -115,8 +122,28 @@ class KimiWikipediaPlanner(Planner):
         state.planner_state["hop_type"] = hop_type
         state.planner_state["max_hops"] = self.max_hops
 
+        # If retrieval produced no seed entities, fall back to direct title matching
+        if self.world_model is not None and not state.entities:
+            for node_id, node in self.world_model.nodes.items():
+                if node.get("type") != "wiki_page":
+                    continue
+                title = node.get("title", "").lower()
+                if title and any(term in title for term in terms):
+                    state.entities.append(
+                        EntityRef(
+                            id=node_id,
+                            label=node.get("label", node_id),
+                            type="wiki_page",
+                            score=1.0,
+                            attributes=dict(node),
+                        )
+                    )
+                    if len(state.entities) >= 3:
+                        break
+
         # If we have a world model and seed entities, try to plan traversal targets
         if self.world_model is not None and state.entities:
+            seed_ids = {entity.id for entity in state.entities}
             target_terms = self._target_terms(query)
             candidate_paths: list[list[str]] = []
             for seed_entity in state.entities[:3]:
@@ -124,11 +151,12 @@ class KimiWikipediaPlanner(Planner):
                     self.world_model,
                     seed_entity.id,
                     target_terms,
+                    seed_ids=seed_ids,
                     max_depth=self.max_hops,
                 )
                 candidate_paths.extend(paths)
 
-            # rank by path length and term overlap
+            # rank by path length and term overlap (prefer shorter paths)
             candidate_paths.sort(key=lambda p: (len(p), self._path_score(p, target_terms)))
             state.planner_state["candidate_paths"] = candidate_paths[:8]
 
@@ -172,6 +200,9 @@ class KimiWikipediaPlanner(Planner):
 class KimiWikipediaRuleEngine(RuleEngine):
     """Rule engine for Wikipedia multi-hop QA."""
 
+    def __init__(self, world_model: WorldModel | None = None):
+        self.world_model = world_model
+
     def apply(self, state: CognitiveState) -> CognitiveState:
         # Tag entities by semantic role
         for entity in state.entities:
@@ -188,8 +219,8 @@ class KimiWikipediaRuleEngine(RuleEngine):
         if candidate_paths:
             best_path = candidate_paths[0]
             path_labels = [
-                state.world_model.nodes.get(node_id, {}).get("label", node_id)
-                if state.world_model else node_id
+                self.world_model.nodes.get(node_id, {}).get("label", node_id)
+                if self.world_model else node_id
                 for node_id in best_path
             ]
             state.constraints["candidate_path"] = best_path
@@ -214,8 +245,8 @@ class KimiWikipediaRuleEngine(RuleEngine):
             if len(path) >= 3:
                 bridge = path[len(path) // 2]
                 bridge_label = (
-                    state.world_model.nodes.get(bridge, {}).get("label", bridge)
-                    if state.world_model else bridge
+                    self.world_model.nodes.get(bridge, {}).get("label", bridge)
+                    if self.world_model else bridge
                 )
                 state.hypotheses.append(
                     Hypothesis(
@@ -256,7 +287,7 @@ class KimiWikipediaCoprocessor:
             world_model=world_model,
             integration=integration,
             planner=KimiWikipediaPlanner(world_model=world_model, max_hops=max_hops),
-            rules=KimiWikipediaRuleEngine(),
+            rules=KimiWikipediaRuleEngine(world_model=world_model),
             top_k=top_k,
         )
         return cls(model=model, world_model=world_model)
@@ -287,7 +318,7 @@ class KimiWikipediaCoprocessor:
             "hypotheses": state_result.get("hypotheses"),
             "candidate_path": state_result.get("constraints", {}).get("candidate_path"),
             "candidate_path_labels": state_result.get("constraints", {}).get("candidate_path_labels"),
-            "provenance": state_result.get("provenance") if trace else None,
+            "provenance": state_result.get("provenance"),
         }
 
     def _build_answer_prompt(self, query: str, state_result: dict[str, Any]) -> str:
