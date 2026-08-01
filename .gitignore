@@ -33,3 +33,7 @@ dist/
 snowflake_creds.json
 .env
 .env.*
+
+
+# macOS system files
+._*
