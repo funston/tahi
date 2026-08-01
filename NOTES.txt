@@ -1,4 +1,36 @@
- Review & Proposal Docs
+
+   Usage on DGX
+
+   ```bash
+     # On DGX
+     scripts/start_vllm_server.sh \
+       --model Qwen/Qwen2.5-72B-Instruct-AWQ \
+       --quantization awq \
+       --port 8000
+   ```
+
+   ```bash
+     # From your laptop (or same machine)
+     export OCTO_LLM_PROVIDER=vllm
+     export VLLM_BASE_URL=http://your-dgx-ip:8000/v1
+     export OCTO_LLM_MODEL=Qwen/Qwen2.5-72B-Instruct-AWQ
+     export VLLM_API_KEY=not-needed
+
+     python examples/run_dea_eval.py
+     python examples/run_legal_eval.py
+   ```
+
+   Tests
+
+   ```
+     python -m pytest tests/
+
+
+
+
+
+
+Review & Proposal Docs
 
  • docs/retro-v2-review.md — Deep-dive review of retro-v2-brief.md and retro-v2-falsification-plan.md.
  • Validates the science-vs-systems split and Tier 0 kill test.

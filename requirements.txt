@@ -12,5 +12,8 @@ sentence-transformers>=3.0.0
 openai>=1.30.0
 anthropic>=0.28.0
 
+# Public eval datasets
+datasets>=3.0.0
+
 # For development/testing
 pytest>=8.0.0

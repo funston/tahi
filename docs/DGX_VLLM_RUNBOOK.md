@@ -150,10 +150,13 @@ tmux new-session -d -s vllm \
 
 | Symptom | Fix |
 |---|---|
+| `flashinfer-cubin version does not match flashinfer version` | The start script sets `FLASHINFER_DISABLE_VERSION_CHECK=1` by default. Or force FlashAttention: `export VLLM_ATTENTION_BACKEND=FLASH_ATTN`. |
+| `AttributeError: module 'cutlass.cute.core' has no attribute 'ThrMma'` | vLLM v1 engine kernel warmup bug. The start script sets `VLLM_USE_V1=0` by default. |
 | `CUDA out of memory` | Use AWQ/4-bit quantization or a smaller model. |
 | `The model is too large for the GPU` | Enable tensor parallelism: `--tensor-parallel-size 2`. |
 | Slow first request | vLLM is compiling CUDA graphs; subsequent requests are fast. |
 | OpenAI client 401 | Set `VLLM_API_KEY=not-needed` (vLLM ignores it by default). |
+| `RuntimeError: CUDA error: invalid device ordinal` | Check `nvidia-smi` and reduce `--tensor-parallel-size` to your GPU count. |
 
 ## Cost comparison (rough)
 

@@ -12,6 +12,7 @@ PORT=8000
 QUANTIZATION=""
 MAX_MODEL_LEN=8192
 TP_SIZE=1
+ATTN_BACKEND=""
 EXTRA_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -36,6 +37,10 @@ while [[ $# -gt 0 ]]; do
       TP_SIZE="$2"
       shift 2
       ;;
+    --attention-backend)
+      ATTN_BACKEND="$2"
+      shift 2
+      ;;
     *)
       EXTRA_ARGS+=("$1")
       shift
@@ -51,6 +56,14 @@ fi
 
 if [[ -n "$QUANTIZATION" ]]; then
   EXTRA_ARGS+=("--quantization" "$QUANTIZATION")
+fi
+
+# Common workarounds for vLLM v1 engine / flashinfer / attention backend issues.
+# vLLM v1 (default in 0.6.4+) is fast but crashy on many DGX configs; force v0.
+export VLLM_USE_V1=${VLLM_USE_V1:-0}
+export FLASHINFER_DISABLE_VERSION_CHECK=${FLASHINFER_DISABLE_VERSION_CHECK:-1}
+if [[ -n "$ATTN_BACKEND" ]]; then
+  export VLLM_ATTENTION_BACKEND="$ATTN_BACKEND"
 fi
 
 set -x
