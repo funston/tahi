@@ -21,7 +21,11 @@ _ENCODER_CACHE: Dict[str, "Encoder"] = {}
 
 def get_encoder(model_name: str = "all-MiniLM-L6-v2") -> "Encoder":
     if model_name not in _ENCODER_CACHE:
-        encoder_backend = os.environ.get("BENDER_ENCODER_BACKEND", "hashed").strip().lower()
+        encoder_backend = (
+            os.environ.get("OCTO_ENCODER_BACKEND")
+            or os.environ.get("BENDER_ENCODER_BACKEND")
+            or "sentence-transformer"
+        ).strip().lower()
         if encoder_backend != "sentence-transformer":
             _ENCODER_CACHE[model_name] = HashedTokenEncoder()
         else:

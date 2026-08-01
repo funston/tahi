@@ -119,6 +119,8 @@ class DrugEnforcementCoprocessor:
             structural_class=structural_class,
             chemical_features=chemical_features or [],
             pharmacology=pharmacology,
+            keywords=(chemical_features or []) + ([pharmacology] if pharmacology else []),
+            aliases=common_names or [],
         )
         if schedule:
             self.world_model.add_edge(node_id, "scheduled_as", f"schedule::{schedule}")
@@ -187,23 +189,7 @@ class DrugEnforcementCoprocessor:
     def _query_terms(self, text: str) -> set[str]:
         return set(self._tokenize(text))
 
-    def retrieve_baseline(self, question: DrugEnforcementQuestion) -> list[dict[str, Any]]:
-        """Plain vector RAG baseline."""
-        if self.world_model._dirty:
-            self.build_index()
-        records = self.world_model.retrieve(question.text, top_k=self.top_k)
-        return [
-            {
-                "node_id": r.node_id,
-                "type": self.world_model.nodes[r.node_id].get("type", ""),
-                "text": self.world_model.nodes[r.node_id].get("text", ""),
-                "score": float(r.score),
-                "origin": "vector",
-            }
-            for r in records
-        ]
-
-    def retrieve_octo(self, question: DrugEnforcementQuestion) -> list[dict[str, Any]]:
+    def retrieve(self, question: DrugEnforcementQuestion) -> list[dict[str, Any]]:
         """Vector + graph expansion over analogue and scheduling relationships."""
         if self.world_model._dirty:
             self.build_index()
@@ -243,15 +229,6 @@ class DrugEnforcementCoprocessor:
             if len(collected) >= self.top_k + self.graph_expand:
                 break
 
-        # Boost substances whose name matches query tokens.
-        qterms = self._query_terms(question.text)
-        for item in collected:
-            node = self.world_model.nodes.get(item["node_id"], {})
-            label = node.get("label", "").lower()
-            common = " ".join(node.get("common_names", [])).lower()
-            name_score = sum(1 for t in qterms if t in label or t in common)
-            item["score"] = float(item["score"]) * (1.0 + 0.2 * name_score)
-
         collected.sort(key=lambda x: x["score"], reverse=True)
         return collected[: self.top_k + self.graph_expand]
 
@@ -259,14 +236,9 @@ class DrugEnforcementCoprocessor:
     # Generation
     # ------------------------------------------------------------------
 
-    def answer(
-        self,
-        question: DrugEnforcementQuestion,
-        *,
-        use_graph: bool = True,
-    ) -> DrugEvidencePacket:
-        """Answer a drug-enforcement question."""
-        evidence = self.retrieve_octo(question) if use_graph else self.retrieve_baseline(question)
+    def answer(self, question: DrugEnforcementQuestion) -> DrugEvidencePacket:
+        """Answer a drug-enforcement question using the OCTO world model."""
+        evidence = self.retrieve(question)
 
         context = "\n\n".join(
             f"[{i+1}] {e['type']} {e['node_id']}\n{e['text']}"
@@ -299,27 +271,24 @@ Answer:"""
             model=resp.model,
         )
 
-    def evaluate(
-        self,
-        questions: list[DrugEnforcementQuestion],
-        *,
-        use_graph: bool = True,
-    ) -> dict[str, Any]:
+    def evaluate(self, questions: list[DrugEnforcementQuestion]) -> dict[str, Any]:
+        """Evaluate the OCTO coprocessor on a list of questions."""
         correct = 0
         retrieval_correct = 0
         total = 0
         results: list[dict[str, Any]] = []
 
         for q in questions:
-            packet = self.answer(q, use_graph=use_graph)
+            packet = self.answer(q)
             pred = self._normalize(packet.answer)
             gold = self._normalize(q.answer)
-            is_correct = gold in pred or pred in gold
+            is_correct = self._score(pred, gold, q)
             correct += int(is_correct)
             total += 1
 
             evidence_text = " ".join(e.get("text", "") for e in packet.evidence).lower()
-            retrieval_correct += int(self._retrieval_recall(q, evidence_text))
+            rec_ok = self._retrieval_recall(q, evidence_text)
+            retrieval_correct += int(rec_ok)
 
             results.append(
                 {
@@ -328,13 +297,13 @@ Answer:"""
                     "predicted": packet.answer,
                     "expected": q.answer,
                     "correct": is_correct,
-                    "retrieval_recall": retrieval_correct > 0,
+                    "retrieval_recall": rec_ok,
                     "model": packet.model,
                 }
             )
 
         return {
-            "method": "OCTO" if use_graph else "RAG-baseline",
+            "method": "OCTO",
             "correct": correct,
             "total": total,
             "accuracy": correct / total if total else 0.0,
@@ -345,12 +314,57 @@ Answer:"""
 
     def _retrieval_recall(self, question: DrugEnforcementQuestion, evidence_text: str) -> bool:
         """Return True if the expected answer is supported by the evidence text."""
-        expected_terms = set(self._tokenize(question.answer))
-        evidence_terms = set(self._tokenize(evidence_text))
-        if not expected_terms:
+        evidence = evidence_text.lower()
+
+        # Yes/no analogue questions: evidence must mention both substances and an
+        # analogue/similarity signal.
+        if question.task == "analogue_classification":
+            qtext = question.text.lower()
+            m = re.search(r"is (.*) a controlled substance analogue of (.*)\?", qtext)
+            if m:
+                subj = m.group(1).strip()
+                obj = m.group(2).strip()
+                has_both = self._has_whole_word(subj, evidence) and self._has_whole_word(obj, evidence)
+                has_signal = any(
+                    s in evidence
+                    for s in ("analogue", "analogous", "structurally similar", "similarity")
+                )
+                return has_both and has_signal
             return False
-        overlap = expected_terms & evidence_terms
-        return len(overlap) / len(expected_terms) >= 0.5
+
+        # Schedule questions: the exact schedule must appear as a whole phrase.
+        if question.task == "schedule_determination":
+            return self._has_whole_word(question.answer.lower(), evidence)
+
+        # Action questions: the substance and action type must appear.
+        if question.task == "scheduling_action":
+            substance = self._extract_substance_from_action_question(question.text)
+            action_lower = question.answer.lower()
+            has_substance = bool(substance) and self._has_whole_word(substance, evidence)
+            # Extract schedule, e.g. "schedule i" from "Schedule I permanent placement".
+            schedule_match = re.search(r"schedule\s+(i+|[iv]+)", action_lower)
+            has_schedule = bool(schedule_match) and self._has_whole_word(schedule_match.group(0), evidence)
+            has_action_type = any(
+                t in evidence for t in ["permanent", "permanently", "temporary", "temporarily"]
+            )
+            return has_substance and has_schedule and has_action_type
+
+        # Class questions: the class name must appear, allowing singular/plural.
+        return self._phrase_match(question.answer.lower(), evidence)
+
+    @staticmethod
+    def _extract_substance_from_action_question(text: str) -> str | None:
+        """Extract substance name from scheduling-action questions robustly."""
+        lowered = text.lower()
+        # "What DEA scheduling action was taken on X?"
+        m = re.search(r"taken on (.+?)\?", lowered)
+        if m:
+            return m.group(1).strip()
+        # Fallback: last noun phrase before '?'.
+        m = re.search(r"\bon\s+(.+?)\?", lowered)
+        if m:
+            return m.group(1).strip()
+        return None
 
     @staticmethod
     def _normalize(text: str) -> str:
@@ -358,3 +372,85 @@ Answer:"""
         text = re.sub(r"\[\d+\]", "", text)
         text = re.sub(r"[^a-z0-9\s]", "", text)
         return " ".join(text.split())
+
+    def _score(self, predicted: str, expected: str, question: DrugEnforcementQuestion) -> bool:
+        """Score a DEA answer."""
+        pred = self._normalize(predicted)
+        gold = self._normalize(expected)
+
+        # Yes/no questions: the predicted answer must start with or clearly state
+        # the expected word. We extract the first yes/no token to avoid matching
+        # "no" inside words like "cannabinoid" or quoted source text.
+        if gold in ("yes", "no"):
+            first_yes_no = self._extract_first_yes_no(pred)
+            return first_yes_no == gold
+
+        # Schedule questions: exact schedule phrase must appear.
+        if question.task == "schedule_determination":
+            return self._has_whole_word(gold, pred)
+
+        # Action questions: the schedule and placement type must appear.
+        if question.task == "scheduling_action":
+            parts = gold.split()
+            schedule = " ".join(parts[:2])  # e.g. "schedule i"
+            placement = parts[2] if len(parts) > 2 else ""
+            has_schedule = self._has_whole_word(schedule, pred)
+            has_placement = placement in pred or self._adverb_form(placement) in pred
+            return has_schedule and has_placement
+
+        # Class / fallback: exact phrase or reasonable containment, with
+        # singular/plural tolerance for class names.
+        return self._phrase_match(gold, pred) or self._phrase_match(pred, gold)
+
+    @staticmethod
+    def _extract_first_yes_no(text: str) -> str | None:
+        """Return the first 'yes' or 'no' word in the text, or None."""
+        for token in text.split():
+            if token in ("yes", "no"):
+                return token
+        return None
+
+    @staticmethod
+    def _adverb_form(word: str) -> str:
+        """Return a likely adverb form of a placement noun, without typos."""
+        if not word:
+            return ""
+        if word.endswith("ly"):
+            return word
+        if word.endswith("y"):
+            return word[:-1] + "ily"
+        return word + "ly"
+
+    @staticmethod
+    def _has_whole_word(needle: str, haystack: str) -> bool:
+        """Check that needle appears as a whole-word/phrase in haystack."""
+        needle = needle.strip()
+        haystack = re.sub(r"[^a-z0-9\s]", " ", haystack.strip())
+        if not needle:
+            return False
+        # Use word boundaries around the phrase.
+        pattern = r"(?:^|\s)" + re.escape(needle) + r"(?:\s|$)"
+        return bool(re.search(pattern, haystack))
+
+    @classmethod
+    def _phrase_match(cls, phrase: str, text: str) -> bool:
+        """
+        Match a phrase allowing singular/plural inflection.
+
+        Handles cases like "synthetic cannabinoid" vs "synthetic cannabinoids".
+        """
+        phrase = phrase.strip()
+        text = text.strip()
+        if not phrase:
+            return False
+        if cls._has_whole_word(phrase, text):
+            return True
+        # Try singular form.
+        singular = phrase[:-1] if phrase.endswith("s") else phrase
+        if singular and cls._has_whole_word(singular, text):
+            return True
+        # Try plural form.
+        plural = phrase + "s" if not phrase.endswith("s") else phrase
+        if plural != phrase and cls._has_whole_word(plural, text):
+            return True
+        return False

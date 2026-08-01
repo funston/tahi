@@ -208,23 +208,7 @@ class LegalWorldCoprocessor:
     # Retrieval
     # ------------------------------------------------------------------
 
-    def retrieve_baseline(self, question: LegalQuestion, top_k: int | None = None) -> list[dict[str, Any]]:
-        """Plain vector RAG baseline: return top-k chunks."""
-        if self.world_model._dirty:
-            self.build_index()
-        top_k = top_k or self.top_k
-        records = self.world_model.retrieve(question.text, top_k=top_k)
-        return [
-            {
-                "node_id": r.node_id,
-                "text": self.world_model.nodes[r.node_id].get("text", ""),
-                "source": self.world_model.nodes[r.node_id].get("source", ""),
-                "score": r.score,
-            }
-            for r in records
-        ]
-
-    def retrieve_octo(self, question: LegalQuestion) -> list[dict[str, Any]]:
+    def retrieve(self, question: LegalQuestion) -> list[dict[str, Any]]:
         """
         OCTO retrieval: vector top-k + graph expansion along citations and
         statutory structure.
@@ -289,19 +273,9 @@ class LegalWorldCoprocessor:
     # Generation
     # ------------------------------------------------------------------
 
-    def answer(
-        self,
-        question: LegalQuestion,
-        *,
-        use_graph: bool = True,
-    ) -> LegalEvidencePacket:
-        """Answer a legal question using the world model."""
-        if use_graph:
-            evidence = self.retrieve_octo(question)
-            method = "OCTO (vector + graph)"
-        else:
-            evidence = self.retrieve_baseline(question)
-            method = "RAG baseline"
+    def answer(self, question: LegalQuestion) -> LegalEvidencePacket:
+        """Answer a legal question using the OCTO world model."""
+        evidence = self.retrieve(question)
 
         context = "\n\n".join(
             f"[{i+1}] {e['source'] or 'unknown'}\n{e['text']}"
@@ -331,27 +305,22 @@ Answer:"""
         resp = self.llm_client.complete(prompt, system="You answer legal questions from provided sources only.")
         return LegalEvidencePacket(
             question=question,
-            retrieval_chunks=evidence if not use_graph else [],
-            expanded_chunks=evidence if use_graph else [],
+            retrieval_chunks=[],
+            expanded_chunks=evidence,
             prompt=prompt,
             answer=resp.text.strip(),
             model=resp.model,
         )
 
-    def evaluate(
-        self,
-        questions: list[LegalQuestion],
-        *,
-        use_graph: bool = True,
-    ) -> dict[str, Any]:
-        """Run the coprocessor over a question set and report accuracy."""
+    def evaluate(self, questions: list[LegalQuestion]) -> dict[str, Any]:
+        """Run the OCTO coprocessor over a question set and report accuracy."""
         correct = 0
         retrieval_correct = 0
         total = 0
         results: list[dict[str, Any]] = []
 
         for q in questions:
-            packet = self.answer(q, use_graph=use_graph)
+            packet = self.answer(q)
             pred = self._normalize(packet.answer)
             gold = self._normalize(q.answer)
             is_correct = self._score(pred, gold, q)
@@ -359,9 +328,9 @@ Answer:"""
             total += 1
 
             # Retrieval-only recall: does the retrieved evidence contain the answer?
-            evidence = packet.expanded_chunks if use_graph else packet.retrieval_chunks
-            evidence_text = " ".join(e.get("text", "") for e in evidence).lower()
-            retrieval_correct += int(self._retrieval_recall(q, evidence_text))
+            evidence_text = " ".join(e.get("text", "") for e in packet.expanded_chunks).lower()
+            rec_ok = self._retrieval_recall(q, evidence_text)
+            retrieval_correct += int(rec_ok)
 
             results.append(
                 {
@@ -370,13 +339,13 @@ Answer:"""
                     "predicted": packet.answer,
                     "expected": q.answer,
                     "correct": is_correct,
-                    "retrieval_recall": retrieval_correct > 0,
+                    "retrieval_recall": rec_ok,
                     "model": packet.model,
                 }
             )
 
         return {
-            "method": "OCTO" if use_graph else "RAG-baseline",
+            "method": "OCTO",
             "correct": correct,
             "total": total,
             "accuracy": correct / total if total else 0.0,

@@ -12,6 +12,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from octo.baseline_rag import RAGDocument, StandaloneRAG
+
 from .legal_coprocessor import LegalQuestion, LegalWorldCoprocessor
 
 
@@ -230,17 +232,70 @@ def build_default_coprocessor(llm_client=None) -> LegalWorldCoprocessor:
     return coprocessor
 
 
+def _coprocessor_documents(coprocessor: LegalWorldCoprocessor) -> list[RAGDocument]:
+    """Extract raw text documents from the OCTO world model for the RAG baseline."""
+    documents: list[RAGDocument] = []
+    for node_id, node in coprocessor.world_model.nodes.items():
+        text = node.get("text", "")
+        if not text:
+            continue
+        documents.append(
+            RAGDocument(
+                doc_id=node_id,
+                text=text,
+                metadata={
+                    "type": node.get("type", ""),
+                    "label": node.get("label", ""),
+                    "source": node.get("source", ""),
+                },
+            )
+        )
+    return documents
+
+
 def evaluate_legal_coprocessor(
     questions: list[LegalQuestion] | None = None,
     *,
     llm_client=None,
 ) -> dict[str, Any]:
-    """Compare OCTO vs RAG baseline on the LegalBench sample."""
+    """Compare OCTO vs a standalone RAG baseline on the LegalBench sample."""
     questions = questions or load_legalbench_sample()
     coprocessor = build_default_coprocessor(llm_client=llm_client)
 
-    rag_result = coprocessor.evaluate(questions, use_graph=False)
-    octo_result = coprocessor.evaluate(questions, use_graph=True)
+    # Standalone RAG baseline over the same raw documents, no graph access.
+    rag = StandaloneRAG(top_k=5, llm_client=llm_client)
+    rag.add_documents(_coprocessor_documents(coprocessor))
+    rag.build_index()
+
+    rag_results: list[dict[str, Any]] = []
+    rag_correct = 0
+    for q in questions:
+        answer_text, model_name, _retrievals = rag.answer(
+            q.text,
+            system="You answer legal questions from provided sources only.",
+        )
+        is_correct = coprocessor._score(answer_text, q.answer, q)
+        rag_correct += int(is_correct)
+        rag_results.append(
+            {
+                "id": q.id,
+                "question": q.text,
+                "predicted": answer_text,
+                "expected": q.answer,
+                "correct": is_correct,
+                "model": model_name,
+            }
+        )
+
+    rag_result = {
+        "method": "RAG-baseline",
+        "correct": rag_correct,
+        "total": len(questions),
+        "accuracy": rag_correct / len(questions) if questions else 0.0,
+        "results": rag_results,
+    }
+
+    octo_result = coprocessor.evaluate(questions)
 
     return {
         "rag": rag_result,

@@ -1,0 +1,48 @@
+[
+  {
+    "id": "sample-hop-1",
+    "question": "Which magazine was started first, Arthur's Magazine or First for Women?",
+    "answer": "Arthur's Magazine",
+    "level": "easy",
+    "type": "comparison",
+    "supporting_facts": {
+      "title": ["Arthur's Magazine", "First for Women"],
+      "sent_id": [0, 0],
+      "text": [
+        "Arthur's Magazine (1844-1846) was an American literary periodical published in Philadelphia in the 19th century.",
+        "First for Women is a women's magazine published by Bauer Media Group in the USA."
+      ]
+    }
+  },
+  {
+    "id": "sample-hop-2",
+    "question": "The director of the film \"The Graduate\" also directed which other 1970 film starring Jack Nicholson?",
+    "answer": "Carnal Knowledge",
+    "level": "medium",
+    "type": "bridge",
+    "supporting_facts": {
+      "title": ["The Graduate", "Carnal Knowledge"],
+      "sent_id": [0, 0],
+      "text": [
+        "The Graduate is a 1967 American romantic comedy-drama film directed by Mike Nichols.",
+        "Carnal Knowledge is a 1971 American drama film directed by Mike Nichols and starring Jack Nicholson."
+      ]
+    }
+  },
+  {
+    "id": "sample-hop-3",
+    "question": "Which company, founded by the co-founder of LinkedIn, invested in the artificial intelligence company DeepMind?",
+    "answer": "Greylock Partners",
+    "level": "hard",
+    "type": "bridge",
+    "supporting_facts": {
+      "title": ["Reid Hoffman", "Greylock Partners", "DeepMind"],
+      "sent_id": [0, 0, 0],
+      "text": [
+        "Reid Hoffman is an American internet entrepreneur, venture capitalist and author. He is the co-founder and former executive chairman of LinkedIn.",
+        "Reid Hoffman is a partner at the venture capital firm Greylock Partners.",
+        "DeepMind is a British artificial intelligence company founded in September 2010, and was acquired by Google in 2015. Greylock Partners invested in DeepMind."
+      ]
+    }
+  }
+]

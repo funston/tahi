@@ -1,0 +1,55 @@
+[
+  {
+    "id": "musique-sample-1",
+    "question": "Who was born first, the director of the film 'Titanic' or the director of the film 'Avatar'?",
+    "answer": "James Cameron",
+    "paragraphs": [
+      {
+        "title": "Titanic (1997 film)",
+        "paragraph": "Titanic is a 1997 American epic romance and disaster film directed, written, produced, and co-edited by James Cameron."
+      },
+      {
+        "title": "Avatar (2009 film)",
+        "paragraph": "Avatar is a 2009 epic science fiction film directed, written, produced, and co-edited by James Cameron."
+      },
+      {
+        "title": "James Cameron",
+        "paragraph": "James Francis Cameron is a Canadian filmmaker. He was born on August 16, 1954."
+      }
+    ]
+  },
+  {
+    "id": "musique-sample-2",
+    "question": "Which university did the author of 'The Great Gatsby' attend, and in which state is that university located?",
+    "answer": "Princeton University, New Jersey",
+    "paragraphs": [
+      {
+        "title": "The Great Gatsby",
+        "paragraph": "The Great Gatsby is a 1925 novel by American writer F. Scott Fitzgerald."
+      },
+      {
+        "title": "F. Scott Fitzgerald",
+        "paragraph": "Francis Scott Key Fitzgerald was an American novelist. He attended Princeton University."
+      },
+      {
+        "title": "Princeton University",
+        "paragraph": "Princeton University is a private Ivy League research university in Princeton, New Jersey."
+      }
+    ]
+  },
+  {
+    "id": "musique-sample-3",
+    "question": "The actor who played Iron Man in the Marvel Cinematic Universe also starred in which 1992 film about a lawyer?",
+    "answer": "Chaplin",
+    "paragraphs": [
+      {
+        "title": "Iron Man (2008 film)",
+        "paragraph": "Iron Man is a 2008 American superhero film based on the Marvel Comics character of the same name. It stars Robert Downey Jr. as Tony Stark / Iron Man."
+      },
+      {
+        "title": "Robert Downey Jr.",
+        "paragraph": "Robert John Downey Jr. is an American actor. In 1992, he starred as Charlie Chaplin in the film Chaplin."
+      }
+    ]
+  }
+]

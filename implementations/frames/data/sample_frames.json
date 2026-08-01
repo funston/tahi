@@ -1,0 +1,47 @@
+[
+  {
+    "id": "frames-sample-1",
+    "question": "Was the movie 'Inception' released before the movie 'Interstellar', and were both directed by Christopher Nolan?",
+    "answer": "Yes",
+    "paragraphs": [
+      {
+        "title": "Inception",
+        "paragraph": "Inception is a 2010 science fiction action film written and directed by Christopher Nolan."
+      },
+      {
+        "title": "Interstellar",
+        "paragraph": "Interstellar is a 2014 epic science fiction film co-written, directed, and produced by Christopher Nolan."
+      }
+    ]
+  },
+  {
+    "id": "frames-sample-2",
+    "question": "Is the Eiffel Tower taller than the Statue of Liberty, and is the Eiffel Tower located in Paris?",
+    "answer": "Yes",
+    "paragraphs": [
+      {
+        "title": "Eiffel Tower",
+        "paragraph": "The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. It is 330 metres tall."
+      },
+      {
+        "title": "Statue of Liberty",
+        "paragraph": "The Statue of Liberty is a colossal neoclassical sculpture on Liberty Island in New York Harbor. The height from the base to the torch is 46 metres."
+      }
+    ]
+  },
+  {
+    "id": "frames-sample-3",
+    "question": "Did Ada Lovelace and Alan Turing both work at the University of Cambridge?",
+    "answer": "No",
+    "paragraphs": [
+      {
+        "title": "Ada Lovelace",
+        "paragraph": "Ada Lovelace was an English mathematician and writer, chiefly known for her work on Charles Babbage's proposed mechanical general-purpose computer, the Analytical Engine."
+      },
+      {
+        "title": "Alan Turing",
+        "paragraph": "Alan Turing was an English mathematician, computer scientist, and cryptanalyst. He studied at King's College, Cambridge and later worked at the University of Manchester."
+      }
+    ]
+  }
+]
