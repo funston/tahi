@@ -1,7 +1,7 @@
 import json
 
-from bender import BlackBoxIntegration, NativeIntegration, wrap_llm
-from bender.demo_worlds import build_biomedical_world_model
+from octo import BlackBoxIntegration, NativeIntegration, wrap_llm
+from octo.demo_worlds import build_biomedical_world_model
 
 
 if __name__ == "__main__":

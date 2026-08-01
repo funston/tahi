@@ -1,7 +1,7 @@
-# BENDER Architecture Exploration - Complete Index
+# OCTO Architecture Exploration - Complete Index
 
-**Exploration Date:** July 25, 2026  
-**Status:** Complete  
+**Exploration Date:** July 25, 2026 
+**Status:** Complete 
 **Total Lines:** 2,050 lines of analysis across 3 documents
 
 ---
@@ -9,29 +9,29 @@
 ## Quick Navigation
 
 ### For Quick Understanding (Start Here)
-1. **BENDER_ARCHITECTURE_VISUAL_SUMMARY.md** (517 lines)
-   - Diagrams and flowcharts
-   - Visual tables and comparisons
-   - Extension point examples
-   - Architecture decisions matrix
-   - **Time investment:** 15-20 minutes
+1. **OCTO_ARCHITECTURE_VISUAL_SUMMARY.md** (517 lines)
+ - Diagrams and flowcharts
+ - Visual tables and comparisons
+ - Extension point examples
+ - Architecture decisions matrix
+ - **Time investment:** 15-20 minutes
 
 ### For Deep Expertise (Read Second)
-2. **BENDER_ARCHITECTURE_EXPLORATION.md** (1,159 lines)
-   - Comprehensive technical deep-dives
-   - Code examples from source
-   - Architectural reasoning and trade-offs
-   - Phase 1 limitations with rationale
-   - **Time investment:** 45-60 minutes
+2. **OCTO_ARCHITECTURE_EXPLORATION.md** (1,159 lines)
+ - Comprehensive technical deep-dives
+ - Code examples from source
+ - Architectural reasoning and trade-offs
+ - Phase 1 limitations with rationale
+ - **Time investment:** 45-60 minutes
 
 ### For Navigation & Context (Reference)
 3. **EXPLORATION_SUMMARY.md** (374 lines)
-   - Meta-summary of exploration
-   - Key findings digest
-   - What BENDER does well/not well
-   - Recommendations by topic
-   - Files analyzed list
-   - **Time investment:** 10-15 minutes
+ - Meta-summary of exploration
+ - Key findings digest
+ - What OCTO does well/not well
+ - Recommendations by topic
+ - Files analyzed list
+ - **Time investment:** 10-15 minutes
 
 ---
 
@@ -54,22 +54,22 @@
 
 ## By Question
 
-### "What is BENDER?"
+### "What is OCTO?"
 - **Quick answer:** Visual Summary, Integration Levels section
 - **Full answer:** Exploration, Executive Summary + Part 1
-- **Comparison:** Visual Summary, RAG vs BENDER table
+- **Comparison:** Visual Summary, RAG vs OCTO table
 
 ### "How does it work?"
 - **Pipeline overview:** Visual Summary, Core Pipeline Flow diagram
 - **Stage-by-stage:** Exploration, Part 1 (sections 1.1-1.4)
 - **Specific stage:**
-  - Capture: Part 1.2
-  - Retrieve: Part 2.4
-  - Plan: Part 6.1
-  - Rules: Part 6.2
-  - Simulate: Part 6.3
-  - Fuse: Part 4
-  - Inject: Part 5
+ - Capture: Part 1.2
+ - Retrieve: Part 2.4
+ - Plan: Part 6.1
+ - Rules: Part 6.2
+ - Simulate: Part 6.3
+ - Fuse: Part 4
+ - Inject: Part 5
 
 ### "How is it different from RAG?"
 - **Visual:** Visual Summary, Comparison table
@@ -105,7 +105,7 @@
 ### "What are the limitations?"
 - **Intentional Phase 1 scope:** Exploration, Part 11
 - **Real performance data:** Exploration, Part 11.4
-- **What BENDER doesn't do:** Summary, "What BENDER Doesn't Do" section
+- **What OCTO doesn't do:** Summary, "What OCTO Doesn't Do" section
 
 ### "What are the trade-offs?"
 - **Decisions matrix:** Visual Summary, Key Architectural Decisions table
@@ -133,26 +133,26 @@
 ### "I'm building a native backend"
 1. Read: Exploration, Part 5.3 (NativeIntegration)
 2. Study: Exploration, Part 5.4 (Why Separate Paths)
-3. Reference: `/Users/richiek/work/bender/src/bender/integration.py`
+3. Reference: `/Users/richiek/work/bender/src/octo/integration.py`
 4. Review: Exploration, Part 7.3 (Level 2 requirements)
 
 ### "I want to optimize retrieval"
 1. Read: Exploration, Part 2.4 (Retrieval Strategies)
 2. Decision: Visual Summary, Retrieval Architecture
 3. Rationale: Exploration, Part 8.2 (Lightweight vs FAISS trade-off)
-4. Reference: `/Users/richiek/work/bender/src/bender/retrieval/`
+4. Reference: `/Users/richiek/work/bender/src/octo/retrieval/`
 
 ### "I want to implement custom fusion"
 1. Read: Exploration, Part 4 (Fusion Module)
 2. Study: Visual Summary, Fusion Blending section
 3. Code example: Visual Summary, Extension Points (FusionModule)
-4. Reference: `/Users/richiek/work/bender/src/bender/fusion.py`
+4. Reference: `/Users/richiek/work/bender/src/octo/fusion.py`
 
 ### "I'm deploying to production"
 1. Read: Exploration, Part 3 (FTI MLOps)
 2. Study: Visual Summary, FTI MLOps Pattern
 3. Understand: Exploration, Part 3.2-3.4 (WorldModelStore usage)
-4. Reference: `/Users/richiek/work/bender/src/bender/world_model_store.py`
+4. Reference: `/Users/richiek/work/bender/src/octo/world_model_store.py`
 
 ---
 
@@ -175,7 +175,7 @@
 
 | Component | Role | Exploration Section |
 |-----------|------|---------------------|
-| BenderRuntime | Orchestration | Part 1.1 |
+| OctoRuntime | Orchestration | Part 1.1 |
 | ModelIntegration | Capture/inject | Part 5 |
 | WorldModel | Graph storage/retrieval | Part 2 |
 | Planner | Query intent detection | Part 6.1 |
@@ -191,45 +191,45 @@
 
 ```
 1. CAPTURE (ModelIntegration.capture)
-   Input: query string, optional hidden_state
-   Output: SemanticFrame
-   Details: Part 1.2, Part 5.2-5.3
+ Input: query string, optional hidden_state
+ Output: SemanticFrame
+ Details: Part 1.2, Part 5.2-5.3
 
 2. RETRIEVE (WorldModel.retrieve)
-   Input: semantic query, optional embedding
-   Output: RetrievedMemory[]
-   Details: Part 2.4, Part 2.5
+ Input: semantic query, optional embedding
+ Output: RetrievedMemory[]
+ Details: Part 2.4, Part 2.5
 
 3. PLAN (Planner.plan)
-   Input: query, retrievals
-   Output: constraints, planner_state
-   Details: Part 6.1
+ Input: query, retrievals
+ Output: constraints, planner_state
+ Details: Part 6.1
 
 4. RULES (RuleEngine.apply)
-   Input: entities, constraints
-   Output: hypotheses, semantic_roles
-   Details: Part 6.2
+ Input: entities, constraints
+ Output: hypotheses, semantic_roles
+ Details: Part 6.2
 
 5. SIMULATE (Simulator.run)
-   Input: constraints, retrievals
-   Output: simulation_state, confidence
-   Details: Part 6.3
+ Input: constraints, retrievals
+ Output: simulation_state, confidence
+ Details: Part 6.3
 
 6. FUSE (FusionModule.mix)
-   Input: token_signal, graph_signal, state
-   Output: FusedSignal
-   Details: Part 4
+ Input: token_signal, graph_signal, state
+ Output: FusedSignal
+ Details: Part 4
 
 7. INJECT (ModelIntegration.inject)
-   Input: frame, state, fused
-   Output: ControlPacket
-   Details: Part 5.2-5.3
+ Input: frame, state, fused
+ Output: ControlPacket
+ Details: Part 5.2-5.3
 ```
 
 ### Integration Levels
 
 ```
-LEVEL 0: Retrieval Only (Not BENDER)
+LEVEL 0: Retrieval Only (Not OCTO)
 LEVEL 1: Structured Control Mode (Black-box, Available)
 LEVEL 2: Native Coprocessor Mode (Strong, Future)
 
@@ -254,17 +254,17 @@ Details: Exploration Part 7, Visual Summary Integration Levels
 ## Files Analyzed
 
 ### Source Code (1,457 lines)
-- `src/bender/runtime.py` - orchestration
-- `src/bender/models.py` - data structures
-- `src/bender/world_state.py` - graph storage
-- `src/bender/fusion.py` - signal blending
-- `src/bender/integration.py` - model contracts
-- `src/bender/planner.py` - intent detection
-- `src/bender/rules.py` - domain logic
-- `src/bender/simulator.py` - validation
-- `src/bender/world_model_store.py` - FTI storage
-- `src/bender/retrieval/*.py` - search abstraction
-- `src/bender/adapter.py` - LLM wrapper
+- `src/octo/runtime.py` - orchestration
+- `src/octo/models.py` - data structures
+- `src/octo/world_state.py` - graph storage
+- `src/octo/fusion.py` - signal blending
+- `src/octo/integration.py` - model contracts
+- `src/octo/planner.py` - intent detection
+- `src/octo/rules.py` - domain logic
+- `src/octo/simulator.py` - validation
+- `src/octo/world_model_store.py` - FTI storage
+- `src/octo/retrieval/*.py` - search abstraction
+- `src/octo/adapter.py` - LLM wrapper
 
 ### Documentation (841 lines)
 - `docs/ARCHITECTURE.md` - high-level design
@@ -285,7 +285,7 @@ Details: Exploration Part 7, Visual Summary Integration Levels
 
 ### For Implementers
 1. Start: Exploration Part 1 (pipeline overview)
-2. Read: Source code in `src/bender/` (1-2 hours)
+2. Read: Source code in `src/octo/` (1-2 hours)
 3. Reference: Visual Summary Extension Points for customization
 
 ### For Researchers
@@ -302,32 +302,32 @@ Details: Exploration Part 7, Visual Summary Integration Levels
 
 ## All Documents
 
-**1. BENDER_ARCHITECTURE_EXPLORATION.md** (41 KB, 1,159 lines)
-   - Complete technical analysis
-   - Code examples from source
-   - All architectural decisions explained
-   - Phase 1 limitations and rationale
-   - Competitive positioning
+**1. OCTO_ARCHITECTURE_EXPLORATION.md** (41 KB, 1,159 lines)
+ - Complete technical analysis
+ - Code examples from source
+ - All architectural decisions explained
+ - Phase 1 limitations and rationale
+ - Competitive positioning
 
-**2. BENDER_ARCHITECTURE_VISUAL_SUMMARY.md** (26 KB, 517 lines)
-   - Flowcharts and diagrams
-   - Visual comparisons and tables
-   - Extension point examples
-   - Architecture decisions matrix
-   - Success criteria checklist
+**2. OCTO_ARCHITECTURE_VISUAL_SUMMARY.md** (26 KB, 517 lines)
+ - Flowcharts and diagrams
+ - Visual comparisons and tables
+ - Extension point examples
+ - Architecture decisions matrix
+ - Success criteria checklist
 
 **3. EXPLORATION_SUMMARY.md** (13 KB, 374 lines)
-   - Meta-summary of exploration
-   - Key findings digest
-   - Critical design insights
-   - Navigation and recommendations
-   - Files analyzed list
+ - Meta-summary of exploration
+ - Key findings digest
+ - Critical design insights
+ - Navigation and recommendations
+ - Files analyzed list
 
 **4. ARCHITECTURE_EXPLORATION_INDEX.md** (This file)
-   - Quick navigation by topic
-   - Content map across documents
-   - Reference guide
-   - Use case recommendations
+ - Quick navigation by topic
+ - Content map across documents
+ - Reference guide
+ - Use case recommendations
 
 ---
 
@@ -345,7 +345,7 @@ Details: Exploration Part 7, Visual Summary Integration Levels
 
 **All files available in:** `/Users/richiek/work/bender/`
 
-**Start reading:** BENDER_ARCHITECTURE_VISUAL_SUMMARY.md (quick start)  
-**For depth:** BENDER_ARCHITECTURE_EXPLORATION.md (comprehensive)  
+**Start reading:** OCTO_ARCHITECTURE_VISUAL_SUMMARY.md (quick start) 
+**For depth:** OCTO_ARCHITECTURE_EXPLORATION.md (comprehensive) 
 **For navigation:** EXPLORATION_SUMMARY.md (this index) (reference)
 

@@ -14,7 +14,7 @@ if ROOT not in sys.path:
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender import (  # noqa: E402
+from octo import (  # noqa: E402
     SQLSchemaSnapshot,
     SQLTableProfile,
     SQLColumnProfile,
@@ -23,10 +23,17 @@ from bender import (  # noqa: E402
 from implementations.bird import (  # noqa: E402
     BirdABBenchmarkRunner,
     BirdBenchmarkAdapter,
+    BirdExecutionPacket,
     BirdHFWorkspace,
+    BirdHeuristicSQLCandidateGenerator,
     BirdSQLiteDatabaseLoader,
+    BirdSQLCandidate,
     BirdTaskLoader,
     BirdWorkspace,
+    EnsembleSQLGeneratorCoprocessor,
+    FallbackSQLGeneratorCoprocessor,
+    HeuristicSQLGeneratorCoprocessor,
+    SQLGeneratorCoprocessor,
     enrich_world_with_bird_metadata,
 )
 
@@ -279,7 +286,7 @@ class BirdTests(unittest.TestCase):
             foreign_keys=[],
         )
         baseline_world = snapshot_to_world_model(snapshot)
-        bender_world = enrich_world_with_bird_metadata(
+        octo_world = enrich_world_with_bird_metadata(
             snapshot_to_world_model(snapshot),
             db_id="california_schools",
             metadata_documents={"schools.csv": "table,column,description\nschools,name,School name\n"},
@@ -303,14 +310,14 @@ class BirdTests(unittest.TestCase):
                 worlds_by_db={"california_schools": baseline_world},
                 top_k=8,
             ),
-            bender_adapter=BirdBenchmarkAdapter(
+            octo_adapter=BirdBenchmarkAdapter(
                 snapshots_by_db={"california_schools": snapshot},
-                worlds_by_db={"california_schools": bender_world},
+                worlds_by_db={"california_schools": octo_world},
                 top_k=8,
             ),
             evidence_adapter=BirdBenchmarkAdapter(
                 snapshots_by_db={"california_schools": snapshot},
-                worlds_by_db={"california_schools": bender_world},
+                worlds_by_db={"california_schools": octo_world},
                 top_k=8,
                 include_evidence=True,
             ),
@@ -319,6 +326,117 @@ class BirdTests(unittest.TestCase):
         self.assertEqual(report["benchmark_name"], "bird_ab_grounding")
         self.assertEqual(len(report["systems"]), 4)
         self.assertIn("| System | Tasks | Accuracy |", report["markdown_summary"])
+
+
+class SQLGeneratorCoprocessorTests(unittest.TestCase):
+    """Tests that SQL generators behave as composable OCTO coprocessors."""
+
+    def _make_packet(self) -> BirdExecutionPacket:
+        snapshot = SQLSchemaSnapshot(
+            database_name="demo",
+            tables=[
+                SQLTableProfile(
+                    schema="main",
+                    name="schools",
+                    description="",
+                    columns=[
+                        SQLColumnProfile(
+                            schema="main",
+                            table="schools",
+                            name="school_id",
+                            data_type="INTEGER",
+                            is_nullable=True,
+                            ordinal_position=1,
+                        ),
+                        SQLColumnProfile(
+                            schema="main",
+                            table="schools",
+                            name="name",
+                            data_type="TEXT",
+                            is_nullable=True,
+                            ordinal_position=2,
+                        ),
+                    ],
+                )
+            ],
+            foreign_keys=[],
+        )
+        return BirdExecutionPacket(
+            task_id="demo_1",
+            db_id="demo",
+            question="How many schools are there?",
+            evidence="",
+            candidate_tables=["schools"],
+            snapshot=snapshot,
+        )
+
+    def test_heuristic_coprocessor_generates_count_sql(self):
+        packet = self._make_packet()
+        coprocessor = HeuristicSQLGeneratorCoprocessor()
+        candidates = coprocessor.generate(packet)
+
+        self.assertEqual(coprocessor.name, "heuristic")
+        self.assertEqual(len(candidates), 1)
+        self.assertIn("COUNT", candidates[0].sql.upper())
+        self.assertEqual(candidates[0].metadata["coprocessor"], "heuristic")
+
+    def test_ensemble_aggregates_candidates_from_multiple_coprocessors(self):
+        packet = self._make_packet()
+
+        class MockLLMCoprocessor(SQLGeneratorCoprocessor):
+            @property
+            def name(self) -> str:
+                return "mock_llm"
+
+            def generate(
+                self, packet: BirdExecutionPacket, *, max_candidates: int = 4
+            ) -> list[BirdSQLCandidate]:
+                return [
+                    BirdSQLCandidate(
+                        sql="SELECT school_id FROM schools LIMIT 5",
+                        strategy="mock",
+                        rationale="Mock LLM candidate.",
+                    )
+                ]
+
+        ensemble = EnsembleSQLGeneratorCoprocessor(
+            coprocessors=[
+                HeuristicSQLGeneratorCoprocessor(),
+                MockLLMCoprocessor(),
+            ]
+        )
+        candidates = ensemble.generate(packet, max_candidates=4)
+
+        self.assertIn("ensemble(heuristic,mock_llm)", ensemble.name)
+        self.assertEqual(len(candidates), 2)
+        strategies = {c.strategy for c in candidates}
+        self.assertIn("heuristic", strategies)
+        self.assertIn("mock", strategies)
+        self.assertEqual(candidates[0].metadata["coprocessor"], "heuristic")
+        self.assertEqual(candidates[1].metadata["coprocessor"], "mock_llm")
+
+    def test_fallback_uses_backup_when_primary_is_empty(self):
+        packet = self._make_packet()
+
+        class EmptyCoprocessor(SQLGeneratorCoprocessor):
+            @property
+            def name(self) -> str:
+                return "empty"
+
+            def generate(
+                self, packet: BirdExecutionPacket, *, max_candidates: int = 4
+            ) -> list[BirdSQLCandidate]:
+                return []
+
+        fallback = FallbackSQLGeneratorCoprocessor(
+            primary=EmptyCoprocessor(),
+            fallback=HeuristicSQLGeneratorCoprocessor(),
+        )
+        candidates = fallback.generate(packet)
+
+        self.assertEqual(fallback.name, "fallback(empty,heuristic)")
+        self.assertEqual(len(candidates), 1)
+        self.assertIn("COUNT", candidates[0].sql.upper())
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 
 ## Principles
 
-- keep `src/bender` pure
+- keep `src/octo` pure
 - build domain and benchmark logic outside the core package
 - prefer clear runtime contracts over benchmark-specific hacks
 - preserve provenance and inspectability
@@ -33,8 +33,8 @@ Run at least one demo relevant to your change.
 
 Use this dependency direction:
 
-- `bender` must not import from `implementations`
-- `implementations/*` may import from `bender`
+- `octo` must not import from `implementations`
+- `implementations/*` may import from `octo`
 
 If a change violates that rule, it is probably going in the wrong place.
 

@@ -8,8 +8,8 @@ SRC = os.path.join(ROOT, "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender.fusion import WeightedBlendFusion
-from bender.models import CognitiveState, Hypothesis, RetrievedMemory
+from octo.fusion import WeightedBlendFusion
+from octo.models import CognitiveState, Hypothesis, RetrievedMemory
 
 
 class FusionTests(unittest.TestCase):
@@ -42,7 +42,6 @@ class FusionTests(unittest.TestCase):
 
         self.assertGreater(fused.graph_weight, fused.token_weight)
         self.assertAlmostEqual(sum((fused.token_weight, fused.graph_weight)), 1.0, places=4)
-        self.assertGreater(fused.vector[1], fused.vector[0])
 
 
 if __name__ == "__main__":

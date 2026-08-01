@@ -13,7 +13,7 @@ Components:
 
 Usage:
     from implementations.sql import SQLSchemaCoprocessor
-    from bender import snapshot_to_world_model
+    from octo import snapshot_to_world_model
 
     coprocessor = SQLSchemaCoprocessor.from_snapshot(
         snapshot,

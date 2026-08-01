@@ -1,23 +1,23 @@
-# BENDER Enterprise Data Warehouse Integration
+# OCTO Enterprise Data Warehouse Integration
 
 ## Purpose
 
-This document explains how BENDER can sit on top of an existing enterprise data warehouse and turn governed enterprise data into a request-scoped world-model coprocessor.
+This document explains how OCTO can sit on top of an existing enterprise data warehouse and turn governed enterprise data into a request-scoped world-model coprocessor.
 
 The key point is:
 
-- BENDER does not require replacing the warehouse.
-- BENDER does require a domain mapping layer.
+- OCTO does not require replacing the warehouse.
+- OCTO does require a domain mapping layer.
 - The warehouse remains a source of truth.
-- BENDER becomes the runtime reasoning and inference-control layer on top.
+- OCTO becomes the runtime reasoning and inference-control layer on top.
 
 ## Short answer
 
-Yes, BENDER can tap into an existing enterprise data stack and "BENDER enable" it, but not as a zero-modeling magic wrapper.
+Yes, OCTO can tap into an existing enterprise data stack and "OCTO enable" it, but not as a zero-modeling magic wrapper.
 
 What can work quickly is:
 
-1. connect BENDER to existing warehouse and document systems,
+1. connect OCTO to existing warehouse and document systems,
 2. map useful records into entities, relations, constraints, and provenance,
 3. retrieve the relevant slice at request time,
 4. emit a structured coprocessor packet,
@@ -30,10 +30,10 @@ So the product story is not:
 It is:
 
 - use the enterprise systems that already exist,
-- project the parts that matter into BENDER's runtime model,
+- project the parts that matter into OCTO's runtime model,
 - and make that runtime state available at inference time.
 
-## What BENDER would connect to
+## What OCTO would connect to
 
 Typical enterprise sources:
 
@@ -57,7 +57,7 @@ The right mental model is:
 
 - warehouse data is not the coprocessor,
 - raw tables are not the world model,
-- the adapter layer turns enterprise data into BENDER runtime state.
+- the adapter layer turns enterprise data into OCTO runtime state.
 
 That adapter layer is responsible for:
 
@@ -70,17 +70,17 @@ That adapter layer is responsible for:
 Example mapping:
 
 - warehouse table `customer_accounts`
-  becomes BENDER entity type `Customer`
+ becomes OCTO entity type `Customer`
 - warehouse table `credit_exceptions`
-  becomes BENDER constraint `manual_review_required`
+ becomes OCTO constraint `manual_review_required`
 - warehouse table `policy_versions`
-  becomes provenance and rule-version references
+ becomes provenance and rule-version references
 - warehouse table `transactions`
-  becomes event history or relation edges
+ becomes event history or relation edges
 
-## What "BENDER enabled" means in practice
+## What "OCTO enabled" means in practice
 
-For each inference request, BENDER should build a narrow runtime view of the enterprise state, not query the entire warehouse blindly.
+For each inference request, OCTO should build a narrow runtime view of the enterprise state, not query the entire warehouse blindly.
 
 The request path is:
 
@@ -89,12 +89,12 @@ The request path is:
 3. retrieve relevant rows, documents, and graph neighborhoods
 4. run rules and optional simulation
 5. produce:
-   - active entities
-   - hypotheses
-   - constraints
-   - provenance
-   - optional simulation outputs
-   - fused native control context
+ - active entities
+ - hypotheses
+ - constraints
+ - provenance
+ - optional simulation outputs
+ - fused native control context
 6. pass that packet into the model
 
 That is the coprocessor.
@@ -111,7 +111,7 @@ Best for:
 
 Architecture:
 
-- BENDER queries warehouse views and curated tables directly
+- OCTO queries warehouse views and curated tables directly
 - minimal copied state
 - request-time joins and lookups
 - document snippets and policy references pulled on demand
@@ -138,7 +138,7 @@ Best for:
 Architecture:
 
 - keep warehouse as source of truth
-- build a BENDER-facing index layer over entities, documents, and relations
+- build a OCTO-facing index layer over entities, documents, and relations
 - use real embeddings plus ANN retrieval
 - cache hot neighborhoods and frequent policy bundles
 
@@ -169,7 +169,7 @@ Best for:
 Architecture:
 
 - warehouse remains upstream truth source
-- BENDER maintains a persistent world-model layer for runtime use
+- OCTO maintains a persistent world-model layer for runtime use
 - explicit entity graph, policy graph, provenance, and optional simulation state
 - request-scoped packets drive native inference control in ScalarLM
 
@@ -216,7 +216,7 @@ It is deciding:
 
 This is the enterprise version of "ETL for Reality."
 
-So BENDER can attach to enterprise systems quickly, but it still needs:
+So OCTO can attach to enterprise systems quickly, but it still needs:
 
 - canonical IDs,
 - domain-specific mappings,
@@ -226,24 +226,24 @@ So BENDER can attach to enterprise systems quickly, but it still needs:
 ## A practical runtime flow for Fortune 500 deployment
 
 1. User sends request to the LLM application.
-2. BENDER captures semantic cues from the request.
-3. BENDER performs:
-   - warehouse lookup,
-   - indexed retrieval,
-   - document lookup,
-   - entity resolution,
-   - graph neighborhood expansion.
-4. BENDER derives:
-   - active business entities,
-   - policy constraints,
-   - exception states,
-   - provenance references.
+2. OCTO captures semantic cues from the request.
+3. OCTO performs:
+ - warehouse lookup,
+ - indexed retrieval,
+ - document lookup,
+ - entity resolution,
+ - graph neighborhood expansion.
+4. OCTO derives:
+ - active business entities,
+ - policy constraints,
+ - exception states,
+ - provenance references.
 5. Optional planner/rule/simulator modules run.
-6. BENDER emits a request-scoped coprocessor packet.
+6. OCTO emits a request-scoped coprocessor packet.
 7. ScalarLM consumes that packet natively during inference.
 8. Response returns with traceable provenance and governed behavior.
 
-## What BENDER adds beyond plain warehouse access
+## What OCTO adds beyond plain warehouse access
 
 A warehouse query alone does not give:
 
@@ -253,12 +253,12 @@ A warehouse query alone does not give:
 - rule/simulation fusion,
 - or native model-side governance.
 
-BENDER adds those runtime behaviors.
+OCTO adds those runtime behaviors.
 
 That is why the right framing is:
 
 - warehouse is the data substrate,
-- BENDER is the reasoning and inference-control runtime.
+- OCTO is the reasoning and inference-control runtime.
 
 ## What can "just work"
 
@@ -279,7 +279,7 @@ What does not "just work" automatically:
 
 So the right peer-facing claim is:
 
-- BENDER can attach to an enterprise warehouse quickly,
+- OCTO can attach to an enterprise warehouse quickly,
 - but turning enterprise data into a reliable coprocessor still requires a domain mapping and governance layer.
 
 ## Recommended first enterprise wedge
@@ -303,29 +303,29 @@ These are better first fits than broad open-ended chat.
 
 ## Relationship to ScalarLM
 
-In the current architecture, BENDER should produce a request-scoped packet from enterprise state, and ScalarLM should consume it as native inference context.
+In the current architecture, OCTO should produce a request-scoped packet from enterprise state, and ScalarLM should consume it as native inference context.
 
 That means:
 
 - enterprise data access stays outside the model,
-- BENDER performs retrieval and reasoning,
+- OCTO performs retrieval and reasoning,
 - ScalarLM handles the inference-time control surface.
 
-This separation is useful because it lets the enterprise connect BENDER to its own governed data systems without needing to retrain or fork the entire model stack for every domain.
+This separation is useful because it lets the enterprise connect OCTO to its own governed data systems without needing to retrain or fork the entire model stack for every domain.
 
 ## Recommended implementation sequence
 
 1. Start with a single enterprise workflow and curated tables.
-2. Build a domain adapter that maps source data into BENDER entities, relations, constraints, and provenance.
+2. Build a domain adapter that maps source data into OCTO entities, relations, constraints, and provenance.
 3. Add ANN-backed retrieval over relevant records and documents.
 4. Add deterministic rules for explicit exceptions.
-5. Emit request-scoped packets and test with/without BENDER.
+5. Emit request-scoped packets and test with/without OCTO.
 6. Integrate into ScalarLM native inference control.
 7. Only then expand toward richer simulation and a broader persistent world model.
 
 ## Product design for admin-friendly onboarding
 
-If BENDER is going to be usable by enterprise teams, the ingestion path has to feel like an admin product, not a research project.
+If OCTO is going to be usable by enterprise teams, the ingestion path has to feel like an admin product, not a research project.
 
 The right product shape is:
 
@@ -340,56 +340,56 @@ The right product shape is:
 An admin-friendly onboarding flow should look like this:
 
 1. Connect a source.
-   - Postgres, Snowflake, BigQuery, dbt models, document bucket, or API.
+ - Postgres, Snowflake, BigQuery, dbt models, document bucket, or API.
 2. Discover candidate assets.
-   - tables, columns, views, documents, keys, row counts, sample values, freshness.
+ - tables, columns, views, documents, keys, row counts, sample values, freshness.
 3. Propose domain mappings.
-   - "customer_id" becomes `Customer`
-   - "rental" becomes `RentalEvent`
-   - "policy_exceptions" becomes a constraint source
+ - "customer_id" becomes `Customer`
+ - "rental" becomes `RentalEvent`
+ - "policy_exceptions" becomes a constraint source
 4. Let the admin approve or edit the mapping.
-   - which tables are authoritative
-   - which joins are valid
-   - which fields are sensitive
-   - which rules are hard constraints vs soft guidance
+ - which tables are authoritative
+ - which joins are valid
+ - which fields are sensitive
+ - which rules are hard constraints vs soft guidance
 5. Preview the world-model packet for sample requests.
-   - active entities
-   - join path
-   - constraints
-   - provenance
-6. Run with/without BENDER evaluation on a small benchmark.
-   - verify real deltas before rollout
+ - active entities
+ - join path
+ - constraints
+ - provenance
+6. Run with/without OCTO evaluation on a small benchmark.
+ - verify real deltas before rollout
 7. Enable scheduled sync and monitoring.
-   - schema drift
-   - row freshness
-   - failed joins
-   - packet quality
+ - schema drift
+ - row freshness
+ - failed joins
+ - packet quality
 
 The product should expose three admin surfaces:
 
 - `Connections`
-  - credentials, network access, sync status, schemas, refresh policy
+ - credentials, network access, sync status, schemas, refresh policy
 - `Mappings`
-  - entities, joins, rules, provenance policies, sensitive-field handling
+ - entities, joins, rules, provenance policies, sensitive-field handling
 - `Evaluations`
-  - benchmark prompts, expected outputs, with/without comparisons, packet traces
+ - benchmark prompts, expected outputs, with/without comparisons, packet traces
 
-That is how BENDER becomes operationally usable for a customer with multiple data silos.
+That is how OCTO becomes operationally usable for a customer with multiple data silos.
 
 ## Recommended ingestion architecture
 
 To keep this clean, the ingestion system should be layered:
 
 - connector layer
-  - fetches metadata and rows from source systems
+ - fetches metadata and rows from source systems
 - profiling layer
-  - samples values, detects keys, estimates cardinality, identifies obvious joins
+ - samples values, detects keys, estimates cardinality, identifies obvious joins
 - mapping layer
-  - turns source artifacts into BENDER entity, relation, event, and constraint types
+ - turns source artifacts into OCTO entity, relation, event, and constraint types
 - indexing layer
-  - builds ANN/vector indexes, lexical indexes, and graph neighborhood indexes
+ - builds ANN/vector indexes, lexical indexes, and graph neighborhood indexes
 - runtime packet layer
-  - emits request-scoped coprocessor packets for ScalarLM
+ - emits request-scoped coprocessor packets for ScalarLM
 
 This is important because customers rarely onboard one clean database.
 They onboard:
@@ -404,12 +404,12 @@ So the product needs to support partial onboarding and progressive hardening, no
 
 ## Bottom line
 
-BENDER can absolutely be used to "BENDER enable" an enterprise warehouse-backed domain.
+OCTO can absolutely be used to "OCTO enable" an enterprise warehouse-backed domain.
 
 But the real architecture is:
 
 - existing systems remain the source of truth,
-- BENDER turns selected enterprise data into typed runtime world state,
+- OCTO turns selected enterprise data into typed runtime world state,
 - and ScalarLM consumes that world state as a native coprocessor context at inference time.
 
 That is the practical path to a real enterprise world-model coprocessor.

@@ -3,27 +3,27 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bender-coprocessor"
+name = "octo-gardens"
 version = "0.1.0"
-description = "BENDER core runtime for world-model coprocessors"
+description = "Octo Gardens core runtime for world-model coprocessors"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-  { name = "Rich Schiavi" }
+ { name = "Rich Schiavi" }
 ]
 license = "Apache-2.0"
 dependencies = [
-  "numpy>=1.26",
-  "sqlglot>=25.0",
+ "numpy>=1.26",
+ "sqlglot>=25.0",
 ]
 
 [project.optional-dependencies]
 ann = [
-  "faiss-cpu>=1.8.0",
-  "sentence-transformers>=3.0",
+ "faiss-cpu>=1.8.0",
+ "sentence-transformers>=3.0",
 ]
 dev = [
-  "pytest>=8.0",
+ "pytest>=8.0",
 ]
 
 [tool.setuptools]
@@ -31,4 +31,4 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["bender*"]
+include = ["octo*"]

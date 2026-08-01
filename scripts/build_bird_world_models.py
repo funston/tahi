@@ -7,7 +7,7 @@ for 3x faster benchmark runs.
 Usage:
     python scripts/build_bird_world_models.py \
         --bird-root datasets/bird/dev_20240627 \
-        --store-path ~/.bender/world-models \
+        --store-path ~/.octo/world-models \
         --version v1.0.0
 """
 
@@ -19,7 +19,7 @@ from pathlib import Path
 repo_root = Path(__file__).parent.parent
 sys.path.insert(0, str(repo_root / "implementations"))
 
-from bender import WorldModelStore, snapshot_to_world_model
+from octo import WorldModelStore, snapshot_to_world_model
 from bird.bird import (
     BirdSQLiteDatabaseLoader,
     BirdWorkspace,
@@ -38,7 +38,7 @@ def main():
     parser.add_argument(
         "--store-path",
         type=str,
-        default="~/.bender/world-models",
+        default="~/.octo/world-models",
         help="Path to WorldModelStore",
     )
     parser.add_argument(

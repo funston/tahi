@@ -1,6 +1,6 @@
 # Mass Spec World Model
 
-`implementations/mass_spec` is a reference world-model package for mass spectrometry interpretation built on top of `bender`.
+`implementations/mass_spec` is a reference world-model package for mass spectrometry interpretation built on top of `octo`.
 
 ## What This Implementation Demonstrates
 

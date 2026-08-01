@@ -8,7 +8,7 @@ SRC = os.path.join(ROOT, "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender import build_pagila_fixture_snapshot, snapshot_to_world_model
+from octo import build_pagila_fixture_snapshot, snapshot_to_world_model
 from implementations.sql import SQLSchemaCoprocessor
 
 

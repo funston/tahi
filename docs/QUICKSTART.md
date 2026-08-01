@@ -20,7 +20,7 @@ pip install -e .[ann]
 PYTHONPATH=src python examples/hello_world_coprocessor_demo.py
 ```
 
-This is the smallest proof that BENDER is doing more than retrieval:
+This is the smallest proof that OCTO is doing more than retrieval:
 
 - it builds world state
 - applies explicit rules
@@ -53,7 +53,7 @@ pytest tests/test_bio.py tests/test_mass_spec.py tests/test_bird.py tests/test_h
 
 ## Repo Layout
 
-- `src/bender/` — pure core package
+- `src/octo/` — pure core package
 - `implementations/` — reference world models
 - `examples/` — runnable demos
 - `docs/` — public docs

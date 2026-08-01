@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This memo captures the strongest likely reviewer objections to the BENDER whitepaper and the edits needed to keep the paper aligned with the current repository.
+This memo captures the strongest likely reviewer objections to the OCTO whitepaper and the edits needed to keep the paper aligned with the current repository.
 
 ## Primary findings
 
@@ -10,7 +10,7 @@ This memo captures the strongest likely reviewer objections to the BENDER whitep
 2. The paper risked overstating Knowledge-Augmented Attention as if a production graph-attention backend already existed in code.
 3. The native integration story was directionally correct but not sharply enough labeled as prototype or future work.
 4. The distinction from RAG and GraphRAG was asserted more strongly than it was argued.
-5. The paper was not explicit enough that BENDER is different in kind from fine-tuning.
+5. The paper was not explicit enough that OCTO is different in kind from fine-tuning.
 6. The paper needed a clearer “mechanism versus architecture” distinction for KAA and graph-attention approaches such as GITA.
 7. The paper needed a clearer “threats to validity” section to avoid sounding promotional.
 
@@ -34,7 +34,7 @@ The distinguishing claim is not “graphs are involved.” The distinguishing cl
 
 Also true. The best response is not denial.
 
-The paper should acknowledge that BENDER lives in the neuro-symbolic family and claim novelty more narrowly:
+The paper should acknowledge that OCTO lives in the neuro-symbolic family and claim novelty more narrowly:
 
 - inference-time coprocessor framing for LLM systems,
 - explicit portability across closed-weight and open-weight models,
@@ -63,13 +63,13 @@ The KAA equations are useful as design language, but the repository does not imp
 
 This objection is weaker than the GraphRAG objection, but still worth handling directly.
 
-Fine-tuning changes model parameters offline. BENDER keeps persistent state, constraints, provenance, and reasoning outside the model weights and injects their influence at runtime. The right answer is that these approaches are complementary, not equivalent.
+Fine-tuning changes model parameters offline. OCTO keeps persistent state, constraints, provenance, and reasoning outside the model weights and injects their influence at runtime. The right answer is that these approaches are complementary, not equivalent.
 
 ### “KAA or GITA already describes the real novelty”
 
 This is a mechanism-versus-system objection.
 
-KAA and graph-integrated attention mechanisms are candidate implementation techniques. BENDER is the larger runtime architecture that decides:
+KAA and graph-integrated attention mechanisms are candidate implementation techniques. OCTO is the larger runtime architecture that decides:
 
 - what state exists,
 - how it is retrieved,
@@ -77,7 +77,7 @@ KAA and graph-integrated attention mechanisms are candidate implementation techn
 - how provenance is tracked,
 - how request-scoped influence reaches the model.
 
-The paper should say this plainly, because otherwise reviewers may interpret BENDER as merely a new name for a graph-attention layer.
+The paper should say this plainly, because otherwise reviewers may interpret OCTO as merely a new name for a graph-attention layer.
 
 ### “Complexity and latency may outweigh gains”
 
@@ -111,18 +111,18 @@ The paper should keep these distinctions in direct language:
 - Fine-tuning is a weight adaptation method.
 - KAA is a candidate fusion/operator family.
 - GITA-like approaches are mechanism-level graph-attention designs.
-- BENDER is a runtime coprocessor architecture that may use some of those mechanisms but is not reducible to any one of them.
+- OCTO is a runtime coprocessor architecture that may use some of those mechanisms but is not reducible to any one of them.
 
 ## Code-grounded evidence
 
 The current repository supports the following review-safe statements:
 
-- `src/bender/runtime.py` implements the orchestration pipeline.
-- `src/bender/integration.py` defines black-box and native integration contracts.
-- `src/bender/models.py` defines `SemanticFrame`, `CognitiveState`, and `ControlPacket`.
+- `src/octo/runtime.py` implements the orchestration pipeline.
+- `src/octo/integration.py` defines black-box and native integration contracts.
+- `src/octo/models.py` defines `SemanticFrame`, `CognitiveState`, and `ControlPacket`.
 - `examples/hello_world_coprocessor_demo.py` demonstrates structured packet emission.
 - `examples/hello_world_native_tokenformer_prototype.py` demonstrates request-scoped native residual influence in a toy prototype.
 
 ## Recommended reviewer-facing framing
 
-“BENDER is a world-model coprocessor architecture with a working runtime prototype and an early request-scoped native integration prototype. The repository proves the boundary and packet abstractions, not yet a production transformer-native backend.”
+“OCTO is a world-model coprocessor architecture with a working runtime prototype and an early request-scoped native integration prototype. The repository proves the boundary and packet abstractions, not yet a production transformer-native backend.”

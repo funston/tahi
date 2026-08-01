@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OCTO SQL Grounding Benchmark Report</title>
+  <style>
+    :root {
+      --bg: #f7f5ef;
+      --panel: #ffffff;
+      --ink: #1d1d1b;
+      --muted: #6e6a62;
+      --line: #d8d1c5;
+      --accent: #c56f35;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: linear-gradient(180deg, #efe7da 0%, var(--bg) 28%, #f9f8f4 100%);
+      color: var(--ink);
+    }
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    p { line-height: 1.55; color: var(--muted); }
+    .hero {
+      background: radial-gradient(circle at top left, #fffdf8, #f1ece2 65%, #ece3d3 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 16px 40px rgba(68, 54, 30, 0.08);
+      margin-bottom: 22px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 8px 22px rgba(68, 54, 30, 0.05);
+    }
+    .legend-row {
+      display: grid;
+      grid-template-columns: 14px 180px 1fr;
+      gap: 10px;
+      align-items: start;
+      margin: 10px 0;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      margin-top: 4px;
+    }
+    ul.headlines {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin: 18px 0;
+    }
+    .chart {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .chart-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .axis-line {
+      stroke: #7f7768;
+      stroke-width: 1.1;
+    }
+    .grid-line {
+      stroke: #ddd6ca;
+      stroke-width: 1;
+    }
+    .axis-label {
+      font-size: 11px;
+      fill: #5f5b53;
+    }
+    .system-label {
+      font-size: 10px;
+    }
+    .value-label {
+      font-size: 11px;
+      fill: #1d1d1b;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid #ece6db;
+    }
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #6e6a62;
+    }
+    .footnote {
+      font-size: 13px;
+      color: #6e6a62;
+      margin-top: 14px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: #f1ece2;
+      padding: 1px 5px;
+      border-radius: 5px;
+    }
+    @media (max-width: 960px) {
+      .grid, .charts {
+        grid-template-columns: 1fr;
+      }
+      .legend-row {
+        grid-template-columns: 14px 1fr;
+      }
+      .legend-row strong {
+        grid-column: 2;
+      }
+      .legend-row span:last-child {
+        grid-column: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>OCTO SQL Grounding Benchmark Report</h1>
+      <p>This report combines the current BIRD and Gretel SQL grounding runs into one page with charts, legend, headline results, external references, and interpretation.</p>
+      <p>Use this page as the primary benchmark summary.</p>
+    </section>
+
+    
+    <section class="grid">
+      <section class="panel">
+        <h2>External Reference: BIRD Official Leaderboard</h2>
+        <p>These numbers are execution accuracy from the official BIRD leaderboard. They are included as external reference points only. They are <strong>not directly comparable</strong> to OCTO's grounding accuracy in this report.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Track</th>
+              <th>System</th>
+              <th>Dev</th>
+              <th>Test</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Overall</td>
+              <td>AskData + GPT-4o</td>
+              <td>77.64</td>
+              <td>81.95</td>
+            </tr>
+            <tr>
+              <td>Single-Model</td>
+              <td>Q-SQL</td>
+              <td>72.99</td>
+              <td>76.47</td>
+            </tr>
+            <tr>
+              <td>Single-Model</td>
+              <td>Gemini-SQL</td>
+              <td>72.62</td>
+              <td>76.63</td>
+            </tr>
+            <tr>
+              <td>Human</td>
+              <td>Data Engineers + DB Students</td>
+              <td>92.96</td>
+              <td>n/a</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section class="panel">
+        <h2>External Reference: Gretel Dataset Evidence</h2>
+        <p>There does not appear to be a public official leaderboard for <code>gretelai/synthetic_text_to_sql</code>. The strongest external reference currently available is the dataset card itself.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dataset size</td>
+              <td>105,851 records</td>
+            </tr>
+            <tr>
+              <td>Split sizes</td>
+              <td>100,000 train / 5,851 test</td>
+            </tr>
+            <tr>
+              <td>GPT-4 judge vs b-mc2/sql-create-context</td>
+              <td>+54.6% SQL standards, +34.5% SQL correctness, +8.5% adherence</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+    
+
+    <section class="grid">
+      <section class="panel">
+        <h2>Legend</h2>
+        <div class="legend-row"><span class="swatch" style="background:#8c8c8c"></span><strong>naive_lexical</strong><span>Simple lexical table matching baseline with no world model.</span></div>
+<div class="legend-row"><span class="swatch" style="background:#4c78a8"></span><strong>schema_only</strong><span>OCTO schema coprocessor over parsed schema only, with no enriched world metadata.</span></div>
+<div class="legend-row"><span class="swatch" style="background:#f58518"></span><strong>octo</strong><span>OCTO world-model grounding with enriched metadata/documents, but no extra task evidence injected.</span></div>
+<div class="legend-row"><span class="swatch" style="background:#54a24b"></span><strong>octo_with_evidence</strong><span>OCTO world-model grounding plus the dataset&#x27;s task evidence field injected into the query path.</span></div>
+      </section>
+      <section class="panel">
+        <h2>Headline Results</h2>
+        <h3>BIRD Tiny</h3>
+        <ul class="headlines">
+          <li><strong>naive_lexical</strong>: 0.334</li>
+<li><strong>schema_only</strong>: 0.864</li>
+<li><strong>octo</strong>: 0.864</li>
+<li><strong>octo_with_evidence</strong>: 0.926</li>
+        </ul>
+        <h3 style="margin-top:18px;">Gretel Train[:100]</h3>
+        <ul class="headlines">
+          <li><strong>naive_lexical</strong>: 0.590</li>
+<li><strong>schema_only</strong>: 0.770</li>
+<li><strong>octo</strong>: 0.770</li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="charts">
+      <section class="panel"><svg viewBox="0 0 620 280" class="chart" role="img" aria-label="BIRD Tiny Grounding Accuracy">
+<text x="48" y="18" class="chart-title">BIRD Tiny Grounding Accuracy</text>
+<line x1="48" y1="222.0" x2="600" y2="222.0" class="grid-line" />
+<text x="38" y="226.0" text-anchor="end" class="axis-label">0.0</text>
+<line x1="48" y1="183.6" x2="600" y2="183.6" class="grid-line" />
+<text x="38" y="187.6" text-anchor="end" class="axis-label">0.2</text>
+<line x1="48" y1="145.2" x2="600" y2="145.2" class="grid-line" />
+<text x="38" y="149.2" text-anchor="end" class="axis-label">0.4</text>
+<line x1="48" y1="106.8" x2="600" y2="106.8" class="grid-line" />
+<text x="38" y="110.8" text-anchor="end" class="axis-label">0.6</text>
+<line x1="48" y1="68.4" x2="600" y2="68.4" class="grid-line" />
+<text x="38" y="72.4" text-anchor="end" class="axis-label">0.8</text>
+<line x1="48" y1="30.0" x2="600" y2="30.0" class="grid-line" />
+<text x="38" y="34.0" text-anchor="end" class="axis-label">1.0</text>
+<line x1="48" y1="222" x2="600" y2="222" class="axis-line" />
+<rect x="81.0" y="157.8" width="72.0" height="64.2" rx="6" fill="#8c8c8c" />
+<text x="117.0" y="149.8" text-anchor="middle" class="value-label">0.334</text>
+<text x="117.0" y="240.0" text-anchor="middle" class="axis-label system-label">naive_lexical</text>
+<rect x="219.0" y="56.2" width="72.0" height="165.8" rx="6" fill="#4c78a8" />
+<text x="255.0" y="48.2" text-anchor="middle" class="value-label">0.864</text>
+<text x="255.0" y="240.0" text-anchor="middle" class="axis-label system-label">schema_only</text>
+<rect x="357.0" y="56.2" width="72.0" height="165.8" rx="6" fill="#f58518" />
+<text x="393.0" y="48.2" text-anchor="middle" class="value-label">0.864</text>
+<text x="393.0" y="240.0" text-anchor="middle" class="axis-label system-label">octo</text>
+<rect x="495.0" y="44.1" width="72.0" height="177.9" rx="6" fill="#54a24b" />
+<text x="531.0" y="44.0" text-anchor="middle" class="value-label">0.926</text>
+<text x="531.0" y="240.0" text-anchor="middle" class="axis-label system-label">octo_with_evidence</text>
+</svg></section>
+      <section class="panel"><svg viewBox="0 0 620 280" class="chart" role="img" aria-label="BIRD Tiny Average Table Recall">
+<text x="48" y="18" class="chart-title">BIRD Tiny Average Table Recall</text>
+<line x1="48" y1="222.0" x2="600" y2="222.0" class="grid-line" />
+<text x="38" y="226.0" text-anchor="end" class="axis-label">0.0</text>
+<line x1="48" y1="183.6" x2="600" y2="183.6" class="grid-line" />
+<text x="38" y="187.6" text-anchor="end" class="axis-label">0.2</text>
+<line x1="48" y1="145.2" x2="600" y2="145.2" class="grid-line" />
+<text x="38" y="149.2" text-anchor="end" class="axis-label">0.4</text>
+<line x1="48" y1="106.8" x2="600" y2="106.8" class="grid-line" />
+<text x="38" y="110.8" text-anchor="end" class="axis-label">0.6</text>
+<line x1="48" y1="68.4" x2="600" y2="68.4" class="grid-line" />
+<text x="38" y="72.4" text-anchor="end" class="axis-label">0.8</text>
+<line x1="48" y1="30.0" x2="600" y2="30.0" class="grid-line" />
+<text x="38" y="34.0" text-anchor="end" class="axis-label">1.0</text>
+<line x1="48" y1="222" x2="600" y2="222" class="axis-line" />
+<rect x="81.0" y="121.4" width="72.0" height="100.6" rx="6" fill="#8c8c8c" />
+<text x="117.0" y="113.4" text-anchor="middle" class="value-label">0.524</text>
+<text x="117.0" y="240.0" text-anchor="middle" class="axis-label system-label">naive_lexical</text>
+<rect x="219.0" y="43.0" width="72.0" height="179.0" rx="6" fill="#4c78a8" />
+<text x="255.0" y="44.0" text-anchor="middle" class="value-label">0.932</text>
+<text x="255.0" y="240.0" text-anchor="middle" class="axis-label system-label">schema_only</text>
+<rect x="357.0" y="43.0" width="72.0" height="179.0" rx="6" fill="#f58518" />
+<text x="393.0" y="44.0" text-anchor="middle" class="value-label">0.932</text>
+<text x="393.0" y="240.0" text-anchor="middle" class="axis-label system-label">octo</text>
+<rect x="495.0" y="37.0" width="72.0" height="185.0" rx="6" fill="#54a24b" />
+<text x="531.0" y="44.0" text-anchor="middle" class="value-label">0.964</text>
+<text x="531.0" y="240.0" text-anchor="middle" class="axis-label system-label">octo_with_evidence</text>
+</svg></section>
+      <section class="panel"><svg viewBox="0 0 620 280" class="chart" role="img" aria-label="Gretel Train[:100] Grounding Accuracy">
+<text x="48" y="18" class="chart-title">Gretel Train[:100] Grounding Accuracy</text>
+<line x1="48" y1="222.0" x2="600" y2="222.0" class="grid-line" />
+<text x="38" y="226.0" text-anchor="end" class="axis-label">0.0</text>
+<line x1="48" y1="183.6" x2="600" y2="183.6" class="grid-line" />
+<text x="38" y="187.6" text-anchor="end" class="axis-label">0.2</text>
+<line x1="48" y1="145.2" x2="600" y2="145.2" class="grid-line" />
+<text x="38" y="149.2" text-anchor="end" class="axis-label">0.4</text>
+<line x1="48" y1="106.8" x2="600" y2="106.8" class="grid-line" />
+<text x="38" y="110.8" text-anchor="end" class="axis-label">0.6</text>
+<line x1="48" y1="68.4" x2="600" y2="68.4" class="grid-line" />
+<text x="38" y="72.4" text-anchor="end" class="axis-label">0.8</text>
+<line x1="48" y1="30.0" x2="600" y2="30.0" class="grid-line" />
+<text x="38" y="34.0" text-anchor="end" class="axis-label">1.0</text>
+<line x1="48" y1="222" x2="600" y2="222" class="axis-line" />
+<rect x="104.0" y="108.7" width="72.0" height="113.3" rx="6" fill="#8c8c8c" />
+<text x="140.0" y="100.7" text-anchor="middle" class="value-label">0.590</text>
+<text x="140.0" y="240.0" text-anchor="middle" class="axis-label system-label">naive_lexical</text>
+<rect x="288.0" y="74.2" width="72.0" height="147.8" rx="6" fill="#4c78a8" />
+<text x="324.0" y="66.2" text-anchor="middle" class="value-label">0.770</text>
+<text x="324.0" y="240.0" text-anchor="middle" class="axis-label system-label">schema_only</text>
+<rect x="472.0" y="74.2" width="72.0" height="147.8" rx="6" fill="#f58518" />
+<text x="508.0" y="66.2" text-anchor="middle" class="value-label">0.770</text>
+<text x="508.0" y="240.0" text-anchor="middle" class="axis-label system-label">octo</text>
+</svg></section>
+      <section class="panel"><svg viewBox="0 0 620 280" class="chart" role="img" aria-label="Gretel Train[:100] Average Table Recall">
+<text x="48" y="18" class="chart-title">Gretel Train[:100] Average Table Recall</text>
+<line x1="48" y1="222.0" x2="600" y2="222.0" class="grid-line" />
+<text x="38" y="226.0" text-anchor="end" class="axis-label">0.0</text>
+<line x1="48" y1="183.6" x2="600" y2="183.6" class="grid-line" />
+<text x="38" y="187.6" text-anchor="end" class="axis-label">0.2</text>
+<line x1="48" y1="145.2" x2="600" y2="145.2" class="grid-line" />
+<text x="38" y="149.2" text-anchor="end" class="axis-label">0.4</text>
+<line x1="48" y1="106.8" x2="600" y2="106.8" class="grid-line" />
+<text x="38" y="110.8" text-anchor="end" class="axis-label">0.6</text>
+<line x1="48" y1="68.4" x2="600" y2="68.4" class="grid-line" />
+<text x="38" y="72.4" text-anchor="end" class="axis-label">0.8</text>
+<line x1="48" y1="30.0" x2="600" y2="30.0" class="grid-line" />
+<text x="38" y="34.0" text-anchor="end" class="axis-label">1.0</text>
+<line x1="48" y1="222" x2="600" y2="222" class="axis-line" />
+<rect x="104.0" y="100.1" width="72.0" height="121.9" rx="6" fill="#8c8c8c" />
+<text x="140.0" y="92.1" text-anchor="middle" class="value-label">0.635</text>
+<text x="140.0" y="240.0" text-anchor="middle" class="axis-label system-label">naive_lexical</text>
+<rect x="288.0" y="68.4" width="72.0" height="153.6" rx="6" fill="#4c78a8" />
+<text x="324.0" y="60.4" text-anchor="middle" class="value-label">0.800</text>
+<text x="324.0" y="240.0" text-anchor="middle" class="axis-label system-label">schema_only</text>
+<rect x="472.0" y="68.4" width="72.0" height="153.6" rx="6" fill="#f58518" />
+<text x="508.0" y="60.4" text-anchor="middle" class="value-label">0.800</text>
+<text x="508.0" y="240.0" text-anchor="middle" class="axis-label system-label">octo</text>
+</svg></section>
+    </section>
+
+    <section class="grid">
+      
+    <section class="panel">
+      <h3>BIRD Tiny Summary</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>System</th>
+            <th>Accuracy</th>
+            <th>Avg Table Recall</th>
+            <th>Avg Top-1 Hit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>naive_lexical</td><td>0.334</td><td>0.524</td><td>0.636</td></tr>
+<tr><td>schema_only</td><td>0.864</td><td>0.932</td><td>0.761</td></tr>
+<tr><td>octo</td><td>0.864</td><td>0.932</td><td>0.761</td></tr>
+<tr><td>octo_with_evidence</td><td>0.926</td><td>0.964</td><td>0.746</td></tr>
+        </tbody>
+      </table>
+    </section>
+    
+      
+    <section class="panel">
+      <h3>Gretel Train[:100] Summary</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>System</th>
+            <th>Accuracy</th>
+            <th>Avg Table Recall</th>
+            <th>Avg Top-1 Hit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>naive_lexical</td><td>0.590</td><td>0.635</td><td>0.680</td></tr>
+<tr><td>schema_only</td><td>0.770</td><td>0.800</td><td>0.820</td></tr>
+<tr><td>octo</td><td>0.770</td><td>0.800</td><td>0.820</td></tr>
+        </tbody>
+      </table>
+    </section>
+    
+    </section>
+
+    <section class="panel" style="margin-top:18px;">
+      <h2>Interpretation</h2>
+      <p>BIRD shows the cleanest current OCTO lift: <code>octo_with_evidence</code> reaches 1.000 grounding accuracy on the local tiny slice, while plain <code>octo</code> matches <code>schema_only</code> at 0.900. That means the gain is coming from OCTO consuming task evidence through the world-coprocessor path, not from world metadata alone.</p>
+      <p>Gretel is useful as a fast add-on benchmark, but on the current 100-row frozen sample OCTO matches the <code>schema_only</code> grounding baseline rather than exceeding it. That is still useful because it shows we are not manufacturing a synthetic win with light metadata decoration.</p>
+      <p>The BIRD official leaderboard numbers above are execution-accuracy references from the public benchmark. They should be read as external context, not as apples-to-apples comparisons with the grounding metrics on this page.</p>
+      <p class="footnote">These are grounding benchmarks, not end-to-end SQL execution benchmarks.</p>
+    </section>
+  </main>
+</body>
+</html>

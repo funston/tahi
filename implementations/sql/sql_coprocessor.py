@@ -4,13 +4,13 @@ import re
 from dataclasses import dataclass
 from collections import defaultdict, deque
 
-from bender.adapter import WrappedLLM, wrap_llm
-from bender.database import SQLSchemaSnapshot, snapshot_to_world_model
-from bender.integration import BlackBoxIntegration, ModelIntegration
-from bender.models import CognitiveState, Hypothesis
-from bender.planner import Planner
-from bender.rules import RuleEngine
-from bender.world_state import WorldModel
+from octo.adapter import WrappedLLM, wrap_llm
+from octo.database import SQLSchemaSnapshot, snapshot_to_world_model
+from octo.integration import BlackBoxIntegration, ModelIntegration
+from octo.models import CognitiveState, Hypothesis
+from octo.planner import Planner
+from octo.rules import RuleEngine
+from octo.world_state import WorldModel
 
 
 def _table_id(label: str) -> str:

@@ -32,8 +32,8 @@ def _render_legend(ax) -> None:
         "Legend",
         "naive_lexical: simple lexical table matching baseline with no world model.",
         "schema_only: BENDER schema coprocessor over parsed schema only, with no enriched world metadata.",
-        "bender: BENDER world-model grounding with enriched metadata/documents, but no extra task evidence injected.",
-        "bender_with_evidence: BENDER world-model grounding plus the dataset's task evidence field injected into the query path.",
+        "octo: BENDER world-model grounding with enriched metadata/documents, but no extra task evidence injected.",
+        "octo_with_evidence: BENDER world-model grounding plus the dataset's task evidence field injected into the query path.",
     ]
     ax.text(0.0, 1.0, "\n".join(lines), va="top", ha="left", fontsize=10)
 

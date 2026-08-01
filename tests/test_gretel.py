@@ -1,4 +1,4 @@
-from bender import snapshot_to_world_model
+from octo import snapshot_to_world_model
 from implementations.gretel import (
     GretelABBenchmarkRunner,
     GretelBenchmarkAdapter,
@@ -49,7 +49,7 @@ def test_gretel_benchmark_runner_returns_report() -> None:
             snapshots_by_task={task.task_id: snapshot},
             worlds_by_task={task.task_id: snapshot_to_world_model(snapshot)},
         ),
-        bender_adapter=GretelBenchmarkAdapter(
+        octo_adapter=GretelBenchmarkAdapter(
             snapshots_by_task={task.task_id: snapshot},
             worlds_by_task={task.task_id: enrich_world_with_gretel_metadata(snapshot_to_world_model(snapshot), task)},
             include_metadata_in_query=True,
@@ -57,4 +57,4 @@ def test_gretel_benchmark_runner_returns_report() -> None:
     ).run([task])
 
     assert report["benchmark_name"] == "gretel_ab_grounding"
-    assert [system["system"] for system in report["systems"]] == ["naive_lexical", "schema_only", "bender"]
+    assert [system["system"] for system in report["systems"]] == ["naive_lexical", "schema_only", "octo"]

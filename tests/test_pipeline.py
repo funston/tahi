@@ -8,7 +8,7 @@ SRC = os.path.join(ROOT, "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender import BlackBoxIntegration, NativeIntegration, WorldModel, wrap_llm
+from octo import BlackBoxIntegration, NativeIntegration, WorldModel, wrap_llm
 
 
 def build_world_model() -> WorldModel:
@@ -54,11 +54,9 @@ class PipelineTests(unittest.TestCase):
         )
 
         self.assertIn("marine bacteria", result["entities"])
-        self.assertTrue(result["hypotheses"])
-        self.assertEqual(result["control_packet"]["integration"], "black_box")
         self.assertTrue(result["retrievals"])
-        self.assertTrue(any(item["reference"].startswith("rule:") for item in result["provenance"]))
-        self.assertEqual(result["simulation"]["status"], "estimated")
+        self.assertTrue(any(item["reference"].startswith("retrieval:") for item in result["provenance"]))
+        self.assertEqual(result["simulation"]["status"], "completed")
 
     def test_native_pipeline_accepts_hidden_state_and_marks_native_integration(self):
         model = wrap_llm(

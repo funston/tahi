@@ -2,7 +2,7 @@
 
 ## Overview
 
-This directory contains comprehensive comparative analysis of the **Dijkstra** project (hardware-first XLM infrastructure) and **BENDER** (software-first reasoning coprocessor).
+This directory contains comprehensive comparative analysis of the **Dijkstra** project (hardware-first XLM infrastructure) and **OCTO** (software-first reasoning coprocessor).
 
 ## Analysis Documents
 
@@ -26,54 +26,54 @@ This directory contains comprehensive comparative analysis of the **Dijkstra** p
 
 **Key Takeaways**:
 - Dijkstra: SSD as primary memory, enables 100T+ parameters, 100+ tok/sec
-- BENDER: Graph reasoning, enables grounded inference, deterministic rules
-- Complementary: Dijkstra provides capacity, BENDER provides correctness
+- OCTO: Graph reasoning, enables grounded inference, deterministic rules
+- Complementary: Dijkstra provides capacity, OCTO provides correctness
 
 ---
 
-### 2. DIJKSTRA_BENDER_TRADEOFFS.md
+### 2. DIJKSTRA_OCTO_TRADEOFFS.md
 **Scope**: Deep architectural decision analysis (10 dimensions)
 
 **Sections**:
 1. Memory Hierarchy Philosophy
-   - Dijkstra: SSD primary, GPU HBM cache
-   - BENDER: In-memory graphs with versioning
+ - Dijkstra: SSD primary, GPU HBM cache
+ - OCTO: In-memory graphs with versioning
 
 2. Retrieval Approach
-   - Dijkstra: CTU (custom CUDA for <15µs)
-   - BENDER: In-memory heuristic index
+ - Dijkstra: CTU (custom CUDA for <15µs)
+ - OCTO: In-memory heuristic index
 
 3. Training Strategy
-   - Dijkstra: Continuous indexing (Solve→AutoEval→Align)
-   - BENDER: Versioned snapshots (offline→deploy)
+ - Dijkstra: Continuous indexing (Solve→AutoEval→Align)
+ - OCTO: Versioned snapshots (offline→deploy)
 
 4. Model Integration Pattern
-   - Dijkstra: Non-invasive adapter (Tokenformer)
-   - BENDER: Invasive coprocessor (2 modes)
+ - Dijkstra: Non-invasive adapter (Tokenformer)
+ - OCTO: Invasive coprocessor (2 modes)
 
 5. Scaling Strategy
-   - Dijkstra: Horizontal (SSD sharding)
-   - BENDER: Vertical (graph complexity)
+ - Dijkstra: Horizontal (SSD sharding)
+ - OCTO: Vertical (graph complexity)
 
 6. Deployment Model
-   - Dijkstra: Air-gapped hardware cluster
-   - BENDER: Software-only layer
+ - Dijkstra: Air-gapped hardware cluster
+ - OCTO: Software-only layer
 
 7. Update & Iteration Patterns
-   - Dijkstra: Streaming indices (milliseconds)
-   - BENDER: Versioned snapshots (hours)
+ - Dijkstra: Streaming indices (milliseconds)
+ - OCTO: Versioned snapshots (hours)
 
 8. Failure Modes & Robustness
-   - Dijkstra: Index poisoning risk
-   - BENDER: Stale world model risk
+ - Dijkstra: Index poisoning risk
+ - OCTO: Stale world model risk
 
 9. Reuse & Amortization
-   - Dijkstra: 218,750x parameter reuse
-   - BENDER: 1000x+ rule firings
+ - Dijkstra: 218,750x parameter reuse
+ - OCTO: 1000x+ rule firings
 
 10. Ecosystem Dependency
-    - Dijkstra: Proprietary hardware stack
-    - BENDER: Open software stack
+ - Dijkstra: Proprietary hardware stack
+ - OCTO: Open software stack
 
 **Key Takeaways**:
 - Each project optimizes for different problems
@@ -85,14 +85,14 @@ This directory contains comprehensive comparative analysis of the **Dijkstra** p
 ## Quick Reference Tables
 
 ### Problem Statement
-| Aspect | Dijkstra | BENDER |
+| Aspect | Dijkstra | OCTO |
 |--------|----------|--------|
 | Question | How run 100T+ models at 100+ tok/sec? | How ground LLMs in domain knowledge? |
 | Constraint | HBM limits (~2TB) | Hallucination, lack of grounding |
 | Solution | SSD primary memory | Parallel reasoning coprocessor |
 
 ### Hardware Requirements
-| Component | Dijkstra | BENDER |
+| Component | Dijkstra | OCTO |
 |-----------|----------|--------|
 | Compute | NVIDIA GB300 | Any LLM |
 | Storage | Micron 6500 MAX (1PB) | < 1GB graphs |
@@ -100,7 +100,7 @@ This directory contains comprehensive comparative analysis of the **Dijkstra** p
 | CPU | AMD EPYC 9654 (I/O only) | Generic CPU |
 
 ### Performance
-| Metric | Dijkstra | BENDER |
+| Metric | Dijkstra | OCTO |
 |--------|----------|--------|
 | CTU Query | <15µs | N/A |
 | Total Latency | ~100µs/token | <5ms + inference |
@@ -108,7 +108,7 @@ This directory contains comprehensive comparative analysis of the **Dijkstra** p
 | Model Size | 1PB (SSD) | 2TB (HBM) |
 
 ### Innovation Highlights
-| Dijkstra | BENDER |
+| Dijkstra | OCTO |
 |----------|--------|
 | CTU: <15µs ANN over 100B embeddings | Graph-based world model |
 | Training=Indexing: gradients→PQ codes→SSD | FTI MLOps: pre-built versions |
@@ -126,7 +126,7 @@ This directory contains comprehensive comparative analysis of the **Dijkstra** p
 - New knowledge added to SSD index immediately
 - Next inference retrieves improved solutions
 
-**BENDER**: Via domain rules + simulation
+**OCTO**: Via domain rules + simulation
 - Rules encode allowed patterns
 - Simulator validates syntax/semantics
 - Versioned for deterministic generation
@@ -139,7 +139,7 @@ This directory contains comprehensive comparative analysis of the **Dijkstra** p
 - CTU retrieves relevant schema info
 - Tokenformer injects context
 
-**BENDER**: Primary use case
+**OCTO**: Primary use case
 - Schema modeled as typed graph
 - Planner generates candidate queries
 - Simulator validates against database
@@ -153,7 +153,7 @@ This directory contains comprehensive comparative analysis of the **Dijkstra** p
 - CTU retrieves relevant citations
 - Tokenformer synthesizes across sources
 
-**BENDER**: Domain rules from papers
+**OCTO**: Domain rules from papers
 - Extract key equations/rules from papers
 - Encode as world model
 - Enforce consistency during inference
@@ -166,7 +166,7 @@ This directory contains comprehensive comparative analysis of the **Dijkstra** p
 - Successful trajectories indexed
 - Model improves automatically
 
-**BENDER**: Via rollout + versioning
+**OCTO**: Via rollout + versioning
 - Offline: improve rules and simulators
 - Versioning: track improvements
 - Deployment: pin to working version
@@ -179,26 +179,26 @@ This directory contains comprehensive comparative analysis of the **Dijkstra** p
 1. **Different Problems**: Capacity vs correctness
 2. **Different Hardware**: Petabyte SSD vs in-memory graphs
 3. **Different Paradigms**: Storage-as-memory vs parallel reasoning
-4. **Different Timescales**: Continuous (Dijkstra) vs versioned (BENDER)
+4. **Different Timescales**: Continuous (Dijkstra) vs versioned (OCTO)
 
 ### Why They Could Complement Each Other
-1. **Orthogonal**: Dijkstra expands capacity, BENDER improves quality
+1. **Orthogonal**: Dijkstra expands capacity, OCTO improves quality
 2. **Same LLM**: Both could augment Qwen3.5 or other backbones
-3. **Staged Pipeline**: Dijkstra retrieves shards, BENDER validates them
-4. **Enterprise Stack**: Dijkstra for throughput, BENDER for compliance
+3. **Staged Pipeline**: Dijkstra retrieves shards, OCTO validates them
+4. **Enterprise Stack**: Dijkstra for throughput, OCTO for compliance
 
 ### Integration Scenario
 ```
 SQL Query Generation at 100T Scale:
 
 Input: "Find high-risk customers from transactions"
-  ↓
+ ↓
 DIJKSTRA: CTU retrieves schema embeddings from 100T SSD index
-  ↓
-BENDER: Planner generates candidates, Simulator validates
-  ↓
+ ↓
+OCTO: Planner generates candidates, Simulator validates
+ ↓
 DIJKSTRA: Tokenformer injects relevant weight shards
-  ↓
+ ↓
 Output: Correct SQL query + reasoning trace + constraint validation
 ```
 
@@ -213,7 +213,7 @@ Output: Correct SQL query + reasoning trace + constraint validation
 - NVIDIA QM9700 switch
 - Distributed via SLURM-Kubernetes
 
-**BENDER**: Software-centric
+**OCTO**: Software-centric
 - In-memory graph index
 - Standard Python/PyTorch
 - No specialized hardware
@@ -226,7 +226,7 @@ Output: Correct SQL query + reasoning trace + constraint validation
 - PQ: Product Quantization (gradient compression)
 - Tokenformer: Dynamic shard selection
 
-**BENDER**: Semantic reasoning
+**OCTO**: Semantic reasoning
 - WorldModel: typed graph
 - Planner: search over candidates
 - RuleEngine: constraint evaluation
@@ -239,7 +239,7 @@ Output: Correct SQL query + reasoning trace + constraint validation
 - Residual connection to backbone
 - Non-invasive, backward-compatible
 
-**BENDER**: Coprocessor pattern
+**OCTO**: Coprocessor pattern
 - Hidden-state capture (SemanticFrame)
 - Parallel reasoning (Planner+Rules+Sim)
 - Signal injection (ControlPacket)
@@ -252,7 +252,7 @@ Output: Correct SQL query + reasoning trace + constraint validation
 - Align: encode → add to index
 - No weight updates (frozen backbone)
 
-**BENDER**: Pre-built and versioned
+**OCTO**: Pre-built and versioned
 - Offline: domain expert builds model
 - Versioning: semantic snapshots
 - Deployment: load and inject
@@ -263,22 +263,22 @@ Output: Correct SQL query + reasoning trace + constraint validation
 ## Files Generated
 
 1. **DIJKSTRA_ARCHITECTURE_ANALYSIS.md** (408 lines)
-   - Complete architectural comparison
-   - 13 detailed sections
-   - Summary tables
-   - Integration analysis
+ - Complete architectural comparison
+ - 13 detailed sections
+ - Summary tables
+ - Integration analysis
 
-2. **DIJKSTRA_BENDER_TRADEOFFS.md** (507 lines)
-   - Deep tradeoff analysis
-   - 10 architectural dimensions
-   - Decision rationale
-   - Failure modes
+2. **DIJKSTRA_OCTO_TRADEOFFS.md** (507 lines)
+ - Deep tradeoff analysis
+ - 10 architectural dimensions
+ - Decision rationale
+ - Failure modes
 
 3. **DIJKSTRA_INDEX.md** (this file)
-   - Navigation guide
-   - Quick reference tables
-   - Use case comparisons
-   - Architecture layers
+ - Navigation guide
+ - Quick reference tables
+ - Use case comparisons
+ - Architecture layers
 
 ---
 
@@ -315,12 +315,12 @@ Output: Correct SQL query + reasoning trace + constraint validation
 
 > "DIJKSTRA scales what we compute."
 
-### BENDER
-> "BENDER is a true coprocessor, not just a RAG wrapper."
+### OCTO
+> "OCTO is a true coprocessor, not just a RAG wrapper."
 
 > "Always be verbose in your progress and status."
 
-> "BENDER scales how we reason."
+> "OCTO scales how we reason."
 
 ---
 
@@ -328,7 +328,7 @@ Output: Correct SQL query + reasoning trace + constraint validation
 
 1. Start with DIJKSTRA_INDEX.md (this file) - Overview
 2. Read DIJKSTRA_ARCHITECTURE_ANALYSIS.md - Complete picture
-3. Read DIJKSTRA_BENDER_TRADEOFFS.md - Deep dives
+3. Read DIJKSTRA_OCTO_TRADEOFFS.md - Deep dives
 4. Reference summary tables as needed
 
 ---
@@ -336,7 +336,7 @@ Output: Correct SQL query + reasoning trace + constraint validation
 ## Questions Answered by This Analysis
 
 - **What problem does Dijkstra solve?** Capacity scaling to 100T+ parameters
-- **What problem does BENDER solve?** Reasoning grounding and correctness
+- **What problem does OCTO solve?** Reasoning grounding and correctness
 - **Can they work together?** Yes, orthogonally
 - **Who should use each?** Different customers, different use cases
 - **What are the tradeoffs?** Capacity vs correctness, throughput vs accuracy

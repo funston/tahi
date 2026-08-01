@@ -6,9 +6,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from bender.database import SQLColumnProfile, SQLSchemaSnapshot, SQLTableProfile
+from octo.database import SQLColumnProfile, SQLSchemaSnapshot, SQLTableProfile
 from .spider_lite import SpiderLiteTask, SpiderLiteTaskLoader
-from bender.world_state import WorldModel
+from octo.world_state import WorldModel
 
 
 def _truncate_text(text: str, limit: int) -> str:

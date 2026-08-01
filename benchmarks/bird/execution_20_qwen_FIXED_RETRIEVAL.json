@@ -1,0 +1,3698 @@
+{
+  "benchmark_name": "bird_execution",
+  "systems": [
+    {
+      "system": "naive_baseline",
+      "tasks_evaluated": 20,
+      "accuracy": 0.15,
+      "metrics": {
+        "avg_execution_success": 0.6,
+        "avg_matched_gold": 0.25,
+        "avg_table_recall": 0.925
+      },
+      "results": [
+        {
+          "case_id": "california_schools_0001",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "california_schools_0001",
+            "db_id": "california_schools",
+            "question": "What is the highest eligible free rate for K-12 students in the schools in Alameda County?",
+            "evidence": "Eligible free rate for K-12 = `Free Meal Count (K-12)` / `Enrollment (K-12)`",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MAX(\"Percent (%) Eligible Free (K-12)\") AS HighestEligibleFreeRate\nFROM frpm\nWHERE \"County Name\" = 'Alameda';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MAX(\"Percent (%) Eligible Free (K-12)\") AS HighestEligibleFreeRate\nFROM frpm\nWHERE \"County Name\" = 'Alameda';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "1",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "1",
+            "db_id": "california_schools",
+            "question": "Please list the lowest three eligible free rates for students aged 5-17 in continuation schools.",
+            "evidence": "Eligible free rates for students aged 5-17 = `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)`",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT \n    School Name, \n    Percent (%) Eligible Free (Ages 5-17) AS EligibleFreeRate\nFROM \n    frpm\nWHERE \n    School Type = 'Continuation'\nORDER BY \n    EligibleFreeRate ASC\nLIMIT 3;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"%\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT \n    School Name, \n    Percent (%) Eligible Free (Ages 5-17) AS EligibleFreeRate\nFROM \n    frpm\nWHERE \n    School Type = 'Continuation'\nORDER BY \n    EligibleFreeRate ASC\nLIMIT 3;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "2",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "2",
+            "db_id": "california_schools",
+            "question": "Please list the zip code of all the charter schools in Fresno County Office of Education.",
+            "evidence": "Charter schools refers to `Charter School (Y/N)` = 1 in the table fprm",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT Zip\nFROM schools\nWHERE County = 'Fresno' AND Charter = 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT Zip\nFROM schools\nWHERE County = 'Fresno' AND Charter = 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "3",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "3",
+            "db_id": "california_schools",
+            "question": "What is the unabbreviated mailing street address of the school with the highest FRPM count for K-12 students?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MailStreet\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    ORDER BY FRPM_Count_(K-12) DESC\n    LIMIT 1\n);",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such function: FRPM_Count_",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MailStreet\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    ORDER BY FRPM_Count_(K-12) DESC\n    LIMIT 1\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "4",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "4",
+            "db_id": "california_schools",
+            "question": "Please list the phone numbers of the direct charter-funded schools that are opened after 2000/1/1.",
+            "evidence": "Charter schools refers to `Charter School (Y/N)` = 1 in the frpm",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT Phone\nFROM schools\nWHERE Charter = 1\n  AND FundingType = 'Charter'\n  AND OpenDate > '2000-01-01';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT Phone\nFROM schools\nWHERE Charter = 1\n  AND FundingType = 'Charter'\n  AND OpenDate > '2000-01-01';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "5",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "5",
+            "db_id": "california_schools",
+            "question": "How many schools with an average score in Math greater than 400 in the SAT test are exclusively virtual?",
+            "evidence": "Exclusively virtual refers to Virtual = 'F'",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "satscores",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(DISTINCT s.CDSCode)\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.AvgScrMath > 400 AND s.Virtual = 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(DISTINCT s.CDSCode)\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.AvgScrMath > 400 AND s.Virtual = 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "6",
+          "system": "naive_baseline",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "6",
+            "db_id": "california_schools",
+            "question": "Among the schools with the SAT test takers of over 500, please list the schools that are magnet schools or offer a magnet program.",
+            "evidence": "Magnet schools or offer a magnet program means that Magnet = 1",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "satscores",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT s.School\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumTstTakr > 500\nAND (s.Magnet = 1 OR s.Magnet = 'Y');",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT s.School\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumTstTakr > 500\nAND (s.Magnet = 1 OR s.Magnet = 'Y');",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "7",
+          "system": "naive_baseline",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "7",
+            "db_id": "california_schools",
+            "question": "What is the phone number of the school that has the highest number of test takers with an SAT score of over 1500?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n);",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "8",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "8",
+            "db_id": "california_schools",
+            "question": "What is the number of SAT test takers of the schools with the highest FRPM count for K-12 students?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.NumTstTakr\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE f.FRPCM (K-12) = (\n    SELECT MAX(FRPCM (K-12))\n    FROM frpm\n);",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"(\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.NumTstTakr\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE f.FRPCM (K-12) = (\n    SELECT MAX(FRPCM (K-12))\n    FROM frpm\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "9",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "9",
+            "db_id": "california_schools",
+            "question": "Among the schools with the average score in Math over 560 in the SAT test, how many schools are directly charter-funded?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_charter_schools\nFROM satscores ss\nJOIN schools s ON ss.cds = s.CDSCode\nWHERE ss.AvgScrMath > 560 AND s.FundingType = 'Charter';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_charter_schools\nFROM satscores ss\nJOIN schools s ON ss.cds = s.CDSCode\nWHERE ss.AvgScrMath > 560 AND s.FundingType = 'Charter';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "10",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "10",
+            "db_id": "california_schools",
+            "question": "For the school with the highest average score in Reading in the SAT test, what is its FRPM count for students aged 5-17?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores);",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "11",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "11",
+            "db_id": "california_schools",
+            "question": "Please list the codes of the schools with a total enrollment of over 500.",
+            "evidence": "Total enrollment can be represented by `Enrollment (K-12)` + `Enrollment (Ages 5-17)`",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT CDSCode\nFROM frpm\nGROUP BY CDSCode\nHAVING SUM(Enrollment (K-12)) > 500;",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such function: Enrollment",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT CDSCode\nFROM frpm\nGROUP BY CDSCode\nHAVING SUM(Enrollment (K-12)) > 500;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "12",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "12",
+            "db_id": "california_schools",
+            "question": "Among the schools with an SAT excellence rate of over 0.3, what is the highest eligible free rate for students aged 5-17?",
+            "evidence": "Excellence rate = NumGE1500 / NumTstTakr; Eligible free rates for students aged 5-17 = `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)`",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MAX(f.\"Percent (%) Eligible Free (Ages 5-17)\") AS HighestEligibleFreeRate\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.NumGE1500 / s.enroll12 > 0.3;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MAX(f.\"Percent (%) Eligible Free (Ages 5-17)\") AS HighestEligibleFreeRate\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.NumGE1500 / s.enroll12 > 0.3;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "13",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "13",
+            "db_id": "california_schools",
+            "question": "Please list the phone numbers of the schools with the top 3 SAT excellence rate.",
+            "evidence": "Excellence rate = NumGE1500 / NumTstTakr",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN (\n    SELECT cds, AVG(AvgScrRead + AvgScrMath + AvgScrWrite) AS avg_sat_score\n    FROM satscores\n    GROUP BY cds\n    ORDER BY avg_sat_score DESC\n    LIMIT 3\n) ss ON s.CDSCode = ss.cds;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN (\n    SELECT cds, AVG(AvgScrRead + AvgScrMath + AvgScrWrite) AS avg_sat_score\n    FROM satscores\n    GROUP BY cds\n    ORDER BY avg_sat_score DESC\n    LIMIT 3\n) ss ON s.CDSCode = ss.cds;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "14",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "14",
+            "db_id": "california_schools",
+            "question": "List the top five schools, by descending order, from the highest to the lowest, the most number of Enrollment (Ages 5-17). Please give their NCES school identification number.",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.NCESSchool\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"(\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.NCESSchool\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "15",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "15",
+            "db_id": "california_schools",
+            "question": "Which active district has the highest average score in Reading?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT District, AVG(ReadingScore) AS AverageReadingScore\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY District\nORDER BY AverageReadingScore DESC\nLIMIT 1;",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such column: ReadingScore",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT District, AVG(ReadingScore) AS AverageReadingScore\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY District\nORDER BY AverageReadingScore DESC\nLIMIT 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "16",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "16",
+            "db_id": "california_schools",
+            "question": "How many schools in merged Alameda have number of test takers less than 100?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(*) \nFROM satscores \nWHERE dname = 'Alameda' AND NumTstTakr < 100;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(*) \nFROM satscores \nWHERE dname = 'Alameda' AND NumTstTakr < 100;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "17",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "17",
+            "db_id": "california_schools",
+            "question": "Rank schools by their average score in Writing where the score is greater than 499, showing their charter numbers.",
+            "evidence": "Valid charter number means the number is not null",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT \n    s.CharterNum, \n    AVG(f.FRPM Count (K-12)) AS AverageWritingScore\nFROM \n    frpm f\nJOIN \n    schools s ON f.CDSCode = s.CDSCode\nWHERE \n    f.FRPM Count (K-12) > 499\nGROUP BY \n    s.CharterNum\nORDER BY \n    AverageWritingScore DESC;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"Count\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT \n    s.CharterNum, \n    AVG(f.FRPM Count (K-12)) AS AverageWritingScore\nFROM \n    frpm f\nJOIN \n    schools s ON f.CDSCode = s.CDSCode\nWHERE \n    f.FRPM Count (K-12) > 499\nGROUP BY \n    s.CharterNum\nORDER BY \n    AverageWritingScore DESC;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "18",
+          "system": "naive_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "18",
+            "db_id": "california_schools",
+            "question": "How many schools in Fresno (directly funded) have number of test takers not more than 250?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT COUNT(*)\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE s.County = 'Fresno'\n  AND s.FundingType = 'Directly Funded'\n  AND f.FRPM Count (K-12) <= 250;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"Count\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(*)\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE s.County = 'Fresno'\n  AND s.FundingType = 'Directly Funded'\n  AND f.FRPM Count (K-12) <= 250;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "19",
+          "system": "naive_baseline",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "19",
+            "db_id": "california_schools",
+            "question": "What is the phone number of the school that has the highest average score in Math?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY ss.AvgScrMath DESC\nLIMIT 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY ss.AvgScrMath DESC\nLIMIT 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "system": "rag_baseline",
+      "tasks_evaluated": 20,
+      "accuracy": 0.15,
+      "metrics": {
+        "avg_execution_success": 0.6,
+        "avg_matched_gold": 0.25,
+        "avg_table_recall": 0.925
+      },
+      "results": [
+        {
+          "case_id": "california_schools_0001",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "california_schools_0001",
+            "db_id": "california_schools",
+            "question": "What is the highest eligible free rate for K-12 students in the schools in Alameda County?",
+            "evidence": "Eligible free rate for K-12 = `Free Meal Count (K-12)` / `Enrollment (K-12)`",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MAX(\"Percent (%) Eligible Free (K-12)\") AS HighestEligibleFreeRate\nFROM frpm\nWHERE \"County Name\" = 'Alameda';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MAX(\"Percent (%) Eligible Free (K-12)\") AS HighestEligibleFreeRate\nFROM frpm\nWHERE \"County Name\" = 'Alameda';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "1",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "1",
+            "db_id": "california_schools",
+            "question": "Please list the lowest three eligible free rates for students aged 5-17 in continuation schools.",
+            "evidence": "Eligible free rates for students aged 5-17 = `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)`",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT \n    School Name, \n    Percent (%) Eligible Free (Ages 5-17) AS EligibleFreeRate\nFROM \n    frpm\nWHERE \n    School Type = 'Continuation'\nORDER BY \n    EligibleFreeRate ASC\nLIMIT 3;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"%\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT \n    School Name, \n    Percent (%) Eligible Free (Ages 5-17) AS EligibleFreeRate\nFROM \n    frpm\nWHERE \n    School Type = 'Continuation'\nORDER BY \n    EligibleFreeRate ASC\nLIMIT 3;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "2",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "2",
+            "db_id": "california_schools",
+            "question": "Please list the zip code of all the charter schools in Fresno County Office of Education.",
+            "evidence": "Charter schools refers to `Charter School (Y/N)` = 1 in the table fprm",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT Zip\nFROM schools\nWHERE County = 'Fresno' AND Charter = 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT Zip\nFROM schools\nWHERE County = 'Fresno' AND Charter = 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "3",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "3",
+            "db_id": "california_schools",
+            "question": "What is the unabbreviated mailing street address of the school with the highest FRPM count for K-12 students?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MailStreet\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    ORDER BY FRPM_Count_(K-12) DESC\n    LIMIT 1\n);",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such function: FRPM_Count_",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MailStreet\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    ORDER BY FRPM_Count_(K-12) DESC\n    LIMIT 1\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "4",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "4",
+            "db_id": "california_schools",
+            "question": "Please list the phone numbers of the direct charter-funded schools that are opened after 2000/1/1.",
+            "evidence": "Charter schools refers to `Charter School (Y/N)` = 1 in the frpm",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT Phone\nFROM schools\nWHERE Charter = 1\n  AND FundingType = 'Charter'\n  AND OpenDate > '2000-01-01';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT Phone\nFROM schools\nWHERE Charter = 1\n  AND FundingType = 'Charter'\n  AND OpenDate > '2000-01-01';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "5",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "5",
+            "db_id": "california_schools",
+            "question": "How many schools with an average score in Math greater than 400 in the SAT test are exclusively virtual?",
+            "evidence": "Exclusively virtual refers to Virtual = 'F'",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "satscores",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(DISTINCT s.CDSCode)\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.AvgScrMath > 400 AND s.Virtual = 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(DISTINCT s.CDSCode)\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.AvgScrMath > 400 AND s.Virtual = 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "6",
+          "system": "rag_baseline",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "6",
+            "db_id": "california_schools",
+            "question": "Among the schools with the SAT test takers of over 500, please list the schools that are magnet schools or offer a magnet program.",
+            "evidence": "Magnet schools or offer a magnet program means that Magnet = 1",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "satscores",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT s.School\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumTstTakr > 500\nAND (s.Magnet = 1 OR s.Magnet = 'Y');",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT s.School\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumTstTakr > 500\nAND (s.Magnet = 1 OR s.Magnet = 'Y');",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "7",
+          "system": "rag_baseline",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "7",
+            "db_id": "california_schools",
+            "question": "What is the phone number of the school that has the highest number of test takers with an SAT score of over 1500?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n);",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "8",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "8",
+            "db_id": "california_schools",
+            "question": "What is the number of SAT test takers of the schools with the highest FRPM count for K-12 students?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.NumTstTakr\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE f.FRPCM (K-12) = (\n    SELECT MAX(FRPCM (K-12))\n    FROM frpm\n);",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"(\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.NumTstTakr\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE f.FRPCM (K-12) = (\n    SELECT MAX(FRPCM (K-12))\n    FROM frpm\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "9",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "9",
+            "db_id": "california_schools",
+            "question": "Among the schools with the average score in Math over 560 in the SAT test, how many schools are directly charter-funded?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_charter_schools\nFROM satscores ss\nJOIN schools s ON ss.cds = s.CDSCode\nWHERE ss.AvgScrMath > 560 AND s.FundingType = 'Charter';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_charter_schools\nFROM satscores ss\nJOIN schools s ON ss.cds = s.CDSCode\nWHERE ss.AvgScrMath > 560 AND s.FundingType = 'Charter';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "10",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "10",
+            "db_id": "california_schools",
+            "question": "For the school with the highest average score in Reading in the SAT test, what is its FRPM count for students aged 5-17?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores);",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "11",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "11",
+            "db_id": "california_schools",
+            "question": "Please list the codes of the schools with a total enrollment of over 500.",
+            "evidence": "Total enrollment can be represented by `Enrollment (K-12)` + `Enrollment (Ages 5-17)`",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT CDSCode\nFROM frpm\nGROUP BY CDSCode\nHAVING SUM(Enrollment (K-12)) > 500;",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such function: Enrollment",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT CDSCode\nFROM frpm\nGROUP BY CDSCode\nHAVING SUM(Enrollment (K-12)) > 500;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "12",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "12",
+            "db_id": "california_schools",
+            "question": "Among the schools with an SAT excellence rate of over 0.3, what is the highest eligible free rate for students aged 5-17?",
+            "evidence": "Excellence rate = NumGE1500 / NumTstTakr; Eligible free rates for students aged 5-17 = `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)`",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MAX(f.\"Percent (%) Eligible Free (Ages 5-17)\") AS HighestEligibleFreeRate\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.NumGE1500 / s.enroll12 > 0.3;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MAX(f.\"Percent (%) Eligible Free (Ages 5-17)\") AS HighestEligibleFreeRate\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.NumGE1500 / s.enroll12 > 0.3;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "13",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "13",
+            "db_id": "california_schools",
+            "question": "Please list the phone numbers of the schools with the top 3 SAT excellence rate.",
+            "evidence": "Excellence rate = NumGE1500 / NumTstTakr",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN (\n    SELECT cds, AVG(AvgScrRead + AvgScrMath + AvgScrWrite) AS avg_sat_score\n    FROM satscores\n    GROUP BY cds\n    ORDER BY avg_sat_score DESC\n    LIMIT 3\n) ss ON s.CDSCode = ss.cds;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN (\n    SELECT cds, AVG(AvgScrRead + AvgScrMath + AvgScrWrite) AS avg_sat_score\n    FROM satscores\n    GROUP BY cds\n    ORDER BY avg_sat_score DESC\n    LIMIT 3\n) ss ON s.CDSCode = ss.cds;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "14",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "14",
+            "db_id": "california_schools",
+            "question": "List the top five schools, by descending order, from the highest to the lowest, the most number of Enrollment (Ages 5-17). Please give their NCES school identification number.",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.NCESSchool\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"(\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.NCESSchool\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "15",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "15",
+            "db_id": "california_schools",
+            "question": "Which active district has the highest average score in Reading?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT District, AVG(ReadingScore) AS AverageReadingScore\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY District\nORDER BY AverageReadingScore DESC\nLIMIT 1;",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such column: ReadingScore",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT District, AVG(ReadingScore) AS AverageReadingScore\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY District\nORDER BY AverageReadingScore DESC\nLIMIT 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "16",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "16",
+            "db_id": "california_schools",
+            "question": "How many schools in merged Alameda have number of test takers less than 100?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(*) \nFROM satscores \nWHERE dname = 'Alameda' AND NumTstTakr < 100;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(*) \nFROM satscores \nWHERE dname = 'Alameda' AND NumTstTakr < 100;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "17",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "17",
+            "db_id": "california_schools",
+            "question": "Rank schools by their average score in Writing where the score is greater than 499, showing their charter numbers.",
+            "evidence": "Valid charter number means the number is not null",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT \n    s.CharterNum, \n    AVG(f.FRPM Count (K-12)) AS AverageWritingScore\nFROM \n    frpm f\nJOIN \n    schools s ON f.CDSCode = s.CDSCode\nWHERE \n    f.FRPM Count (K-12) > 499\nGROUP BY \n    s.CharterNum\nORDER BY \n    AverageWritingScore DESC;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"Count\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT \n    s.CharterNum, \n    AVG(f.FRPM Count (K-12)) AS AverageWritingScore\nFROM \n    frpm f\nJOIN \n    schools s ON f.CDSCode = s.CDSCode\nWHERE \n    f.FRPM Count (K-12) > 499\nGROUP BY \n    s.CharterNum\nORDER BY \n    AverageWritingScore DESC;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "18",
+          "system": "rag_baseline",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "18",
+            "db_id": "california_schools",
+            "question": "How many schools in Fresno (directly funded) have number of test takers not more than 250?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT COUNT(*)\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE s.County = 'Fresno'\n  AND s.FundingType = 'Directly Funded'\n  AND f.FRPM Count (K-12) <= 250;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"Count\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(*)\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE s.County = 'Fresno'\n  AND s.FundingType = 'Directly Funded'\n  AND f.FRPM Count (K-12) <= 250;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "19",
+          "system": "rag_baseline",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "19",
+            "db_id": "california_schools",
+            "question": "What is the phone number of the school that has the highest average score in Math?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY ss.AvgScrMath DESC\nLIMIT 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY ss.AvgScrMath DESC\nLIMIT 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "system": "octo_grounding",
+      "tasks_evaluated": 20,
+      "accuracy": 0.15,
+      "metrics": {
+        "avg_execution_success": 0.6,
+        "avg_matched_gold": 0.25,
+        "avg_table_recall": 0.925
+      },
+      "results": [
+        {
+          "case_id": "california_schools_0001",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "california_schools_0001",
+            "db_id": "california_schools",
+            "question": "What is the highest eligible free rate for K-12 students in the schools in Alameda County?",
+            "evidence": "Eligible free rate for K-12 = `Free Meal Count (K-12)` / `Enrollment (K-12)`",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MAX(\"Percent (%) Eligible Free (K-12)\") AS HighestEligibleFreeRate\nFROM frpm\nWHERE \"County Name\" = 'Alameda';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MAX(\"Percent (%) Eligible Free (K-12)\") AS HighestEligibleFreeRate\nFROM frpm\nWHERE \"County Name\" = 'Alameda';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "1",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "1",
+            "db_id": "california_schools",
+            "question": "Please list the lowest three eligible free rates for students aged 5-17 in continuation schools.",
+            "evidence": "Eligible free rates for students aged 5-17 = `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)`",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT \n    School Name, \n    Percent (%) Eligible Free (Ages 5-17) AS EligibleFreeRate\nFROM \n    frpm\nWHERE \n    School Type = 'Continuation'\nORDER BY \n    EligibleFreeRate ASC\nLIMIT 3;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"%\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT \n    School Name, \n    Percent (%) Eligible Free (Ages 5-17) AS EligibleFreeRate\nFROM \n    frpm\nWHERE \n    School Type = 'Continuation'\nORDER BY \n    EligibleFreeRate ASC\nLIMIT 3;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "2",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "2",
+            "db_id": "california_schools",
+            "question": "Please list the zip code of all the charter schools in Fresno County Office of Education.",
+            "evidence": "Charter schools refers to `Charter School (Y/N)` = 1 in the table fprm",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT Zip\nFROM schools\nWHERE County = 'Fresno' AND Charter = 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT Zip\nFROM schools\nWHERE County = 'Fresno' AND Charter = 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "3",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "3",
+            "db_id": "california_schools",
+            "question": "What is the unabbreviated mailing street address of the school with the highest FRPM count for K-12 students?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MailStreet\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    ORDER BY FRPM_Count_(K-12) DESC\n    LIMIT 1\n);",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such function: FRPM_Count_",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MailStreet\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    ORDER BY FRPM_Count_(K-12) DESC\n    LIMIT 1\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "4",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "4",
+            "db_id": "california_schools",
+            "question": "Please list the phone numbers of the direct charter-funded schools that are opened after 2000/1/1.",
+            "evidence": "Charter schools refers to `Charter School (Y/N)` = 1 in the frpm",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT Phone\nFROM schools\nWHERE Charter = 1\n  AND FundingType = 'Charter'\n  AND OpenDate > '2000-01-01';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT Phone\nFROM schools\nWHERE Charter = 1\n  AND FundingType = 'Charter'\n  AND OpenDate > '2000-01-01';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "5",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "5",
+            "db_id": "california_schools",
+            "question": "How many schools with an average score in Math greater than 400 in the SAT test are exclusively virtual?",
+            "evidence": "Exclusively virtual refers to Virtual = 'F'",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "satscores",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(DISTINCT s.CDSCode)\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.AvgScrMath > 400 AND s.Virtual = 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(DISTINCT s.CDSCode)\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.AvgScrMath > 400 AND s.Virtual = 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "6",
+          "system": "octo_grounding",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "6",
+            "db_id": "california_schools",
+            "question": "Among the schools with the SAT test takers of over 500, please list the schools that are magnet schools or offer a magnet program.",
+            "evidence": "Magnet schools or offer a magnet program means that Magnet = 1",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "satscores",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT s.School\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumTstTakr > 500\nAND (s.Magnet = 1 OR s.Magnet = 'Y');",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT s.School\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumTstTakr > 500\nAND (s.Magnet = 1 OR s.Magnet = 'Y');",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "7",
+          "system": "octo_grounding",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "7",
+            "db_id": "california_schools",
+            "question": "What is the phone number of the school that has the highest number of test takers with an SAT score of over 1500?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n);",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "8",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "8",
+            "db_id": "california_schools",
+            "question": "What is the number of SAT test takers of the schools with the highest FRPM count for K-12 students?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.NumTstTakr\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE f.FRPCM (K-12) = (\n    SELECT MAX(FRPCM (K-12))\n    FROM frpm\n);",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"(\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.NumTstTakr\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE f.FRPCM (K-12) = (\n    SELECT MAX(FRPCM (K-12))\n    FROM frpm\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "9",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "9",
+            "db_id": "california_schools",
+            "question": "Among the schools with the average score in Math over 560 in the SAT test, how many schools are directly charter-funded?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_charter_schools\nFROM satscores ss\nJOIN schools s ON ss.cds = s.CDSCode\nWHERE ss.AvgScrMath > 560 AND s.FundingType = 'Charter';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_charter_schools\nFROM satscores ss\nJOIN schools s ON ss.cds = s.CDSCode\nWHERE ss.AvgScrMath > 560 AND s.FundingType = 'Charter';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "10",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "10",
+            "db_id": "california_schools",
+            "question": "For the school with the highest average score in Reading in the SAT test, what is its FRPM count for students aged 5-17?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores);",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "11",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "11",
+            "db_id": "california_schools",
+            "question": "Please list the codes of the schools with a total enrollment of over 500.",
+            "evidence": "Total enrollment can be represented by `Enrollment (K-12)` + `Enrollment (Ages 5-17)`",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT CDSCode\nFROM frpm\nGROUP BY CDSCode\nHAVING SUM(Enrollment (K-12)) > 500;",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such function: Enrollment",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT CDSCode\nFROM frpm\nGROUP BY CDSCode\nHAVING SUM(Enrollment (K-12)) > 500;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "12",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "12",
+            "db_id": "california_schools",
+            "question": "Among the schools with an SAT excellence rate of over 0.3, what is the highest eligible free rate for students aged 5-17?",
+            "evidence": "Excellence rate = NumGE1500 / NumTstTakr; Eligible free rates for students aged 5-17 = `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)`",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MAX(f.\"Percent (%) Eligible Free (Ages 5-17)\") AS HighestEligibleFreeRate\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.NumGE1500 / s.enroll12 > 0.3;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MAX(f.\"Percent (%) Eligible Free (Ages 5-17)\") AS HighestEligibleFreeRate\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.NumGE1500 / s.enroll12 > 0.3;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "13",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "13",
+            "db_id": "california_schools",
+            "question": "Please list the phone numbers of the schools with the top 3 SAT excellence rate.",
+            "evidence": "Excellence rate = NumGE1500 / NumTstTakr",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN (\n    SELECT cds, AVG(AvgScrRead + AvgScrMath + AvgScrWrite) AS avg_sat_score\n    FROM satscores\n    GROUP BY cds\n    ORDER BY avg_sat_score DESC\n    LIMIT 3\n) ss ON s.CDSCode = ss.cds;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN (\n    SELECT cds, AVG(AvgScrRead + AvgScrMath + AvgScrWrite) AS avg_sat_score\n    FROM satscores\n    GROUP BY cds\n    ORDER BY avg_sat_score DESC\n    LIMIT 3\n) ss ON s.CDSCode = ss.cds;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "14",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "14",
+            "db_id": "california_schools",
+            "question": "List the top five schools, by descending order, from the highest to the lowest, the most number of Enrollment (Ages 5-17). Please give their NCES school identification number.",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.NCESSchool\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"(\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.NCESSchool\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "15",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "15",
+            "db_id": "california_schools",
+            "question": "Which active district has the highest average score in Reading?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT District, AVG(ReadingScore) AS AverageReadingScore\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY District\nORDER BY AverageReadingScore DESC\nLIMIT 1;",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such column: ReadingScore",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT District, AVG(ReadingScore) AS AverageReadingScore\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY District\nORDER BY AverageReadingScore DESC\nLIMIT 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "16",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "16",
+            "db_id": "california_schools",
+            "question": "How many schools in merged Alameda have number of test takers less than 100?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(*) \nFROM satscores \nWHERE dname = 'Alameda' AND NumTstTakr < 100;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(*) \nFROM satscores \nWHERE dname = 'Alameda' AND NumTstTakr < 100;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "17",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "17",
+            "db_id": "california_schools",
+            "question": "Rank schools by their average score in Writing where the score is greater than 499, showing their charter numbers.",
+            "evidence": "Valid charter number means the number is not null",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT \n    s.CharterNum, \n    AVG(f.FRPM Count (K-12)) AS AverageWritingScore\nFROM \n    frpm f\nJOIN \n    schools s ON f.CDSCode = s.CDSCode\nWHERE \n    f.FRPM Count (K-12) > 499\nGROUP BY \n    s.CharterNum\nORDER BY \n    AverageWritingScore DESC;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"Count\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT \n    s.CharterNum, \n    AVG(f.FRPM Count (K-12)) AS AverageWritingScore\nFROM \n    frpm f\nJOIN \n    schools s ON f.CDSCode = s.CDSCode\nWHERE \n    f.FRPM Count (K-12) > 499\nGROUP BY \n    s.CharterNum\nORDER BY \n    AverageWritingScore DESC;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "18",
+          "system": "octo_grounding",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "18",
+            "db_id": "california_schools",
+            "question": "How many schools in Fresno (directly funded) have number of test takers not more than 250?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT COUNT(*)\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE s.County = 'Fresno'\n  AND s.FundingType = 'Directly Funded'\n  AND f.FRPM Count (K-12) <= 250;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"Count\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(*)\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE s.County = 'Fresno'\n  AND s.FundingType = 'Directly Funded'\n  AND f.FRPM Count (K-12) <= 250;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "19",
+          "system": "octo_grounding",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "19",
+            "db_id": "california_schools",
+            "question": "What is the phone number of the school that has the highest average score in Math?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY ss.AvgScrMath DESC\nLIMIT 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY ss.AvgScrMath DESC\nLIMIT 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "system": "octo_with_evidence",
+      "tasks_evaluated": 20,
+      "accuracy": 0.15,
+      "metrics": {
+        "avg_execution_success": 0.6,
+        "avg_matched_gold": 0.25,
+        "avg_table_recall": 0.925
+      },
+      "results": [
+        {
+          "case_id": "california_schools_0001",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "california_schools_0001",
+            "db_id": "california_schools",
+            "question": "What is the highest eligible free rate for K-12 students in the schools in Alameda County?",
+            "evidence": "Eligible free rate for K-12 = `Free Meal Count (K-12)` / `Enrollment (K-12)`",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MAX(\"Percent (%) Eligible Free (K-12)\") AS HighestEligibleFreeRate\nFROM frpm\nWHERE \"County Name\" = 'Alameda';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MAX(\"Percent (%) Eligible Free (K-12)\") AS HighestEligibleFreeRate\nFROM frpm\nWHERE \"County Name\" = 'Alameda';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "1",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "1",
+            "db_id": "california_schools",
+            "question": "Please list the lowest three eligible free rates for students aged 5-17 in continuation schools.",
+            "evidence": "Eligible free rates for students aged 5-17 = `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)`",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT \n    School Name, \n    `Percent (%) Eligible Free (Ages 5-17)` AS EligibleFreeRate\nFROM \n    frpm\nWHERE \n    School Type = 'Continuation'\nORDER BY \n    EligibleFreeRate ASC\nLIMIT 3;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"Type\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT \n    School Name, \n    `Percent (%) Eligible Free (Ages 5-17)` AS EligibleFreeRate\nFROM \n    frpm\nWHERE \n    School Type = 'Continuation'\nORDER BY \n    EligibleFreeRate ASC\nLIMIT 3;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "2",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "2",
+            "db_id": "california_schools",
+            "question": "Please list the zip code of all the charter schools in Fresno County Office of Education.",
+            "evidence": "Charter schools refers to `Charter School (Y/N)` = 1 in the table fprm",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT s.Zip\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE f.`Charter School (Y/N)` = 1 AND s.County = 'Fresno';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT s.Zip\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE f.`Charter School (Y/N)` = 1 AND s.County = 'Fresno';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "3",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "3",
+            "db_id": "california_schools",
+            "question": "What is the unabbreviated mailing street address of the school with the highest FRPM count for K-12 students?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MailStreet\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    ORDER BY FRPM_Count_(K-12) DESC\n    LIMIT 1\n);",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such function: FRPM_Count_",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MailStreet\nFROM schools\nWHERE CDSCode = (\n    SELECT CDSCode\n    FROM frpm\n    ORDER BY FRPM_Count_(K-12) DESC\n    LIMIT 1\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "4",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "4",
+            "db_id": "california_schools",
+            "question": "Please list the phone numbers of the direct charter-funded schools that are opened after 2000/1/1.",
+            "evidence": "Charter schools refers to `Charter School (Y/N)` = 1 in the frpm",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "frpm",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT s.Phone\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE f.`Charter School (Y/N)` = 1\nAND s.OpenDate > '2000-01-01';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT s.Phone\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nWHERE f.`Charter School (Y/N)` = 1\nAND s.OpenDate > '2000-01-01';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "5",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "5",
+            "db_id": "california_schools",
+            "question": "How many schools with an average score in Math greater than 400 in the SAT test are exclusively virtual?",
+            "evidence": "Exclusively virtual refers to Virtual = 'F'",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_schools\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.AvgScrMath > 400 AND s.Virtual = 'F';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_schools\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.AvgScrMath > 400 AND s.Virtual = 'F';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "6",
+          "system": "octo_with_evidence",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "6",
+            "db_id": "california_schools",
+            "question": "Among the schools with the SAT test takers of over 500, please list the schools that are magnet schools or offer a magnet program.",
+            "evidence": "Magnet schools or offer a magnet program means that Magnet = 1",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT s.School\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumTstTakr > 500 AND s.Magnet = 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT s.School\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumTstTakr > 500 AND s.Magnet = 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "7",
+          "system": "octo_with_evidence",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "7",
+            "db_id": "california_schools",
+            "question": "What is the phone number of the school that has the highest number of test takers with an SAT score of over 1500?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "schools"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n);",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nWHERE ss.NumGE1500 = (\n    SELECT MAX(NumGE1500)\n    FROM satscores\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "8",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "8",
+            "db_id": "california_schools",
+            "question": "What is the number of SAT test takers of the schools with the highest FRPM count for K-12 students?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "schools",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.NumTstTakr\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE f.FRPCM (K-12) = (\n    SELECT MAX(FRPCM (K-12))\n    FROM frpm\n);",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"(\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.NumTstTakr\nFROM satscores s\nJOIN frpm f ON s.cds = f.CDSCode\nWHERE f.FRPCM (K-12) = (\n    SELECT MAX(FRPCM (K-12))\n    FROM frpm\n);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "9",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "9",
+            "db_id": "california_schools",
+            "question": "Among the schools with the average score in Math over 560 in the SAT test, how many schools are directly charter-funded?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_charter_schools\nFROM satscores ss\nJOIN schools s ON ss.cds = s.CDSCode\nWHERE ss.AvgScrMath > 560 AND s.FundingType = 'Charter';",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(DISTINCT s.CDSCode) AS num_charter_schools\nFROM satscores ss\nJOIN schools s ON ss.cds = s.CDSCode\nWHERE ss.AvgScrMath > 560 AND s.FundingType = 'Charter';",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "10",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "10",
+            "db_id": "california_schools",
+            "question": "For the school with the highest average score in Reading in the SAT test, what is its FRPM count for students aged 5-17?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "satscores",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores);",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT f.\"FRPM Count (Ages 5-17)\"\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.AvgScrRead = (SELECT MAX(AvgScrRead) FROM satscores);",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "11",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "11",
+            "db_id": "california_schools",
+            "question": "Please list the codes of the schools with a total enrollment of over 500.",
+            "evidence": "Total enrollment can be represented by `Enrollment (K-12)` + `Enrollment (Ages 5-17)`",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT DISTINCT CDSCode\nFROM frpm\nWHERE (Enrollment (K-12) + Enrollment (Ages 5-17)) > 500;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"5\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT DISTINCT CDSCode\nFROM frpm\nWHERE (Enrollment (K-12) + Enrollment (Ages 5-17)) > 500;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "12",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "12",
+            "db_id": "california_schools",
+            "question": "Among the schools with an SAT excellence rate of over 0.3, what is the highest eligible free rate for students aged 5-17?",
+            "evidence": "Excellence rate = NumGE1500 / NumTstTakr; Eligible free rates for students aged 5-17 = `Free Meal Count (Ages 5-17)` / `Enrollment (Ages 5-17)`",
+            "difficulty": "moderate",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT MAX(f.`Free Meal Count (Ages 5-17)` / f.`Enrollment (Ages 5-17)`) AS HighestEligibleFreeRate\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.NumGE1500 / s.NumTstTakr > 0.3;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT MAX(f.`Free Meal Count (Ages 5-17)` / f.`Enrollment (Ages 5-17)`) AS HighestEligibleFreeRate\nFROM frpm f\nJOIN satscores s ON f.CDSCode = s.cds\nWHERE s.NumGE1500 / s.NumTstTakr > 0.3;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "13",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "13",
+            "db_id": "california_schools",
+            "question": "Please list the phone numbers of the schools with the top 3 SAT excellence rate.",
+            "evidence": "Excellence rate = NumGE1500 / NumTstTakr",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "satscores",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY (ss.NumGE1500 / ss.NumTstTakr) DESC\nLIMIT 3;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY (ss.NumGE1500 / ss.NumTstTakr) DESC\nLIMIT 3;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "14",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "14",
+            "db_id": "california_schools",
+            "question": "List the top five schools, by descending order, from the highest to the lowest, the most number of Enrollment (Ages 5-17). Please give their NCES school identification number.",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "satscores",
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "satscores->schools",
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "frpm"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.NCESSchool\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"(\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.NCESSchool\nFROM schools s\nJOIN frpm f ON s.CDSCode = f.CDSCode\nORDER BY f.Enrollment (Ages 5-17) DESC\nLIMIT 5;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "15",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "15",
+            "db_id": "california_schools",
+            "question": "Which active district has the highest average score in Reading?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT District, AVG(ReadingScore) AS AverageReadingScore\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY District\nORDER BY AverageReadingScore DESC\nLIMIT 1;",
+            "execution_success": false,
+            "execution_error": "OperationalError: no such column: ReadingScore",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT District, AVG(ReadingScore) AS AverageReadingScore\nFROM frpm\nJOIN schools ON frpm.CDSCode = schools.CDSCode\nWHERE schools.StatusType = 'Active'\nGROUP BY District\nORDER BY AverageReadingScore DESC\nLIMIT 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "16",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": false,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "16",
+            "db_id": "california_schools",
+            "question": "How many schools in merged Alameda have number of test takers less than 100?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "frpm",
+              "satscores",
+              "schools"
+            ],
+            "candidate_join_path": [
+              "frpm->schools"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT COUNT(*) \nFROM satscores \nWHERE dname = 'Alameda' AND NumTstTakr < 100;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": false,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(*) \nFROM satscores \nWHERE dname = 'Alameda' AND NumTstTakr < 100;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "17",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "17",
+            "db_id": "california_schools",
+            "question": "Rank schools by their average score in Writing where the score is greater than 499, showing their charter numbers.",
+            "evidence": "Valid charter number means the number is not null",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT \n    s.School, \n    s.CharterNum, \n    AVG(f.FRPM Count (K-12)) AS AverageWritingScore\nFROM \n    frpm f\nJOIN \n    schools s ON f.CDSCode = s.CDSCode\nWHERE \n    f.FRPM Count (K-12) > 499 \n    AND s.CharterNum IS NOT NULL\nGROUP BY \n    s.School, s.CharterNum\nORDER BY \n    AverageWritingScore DESC;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"Count\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT \n    s.School, \n    s.CharterNum, \n    AVG(f.FRPM Count (K-12)) AS AverageWritingScore\nFROM \n    frpm f\nJOIN \n    schools s ON f.CDSCode = s.CDSCode\nWHERE \n    f.FRPM Count (K-12) > 499 \n    AND s.CharterNum IS NOT NULL\nGROUP BY \n    s.School, s.CharterNum\nORDER BY \n    AverageWritingScore DESC;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "18",
+          "system": "octo_with_evidence",
+          "correct": false,
+          "metrics": {
+            "execution_success": false,
+            "matched_gold": null,
+            "table_recall": 0.5,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "18",
+            "db_id": "california_schools",
+            "question": "How many schools in Fresno (directly funded) have number of test takers not more than 250?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm"
+            ],
+            "candidate_join_path": [
+              "schools->frpm"
+            ],
+            "gold_tables": [
+              "frpm",
+              "satscores"
+            ],
+            "table_recall": 0.5,
+            "generated_sql": "SELECT COUNT(*)\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE s.County = 'Fresno'\n  AND s.FundingType = 'Directly Funded'\n  AND f.FRPM Count (K-12) <= 250;",
+            "execution_success": false,
+            "execution_error": "OperationalError: near \"Count\": syntax error",
+            "matched_gold": null,
+            "sql_candidates": [
+              {
+                "sql": "SELECT COUNT(*)\nFROM frpm f\nJOIN schools s ON f.CDSCode = s.CDSCode\nWHERE s.County = 'Fresno'\n  AND s.FundingType = 'Directly Funded'\n  AND f.FRPM Count (K-12) <= 250;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        },
+        {
+          "case_id": "19",
+          "system": "octo_with_evidence",
+          "correct": true,
+          "metrics": {
+            "execution_success": true,
+            "matched_gold": true,
+            "table_recall": 1.0,
+            "has_sql": true
+          },
+          "detail": {
+            "task_id": "19",
+            "db_id": "california_schools",
+            "question": "What is the phone number of the school that has the highest average score in Math?",
+            "evidence": "",
+            "difficulty": "simple",
+            "candidate_tables": [
+              "schools",
+              "frpm",
+              "satscores"
+            ],
+            "candidate_join_path": [
+              "frpm->schools",
+              "schools->satscores"
+            ],
+            "gold_tables": [
+              "schools",
+              "satscores"
+            ],
+            "table_recall": 1.0,
+            "generated_sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY ss.AvgScrMath DESC\nLIMIT 1;",
+            "execution_success": true,
+            "execution_error": null,
+            "matched_gold": true,
+            "sql_candidates": [
+              {
+                "sql": "SELECT s.Phone\nFROM schools s\nJOIN satscores ss ON s.CDSCode = ss.cds\nORDER BY ss.AvgScrMath DESC\nLIMIT 1;",
+                "strategy": "ollama",
+                "rationale": "Ollama SQL candidate 1"
+              }
+            ],
+            "repair_attempts": [],
+            "strategy": "ollama",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "split": "dev",
+    "tasks_count": 20,
+    "sql_backend": "ollama",
+    "max_candidates": 1,
+    "use_repair": false
+  }
+}

@@ -1,8 +1,8 @@
-# BENDER Design Objections and Responses
+# OCTO Design Objections and Responses
 
 ## Purpose
 
-This document is a peer-facing review note for the strongest arguments against the current BENDER design.
+This document is a peer-facing review note for the strongest arguments against the current OCTO design.
 
 It is not a marketing document. The goal is to:
 
@@ -13,7 +13,7 @@ It is not a marketing document. The goal is to:
 
 ## Framing
 
-BENDER should be evaluated as a staged systems architecture, not as a claim that every current module is already production-grade.
+OCTO should be evaluated as a staged systems architecture, not as a claim that every current module is already production-grade.
 
 That framing matters because several objections are correct about the current implementation while still being compatible with the long-term design direction.
 
@@ -26,7 +26,7 @@ The most useful way to organize those objections is into four themes:
 
 ## Theme A: Performance and Latency
 
-These objections are about whether BENDER can remain usable in a real serving path rather than only in an offline or demo setting.
+These objections are about whether OCTO can remain usable in a real serving path rather than only in an offline or demo setting.
 
 ### A1. Significant latency overhead
 
@@ -40,7 +40,7 @@ Valid.
 
 #### Response
 
-BENDER should not assume that every request or every decode step receives the full coprocessor treatment. The correct operating model is selective activation:
+OCTO should not assume that every request or every decode step receives the full coprocessor treatment. The correct operating model is selective activation:
 
 - light handling for simple requests,
 - bounded coprocessor work at prefill for many requests,
@@ -76,7 +76,7 @@ Valid and product-critical.
 
 #### Response
 
-TTFT is the real product constraint, not abstract end-to-end latency. BENDER should therefore support asynchronous and bounded execution modes instead of forcing all reasoning to complete before the first token.
+TTFT is the real product constraint, not abstract end-to-end latency. OCTO should therefore support asynchronous and bounded execution modes instead of forcing all reasoning to complete before the first token.
 
 #### Architecture improvement
 
@@ -211,7 +211,7 @@ The intended production direction is:
 
 #### Objection
 
-The strongest form of the BENDER claim is native hidden-state participation, but the core BENDER integration interface still contains abstract or incomplete native backend stubs.
+The strongest form of the OCTO claim is native hidden-state participation, but the core OCTO integration interface still contains abstract or incomplete native backend stubs.
 
 #### Assessment
 
@@ -219,7 +219,7 @@ Partially valid.
 
 #### Response
 
-Inside the `bender` directory, the native integration interface remains a contract rather than a production backend. But the gap is no longer total. The request-scoped native prototype now exists in ScalarLM's Tokenformer path and the Hello World native prototype demonstrates per-request latent influence.
+Inside the `octo` directory, the native integration interface remains a contract rather than a production backend. But the gap is no longer total. The request-scoped native prototype now exists in ScalarLM's Tokenformer path and the Hello World native prototype demonstrates per-request latent influence.
 
 The correct criticism is:
 
@@ -230,7 +230,7 @@ The correct criticism is:
 
 Keep the distinction explicit in docs and reviews:
 
-- BENDER core defines the runtime contract,
+- OCTO core defines the runtime contract,
 - ScalarLM/vLLM provides the current request-scoped native prototype,
 - future work is a full live-serving backend with real request entrypoints, observability, and benchmarking.
 
@@ -260,7 +260,7 @@ Keep uncertainty handling modular:
 
 ## Theme C: Data Engineering
 
-These objections are about how BENDER acquires and maintains a useful world model.
+These objections are about how OCTO acquires and maintains a useful world model.
 
 ### C1. Graph construction bottleneck
 
@@ -274,7 +274,7 @@ Valid and important.
 
 #### Response
 
-This is one of the biggest real deployment barriers. BENDER is best suited initially to domains that already have structured assets, curated operational data, or usable ontologies.
+This is one of the biggest real deployment barriers. OCTO is best suited initially to domains that already have structured assets, curated operational data, or usable ontologies.
 
 The design should not imply that open-domain dynamic graph construction is already solved.
 
@@ -302,7 +302,7 @@ Valid.
 
 #### Response
 
-BENDER is not the simplest path. It is only justified where the problem actually requires:
+OCTO is not the simplest path. It is only justified where the problem actually requires:
 
 - persistent structured state,
 - auditable provenance,
@@ -364,7 +364,7 @@ Virtual graph or zero-ETL approaches may help early deployments reduce up-front 
 Allow hybrid deployment:
 
 - virtualized graph access for initial pilots,
-- persistent BENDER-managed state for high-value entities, constraints, and hypotheses,
+- persistent OCTO-managed state for high-value entities, constraints, and hypotheses,
 - progressive migration from query-time virtualization to durable world-model layers where warranted.
 
 ## Theme D: Integration Risk
@@ -385,7 +385,7 @@ Very strong objection.
 
 There is no guarantee that arbitrary structured perturbations will be interpreted cleanly by a frozen base model. That is why the first native path should be bounded and residual rather than invasive.
 
-BENDER does not require the base model to "understand" symbolic packets literally. It requires the serving stack to provide a model-compatible way to bias latent computation.
+OCTO does not require the base model to "understand" symbolic packets literally. It requires the serving stack to provide a model-compatible way to bias latent computation.
 
 #### Architecture improvement
 
@@ -403,7 +403,7 @@ Fine-tuning may still help in some domains, but it should not be the default ans
 
 #### Objection
 
-For many tasks, ordinary RAG or prompt engineering is good enough, making BENDER unnecessarily heavy.
+For many tasks, ordinary RAG or prompt engineering is good enough, making OCTO unnecessarily heavy.
 
 #### Assessment
 
@@ -411,7 +411,7 @@ True.
 
 #### Response
 
-BENDER should not be presented as the right architecture for every workload. Its strongest use cases are those where plain RAG does not adequately support:
+OCTO should not be presented as the right architecture for every workload. Its strongest use cases are those where plain RAG does not adequately support:
 
 - persistent state,
 - structured exceptions,
@@ -437,7 +437,7 @@ Pair this with progressive fallback:
 
 The current ScalarLM integration is important because it directly addresses several of the hardest objections.
 
-It gives BENDER:
+It gives OCTO:
 
 - a request-scoped native path rather than a static adapter swap,
 - an efficient serving substrate rather than a custom model stack,
@@ -454,7 +454,7 @@ It also creates a path to improve cost-benefit over time:
 
 ## Bottom line
 
-The strongest objections to BENDER are mostly real engineering constraints, not fatal conceptual flaws.
+The strongest objections to OCTO are mostly real engineering constraints, not fatal conceptual flaws.
 
 The right response is:
 

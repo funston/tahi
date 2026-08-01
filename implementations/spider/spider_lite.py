@@ -8,9 +8,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from bender.database import SQLColumnProfile, SQLForeignKey, SQLSchemaSnapshot, SQLTableProfile
+from octo.database import SQLColumnProfile, SQLForeignKey, SQLSchemaSnapshot, SQLTableProfile
 from .spider import SpiderSchemaCoprocessor
-from bender.world_state import WorldModel
+from octo.world_state import WorldModel
 
 
 def _coerce_string(value: Any, default: str = "") -> str:

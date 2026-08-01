@@ -7,8 +7,8 @@ from pathlib import Path
 COLORS = {
     "naive_lexical": "#8c8c8c",
     "schema_only": "#4c78a8",
-    "bender": "#f58518",
-    "bender_with_evidence": "#54a24b",
+    "octo": "#f58518",
+    "octo_with_evidence": "#54a24b",
 }
 
 
@@ -176,8 +176,8 @@ def _legend_html() -> str:
     items = [
         ("naive_lexical", "Simple lexical table matching baseline with no world model."),
         ("schema_only", "BENDER schema coprocessor over parsed schema only, with no enriched world metadata."),
-        ("bender", "BENDER world-model grounding with enriched metadata/documents, but no extra task evidence injected."),
-        ("bender_with_evidence", "BENDER world-model grounding plus the dataset's task evidence field injected into the query path."),
+        ("octo", "BENDER world-model grounding with enriched metadata/documents, but no extra task evidence injected."),
+        ("octo_with_evidence", "BENDER world-model grounding plus the dataset's task evidence field injected into the query path."),
     ]
     rows = []
     for key, description in items:
@@ -208,7 +208,7 @@ def _delta(a: float, b: float) -> float:
 
 def _metric_context_panel(bird: dict, gretel: dict) -> str:
     bird_schema = _system(bird, "schema_only")
-    bird_evidence = _system(bird, "bender_with_evidence")
+    bird_evidence = _system(bird, "octo_with_evidence")
     bird_delta_acc = _delta(_metric(bird_evidence, "accuracy"), _metric(bird_schema, "accuracy"))
     bird_delta_recall = _delta(_metric(bird_evidence, "avg_table_recall"), _metric(bird_schema, "avg_table_recall"))
     bird_delta_top1 = _delta(_metric(bird_evidence, "avg_top1_hit"), _metric(bird_schema, "avg_top1_hit"))
@@ -239,17 +239,17 @@ def _metric_context_panel(bird: dict, gretel: dict) -> str:
         </thead>
         <tbody>
           <tr>
-            <td><code>bender_with_evidence</code> vs <code>schema_only</code> accuracy</td>
+            <td><code>octo_with_evidence</code> vs <code>schema_only</code> accuracy</td>
             <td>{bird_delta_acc:+.3f}</td>
             <td>Evidence-aware grounding improves full gold-table recall by 6.3 points on BIRD dev.</td>
           </tr>
           <tr>
-            <td><code>bender_with_evidence</code> vs <code>schema_only</code> avg table recall</td>
+            <td><code>octo_with_evidence</code> vs <code>schema_only</code> avg table recall</td>
             <td>{bird_delta_recall:+.3f}</td>
             <td>The evidence path improves average gold-table coverage across the dev set.</td>
           </tr>
           <tr>
-            <td><code>bender_with_evidence</code> vs <code>schema_only</code> avg top-1 hit</td>
+            <td><code>octo_with_evidence</code> vs <code>schema_only</code> avg top-1 hit</td>
             <td>{bird_delta_top1:+.3f}</td>
             <td>Top-1 ranking gets slightly worse, which suggests recall improved by broadening the candidate set rather than sharpening rank-1 precision.</td>
           </tr>

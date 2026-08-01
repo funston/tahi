@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from bender import WorldModel, WorldModelStore
+from octo import WorldModel, WorldModelStore
 
 
 class WorldModelStoreTests(unittest.TestCase):

@@ -5,7 +5,7 @@
 Large enterprise and benchmark databases often do not fail because they have too little schema.
 They fail because they have too much flat schema presented without structure.
 
-BENDER's reusable approach is:
+OCTO's reusable approach is:
 
 1. compress related tables into schema families,
 2. plan first at the family level,
@@ -26,7 +26,7 @@ The generic compression layer groups near-duplicate tables into `SchemaFamily` c
 
 This is implemented in:
 
-- `src/bender/schema_compression.py`
+- `src/octo/schema_compression.py`
 
 The output is a `SchemaCompressionPlan` with:
 
@@ -44,7 +44,7 @@ The compression plan is projected into the world model so retrieval can see:
 
 This is implemented in:
 
-- `src/bender/database.py`
+- `src/octo/database.py`
 
 That means downstream retrieval is no longer forced to choose from a flat list of hundreds of raw tables.
 
@@ -81,7 +81,7 @@ The reusable pattern is:
 
 The specific planner for this database is implemented in:
 
-- `src/bender/spider_tcga.py`
+- `src/octo/spider_tcga.py`
 
 It extracts hints such as:
 
@@ -89,10 +89,10 @@ It extracts hints such as:
 - release tokens like `R23`
 - chromosome and cytoband mentions
 - modality phrases like:
-  - `copy number segment allelic`
-  - `cytobands`
-  - `Mitelman`
-  - `Pearson correlation`
+ - `copy number segment allelic`
+ - `cytobands`
+ - `Mitelman`
+ - `Pearson correlation`
 
 Then it resolves those hints into:
 
@@ -103,14 +103,14 @@ Then it resolves those hints into:
 Examples:
 
 - copy-number + cytoband tasks prefer:
-  - `TCGA_VERSIONED.COPY_NUMBER_SEGMENT_ALLELIC_HG38_GDC_R23`
-  - `PROD.CYTOBANDS_HG38`
+ - `TCGA_VERSIONED.COPY_NUMBER_SEGMENT_ALLELIC_HG38_GDC_R23`
+ - `PROD.CYTOBANDS_HG38`
 - Mitelman correlation tasks additionally prefer:
-  - `PROD.CYTOGENINVVALID`
-  - `PROD.REFERENCE`
-  - `PROD.CYTOGEN`
-  - `PROD.KODER`
-  - `PROD.CYTOCONVERTED`
+ - `PROD.CYTOGENINVVALID`
+ - `PROD.REFERENCE`
+ - `PROD.CYTOGEN`
+ - `PROD.KODER`
+ - `PROD.CYTOCONVERTED`
 
 ## Current Outcome
 
@@ -140,7 +140,7 @@ For enterprise onboarding, this same pattern generalizes cleanly:
 - build schema families,
 - let admins inspect family groupings,
 - attach domain hints and policies,
-- run with/without BENDER evaluations,
+- run with/without OCTO evaluations,
 - then promote the compressed world into production inference.
 
 That is more usable than exposing users to hundreds of raw tables and expecting prompting alone to solve the problem.

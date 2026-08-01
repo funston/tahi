@@ -1,0 +1,16 @@
+# OCTO Requirements
+
+# Core dependencies
+numpy>=1.26.0
+sqlglot>=25.0.0
+
+# Vector search and embeddings
+faiss-cpu>=1.8.0
+sentence-transformers>=3.0.0
+
+# LLM providers (swappable)
+openai>=1.30.0
+anthropic>=0.28.0
+
+# For development/testing
+pytest>=8.0.0

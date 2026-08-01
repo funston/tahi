@@ -1,10 +1,10 @@
-# BENDER Distinctions
+# OCTO Distinctions
 
 ## Purpose
 
-This document states the shortest defensible distinctions between BENDER and adjacent approaches.
+This document states the shortest defensible distinctions between OCTO and adjacent approaches.
 
-## BENDER vs RAG
+## OCTO vs RAG
 
 RAG is a retrieval pattern:
 
@@ -12,7 +12,7 @@ RAG is a retrieval pattern:
 - place it into the prompt or context stream,
 - let the model continue generation.
 
-BENDER is a coprocessor runtime:
+OCTO is a coprocessor runtime:
 
 - maintain explicit world state outside the prompt,
 - retrieve typed graph state,
@@ -20,13 +20,13 @@ BENDER is a coprocessor runtime:
 - emit a model-facing control packet,
 - optionally influence hidden-state computation through a native path.
 
-If a system only retrieves graph context and serializes it into prompt text, it should be described as a weak compatibility mode, not the strongest form of BENDER.
+If a system only retrieves graph context and serializes it into prompt text, it should be described as a weak compatibility mode, not the strongest form of OCTO.
 
-## BENDER vs Fine-Tuning
+## OCTO vs Fine-Tuning
 
 Fine-tuning is an offline weight adaptation method.
 
-BENDER is an inference-time systems architecture.
+OCTO is an inference-time systems architecture.
 
 Fine-tuning changes:
 
@@ -34,7 +34,7 @@ Fine-tuning changes:
 - what the model has internalized,
 - behavior across future requests.
 
-BENDER changes:
+OCTO changes:
 
 - what structured state the system can maintain,
 - what domain logic can run at inference time,
@@ -43,11 +43,11 @@ BENDER changes:
 
 They can be combined, but they are not the same thing.
 
-## BENDER vs KAA
+## OCTO vs KAA
 
 Knowledge-Augmented Attention is a candidate mechanism family for mixing model-side and graph-side signals.
 
-BENDER is broader. It includes:
+OCTO is broader. It includes:
 
 - capture,
 - retrieval,
@@ -58,13 +58,13 @@ BENDER is broader. It includes:
 - provenance,
 - request-scoped runtime control.
 
-KAA may be one mechanism inside BENDER. It is not identical to BENDER.
+KAA may be one mechanism inside OCTO. It is not identical to OCTO.
 
-## BENDER vs GITA-like Graph-Attention Methods
+## OCTO vs GITA-like Graph-Attention Methods
 
 Graph-integrated transformer attention methods are mechanism-level proposals. They describe how graph-derived information might enter attention or latent computation.
 
-BENDER is a system-level proposal. It asks:
+OCTO is a system-level proposal. It asks:
 
 - where persistent world state lives,
 - how that state is retrieved,
@@ -72,8 +72,8 @@ BENDER is a system-level proposal. It asks:
 - how provenance is preserved,
 - how request-scoped control reaches the model.
 
-A GITA-like mechanism could be one native backend implementation for BENDER. That would still not replace the rest of the architecture.
+A GITA-like mechanism could be one native backend implementation for OCTO. That would still not replace the rest of the architecture.
 
 ## One-sentence version
 
-RAG retrieves context, fine-tuning changes weights, KAA/GITA change mechanisms, and BENDER defines the larger runtime architecture that can use some of those tools without being reducible to any one of them.
+RAG retrieves context, fine-tuning changes weights, KAA/GITA change mechanisms, and OCTO defines the larger runtime architecture that can use some of those tools without being reducible to any one of them.

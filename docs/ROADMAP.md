@@ -2,13 +2,13 @@
 
 ## Current Architecture Direction
 
-- `src/bender/` is the pure core package.
+- `src/octo/` is the pure core package.
 - Reference world-model implementations live outside core under `implementations/`.
 - Current examples:
-  - `implementations/spider/`
-  - `implementations/bird/`
+ - `implementations/spider/`
+ - `implementations/bird/`
 
-This separation is intentional. `bender` should remain the reusable runtime, planning, retrieval, fusion, repair, and integration framework. Domain and benchmark implementations should be built on top of it, not embedded inside it.
+This separation is intentional. `octo` should remain the reusable runtime, planning, retrieval, fusion, repair, and integration framework. Domain and benchmark implementations should be built on top of it, not embedded inside it.
 
 ## Near-Term Implementation Roadmap
 
@@ -40,8 +40,8 @@ Target workflow:
 - evidence synthesis with provenance
 
 What it proves:
-- BENDER can normalize entities across fragmented biomedical knowledge
-- BENDER can build a request-scoped evidence graph instead of stuffing papers into prompts
+- OCTO can normalize entities across fragmented biomedical knowledge
+- OCTO can build a request-scoped evidence graph instead of stuffing papers into prompts
 - runtime-updated domain knowledge beats retraining for niche, evolving domains
 
 MVP tasks:
@@ -60,8 +60,8 @@ Target workflow:
 - candidate identification / explanation
 
 What it proves:
-- BENDER handles structured scientific constraints well
-- BENDER can reason over competing hypotheses with domain rules
+- OCTO handles structured scientific constraints well
+- OCTO can reason over competing hypotheses with domain rules
 - this is exactly the kind of niche knowledge problem where retraining is too expensive and RAG is too brittle
 
 MVP tasks:
@@ -93,7 +93,7 @@ Inputs:
 - disease context
 - treatment or trial context
 
-BENDER value:
+OCTO value:
 - normalize aliases and synonyms
 - connect entities across ontologies
 - preserve provenance
@@ -105,7 +105,7 @@ Inputs:
 - target, pathway, disease, modality
 - internal notes, external sources, study metadata
 
-BENDER value:
+OCTO value:
 - build a request-scoped world model of targets, pathways, indications, evidence, and conflicts
 - produce structured hypotheses and provenance-backed recommendations
 
@@ -119,7 +119,7 @@ Inputs:
 - adducts
 - metadata
 
-BENDER value:
+OCTO value:
 - structured constraints
 - candidate explanation generation
 - rule-based elimination
@@ -169,27 +169,27 @@ For `mass_spec`, plain RAG is even weaker:
 
 That is exactly the kind of domain where plain retrieval is weakest.
 
-## BENDER Strengths Over Plain RAG
+## OCTO Strengths Over Plain RAG
 
 ### Structured World State, Not Text Piles
 
 - RAG retrieves passages.
-- BENDER builds entities, relations, constraints, hypotheses, and provenance.
+- OCTO builds entities, relations, constraints, hypotheses, and provenance.
 
 ### Runtime Reasoning Over Domain Structure
 
 - RAG asks the LLM to infer structure from retrieved text.
-- BENDER gives the model explicit structure to work from.
+- OCTO gives the model explicit structure to work from.
 
 ### Better Handling Of Aliases And Ontology Alignment
 
 - In bio, names are messy.
-- BENDER can normalize and link before generation.
+- OCTO can normalize and link before generation.
 
 ### Conflict-Aware Reasoning
 
 - RAG often collapses conflicting evidence into a smooth paragraph.
-- BENDER can preserve conflicting hypotheses and their provenance.
+- OCTO can preserve conflicting hypotheses and their provenance.
 
 ### Cheaper Than Retraining
 
@@ -211,11 +211,11 @@ The simplest message is:
 
 - training is too expensive and static
 - RAG is cheap but fragile
-- BENDER is the middle path:
-  - runtime-specialized
-  - structured
-  - provenance-aware
-  - domain-adaptable without retraining
+- OCTO is the middle path:
+ - runtime-specialized
+ - structured
+ - provenance-aware
+ - domain-adaptable without retraining
 
 ## Best Go-To-Market Story
 

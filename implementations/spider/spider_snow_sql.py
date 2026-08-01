@@ -7,15 +7,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from bender.compiler.sql import SQLCompilerPipeline
-from bender.database import SQLSchemaSnapshot, snapshot_to_world_model
+from octo.compiler.sql import SQLCompilerPipeline
+from octo.database import SQLSchemaSnapshot, snapshot_to_world_model
 from .spider import SpiderSchemaCoprocessor
 from .spider_lite import SpiderLiteTask
 from .spider_snow_domain_compilers import default_spider_snow_domain_compilers
 from .spider_snow import SpiderSnowWorkspace, load_gold_csv_rows
 from .spider_tcga import apply_tcga_domain_plan, parse_tcga_query_hints
-from bender.validators.sql import SQLResultMatcher
-from bender.world_state import WorldModel
+from octo.validators.sql import SQLResultMatcher
+from octo.world_state import WorldModel
 
 
 class UnsupportedSpiderSnowSQLGeneration(RuntimeError):

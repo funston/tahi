@@ -1,6 +1,6 @@
 # Full Benchmark Runs
 
-This document describes how to run the serious benchmark passes for BENDER's current SQL grounding evaluations.
+This document describes how to run the serious benchmark passes for OCTO's current SQL grounding evaluations.
 
 These are the benchmarks that should exist before claiming the project is benchmarked in a serious way.
 
@@ -48,17 +48,17 @@ Fallback mode:
 
 ### Recommended Hugging Face BIRD Run
 
-The BENDER BIRD runner now supports a Hugging Face-backed source modeled on the generalized `bird_dev` path from `superalignment`.
+The OCTO BIRD runner now supports a Hugging Face-backed source modeled on the generalized `bird_dev` path from `superalignment`.
 
 Recommended command:
 
 ```bash
-PYTHONPATH=src:. python examples/run_bender_bird_ab_benchmark.py \
-  --source huggingface \
-  --split dev \
-  --hf-repo-id Sudnya/bird-sql \
-  --hf-cache-dir .local/bird_hf \
-  --output benchmarks/bird/full_dev_grounding_report.json
+PYTHONPATH=src:. python examples/run_octo_bird_ab_benchmark.py \
+ --source huggingface \
+ --split dev \
+ --hf-repo-id Sudnya/bird-sql \
+ --hf-cache-dir .local/bird_hf \
+ --output benchmarks/bird/full_dev_grounding_report.json
 ```
 
 What this does:
@@ -71,13 +71,13 @@ What this does:
 You can also force a fresh database download:
 
 ```bash
-PYTHONPATH=src:. python examples/run_bender_bird_ab_benchmark.py \
-  --source huggingface \
-  --split dev \
-  --hf-repo-id Sudnya/bird-sql \
-  --hf-cache-dir .local/bird_hf \
-  --force-download \
-  --output benchmarks/bird/full_dev_grounding_report.json
+PYTHONPATH=src:. python examples/run_octo_bird_ab_benchmark.py \
+ --source huggingface \
+ --split dev \
+ --hf-repo-id Sudnya/bird-sql \
+ --hf-cache-dir .local/bird_hf \
+ --force-download \
+ --output benchmarks/bird/full_dev_grounding_report.json
 ```
 
 ### Local Tree BIRD Layout
@@ -86,17 +86,17 @@ The BIRD runner expects a local root containing one of these layouts:
 
 ```text
 /path/to/BIRD/
-  dev.json
-  dev_databases/
+ dev.json
+ dev_databases/
 ```
 
 or:
 
 ```text
 /path/to/BIRD/
-  dev/
-    dev.json
-    dev_databases/
+ dev/
+ dev.json
+ dev_databases/
 ```
 
 Optional metadata layout:
@@ -112,30 +112,30 @@ The BIRD workspace resolution logic is implemented in:
 ### Local Tree Command
 
 ```bash
-PYTHONPATH=src:. python examples/run_bender_bird_ab_benchmark.py \
-  --source local \
-  --bird-root /path/to/BIRD \
-  --split dev \
-  --output benchmarks/bird/full_dev_grounding_report.json
+PYTHONPATH=src:. python examples/run_octo_bird_ab_benchmark.py \
+ --source local \
+ --bird-root /path/to/BIRD \
+ --split dev \
+ --output benchmarks/bird/full_dev_grounding_report.json
 ```
 
 ### What It Runs
 
 - `naive_lexical`
 - `schema_only`
-- `bender`
-- `bender_with_evidence`
+- `octo`
+- `octo_with_evidence`
 
 ### What Those Mean
 
 - `naive_lexical`
-  - simple lexical table matching baseline
+ - simple lexical table matching baseline
 - `schema_only`
-  - BENDER schema coprocessor over parsed schema only
-- `bender`
-  - BENDER world-model grounding with enriched metadata/documents
-- `bender_with_evidence`
-  - BENDER world-model grounding plus the dataset evidence field injected into the query path
+ - OCTO schema coprocessor over parsed schema only
+- `octo`
+ - OCTO world-model grounding with enriched metadata/documents
+- `octo_with_evidence`
+ - OCTO world-model grounding plus the dataset evidence field injected into the query path
 
 ### Current Local-Tree Blocker
 
@@ -158,19 +158,19 @@ The runner uses the Hugging Face dataset:
 ### Full Train Run
 
 ```bash
-PYTHONPATH=src:. python examples/run_bender_gretel_ab_benchmark.py \
-  --split train \
-  --hf-cache-dir .local/huggingface \
-  --output benchmarks/gretel/train_full_grounding_report.json
+PYTHONPATH=src:. python examples/run_octo_gretel_ab_benchmark.py \
+ --split train \
+ --hf-cache-dir .local/huggingface \
+ --output benchmarks/gretel/train_full_grounding_report.json
 ```
 
 ### Full Test Run
 
 ```bash
-PYTHONPATH=src:. python examples/run_bender_gretel_ab_benchmark.py \
-  --split test \
-  --hf-cache-dir .local/huggingface \
-  --output benchmarks/gretel/test_full_grounding_report.json
+PYTHONPATH=src:. python examples/run_octo_gretel_ab_benchmark.py \
+ --split test \
+ --hf-cache-dir .local/huggingface \
+ --output benchmarks/gretel/test_full_grounding_report.json
 ```
 
 ### Notes
@@ -184,11 +184,11 @@ PYTHONPATH=src:. python examples/run_bender_gretel_ab_benchmark.py \
 If you want every case result included in the JSON:
 
 ```bash
-PYTHONPATH=src:. python examples/run_bender_gretel_ab_benchmark.py \
-  --split test \
-  --hf-cache-dir .local/huggingface \
-  --include-results \
-  --output benchmarks/gretel/test_full_grounding_report.json
+PYTHONPATH=src:. python examples/run_octo_gretel_ab_benchmark.py \
+ --split test \
+ --hf-cache-dir .local/huggingface \
+ --include-results \
+ --output benchmarks/gretel/test_full_grounding_report.json
 ```
 
 Use that only if you explicitly want a large detailed report.
@@ -201,18 +201,18 @@ Once you have the full BIRD and Gretel outputs, build the browser-readable repor
 
 ```bash
 python examples/render_sql_benchmark_report_html.py \
-  --bird-input benchmarks/bird/full_dev_grounding_report.json \
-  --gretel-input benchmarks/gretel/test_full_grounding_report.json \
-  --output benchmarks/sql_grounding_report.html
+ --bird-input benchmarks/bird/full_dev_grounding_report.json \
+ --gretel-input benchmarks/gretel/test_full_grounding_report.json \
+ --output benchmarks/sql_grounding_report.html
 ```
 
 Optional single-image artifact:
 
 ```bash
 python examples/render_sql_benchmark_report.py \
-  --bird-input benchmarks/bird/full_dev_grounding_report.json \
-  --gretel-input benchmarks/gretel/test_full_grounding_report.json \
-  --output benchmarks/sql_grounding_report.svg
+ --bird-input benchmarks/bird/full_dev_grounding_report.json \
+ --gretel-input benchmarks/gretel/test_full_grounding_report.json \
+ --output benchmarks/sql_grounding_report.svg
 ```
 
 ## 4. Publication Checklist

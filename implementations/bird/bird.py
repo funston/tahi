@@ -13,12 +13,12 @@ import sqlglot
 from sqlglot import exp
 from sqlglot.errors import ParseError
 
-from bender.benchmarking import BenchmarkCaseResult, benchmark_report_to_dict, render_markdown_summary_table, summarize_system_results
-from bender.database import SQLColumnProfile, SQLForeignKey, SQLSchemaSnapshot, SQLTableProfile
-from bender.repair.sql import SQLRepairAttempt
+from octo.benchmarking import BenchmarkCaseResult, benchmark_report_to_dict, render_markdown_summary_table, summarize_system_results
+from octo.database import SQLColumnProfile, SQLForeignKey, SQLSchemaSnapshot, SQLTableProfile
+from octo.repair.sql import SQLRepairAttempt
 from implementations.sql import SQLSchemaCoprocessor
-from bender.validators.sql import SQLResultMatcher
-from bender.world_state import WorldModel
+from octo.validators.sql import SQLResultMatcher
+from octo.world_state import WorldModel
 
 
 def _coerce_string(value: Any, default: str = "") -> str:
@@ -844,18 +844,18 @@ class BirdBenchmarkAdapter:
 @dataclass
 class BirdABBenchmarkRunner:
     baseline_adapter: BirdBenchmarkAdapter
-    bender_adapter: BirdBenchmarkAdapter
+    octo_adapter: BirdBenchmarkAdapter
     evidence_adapter: BirdBenchmarkAdapter | None = None
 
     def run(self, tasks: list[BirdTask]) -> dict[str, Any]:
         naive_results: list[BenchmarkCaseResult] = []
         baseline_results: list[BenchmarkCaseResult] = []
-        bender_results: list[BenchmarkCaseResult] = []
+        octo_results: list[BenchmarkCaseResult] = []
         evidence_results: list[BenchmarkCaseResult] = []
         for task in tasks:
             naive = _run_bird_naive_baseline(self.baseline_adapter.snapshots_by_db[task.db_id], task)
             baseline = self.baseline_adapter.run_task(task)
-            bender = self.bender_adapter.run_task(task)
+            octo = self.octo_adapter.run_task(task)
             evidence = self.evidence_adapter.run_task(task) if self.evidence_adapter is not None else None
             naive_results.append(
                 BenchmarkCaseResult(
@@ -881,23 +881,23 @@ class BirdABBenchmarkRunner:
                     detail=baseline,
                 )
             )
-            bender_results.append(
+            octo_results.append(
                 BenchmarkCaseResult(
                     case_id=task.task_id,
-                    system="bender",
-                    correct=bool((bender.get("table_recall") or 0.0) >= 1.0),
+                    system="octo",
+                    correct=bool((octo.get("table_recall") or 0.0) >= 1.0),
                     metrics={
-                        "table_recall": bender.get("table_recall"),
-                        "top1_hit": _bird_top1_hit(bender),
+                        "table_recall": octo.get("table_recall"),
+                        "top1_hit": _bird_top1_hit(octo),
                     },
-                    detail=bender,
+                    detail=octo,
                 )
             )
             if evidence is not None:
                 evidence_results.append(
                     BenchmarkCaseResult(
                         case_id=task.task_id,
-                        system="bender_with_evidence",
+                        system="octo_with_evidence",
                         correct=bool((evidence.get("table_recall") or 0.0) >= 1.0),
                         metrics={
                             "table_recall": evidence.get("table_recall"),
@@ -910,12 +910,12 @@ class BirdABBenchmarkRunner:
         summaries = [
             summarize_system_results("naive_lexical", naive_results, metric_names=["table_recall", "top1_hit"]),
             summarize_system_results("schema_only", baseline_results, metric_names=["table_recall", "top1_hit"]),
-            summarize_system_results("bender", bender_results, metric_names=["table_recall", "top1_hit"]),
+            summarize_system_results("octo", octo_results, metric_names=["table_recall", "top1_hit"]),
         ]
         if evidence_results:
             summaries.append(
                 summarize_system_results(
-                    "bender_with_evidence",
+                    "octo_with_evidence",
                     evidence_results,
                     metric_names=["table_recall", "top1_hit"],
                 )
@@ -923,10 +923,10 @@ class BirdABBenchmarkRunner:
         results_by_system: dict[str, list[BenchmarkCaseResult]] = {
             "naive_lexical": naive_results,
             "schema_only": baseline_results,
-            "bender": bender_results,
+            "octo": octo_results,
         }
         if evidence_results:
-            results_by_system["bender_with_evidence"] = evidence_results
+            results_by_system["octo_with_evidence"] = evidence_results
         payload = benchmark_report_to_dict(
             benchmark_name="bird_ab_grounding",
             summaries=summaries,

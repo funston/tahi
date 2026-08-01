@@ -1,4 +1,4 @@
-# BENDER Runtime System
+# OCTO Runtime System
 
 ## Runtime topology
 
@@ -54,7 +54,7 @@ Each capture, retrieval, reasoning, simulation, fusion, and injection step recor
 
 ## Strategic point
 
-The runtime is the product surface. The paper proposes the architecture, but the runtime is what turns BENDER into a deployable platform.
+The runtime is the product surface. The paper proposes the architecture, but the runtime is what turns OCTO into a deployable platform.
 
 ## Phase 1 limitations
 

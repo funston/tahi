@@ -7,8 +7,8 @@ from pathlib import Path
 COLORS = {
     "naive_lexical": "#8c8c8c",
     "schema_only": "#4c78a8",
-    "bender": "#f58518",
-    "bender_with_evidence": "#54a24b",
+    "octo": "#f58518",
+    "octo_with_evidence": "#54a24b",
 }
 
 
@@ -70,8 +70,8 @@ def _legend_html() -> str:
     items = [
         ("naive_lexical", "Simple lexical table matching baseline with no world model."),
         ("schema_only", "BENDER schema coprocessor over parsed schema only, with no enriched world metadata."),
-        ("bender", "BENDER world-model grounding with enriched metadata/documents, but no extra task evidence injected."),
-        ("bender_with_evidence", "BENDER world-model grounding plus the dataset's task evidence field injected into the query path."),
+        ("octo", "BENDER world-model grounding with enriched metadata/documents, but no extra task evidence injected."),
+        ("octo_with_evidence", "BENDER world-model grounding plus the dataset's task evidence field injected into the query path."),
     ]
     rows = []
     for key, description in items:
@@ -121,7 +121,7 @@ def main() -> None:
 
     bird = _load_report(args.bird_input)
     schema_only = _system(bird, "schema_only")
-    evidence = _system(bird, "bender_with_evidence")
+    evidence = _system(bird, "octo_with_evidence")
     delta_acc = _metric(evidence, "accuracy") - _metric(schema_only, "accuracy")
     delta_recall = _metric(evidence, "avg_table_recall") - _metric(schema_only, "avg_table_recall")
     delta_top1 = _metric(evidence, "avg_top1_hit") - _metric(schema_only, "avg_top1_hit")
@@ -280,7 +280,7 @@ def main() -> None:
       <div class="metric-boxes">
         <div class="metric-box">
           <strong>{delta_acc:+.3f}</strong>
-          <span>Absolute grounding accuracy lift for <code>bender_with_evidence</code> over <code>schema_only</code>.</span>
+          <span>Absolute grounding accuracy lift for <code>octo_with_evidence</code> over <code>schema_only</code>.</span>
         </div>
         <div class="metric-box">
           <strong>{delta_recall:+.3f}</strong>
@@ -356,7 +356,7 @@ def main() -> None:
       <section class="panel">
         <h2>Bottom-Line Reading</h2>
         <p><strong>Good news:</strong> BENDER has a real full-dev BIRD result. The evidence-aware path moves grounding accuracy from <code>0.864</code> to <code>0.926</code> across 1534 dev tasks.</p>
-        <p><strong>Weak news:</strong> plain metadata enrichment alone does nothing here; <code>bender</code> equals <code>schema_only</code>.</p>
+        <p><strong>Weak news:</strong> plain metadata enrichment alone does nothing here; <code>octo</code> equals <code>schema_only</code>.</p>
         <p><strong>Serious next step:</strong> convert this grounding lift into an end-to-end SQL execution benchmark. Until then, this report should be read as evidence that BENDER improves schema grounding, not as proof that it beats the current BIRD leaderboard.</p>
       </section>
     </section>

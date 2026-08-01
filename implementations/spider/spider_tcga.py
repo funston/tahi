@@ -4,8 +4,8 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from bender.database import SQLSchemaSnapshot
-from bender.schema_compression import SchemaCompressionPlan, build_schema_compression_plan, score_schema_families
+from octo.database import SQLSchemaSnapshot
+from octo.schema_compression import SchemaCompressionPlan, build_schema_compression_plan, score_schema_families
 
 
 PROJECT_PATTERN = re.compile(r"\bTCGA-[A-Z0-9]+\b", re.IGNORECASE)
@@ -181,5 +181,5 @@ def apply_tcga_domain_plan(
         )[:8]
     constraints["schema_families"] = list(domain_plan["schema_families"])
     constraints["domain_hints"] = dict(domain_plan["domain_hints"])
-    planning_result.setdefault("bender_debug", {})["tcga_domain_plan"] = domain_plan
+    planning_result.setdefault("octo_debug", {})["tcga_domain_plan"] = domain_plan
     return planning_result

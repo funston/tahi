@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-BENDER is a World-Model Coprocessor for Large Language Models. It operates as a parallel cognitive system alongside LLMs, providing persistent world models, graph reasoning, simulation, and token-time intervention during inference. The core principle is that BENDER is a true coprocessor, not just a RAG wrapper.
+OCTO is a World-Model Coprocessor for Large Language Models. It operates as a parallel cognitive system alongside LLMs, providing persistent world models, graph reasoning, simulation, and token-time intervention during inference. The core principle is that OCTO is a true coprocessor, not just a RAG wrapper.
 
 ## Development Commands
 
@@ -41,7 +41,7 @@ PYTHONPATH=src .venv/bin/python examples/sql_schema_coprocessor_demo.py
 
 ### Core Runtime Flow
 
-The BENDER runtime follows a stable pipeline:
+The OCTO runtime follows a stable pipeline:
 
 1. `ModelIntegration.capture(...)` - captures model-side state (SemanticFrame)
 2. `WorldModel.retrieve(...)` - retrieves structured graph memories
@@ -51,11 +51,11 @@ The BENDER runtime follows a stable pipeline:
 
 ### FTI MLOps Architecture (NEW: 2026-03-28)
 
-BENDER adopts the Feature/Training/Inference (FTI) MLOps pattern:
+OCTO adopts the Feature/Training/Inference (FTI) MLOps pattern:
 
-- **WorldModelStore** (`src/bender/world_model_store.py`): Versioned world model storage
+- **WorldModelStore** (`src/octo/world_model_store.py`): Versioned world model storage
 - **Feature Pipeline analog**: Pre-build and version world models (build once, use forever)
-- **Inference Pipeline analog**: BenderRuntime loads pre-built models on demand
+- **Inference Pipeline analog**: OctoRuntime loads pre-built models on demand
 - **No Training Pipeline**: Model-agnostic design (domain logic in graphs, not weights)
 
 **Key Benefits:**
@@ -65,8 +65,8 @@ BENDER adopts the Feature/Training/Inference (FTI) MLOps pattern:
 
 **Usage:**
 ```python
-from bender import WorldModelStore
-store = WorldModelStore("~/.bender/world-models/")
+from octo import WorldModelStore
+store = WorldModelStore("~/.octo/world-models/")
 store.save(world, source="bird-dev", version="v1.0.0", model_id="db_id")
 world = store.load("bird-dev", "v1.0.0", "db_id")
 ```
@@ -76,20 +76,20 @@ See: `FTI_IMPLEMENTATION_COMPLETE.md` and `examples/world_model_store_demo.py`
 ### Key Modules
 
 **Stable Core Runtime** (rarely modified):
-- `src/bender/runtime.py` - BenderRuntime orchestrator
-- `src/bender/models.py` - SemanticFrame, CognitiveState, ControlPacket, FusedSignal
-- `src/bender/integration.py` - ModelIntegration, BlackBoxIntegration, NativeIntegration
-- `src/bender/fusion.py` - FusionModule, WeightedBlendFusion
+- `src/octo/runtime.py` - OctoRuntime orchestrator
+- `src/octo/models.py` - SemanticFrame, CognitiveState, ControlPacket, FusedSignal
+- `src/octo/integration.py` - ModelIntegration, BlackBoxIntegration, NativeIntegration
+- `src/octo/fusion.py` - FusionModule, WeightedBlendFusion
 
 **Domain Reasoning Layer**:
-- `src/bender/world_state.py` - WorldModel with typed nodes/relations and retrieval
-- `src/bender/retrieval.py` - InMemoryGraphIndex, embedding helpers
-- `src/bender/planner.py` - deterministic planning steps
-- `src/bender/rules.py` - domain-specific rule engine
-- `src/bender/simulator.py` - domain evaluators
+- `src/octo/world_state.py` - WorldModel with typed nodes/relations and retrieval
+- `src/octo/retrieval.py` - InMemoryGraphIndex, embedding helpers
+- `src/octo/planner.py` - deterministic planning steps
+- `src/octo/rules.py` - domain-specific rule engine
+- `src/octo/simulator.py` - domain evaluators
 
 **Delivery Surfaces**:
-- `src/bender/adapter.py` - wrap_llm() helper for demos
+- `src/octo/adapter.py` - wrap_llm() helper for demos
 - `examples/` - runnable demonstrations
 - `tests/` - unittest-based test suite
 
@@ -104,23 +104,23 @@ See: `FTI_IMPLEMENTATION_COMPLETE.md` and `examples/world_model_store_demo.py`
 The SQL reasoning layer follows a layered design:
 
 1. **Generic SQL Schema Model** (`database.py`, `sql_coprocessor.py`)
-   - SQLSchemaSnapshot, SQLSchemaPlanner, SQLSchemaRuleEngine
-   - Reusable base for any SQL-backed domain
+ - SQLSchemaSnapshot, SQLSchemaPlanner, SQLSchemaRuleEngine
+ - Reusable base for any SQL-backed domain
 
 2. **Database Adapters** (`database.py`)
-   - PostgresSchemaIntrospector (current)
-   - Future: MySQL, SQLite, DuckDB, Snowflake
+ - PostgresSchemaIntrospector (current)
+ - Future: MySQL, SQLite, DuckDB, Snowflake
 
 3. **Domain-Specific Layers**
-   - `spider.py` - Spider benchmark-specific planner/rules
-   - `spider_lite.py` - Spider Lite evaluation harness
-   - `spider_snow.py` - Spider Snowflake benchmark
+ - `spider.py` - Spider benchmark-specific planner/rules
+ - `spider_lite.py` - Spider Lite evaluation harness
+ - `spider_snow.py` - Spider Snowflake benchmark
 
 ## Important Design Principles
 
 ### World Model is Graph-Based, Not Document-Based
 
-BENDER retrieves typed nodes and relations, not serialized documents. The WorldModel stores structured knowledge that the runtime processes into constraints, hypotheses, and provenance.
+OCTO retrieves typed nodes and relations, not serialized documents. The WorldModel stores structured knowledge that the runtime processes into constraints, hypotheses, and provenance.
 
 ### Integration Boundary
 
@@ -137,7 +137,7 @@ The code is modular at these boundaries:
 
 ## File Organization
 
-- `src/bender/` - Main Python package
+- `src/octo/` - Main Python package
 - `examples/` - Runnable demos (hello_world, biomedical, SQL coprocessor)
 - `tests/` - unittest test files
 - `docs/` - Architecture and design documents
@@ -166,6 +166,6 @@ When modifying retrieval:
 
 When working with Spider benchmarks:
 - Spider Lite is the first practical target
-- BENDER produces schema-planning packets, not direct SQL
+- OCTO produces schema-planning packets, not direct SQL
 - Follow the phase order: planning → SQL generation → execution repair
 - always be verbose in your progress and status

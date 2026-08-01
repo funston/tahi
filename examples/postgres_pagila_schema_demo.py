@@ -1,7 +1,7 @@
 import argparse
 import json
 
-from bender import (
+from octo import (
     PostgresSchemaIntrospector,
     SQLSchemaCoprocessor,
     build_pagila_fixture_snapshot,

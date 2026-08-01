@@ -2,58 +2,58 @@
 
 ## Executive Summary
 
-BENDER shows **30% relative improvement** with Claude Sonnet but **ZERO improvement** with local models. The infrastructure works, but BENDER benefits only materialize with high-quality SQL generation.
+OCTO shows **30% relative improvement** with Claude Sonnet but **ZERO improvement** with local models. The infrastructure works, but OCTO benefits only materialize with high-quality SQL generation.
 
 ## Test Results
 
 ### Test 1: Claude Sonnet 3.5 (50 tasks)
 **Date:** 2026-03-28
-**Status:** ✅ BENDER lift confirmed
+**Status:** ✅ OCTO lift confirmed
 
 ```
-naive_baseline:           20.00% (10/50 correct)
-rag_baseline:             20.00% (10/50 correct)
-bender_grounding:         20.00% (10/50 correct)
-bender_with_evidence:     26.00% (13/50 correct)  ← 30% relative lift
+naive_baseline: 20.00% (10/50 correct)
+rag_baseline: 20.00% (10/50 correct)
+octo_grounding: 20.00% (10/50 correct)
+octo_with_evidence: 26.00% (13/50 correct) ← 30% relative lift
 ```
 
 **File:** `benchmarks/bird/execution_50_claude_PROOF.json`
 
-**Conclusion:** BENDER enrichment (metadata documents + evidence) provides measurable improvement with Claude.
+**Conclusion:** OCTO enrichment (metadata documents + evidence) provides measurable improvement with Claude.
 
 ---
 
 ### Test 2: Qwen2.5-coder:14b (20 tasks)
 **Date:** 2026-03-28
-**Status:** ❌ NO BENDER lift
+**Status:** ❌ NO OCTO lift
 
 ```
-naive_baseline:           15.00% (3/20 correct)
-rag_baseline:             15.00% (3/20 correct)
-bender_grounding:         15.00% (3/20 correct)
-bender_with_evidence:     15.00% (3/20 correct)  ← NO improvement
+naive_baseline: 15.00% (3/20 correct)
+rag_baseline: 15.00% (3/20 correct)
+octo_grounding: 15.00% (3/20 correct)
+octo_with_evidence: 15.00% (3/20 correct) ← NO improvement
 ```
 
 **File:** `benchmarks/bird/execution_20_qwen_REAL_ENRICHMENT.json`
 
-**Conclusion:** Qwen generates low-quality SQL. BENDER grounding makes no difference when SQL generation is broken.
+**Conclusion:** Qwen generates low-quality SQL. OCTO grounding makes no difference when SQL generation is broken.
 
 ---
 
 ### Test 3: Gemma3:27b (10 tasks)
 **Date:** 2026-03-28
-**Status:** ❌ NO BENDER lift
+**Status:** ❌ NO OCTO lift
 
 ```
-naive_baseline:            0.00% (0/10 correct)
-rag_baseline:              0.00% (0/10 correct)
-bender_grounding:          0.00% (0/10 correct)
-bender_with_evidence:      0.00% (0/10 correct)  ← NO improvement
+naive_baseline: 0.00% (0/10 correct)
+rag_baseline: 0.00% (0/10 correct)
+octo_grounding: 0.00% (0/10 correct)
+octo_with_evidence: 0.00% (0/10 correct) ← NO improvement
 ```
 
 **File:** `benchmarks/bird/execution_10_gemma27b.json`
 
-**Conclusion:** Gemma3 cannot generate correct SQL on BIRD tasks. BENDER cannot fix fundamentally broken SQL generation.
+**Conclusion:** Gemma3 cannot generate correct SQL on BIRD tasks. OCTO cannot fix fundamentally broken SQL generation.
 
 ---
 
@@ -62,15 +62,15 @@ bender_with_evidence:      0.00% (0/10 correct)  ← NO improvement
 ### What Works
 1. **FTI infrastructure:** WorldModelStore, versioning, caching all working
 2. **World model enrichment:** BIRD metadata successfully loaded into graphs
-3. **BENDER + Claude:** 30% lift proven (20% → 26% execution accuracy)
+3. **OCTO + Claude:** 30% lift proven (20% → 26% execution accuracy)
 
 ### What Doesn't Work
 1. **Local models:** Qwen and Gemma generate poor SQL (15% or 0% baseline)
-2. **BENDER benefit requires quality SQL:** Grounding can't fix broken generation
+2. **OCTO benefit requires quality SQL:** Grounding can't fix broken generation
 3. **Cost:** Only works with expensive Claude API ($)
 
 ### Critical Gap
-BENDER provides architectural rigor (FTI MLOps, graph reasoning) but **no cost-effective deployment path**. The 30% lift only appears with Claude, making this an expensive research result, not a production system.
+OCTO provides architectural rigor (FTI MLOps, graph reasoning) but **no cost-effective deployment path**. The 30% lift only appears with Claude, making this an expensive research result, not a production system.
 
 ---
 
@@ -79,17 +79,17 @@ BENDER provides architectural rigor (FTI MLOps, graph reasoning) but **no cost-e
 ### Claude (50 tasks)
 - Execution success: 92-94% (SQL runs without errors)
 - Accuracy: 20-26% (SQL returns correct results)
-- **BENDER impact:** Evidence injection improves accuracy by 6 percentage points
+- **OCTO impact:** Evidence injection improves accuracy by 6 percentage points
 
 ### Qwen (20 tasks)
 - Execution success: 60% (SQL often has syntax errors)
 - Accuracy: 15% (low quality even when SQL runs)
-- **BENDER impact:** None
+- **OCTO impact:** None
 
 ### Gemma3 (10 tasks)
 - Execution success: 100% (SQL runs but is trivial)
 - Accuracy: 0% (generates `SELECT COUNT(*)` for complex queries)
-- **BENDER impact:** None
+- **OCTO impact:** None
 
 ---
 
@@ -119,7 +119,7 @@ BENDER provides architectural rigor (FTI MLOps, graph reasoning) but **no cost-e
 
 ### Local Models (Free)
 - Cost: $0
-- Result: 0-15% accuracy (no BENDER benefit)
+- Result: 0-15% accuracy (no OCTO benefit)
 - Not competitive with BIRD leaderboard
 
 ---
@@ -128,7 +128,7 @@ BENDER provides architectural rigor (FTI MLOps, graph reasoning) but **no cost-e
 
 **What we have:**
 - Clean FTI MLOps infrastructure
-- Proof that BENDER improves Claude results by 30%
+- Proof that OCTO improves Claude results by 30%
 - Versioned, reproducible world models
 
 **What we don't have:**
@@ -137,7 +137,7 @@ BENDER provides architectural rigor (FTI MLOps, graph reasoning) but **no cost-e
 - Production viability (expensive per-query costs)
 
 **What this means:**
-BENDER is a research prototype with solid architecture that provides measurable benefits when paired with expensive, high-quality SQL generation. It is NOT a production-ready system for cost-effective text-to-SQL.
+OCTO is a research prototype with solid architecture that provides measurable benefits when paired with expensive, high-quality SQL generation. It is NOT a production-ready system for cost-effective text-to-SQL.
 
 ---
 
@@ -146,7 +146,7 @@ BENDER is a research prototype with solid architecture that provides measurable 
 1. **Accept Claude costs:** Run full BIRD dev (1534 tasks) for leaderboard placement
 2. **Find better local model:** Test llama3.3:70b, qwen2.5:72b, or other SOTA open models
 3. **Optimize for Claude:** If Claude is the only viable backend, optimize costs (prompt caching, smaller models)
-4. **Alternative: Pivot focus:** Use BENDER for domains where world models matter more than SQL quality
+4. **Alternative: Pivot focus:** Use OCTO for domains where world models matter more than SQL quality
 
 ---
 
@@ -157,8 +157,8 @@ BENDER is a research prototype with solid architecture that provides measurable 
 - `benchmarks/bird/execution_10_gemma27b.json` - Gemma3 results (no lift)
 - `FTI_IMPLEMENTATION_COMPLETE.md` - Infrastructure status
 - `scripts/build_bird_world_models.py` - World model builder
-- `src/bender/world_model_store.py` - FTI storage implementation
+- `src/octo/world_model_store.py` - FTI storage implementation
 
 ---
 
-**Bottom line:** BENDER works architecturally and shows 30% improvement with Claude, but lacks a cost-effective deployment path due to dependence on expensive proprietary models.
+**Bottom line:** OCTO works architecturally and shows 30% improvement with Claude, but lacks a cost-effective deployment path due to dependence on expensive proprietary models.

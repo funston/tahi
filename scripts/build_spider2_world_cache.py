@@ -6,8 +6,8 @@ import argparse
 import json
 from pathlib import Path
 
-from bender import SpiderLiteWorkspace, snapshot_to_world_model
-from bender.spider_lite import enrich_world_with_spider_sqlite_metadata
+from octo import SpiderLiteWorkspace, snapshot_to_world_model
+from octo.spider_lite import enrich_world_with_spider_sqlite_metadata
 
 
 def main() -> None:

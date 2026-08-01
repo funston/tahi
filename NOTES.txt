@@ -1,0 +1,51 @@
+ Review & Proposal Docs
+
+ • docs/retro-v2-review.md — Deep-dive review of retro-v2-brief.md and retro-v2-falsification-plan.md.
+ • Validates the science-vs-systems split and Tier 0 kill test.
+ • Adds OCTO as a structured-reasoning competitor in the experiment matrix.
+ • Identifies gaps: no structured competitor, no provenance metrics, corpus mismatch (Wikipedia benchmarks vs. Semantic Scholar), missing cost-per-correct-answer analysis.
+ • Provides OCTO-specific kill criteria and a recommended next step.
+
+ • docs/wikipedia-coprocessor-proposal.md — Full proposal for a Wikipedia multi-hop QA world coprocessor.
+ • Targets HotpotQA, 2WikiMultiHopQA, MuSiQue, FRAMES.
+ • Defines baselines: base LLM, single-shot RAG, iterative RAG, OCTO graph traversal.
+ • Includes metrics (EM/F1, bridge-entity recall, path correctness, hallucination rate, cost).
+ • 4-phase implementation plan.
+
+ Standalone Embedding Pipeline
+
+ • scripts/build-world-model.py — General hybrid world-model builder.
+ • Input: JSON/JSONL documents.
+ • Output: OCTO WorldModel with graph layer + vector index.
+ • Builds wiki_page / wiki_chunk / wiki_entity nodes, links_to / mentions edges.
+ • Supports WorldModelStore versioning or raw JSON(.gz).
+ • Tested on a 4-doc sample.
+
+ Wikipedia Coprocessor Implementation
+
+ • implementations/wikipedia/__init__.py
+ • implementations/wikipedia/wikipedia_coprocessor.py
+ • WikipediaPlanner — plans multi-hop graph traversal.
+ • WikipediaRuleEngine — validates paths and surfaces bridge entities.
+ • WikipediaCoprocessor — end-to-end wrapper around OCTO runtime.
+ • Includes deterministic BFS graph traversal with seed-entity exclusion.
+
+ Demo & Benchmark
+
+ • examples/wikipedia_demo.py — Runs the coprocessor on a tiny hand-built Wikipedia graph.
+ • examples/wikipedia_benchmark.py — Scaffold for evaluating on HotpotQA / 2WikiMultiHopQA / MuSiQue / FRAMES with EM, F1, and bridge-entity recall.
+ • tests/test_wikipedia_coprocessor.py — Unit tests for the coprocessor.
+
+ Verification
+
+ • All 3 coprocessor tests pass.
+ • Demo runs and emits control packets + provenance.
+ • Build pipeline successfully creates a world model from JSONL input.
+
+ Key Design Answer
+
+ Your intuition about the hybrid model is correct: knowledge graph + vector DB. The graph gives deterministic multi-hop paths and provenance; the vector index gives semantic seed retrieval. That's
+ exactly what build-world-model.py and the Wikipedia coprocessor implement.
+
+ The cost comparison in retro-v2-review.md and the proposal doc highlights the core difference: RETRO's upfront cost is embedding trillions of tokens + PB-scale NVMe; OCTO's cost is domain
+ curation + small structured graphs.

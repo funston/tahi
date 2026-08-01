@@ -7,9 +7,9 @@ from dataclasses import asdict, dataclass, field, replace
 from pathlib import Path
 from typing import Any, Callable, Protocol
 
-from bender.compiler.sql import SQLCompilerPipeline
-from bender.database import SQLSchemaSnapshot, snapshot_to_world_model
-from bender.runtime import BenderRuntime
+from octo.compiler.sql import SQLCompilerPipeline
+from octo.database import SQLSchemaSnapshot, snapshot_to_world_model
+from octo.runtime import OctoRuntime
 from .spider import SpiderSchemaCoprocessor
 from .spider_lite import SpiderLiteTask
 from .spider_snow import (
@@ -39,8 +39,8 @@ from .spider_snow_sql import (
     UnsupportedSpiderSnowSQLGeneration,
 )
 from .spider_tcga import apply_tcga_domain_plan
-from bender.validators.sql import SQLExecutionEngine, SQLResultMatcher
-from bender.world_state import WorldModel
+from octo.validators.sql import SQLExecutionEngine, SQLResultMatcher
+from octo.world_state import WorldModel
 
 
 def _query_terms(text: str) -> set[str]:
@@ -238,7 +238,7 @@ class SpiderSnowSchemaRepository:
         
         # Dynamic Grounding Step: Align schema components with domain knowledge
         if grounding_context:
-            from bender.grounding import Grounder
+            from octo.grounding import Grounder
             grounder = Grounder()
             grounder.ground_world(world, str(snapshot), grounding_context)
             
@@ -256,7 +256,7 @@ class SpiderSnowDatabaseCoprocessor:
         workspace: SpiderSnowWorkspace,
         schema_repository: SpiderSnowSchemaRepository,
         top_k: int = 8,
-        runtime: BenderRuntime | None = None,
+        runtime: OctoRuntime | None = None,
     ) -> None:
         self.workspace = workspace
         self.schema_repository = schema_repository
@@ -270,7 +270,7 @@ class SpiderSnowDatabaseCoprocessor:
         
         # Ensure runtime is active and has the correct world model
         if self.runtime is None:
-            self.runtime = BenderRuntime(world_model=world_model, top_k=self.top_k)
+            self.runtime = OctoRuntime(world_model=world_model, top_k=self.top_k)
         else:
             self.runtime.world_model = world_model
 
@@ -984,7 +984,7 @@ class NativeSpiderSnowProblemSolver:
         candidate_reranker: SpiderSnowCandidateReranker | None = None,
         max_candidates: int = 8,
         execution_engine_factory: Callable[[], SQLExecutionEngine] | None = None,
-        runtime: BenderRuntime | None = None,
+        runtime: OctoRuntime | None = None,
         compilers: list[SpiderSnowDomainCompiler] | None = None,
     ) -> None:
         self.workspace = workspace
@@ -1305,7 +1305,7 @@ class NativeSpiderSnowProblemSolver:
             return
         error_msg = str(execution_error).lower()
         if "date_trunc" in error_msg and "argument type" in error_msg:
-            self.database_coprocessor.runtime.sql_model.upsert_node(
+            self.database_coprocessor.runtime.world_model.upsert_node(
                 f"learned:fix_date_trunc_{db_id}",
                 label="Learned DateTrunc Fix",
                 summary=f"In {db_id}, DATE_TRUNC requires explicit casting.",
@@ -1313,7 +1313,7 @@ class NativeSpiderSnowProblemSolver:
                 score=1.0,
             )
         elif "invalid identifier" in error_msg:
-            self.database_coprocessor.runtime.sql_model.upsert_node(
+            self.database_coprocessor.runtime.world_model.upsert_node(
                 f"learned:fix_identifier_{db_id}",
                 label="Learned Identifier Fix",
                 summary=f"In {db_id}, use double quotes for all identifiers.",
@@ -1612,7 +1612,7 @@ class SpiderSnowProblemLoader:
         return None
 
 
-class BenderSpiderSnowSolveRunner:
+class OctoSpiderSnowSolveRunner:
     def __init__(
         self,
         *,

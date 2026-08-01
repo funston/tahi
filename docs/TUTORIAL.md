@@ -1,6 +1,6 @@
 # Tutorial
 
-This tutorial shows the intended shape of BENDER:
+This tutorial shows the intended shape of OCTO:
 
 1. build a world model
 2. run the coprocessor runtime
@@ -9,7 +9,7 @@ This tutorial shows the intended shape of BENDER:
 
 ## Step 1: Understand The Core Boundary
 
-The core package lives in `src/bender/`.
+The core package lives in `src/octo/`.
 
 It owns:
 
@@ -56,11 +56,11 @@ The recommended pattern is:
 1. define your domain entities and relations
 2. load them into a `WorldModel`
 3. write a small adapter that:
-   - normalizes input entities
-   - retrieves relevant state
-   - derives hypotheses
-   - preserves provenance
-4. keep the implementation outside `src/bender`
+ - normalizes input entities
+ - retrieves relevant state
+ - derives hypotheses
+ - preserves provenance
+4. keep the implementation outside `src/octo`
 
 In this repo, that is exactly how the packages under `implementations/` are structured.
 
@@ -68,10 +68,10 @@ In this repo, that is exactly how the packages under `implementations/` are stru
 
 Use this rule:
 
-- `bender` is the framework
+- `octo` is the framework
 - `implementations/*` are examples of building on the framework
 
-If benchmark-specific or customer-specific logic starts leaking into `src/bender`, the architecture is drifting in the wrong direction.
+If benchmark-specific or customer-specific logic starts leaking into `src/octo`, the architecture is drifting in the wrong direction.
 
 ## Next Reading
 

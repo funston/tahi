@@ -8,7 +8,7 @@ SRC = os.path.join(ROOT, "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender.world_state import WorldModel
+from octo.world_state import WorldModel
 
 
 class RetrievalTests(unittest.TestCase):

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from bender.database import SQLSchemaSnapshot
-from bender.integration import BlackBoxIntegration, ModelIntegration
-from bender.models import CognitiveState, Hypothesis
-from bender.sql_coprocessor import (
+from octo.database import SQLSchemaSnapshot
+from octo.integration import BlackBoxIntegration, ModelIntegration
+from octo.models import CognitiveState, Hypothesis
+from implementations.sql import (
     SQLSchemaCoprocessor,
     SQLSchemaPlanner,
     SQLSchemaRuleEngine,

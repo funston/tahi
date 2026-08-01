@@ -1,6 +1,6 @@
 # Bio World Model
 
-`implementations/bio` is a reference world-model package built on top of `bender`. It is intentionally outside `src/bender` so the core package stays architecturally pure.
+`implementations/bio` is a reference world-model package built on top of `octo`. It is intentionally outside `src/octo` so the core package stays architecturally pure.
 
 ## What This Implementation Demonstrates
 
@@ -47,9 +47,9 @@ That stack retrieves relevant text, but it still leaves the hard part inside the
 
 ## Why The World-Model Approach Is Different
 
-- BENDER builds explicit entities and relations, not only retrieved passages.
+- OCTO builds explicit entities and relations, not only retrieved passages.
 - The adapter can reason over graph structure before generation.
 - Provenance stays attached to each hypothesis instead of being flattened into a single answer.
 - Domain updates happen in the runtime knowledge base, without retraining a new model.
 
-This is the core counterargument to "just use a vector DB and RAG": once the task needs normalized entities, typed relations, constrained reasoning, and provenance-aware outputs, you are already rebuilding a world model. BENDER makes that layer explicit and reusable.
+This is the core counterargument to "just use a vector DB and RAG": once the task needs normalized entities, typed relations, constrained reasoning, and provenance-aware outputs, you are already rebuilding a world model. OCTO makes that layer explicit and reusable.

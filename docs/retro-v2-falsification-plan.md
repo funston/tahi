@@ -10,9 +10,9 @@ The doc tangles a *science* claim with a *systems* claim. Separate them and the 
 test, while the expensive systems work only matters if the science holds.
 
 - **Claim A — the science: "GCCA output beats RAG."** A mechanism question: does retrieval that re-aims
-  mid-generation beat one-shot retrieval? Independent of corpus size. **Provable at Stage 2 · 1 GPU · ~1M chunks.**
+ mid-generation beat one-shot retrieval? Independent of corpus size. **Provable at Stage 2 · 1 GPU · ~1M chunks.**
 - **Claim B — the systems: "Serve 1PB at <2ms."** An engineering question: out-of-core DiskANN/Starling,
-  io_uring, IOPS under load. Only worth solving **if A is true.** *Stage 4 · deferred.*
+ io_uring, IOPS under load. Only worth solving **if A is true.** *Stage 4 · deferred.*
 
 **The reframe:** discriminating power comes from **task design, not data size.** A tiny corpus (100k
 chunks, in-RAM FAISS) is plenty — if anything it makes single-shot RAG look artificially good, so a GCCA
@@ -51,9 +51,9 @@ the needed context. That's the **hidden bridge entity**:
 > **A**," re-retrieves and finds "**A** was born in **C**."
 
 - **The single-hop control is essential:** GCCA should *win on multi-hop* but *tie on single-hop*. Win on
-  both ⇒ a confound, not the mechanism.
+ both ⇒ a confound, not the mechanism.
 - **Small corpus is fine — even favorable:** discriminating power is engineered into the *question
-  structure*, not the data volume.
+ structure*, not the data volume.
 
 ## 5. Scoring & kill criteria
 
@@ -61,7 +61,7 @@ The real baseline is **iterative RAG** (free continuous retrieval), not single-s
 
 - **Accuracy** — does GCCA *match iterative RAG*, the quality ceiling of continuous retrieval?
 - **Efficiency** — …at *single-shot RAG cost*? O(1) memory, one vector-op vs re-running the LLM on a
-  growing prompt.
+ growing prompt.
 
 **The win condition:** GCCA delivers **iterative-RAG quality at single-shot cost.** That — not "beats plain
 RAG" — is the result that justifies a custom architecture.
@@ -70,15 +70,15 @@ RAG" — is the result that justifies a custom architecture.
 
 - **Tier 0:** iterative RAG doesn't beat single-shot on multi-hop → stop.
 - **Tier 2:** GCCA fails to beat iterative RAG on *accuracy* **and** fails to beat single-shot RAG on
-  *efficiency* → the bet is dead; do not scale.
+ *efficiency* → the bet is dead; do not scale.
 
 ## 6. Our stake & the pipeline work it implies
 
 - **Stage 2/3 hardware is ours** — one Blackwell runs the decisive test; the 4-GPU cluster is Stage 3.
 - **Corpus is Semantic Scholar** — which our pipeline already embeds; the multi-hop benchmarks run on a
-  Wikipedia subset first.
+ Wikipedia subset first.
 - **The pipeline change this needs:** *late chunking* — cut documents into 64-token child vectors that
-  still remember their document, instead of embedding whole records. That's the concrete ingestion work.
+ still remember their document, instead of embedding whole records. That's the concrete ingestion work.
 - **Storage is not on the critical path yet** — Tier 0–2 fit in RAM/FAISS. NFS→NVMe only matters at Tier 3+.
 
 ---

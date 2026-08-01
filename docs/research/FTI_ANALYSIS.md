@@ -1,4 +1,4 @@
-# FTI MLOps for BENDER World Model Coprocessor
+# FTI MLOps for OCTO World Model Coprocessor
 
 **Date:** 2026-03-26
 **Status:** ✅ **IMPLEMENTED**
@@ -7,16 +7,16 @@
 
 ## Executive Summary
 
-**Should BENDER adopt FTI MLOps?** YES, with modifications.
+**Should OCTO adopt FTI MLOps?** YES, with modifications.
 
-**✅ Implementation Complete:** WorldModelStore is now available in `src/bender/world_model_store.py` with full test coverage.
+**✅ Implementation Complete:** WorldModelStore is now available in `src/octo/world_model_store.py` with full test coverage.
 
-BENDER's architecture naturally maps to a **Feature/Inference (FI) pipeline** pattern:
+OCTO's architecture naturally maps to a **Feature/Inference (FI) pipeline** pattern:
 - **Feature Pipeline** → **World Model Pipeline**: Transform domain data into graph-based world models
-- **Training Pipeline** → **Not Applicable**: BENDER orchestrates models, doesn't train them
+- **Training Pipeline** → **Not Applicable**: OCTO orchestrates models, doesn't train them
 - **Inference Pipeline** → **Coprocessor Pipeline**: Retrieve from world model, plan, fuse, inject
 
-**Key Recommendation:** Adopt FTI's feature store principles for world model versioning, but skip the training pipeline (BENDER is model-agnostic by design).
+**Key Recommendation:** Adopt FTI's feature store principles for world model versioning, but skip the training pipeline (OCTO is model-agnostic by design).
 
 ## What is FTI?
 
@@ -54,40 +54,40 @@ Hopsworks uses FTI for RAG:
 - **Traditional RAG:** Embed on-the-fly, no versioning, hard to debug
 - **FTI RAG:** Pre-computed embeddings, versioned, reproducible
 
-## BENDER's Current Architecture
+## OCTO's Current Architecture
 
 ### Current Pipeline Flow
 
 ```
-Domain Data → WorldModel.add_*() → InMemoryGraph → BenderRuntime.infer()
-                                         ↓
-                        [retrieve() → plan() → fuse() → inject()]
-                                         ↓
-                              ControlPacket → LLM
+Domain Data → WorldModel.add_*() → InMemoryGraph → OctoRuntime.infer()
+ ↓
+ [retrieve() → plan() → fuse() → inject()]
+ ↓
+ ControlPacket → LLM
 ```
 
 ### Key Components
 
 1. **World Model Construction** (analogous to Feature Pipeline)
-   - Input: Domain-specific data (SQL schemas, BIRD metadata, biomedical ontologies)
-   - Processing: Build typed graph (nodes, relations, embeddings)
-   - Output: WorldModel with retrieval index
-   - **Current State:** Ad-hoc, no versioning, rebuilt per benchmark run
+ - Input: Domain-specific data (SQL schemas, BIRD metadata, biomedical ontologies)
+ - Processing: Build typed graph (nodes, relations, embeddings)
+ - Output: WorldModel with retrieval index
+ - **Current State:** Ad-hoc, no versioning, rebuilt per benchmark run
 
 2. **Coprocessor Runtime** (analogous to Inference Pipeline)
-   - Input: User query + world model
-   - Processing: Retrieve → plan → fuse → inject
-   - Output: ControlPacket for LLM
-   - **Current State:** Stable, well-architected
+ - Input: User query + world model
+ - Processing: Retrieve → plan → fuse → inject
+ - Output: ControlPacket for LLM
+ - **Current State:** Stable, well-architected
 
 3. **No Training Pipeline**
-   - BENDER is model-agnostic by design
-   - Uses pre-trained models (Claude, ScalarLM, Ollama)
-   - No fine-tuning (this is a feature, not a bug)
+ - OCTO is model-agnostic by design
+ - Uses pre-trained models (Claude, ScalarLM, Ollama)
+ - No fine-tuning (this is a feature, not a bug)
 
-### Where BENDER Differs from RAG
+### Where OCTO Differs from RAG
 
-| Aspect | Traditional RAG | FTI RAG | BENDER |
+| Aspect | Traditional RAG | FTI RAG | OCTO |
 |--------|----------------|---------|--------|
 | Knowledge Structure | Flat vectors | Flat vectors | Typed graph (nodes + relations) |
 | Retrieval | Cosine similarity | Cosine similarity | Graph traversal + semantic |
@@ -96,43 +96,43 @@ Domain Data → WorldModel.add_*() → InMemoryGraph → BenderRuntime.infer()
 | Simulation | None | None | Domain evaluators |
 | Model Coupling | Tight (prompts) | Tight (prompts) | Loose (ControlPacket) |
 
-**Key Insight:** BENDER is NOT just "better RAG". It's a coprocessor with stateful graph reasoning, planning, and simulation.
+**Key Insight:** OCTO is NOT just "better RAG". It's a coprocessor with stateful graph reasoning, planning, and simulation.
 
-## Mapping BENDER to FTI
+## Mapping OCTO to FTI
 
 ### Proposed FTI-Inspired Architecture
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
-│                    WORLD MODEL PIPELINE                        │
-│  (Feature Pipeline Analog)                                     │
-│                                                                │
-│  Raw Data → Transform → WorldModel → Feature Store            │
-│  (SQL schemas, metadata, docs) → Graph builder → Versioned    │
-│                                                                │
-│  Examples:                                                     │
-│  - BIRD: dev.zip → CSV metadata → WorldModel v1.0             │
-│  - SQL: Postgres → schema introspection → WorldModel v2.3     │
-│  - BioMed: PubMed → entity extraction → WorldModel v1.5       │
-│                                                                │
-│  Output: Versioned world models with reproducible builds      │
+│ WORLD MODEL PIPELINE │
+│ (Feature Pipeline Analog) │
+│ │
+│ Raw Data → Transform → WorldModel → Feature Store │
+│ (SQL schemas, metadata, docs) → Graph builder → Versioned │
+│ │
+│ Examples: │
+│ - BIRD: dev.zip → CSV metadata → WorldModel v1.0 │
+│ - SQL: Postgres → schema introspection → WorldModel v2.3 │
+│ - BioMed: PubMed → entity extraction → WorldModel v1.5 │
+│ │
+│ Output: Versioned world models with reproducible builds │
 └────────────────────────────────────────────────────────────────┘
-                            ↓
+ ↓
 ┌────────────────────────────────────────────────────────────────┐
-│                   COPROCESSOR PIPELINE                         │
-│  (Inference Pipeline Analog)                                   │
-│                                                                │
-│  Query → WorldModel.retrieve() → Planner → Simulator →        │
-│  FusionModule → ControlPacket → LLM                           │
-│                                                                │
-│  Uses versioned world model from feature store                │
-│  Point-in-time consistency with model integration             │
+│ COPROCESSOR PIPELINE │
+│ (Inference Pipeline Analog) │
+│ │
+│ Query → WorldModel.retrieve() → Planner → Simulator → │
+│ FusionModule → ControlPacket → LLM │
+│ │
+│ Uses versioned world model from feature store │
+│ Point-in-time consistency with model integration │
 └────────────────────────────────────────────────────────────────┘
 ```
 
 ### Why Skip Training Pipeline?
 
-BENDER's design philosophy:
+OCTO's design philosophy:
 1. **Model-agnostic:** Works with any LLM (Claude, GPT-4, ScalarLM, Llama)
 2. **Zero fine-tuning:** Coprocessor provides reasoning, not model weights
 3. **Prompt independence:** ControlPacket is structured data, not prompt engineering
@@ -147,11 +147,11 @@ BENDER's design philosophy:
 - Fine-tuning hidden state fusion weights
 - BUT: This is model integration tuning, not domain training
 
-## Proposed BENDER World Model Store
+## Proposed OCTO World Model Store
 
 ### Feature Store Principles Applied to World Models
 
-| FTI Feature Store | BENDER World Model Store |
+| FTI Feature Store | OCTO World Model Store |
 |-------------------|-------------------------|
 | Versioned features | Versioned world models |
 | Point-in-time reads | Snapshot-based retrieval |
@@ -171,16 +171,16 @@ world = build_world_model_from_bird_metadata(workspace, db_id)
 **Proposed (FTI-style):**
 ```python
 # Pre-build world models, version them
-world_model_store = BenderWorldModelStore("s3://bender-world-models/")
+world_model_store = OctoWorldModelStore("s3://octo-world-models/")
 
 # Build once, reuse many times
 world = world_model_store.get("bird-dev", version="v1.2.0", db_id="california_schools")
 
 # Or rebuild with versioning
 world = world_model_store.build_and_save(
-    source="bird-dev",
-    version="v1.3.0",
-    metadata={"dataset_date": "2024-06-27", "enrichment": "csv_metadata"}
+ source="bird-dev",
+ version="v1.3.0",
+ metadata={"dataset_date": "2024-06-27", "enrichment": "csv_metadata"}
 )
 ```
 
@@ -199,7 +199,7 @@ world = world_model_store.build_and_save(
 - Include embeddings, metadata, schema version
 
 **Phase 2: Versioning Infrastructure**
-- Create `BenderWorldModelStore` class
+- Create `OctoWorldModelStore` class
 - Support local file system and S3 backends
 - Implement semantic versioning (v1.0.0, v1.1.0, v2.0.0)
 
@@ -211,23 +211,23 @@ world = world_model_store.build_and_save(
 **Example Structure:**
 ```
 world-models/
-  bird-dev/
-    v1.0.0/
-      california_schools.json
-      european_football_2.json
-      ...
-      manifest.json  # Metadata: build date, dataset version, enrichment
-    v1.1.0/
-      ...
-  sql-postgres/
-    v1.0.0/
-      production-db.json
-  biomedical/
-    v1.0.0/
-      pubmed-subset.json
+ bird-dev/
+ v1.0.0/
+ california_schools.json
+ european_football_2.json
+ ...
+ manifest.json # Metadata: build date, dataset version, enrichment
+ v1.1.0/
+ ...
+ sql-postgres/
+ v1.0.0/
+ production-db.json
+ biomedical/
+ v1.0.0/
+ pubmed-subset.json
 ```
 
-## Comparison: RAG vs FTI RAG vs BENDER FTI
+## Comparison: RAG vs FTI RAG vs OCTO FTI
 
 ### 1. Traditional RAG (Langchain/LlamaIndex)
 
@@ -256,7 +256,7 @@ Inference Pipeline: Query → Retrieve vectors → Stuff in prompt → LLM
 - Still flat retrieval (no graph)
 - Still tight coupling (prompts)
 
-### 3. BENDER with FTI
+### 3. OCTO with FTI
 
 **Architecture:**
 ```
@@ -277,11 +277,11 @@ Coprocessor Pipeline: Query → Graph Retrieve → Plan → Simulate → Fuse �
 
 ```python
 # Run benchmark
-python examples/run_bender_bird_execution_benchmark.py \
-  --source local \
-  --bird-root datasets/bird/dev_20240627 \
-  --limit 50 \
-  --sql-backend claude
+python examples/run_octo_bird_execution_benchmark.py \
+ --source local \
+ --bird-root datasets/bird/dev_20240627 \
+ --limit 50 \
+ --sql-backend claude
 
 # Problem: Every run rebuilds world models from scratch
 # - Loads CSV files 50 times (once per task)
@@ -301,9 +301,9 @@ python examples/run_bender_bird_execution_benchmark.py \
 ```bash
 # Build once, use forever
 python scripts/build_bird_world_models.py \
-  --source datasets/bird/dev_20240627 \
-  --output world-models/bird-dev/v1.0.0/ \
-  --enrichment metadata
+ --source datasets/bird/dev_20240627 \
+ --output world-models/bird-dev/v1.0.0/ \
+ --enrichment metadata
 
 # Output: 100+ pre-built world models (one per database)
 ```
@@ -311,10 +311,10 @@ python scripts/build_bird_world_models.py \
 **Step 2: Run benchmark with versioned models**
 ```python
 # Fast: loads pre-built models
-python examples/run_bender_bird_execution_benchmark.py \
-  --world-model-version bird-dev:v1.0.0 \
-  --limit 50 \
-  --sql-backend claude
+python examples/run_octo_bird_execution_benchmark.py \
+ --world-model-version bird-dev:v1.0.0 \
+ --limit 50 \
+ --sql-backend claude
 
 # No rebuilding: instant load from disk/cache
 ```
@@ -334,65 +334,65 @@ python examples/run_bender_bird_execution_benchmark.py \
 ### DO Adopt from FTI
 
 1. **World Model Versioning**
-   - Semantic versioning for world models
-   - Manifest files with build metadata
-   - Reproducible builds from source data
+ - Semantic versioning for world models
+ - Manifest files with build metadata
+ - Reproducible builds from source data
 
 2. **Pre-computation**
-   - Build world models ahead of time
-   - Cache embeddings and graph structures
-   - Store in versioned feature store
+ - Build world models ahead of time
+ - Cache embeddings and graph structures
+ - Store in versioned feature store
 
 3. **Separation of Pipelines**
-   - World Model Pipeline: Data → Graph (batch, offline)
-   - Coprocessor Pipeline: Query → Response (online, real-time)
-   - Independent deployment and scaling
+ - World Model Pipeline: Data → Graph (batch, offline)
+ - Coprocessor Pipeline: Query → Response (online, real-time)
+ - Independent deployment and scaling
 
 4. **Point-in-time Consistency**
-   - Lock world model version with model integration
-   - Ensure retrieval uses correct graph schema
-   - Track provenance in benchmark results
+ - Lock world model version with model integration
+ - Ensure retrieval uses correct graph schema
+ - Track provenance in benchmark results
 
 ### DON'T Adopt from FTI
 
 1. **Training Pipeline**
-   - BENDER is model-agnostic (no fine-tuning)
-   - Domain logic in graphs, not weights
-   - Keep architectural purity
+ - OCTO is model-agnostic (no fine-tuning)
+ - Domain logic in graphs, not weights
+ - Keep architectural purity
 
 2. **Feature Store Complexity**
-   - No need for Apache Hudi/Delta Lake (yet)
-   - Simple JSON/Parquet serialization sufficient
-   - Avoid over-engineering for Phase 1
+ - No need for Apache Hudi/Delta Lake (yet)
+ - Simple JSON/Parquet serialization sufficient
+ - Avoid over-engineering for Phase 1
 
 3. **Real-time Feature Updates**
-   - World models are batch-updated
-   - No streaming graph ingestion (yet)
-   - KISS principle for MVP
+ - World models are batch-updated
+ - No streaming graph ingestion (yet)
+ - KISS principle for MVP
 
 ### Hybrid Approach: "World Model Store"
 
-**Simplified FTI for BENDER:**
+**Simplified FTI for OCTO:**
 
 ```python
-from bender.world_model_store import WorldModelStore
+from octo.world_model_store import WorldModelStore
 
 # Initialize store (local or S3)
-store = WorldModelStore("~/.bender/world-models/")
+store = WorldModelStore("~/.octo/world-models/")
 
 # Build and version world model
 world = store.build(
-    source="bird-dev",
-    version="v1.0.0",
-    builder=build_bird_world_model,
-    params={"enrichment": True}
+ source="bird-dev",
+ version="v1.0.0",
+ builder=build_bird_world_model,
+ params={"enrichment": True}
 )
 
 # Later: load instantly
 world = store.get("bird-dev", version="v1.0.0", db_id="california_schools")
 
 # Use in coprocessor
-runtime = BenderRuntime(world_model=world, ...)
+runtime = OctoRuntime(world_model=world, ...)
 result = runtime.infer("What are SAT scores in Fresno?")
 ```
 
@@ -406,7 +406,7 @@ result = runtime.infer("What are SAT scores in Fresno?")
 - Reproducible research
 - Collaborative world model sharing
 
-## Competitive Analysis: BENDER vs RAG Solutions
+## Competitive Analysis: OCTO vs RAG Solutions
 
 ### RAG Solutions Using FTI
 
@@ -426,31 +426,31 @@ result = runtime.infer("What are SAT scores in Fresno?")
 - Graph-like object store
 - Versioning via snapshots
 - Limited planning (keyword filters)
-- Better than flat vectors, worse than BENDER
+- Better than flat vectors, worse than OCTO
 
-### BENDER's Unique Value
+### OCTO's Unique Value
 
 1. **Typed Graph World Models**
-   - Not just embeddings, but structured knowledge
-   - Relations between entities (foreign keys, hierarchies)
-   - Domain-specific node types (table, column, document)
+ - Not just embeddings, but structured knowledge
+ - Relations between entities (foreign keys, hierarchies)
+ - Domain-specific node types (table, column, document)
 
 2. **Coprocessor Architecture**
-   - Planning before retrieval (SQLSchemaPlanner)
-   - Simulation during reasoning (RuleEngine)
-   - Fusion of graph and model signals (FusionModule)
+ - Planning before retrieval (SQLSchemaPlanner)
+ - Simulation during reasoning (RuleEngine)
+ - Fusion of graph and model signals (FusionModule)
 
 3. **Model-agnostic Design**
-   - Swap Claude for GPT-4 or Llama without code changes
-   - ControlPacket is universal interface
-   - No prompt lock-in
+ - Swap Claude for GPT-4 or Llama without code changes
+ - ControlPacket is universal interface
+ - No prompt lock-in
 
 4. **FTI-compatible World Models**
-   - Can adopt feature store patterns
-   - Versioning and reproducibility
-   - Pre-computation and caching
+ - Can adopt feature store patterns
+ - Versioning and reproducibility
+ - Pre-computation and caching
 
-**BENDER = FTI RAG + Graph Reasoning + Coprocessor**
+**OCTO = FTI RAG + Graph Reasoning + Coprocessor**
 
 ## Implementation Status
 
@@ -461,12 +461,12 @@ result = runtime.infer("What are SAT scores in Fresno?")
 - ✅ Full test coverage (8/8 tests passing)
 
 ### ✅ Phase 2: World Model Store (COMPLETE)
-- ✅ Created `WorldModelStore` class in `src/bender/world_model_store.py`
+- ✅ Created `WorldModelStore` class in `src/octo/world_model_store.py`
 - ✅ Implemented local file system backend
 - ✅ Added semantic versioning support
 - ✅ Manifest tracking (build date, metadata, model counts)
 - ✅ Lazy loading with `get_or_build()`
-- ✅ Exported from `bender` package
+- ✅ Exported from `octo` package
 
 ### 🔄 Phase 3: BIRD Pre-built Models (TODO)
 - [ ] Script to build all BIRD dev world models
@@ -484,7 +484,7 @@ result = runtime.infer("What are SAT scores in Fresno?")
 - ✅ Architecture docs updated with FTI section
 - ✅ README highlights FTI adoption
 - ✅ This analysis document
-- ✅ BENDER_KILLER.md with competitive positioning
+- ✅ OCTO_KILLER.md with competitive positioning
 
 **Implementation Effort:** ~1 day (Phases 1-2 complete)
 **Remaining Effort:** ~4 days (Phases 3-4)
@@ -492,31 +492,31 @@ result = runtime.infer("What are SAT scores in Fresno?")
 
 ## Conclusion
 
-**Should BENDER adopt FTI MLOps?** YES, with modifications.
+**Should OCTO adopt FTI MLOps?** YES, with modifications.
 
 ### Key Takeaways
 
-1. **BENDER naturally maps to Feature/Inference (FI) pattern**
-   - World Model Pipeline = Feature Pipeline
-   - Coprocessor Pipeline = Inference Pipeline
-   - Skip Training Pipeline (model-agnostic design)
+1. **OCTO naturally maps to Feature/Inference (FI) pattern**
+ - World Model Pipeline = Feature Pipeline
+ - Coprocessor Pipeline = Inference Pipeline
+ - Skip Training Pipeline (model-agnostic design)
 
 2. **World Model Store is a killer feature**
-   - Versioning enables reproducibility
-   - Pre-computation speeds up benchmarks 3x
-   - Sharing enables collaboration
+ - Versioning enables reproducibility
+ - Pre-computation speeds up benchmarks 3x
+ - Sharing enables collaboration
 
-3. **BENDER beats FTI RAG**
-   - FTI RAG = versioned flat vectors
-   - BENDER = versioned graph + planning + simulation
-   - Same benefits (versioning), better reasoning (graph)
+3. **OCTO beats FTI RAG**
+ - FTI RAG = versioned flat vectors
+ - OCTO = versioned graph + planning + simulation
+ - Same benefits (versioning), better reasoning (graph)
 
 4. **Low complexity, high impact**
-   - ~200 lines for WorldModelStore
-   - 3-4 weeks implementation
-   - 3x benchmark speedup
-   - Reproducible research
-   - Competitive differentiation
+ - ~200 lines for WorldModelStore
+ - 3-4 weeks implementation
+ - 3x benchmark speedup
+ - Reproducible research
+ - Competitive differentiation
 
 ### Next Steps
 
@@ -526,4 +526,4 @@ result = runtime.infer("What are SAT scores in Fresno?")
 4. Document in whitepaper (Phase 5)
 5. Use as competitive differentiator vs RAG solutions
 
-**BENDER + FTI = Best of both worlds: Graph reasoning with MLOps rigor.**
+**OCTO + FTI = Best of both worlds: Graph reasoning with MLOps rigor.**

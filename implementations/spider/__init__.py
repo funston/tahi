@@ -36,7 +36,7 @@ from .spider_snow_pipeline import (
 )
 from .spider_snow_slice import SpiderSnowSliceSelection, select_stratified_spider_snow_tasks
 from .spider_snow_solve import (
-    BenderSpiderSnowSolveRunner,
+    OctoSpiderSnowSolveRunner,
     BenchmarkAdapterSpiderSnowProblemSolver,
     NativeSpiderSnowProblemSolver,
     SpiderSnowDatabaseCoprocessor,
@@ -57,7 +57,7 @@ from .spider_snow_sql import (
 from .spider_tcga import apply_tcga_domain_plan, parse_tcga_query_hints, resolve_tcga_schema_plan
 
 __all__ = [
-    "BenderSpiderSnowSolveRunner",
+    "OctoSpiderSnowSolveRunner",
     "BenchmarkAdapterSpiderSnowProblemSolver",
     "NativeSpiderSnowProblemSolver",
     "SpiderLiteBenchmarkAdapter",

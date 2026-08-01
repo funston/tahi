@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "sample_1",
+    "question": "What is the capital of the country where the author of Pride and Prejudice was born?",
+    "answer": "London",
+    "type": "bridge",
+    "supporting_facts": [
+      [
+        "Jane Austen",
+        0
+      ],
+      [
+        "England",
+        0
+      ]
+    ]
+  },
+  {
+    "_id": "sample_2",
+    "question": "In what year was the capital of France established as the country's capital?",
+    "answer": "508",
+    "type": "bridge",
+    "supporting_facts": [
+      [
+        "Paris",
+        0
+      ],
+      [
+        "France",
+        0
+      ]
+    ]
+  },
+  {
+    "_id": "sample_3",
+    "question": "Who was the first president of the country that has Washington D.C. as its capital?",
+    "answer": "George Washington",
+    "type": "bridge",
+    "supporting_facts": [
+      [
+        "United States",
+        0
+      ],
+      [
+        "Washington D.C.",
+        0
+      ]
+    ]
+  }
+]

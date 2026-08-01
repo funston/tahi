@@ -16,8 +16,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'src'))
 sys.path.insert(0, str(ROOT))
 
-from bender.world_state import WorldModel
-from implementations.kimi_wikipedia import KimiWikipediaCoprocessor
+from octo.world_state import WorldModel
+from implementations.wikipedia import WikipediaCoprocessor
 
 
 def build_simple_wikipedia_world():
@@ -148,7 +148,7 @@ def iterative_rag(question, world_model, max_iterations=3):
     return all_retrievals[-1].label if all_retrievals else None, [r.label for r in all_retrievals]
 
 
-def bender_graph_traversal(question, world_model):
+def octo_graph_traversal(question, world_model):
     """BENDER: Use graph structure to find multi-hop answers."""
     # First, get seed entities through retrieval
     retrievals = world_model.retrieve(question, top_k=2)
@@ -212,7 +212,7 @@ def run_comparison():
 
     results = {
         'iterative_rag': {'correct': 0, 'total': 0},
-        'bender': {'correct': 0, 'total': 0}
+        'octo': {'correct': 0, 'total': 0}
     }
 
     for question, gold_answer in questions:
@@ -232,15 +232,15 @@ def run_comparison():
             results['iterative_rag']['correct'] += 1
 
         # Test BENDER
-        bender_answer, bender_path = bender_graph_traversal(question, world)
+        octo_answer, octo_path = octo_graph_traversal(question, world)
         print(f"BENDER:")
-        print(f"  Path: {' → '.join(bender_path)}")
-        print(f"  Answer: {bender_answer}")
-        bender_correct = bender_answer == gold_answer
-        print(f"  Correct: {'✅' if bender_correct else '❌'}")
-        results['bender']['total'] += 1
-        if bender_correct:
-            results['bender']['correct'] += 1
+        print(f"  Path: {' → '.join(octo_path)}")
+        print(f"  Answer: {octo_answer}")
+        octo_correct = octo_answer == gold_answer
+        print(f"  Correct: {'✅' if octo_correct else '❌'}")
+        results['octo']['total'] += 1
+        if octo_correct:
+            results['octo']['correct'] += 1
 
     # Summary
     print("\n" + "=" * 60)
@@ -248,16 +248,16 @@ def run_comparison():
     print("=" * 60)
 
     rag_acc = results['iterative_rag']['correct'] / results['iterative_rag']['total']
-    bender_acc = results['bender']['correct'] / results['bender']['total']
+    octo_acc = results['octo']['correct'] / results['octo']['total']
 
     print(f"Iterative RAG: {results['iterative_rag']['correct']}/{results['iterative_rag']['total']} = {rag_acc:.0%}")
-    print(f"BENDER:        {results['bender']['correct']}/{results['bender']['total']} = {bender_acc:.0%}")
+    print(f"BENDER:        {results['octo']['correct']}/{results['octo']['total']} = {octo_acc:.0%}")
 
-    if bender_acc > rag_acc:
+    if octo_acc > rag_acc:
         print("\n✅ BENDER WINS!")
         print("   Graph traversal beats iterative RAG for multi-hop reasoning.")
         print("   Key advantage: Structured paths vs. unstructured retrieval loops.")
-    elif bender_acc == rag_acc:
+    elif octo_acc == rag_acc:
         print("\n⚠️ TIE - Need more complex examples")
     else:
         print("\n❌ Iterative RAG wins - investigate why")

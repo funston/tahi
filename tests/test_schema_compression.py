@@ -10,7 +10,7 @@ if ROOT not in sys.path:
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender import build_schema_compression_plan, snapshot_to_world_model  # noqa: E402
+from octo import build_schema_compression_plan, snapshot_to_world_model  # noqa: E402
 from implementations.spider import SpiderSnowflakeMetadataLoader  # noqa: E402
 
 

@@ -10,7 +10,7 @@ SRC = os.path.join(ROOT, "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender import WorldModel, build_pagila_fixture_snapshot, snapshot_to_world_model  # noqa: E402
+from octo import WorldModel, build_pagila_fixture_snapshot, snapshot_to_world_model  # noqa: E402
 
 
 class WorldCacheTests(unittest.TestCase):

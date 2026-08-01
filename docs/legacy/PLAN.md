@@ -11,8 +11,8 @@ Recover `USA_NAMES` (`sf_bq286`) on the generic Spider Snow pipeline without rei
 
 - This directory is **not** a git repository in the current environment, so there is no `git status`-based checkpoint.
 - Local model setup in current use:
-  - Ollama on `http://127.0.0.1:11435`
-  - ScalarLM on `http://localhost:8000`
+ - Ollama on `http://127.0.0.1:11435`
+ - ScalarLM on `http://localhost:8000`
 - Snowflake access requires escalated execution because the sandbox blocks outbound network/DNS.
 
 ## What Changed In This Session
@@ -21,8 +21,8 @@ Recover `USA_NAMES` (`sf_bq286`) on the generic Spider Snow pipeline without rei
 
 Main files:
 
-- [`src/bender/spider_snow_pipeline.py`](/Users/richiek/work/bender/src/bender/spider_snow_pipeline.py)
-- [`src/bender/spider_snow_solve.py`](/Users/richiek/work/bender/src/bender/spider_snow_solve.py)
+- [`src/octo/spider_snow_pipeline.py`](/Users/richiek/work/bender/src/octo/spider_snow_pipeline.py)
+- [`src/octo/spider_snow_solve.py`](/Users/richiek/work/bender/src/octo/spider_snow_solve.py)
 
 Implemented:
 
@@ -57,9 +57,9 @@ This was intended to solve `sf_bq286` generically.
 
 New files:
 
-- [`src/bender/bird.py`](/Users/richiek/work/bender/src/bender/bird.py)
+- [`src/octo/bird.py`](/Users/richiek/work/bender/src/octo/bird.py)
 - [`examples/bird_planning_demo.py`](/Users/richiek/work/bender/examples/bird_planning_demo.py)
-- [`examples/run_bender_bird_grounding.py`](/Users/richiek/work/bender/examples/run_bender_bird_grounding.py)
+- [`examples/run_octo_bird_grounding.py`](/Users/richiek/work/bender/examples/run_octo_bird_grounding.py)
 - [`docs/bird_official_data.md`](/Users/richiek/work/bender/docs/bird_official_data.md)
 - [`tests/test_bird.py`](/Users/richiek/work/bender/tests/test_bird.py)
 
@@ -78,7 +78,7 @@ Passed:
 
 - [`tests/test_spider_snow_solve.py`](/Users/richiek/work/bender/tests/test_spider_snow_solve.py)
 - [`tests/test_spider_snow.py`](/Users/richiek/work/bender/tests/test_spider_snow.py)
-- [`tests/test_render_bender_spider_stats.py`](/Users/richiek/work/bender/tests/test_render_bender_spider_stats.py)
+- [`tests/test_render_octo_spider_stats.py`](/Users/richiek/work/bender/tests/test_render_octo_spider_stats.py)
 - [`tests/test_bird.py`](/Users/richiek/work/bender/tests/test_bird.py)
 - [`tests/test_spider_lite.py`](/Users/richiek/work/bender/tests/test_spider_lite.py)
 - [`tests/test_database_coprocessor.py`](/Users/richiek/work/bender/tests/test_database_coprocessor.py)
@@ -100,11 +100,11 @@ Old state:
 Current generic runs:
 
 - heuristic:
-  - [`.tmp_spider_snow_usa_names_heuristic_v1.json`](/Users/richiek/work/bender/.tmp_spider_snow_usa_names_heuristic_v1.json)
-  - status: `wrong`
+ - [`.tmp_spider_snow_usa_names_heuristic_v1.json`](/Users/richiek/work/bender/.tmp_spider_snow_usa_names_heuristic_v1.json)
+ - status: `wrong`
 - Ollama + heuristic augmentation:
-  - [`.tmp_spider_snow_usa_names_ollama_v5.json`](/Users/richiek/work/bender/.tmp_spider_snow_usa_names_ollama_v5.json)
-  - status: `wrong`
+ - [`.tmp_spider_snow_usa_names_ollama_v5.json`](/Users/richiek/work/bender/.tmp_spider_snow_usa_names_ollama_v5.json)
+ - status: `wrong`
 
 #### Why `USA_NAMES` still fails
 
@@ -133,11 +133,11 @@ Local tiny BIRD-style dataset staged under:
 Outputs:
 
 - raw summary:
-  - [`.tmp_bird_tiny_grounding_current.json`](/Users/richiek/work/bender/.tmp_bird_tiny_grounding_current.json)
+ - [`.tmp_bird_tiny_grounding_current.json`](/Users/richiek/work/bender/.tmp_bird_tiny_grounding_current.json)
 - runner output:
-  - [`.tmp_bird_tiny_grounding_runner_current.json`](/Users/richiek/work/bender/.tmp_bird_tiny_grounding_runner_current.json)
+ - [`.tmp_bird_tiny_grounding_runner_current.json`](/Users/richiek/work/bender/.tmp_bird_tiny_grounding_runner_current.json)
 - markdown:
-  - [`bender_bird_tiny_grounding_stats.md`](/Users/richiek/work/bender/bender_bird_tiny_grounding_stats.md)
+ - [`octo_bird_tiny_grounding_stats.md`](/Users/richiek/work/bender/octo_bird_tiny_grounding_stats.md)
 
 Current result:
 
@@ -161,16 +161,16 @@ The next session should fix `sf_bq286` by changing ranking/selection, not by add
 Most likely fix:
 
 1. Make the `share_of_total` candidate outrank plain ranking when:
-   - `requires_global_denominator = True`
-   - `comparison_scope = scoped_vs_global`
+ - `requires_global_denominator = True`
+ - `comparison_scope = scoped_vs_global`
 2. Penalize candidates that:
-   - sort by raw metric instead of ratio
-   - apply state filter only in the outer query but never project/order by the ratio
+ - sort by raw metric instead of ratio
+ - apply state filter only in the outer query but never project/order by the ratio
 3. Add a targeted regression test proving:
-   - the generated `share_of_total` candidate for `sf_bq286` is ranked above the simple ranking candidate
+ - the generated `share_of_total` candidate for `sf_bq286` is ranked above the simple ranking candidate
 4. Rerun:
-   - heuristic `sf_bq286`
-   - Ollama `sf_bq286`
+ - heuristic `sf_bq286`
+ - Ollama `sf_bq286`
 
 ### Next step after `USA_NAMES`
 
@@ -192,10 +192,10 @@ Use the new BIRD runner on a larger local BIRD checkout when available:
 ### Tests
 
 ```bash
-cd /Users/richiek/work/bender
+cd /Users/richiek/work/octo
 PYTHONPATH=src python3 tests/test_spider_snow_solve.py
 PYTHONPATH=src python3 tests/test_spider_snow.py
-PYTHONPATH=src python3 tests/test_render_bender_spider_stats.py
+PYTHONPATH=src python3 tests/test_render_octo_spider_stats.py
 PYTHONPATH=src python3 tests/test_bird.py
 ```
 
@@ -204,36 +204,36 @@ PYTHONPATH=src python3 tests/test_bird.py
 Heuristic:
 
 ```bash
-cd /Users/richiek/work/bender
+cd /Users/richiek/work/octo
 source .venv/bin/activate
-PYTHONPATH=src python examples/run_bender_spider_snow_solve.py \
-  --task-id sf_bq286 \
-  --candidate-generator heuristic \
-  --output .tmp_spider_snow_usa_names_heuristic_v1.json
+PYTHONPATH=src python examples/run_octo_spider_snow_solve.py \
+ --task-id sf_bq286 \
+ --candidate-generator heuristic \
+ --output .tmp_spider_snow_usa_names_heuristic_v1.json
 ```
 
 Ollama:
 
 ```bash
-cd /Users/richiek/work/bender
+cd /Users/richiek/work/octo
 source .venv/bin/activate
-PYTHONPATH=src python examples/run_bender_spider_snow_solve.py \
-  --task-id sf_bq286 \
-  --max-candidates 2 \
-  --candidate-generator ollama \
-  --base-url http://127.0.0.1:11435 \
-  --model qwen2.5-coder:latest \
-  --output .tmp_spider_snow_usa_names_ollama_v5.json
+PYTHONPATH=src python examples/run_octo_spider_snow_solve.py \
+ --task-id sf_bq286 \
+ --max-candidates 2 \
+ --candidate-generator ollama \
+ --base-url http://127.0.0.1:11435 \
+ --model qwen2.5-coder:latest \
+ --output .tmp_spider_snow_usa_names_ollama_v5.json
 ```
 
 ### Run BIRD grounding
 
 ```bash
-cd /Users/richiek/work/bender
-PYTHONPATH=src python3 examples/run_bender_bird_grounding.py \
-  --bird-root .tmp_bird_tiny \
-  --split mini_dev \
-  --output .tmp_bird_tiny_grounding_runner_current.json
+cd /Users/richiek/work/octo
+PYTHONPATH=src python3 examples/run_octo_bird_grounding.py \
+ --bird-root .tmp_bird_tiny \
+ --split mini_dev \
+ --output .tmp_bird_tiny_grounding_runner_current.json
 ```
 
 ## Summary For A New Session

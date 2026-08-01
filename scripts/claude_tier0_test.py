@@ -88,12 +88,12 @@ def simple_graph_test():
     return current == 'london'
 
 
-def test_with_bender():
+def test_with_octo():
     """Test using actual BENDER code if available"""
     try:
         import sys
         sys.path.insert(0, 'src')
-        from bender.world_state import WorldModel
+        from octo.world_state import WorldModel
 
         # Build world
         world = WorldModel(domain='test', use_ann=False)
@@ -150,7 +150,7 @@ if __name__ == "__main__":
 
     # Try with real BENDER if available
     print("\nTesting with actual BENDER modules...")
-    bender_success = test_with_bender()
+    octo_success = test_with_octo()
 
     if simple_success:
         print("\n✅ Core hypothesis validated: Graph traversal beats simple retrieval")

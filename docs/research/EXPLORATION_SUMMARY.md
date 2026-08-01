@@ -1,40 +1,40 @@
-# BENDER Codebase Exploration - Complete Summary
+# OCTO Codebase Exploration - Complete Summary
 
-**Date:** July 25, 2026  
-**Status:** Thorough exploration complete  
+**Date:** July 25, 2026 
+**Status:** Thorough exploration complete 
 **Deliverables:** 3 comprehensive documents + this summary
 
 ---
 
 ## What Was Explored
 
-This exploration analyzed the complete BENDER world-model coprocessor architecture through:
+This exploration analyzed the complete OCTO world-model coprocessor architecture through:
 
-1. **Core source files** (`src/bender/*.py`)
-   - Runtime orchestration (runtime.py, engine.py)
-   - Data models (models.py, world_state.py)
-   - Integration contracts (integration.py)
-   - Signal fusion (fusion.py)
-   - Domain reasoning (planner.py, rules.py, simulator.py)
-   - World model storage (world_model_store.py)
-   - Retrieval abstractions (retrieval/*.py)
+1. **Core source files** (`src/octo/*.py`)
+ - Runtime orchestration (runtime.py, engine.py)
+ - Data models (models.py, world_state.py)
+ - Integration contracts (integration.py)
+ - Signal fusion (fusion.py)
+ - Domain reasoning (planner.py, rules.py, simulator.py)
+ - World model storage (world_model_store.py)
+ - Retrieval abstractions (retrieval/*.py)
 
 2. **Architecture documentation** (`docs/*.md`)
-   - ARCHITECTURE.md - High-level design
-   - INTEGRATION_LEVELS.md - Integration spectrum
-   - TUTORIAL.md - Getting started
-   - QUICKSTART.md - Quick reference
+ - ARCHITECTURE.md - High-level design
+ - INTEGRATION_LEVELS.md - Integration spectrum
+ - TUTORIAL.md - Getting started
+ - QUICKSTART.md - Quick reference
 
 3. **Status and analysis documents**
-   - FTI_IMPLEMENTATION_COMPLETE.md - MLOps pattern implementation
-   - BIRD_BENCHMARK_RESULTS.md - Real-world performance data
-   - HONEST_STATUS_MARCH_2026.md - Candid assessment
+ - FTI_IMPLEMENTATION_COMPLETE.md - MLOps pattern implementation
+ - BIRD_BENCHMARK_RESULTS.md - Real-world performance data
+ - HONEST_STATUS_MARCH_2026.md - Candid assessment
 
 ---
 
 ## Three Exploration Documents Created
 
-### 1. BENDER_ARCHITECTURE_EXPLORATION.md (1,159 lines)
+### 1. OCTO_ARCHITECTURE_EXPLORATION.md (1,159 lines)
 **Comprehensive deep-dive covering:**
 - Core runtime flow (7-stage pipeline)
 - SemanticFrame and CognitiveState data models
@@ -49,7 +49,7 @@ This exploration analyzed the complete BENDER world-model coprocessor architectu
 - Phase 1 intentional limitations
 - Key takeaways and competitive moat
 
-### 2. BENDER_ARCHITECTURE_VISUAL_SUMMARY.md
+### 2. OCTO_ARCHITECTURE_VISUAL_SUMMARY.md
 **Diagrams and visual explanations covering:**
 - Core pipeline flow diagram (8 stages)
 - World model graph structure example
@@ -58,7 +58,7 @@ This exploration analyzed the complete BENDER world-model coprocessor architectu
 - Fusion signal blending flowchart
 - FTI MLOps pattern visualization
 - Domain reasoning layers breakdown
-- RAG vs BENDER comparison table
+- RAG vs OCTO comparison table
 - Integration boundaries (framework/domain split)
 - Extension points (how to customize)
 - Architectural decisions matrix
@@ -71,13 +71,13 @@ This exploration analyzed the complete BENDER world-model coprocessor architectu
 
 ## Key Findings
 
-### 1. BENDER is NOT RAG
+### 1. OCTO is NOT RAG
 
 **RAG:** Query → Retrieve text passages → Serialize to prompt → Model reconstructs structure
 
-**BENDER:** Query → Retrieve typed nodes → Apply rules → Emit structured state → Model uses control packet
+**OCTO:** Query → Retrieve typed nodes → Apply rules → Emit structured state → Model uses control packet
 
-**Distinction:** BENDER reasons BEFORE sending to model; RAG asks model to reason about retrieved text.
+**Distinction:** OCTO reasons BEFORE sending to model; RAG asks model to reason about retrieved text.
 
 ### 2. Core Architecture: 7-Stage Pipeline
 
@@ -98,27 +98,27 @@ Each stage adds provenance, making reasoning transparent.
 - **Nodes:** Entities with type, label, attributes (e.g., table, column, metric)
 - **Edges:** Typed relations (has_column, foreign_key, etc.)
 - **Retrieval:** Two strategies
-  - Default: InMemoryGraphIndex (keyword matching, zero dependencies)
-  - Optional: FAISS (semantic similarity, requires setup)
+ - Default: InMemoryGraphIndex (keyword matching, zero dependencies)
+ - Optional: FAISS (semantic similarity, requires setup)
 - **Key insight:** Structure is not serialized to text—it's kept structured
 
 ### 4. FTI MLOps Pattern (Feature/Training/Inference)
 
-BENDER adopts SOTA architecture from Hopsworks:
+OCTO adopts SOTA architecture from Hopsworks:
 
 - **Feature Pipeline:** Pre-build and version world models
-  - `WorldModelStore` saves versioned graphs (e.g., `bird-dev:v1.0.0`)
-  - Gzip compression (70% size reduction)
-  - Manifest tracking (build date, node/edge counts)
+ - `WorldModelStore` saves versioned graphs (e.g., `bird-dev:v1.0.0`)
+ - Gzip compression (70% size reduction)
+ - Manifest tracking (build date, node/edge counts)
 
 - **Training Pipeline:** SKIP (model-agnostic, no fine-tuning)
-  - Domain logic in graphs, not weights
-  - Works with any base model
+ - Domain logic in graphs, not weights
+ - Works with any base model
 
 - **Inference Pipeline:** Load pre-built models at runtime
-  - Lazy loading (`get_or_build()`)
-  - Point-in-time consistency
-  - 3x faster benchmarks (expected)
+ - Lazy loading (`get_or_build()`)
+ - Point-in-time consistency
+ - 3x faster benchmarks (expected)
 
 ### 5. Fusion: How to Blend Two Signals
 
@@ -155,24 +155,24 @@ fused = token_weight * token_signal + graph_weight * graph_signal
 ### 7. Architectural Purity: Clear Boundaries
 
 ```
-src/bender/              → Pure framework (generic)
-└─ runtime.py          → Orchestration
-   models.py           → Data structures
-   world_state.py      → Graph storage
-   retrieval/          → Search abstraction
-   integration.py      → Model contracts
-   fusion.py           → Signal blending
-   planner.py          → Intent detection
-   rules.py            → Generic domain logic
-   simulator.py        → Validation
+src/octo/ → Pure framework (generic)
+└─ runtime.py → Orchestration
+ models.py → Data structures
+ world_state.py → Graph storage
+ retrieval/ → Search abstraction
+ integration.py → Model contracts
+ fusion.py → Signal blending
+ planner.py → Intent detection
+ rules.py → Generic domain logic
+ simulator.py → Validation
 
-implementations/       → Domain-specific
-├─ bird/              → SQL benchmark
-├─ spider/            → Spider benchmark
-├─ bio/               → Biomarker domain
-└─ mass_spec/         → Mass spec domain
+implementations/ → Domain-specific
+├─ bird/ → SQL benchmark
+├─ spider/ → Spider benchmark
+├─ bio/ → Biomarker domain
+└─ mass_spec/ → Mass spec domain
 
-RULE: bender MUST NOT import from implementations
+RULE: octo MUST NOT import from implementations
 ```
 
 This keeps core generic and shows how to build on top.
@@ -189,7 +189,7 @@ Result: Complete audit trail of reasoning (not black-box like RAG).
 
 ### 9. Extensibility Through Abstraction
 
-BENDER defines abstract base classes for key components:
+OCTO defines abstract base classes for key components:
 
 - `FusionModule.mix()` → Swap for attention-based fusion
 - `ModelIntegration.capture/inject()` → Swap for vLLM, TGI, etc.
@@ -205,7 +205,7 @@ From BIRD benchmark (SQL generation):
 - **Qwen2.5-coder:14b:** 15% → 15% (0% improvement) ❌
 - **Gemma3:27b:** 0% → 0% (0% improvement) ❌
 
-**Insight:** BENDER helps when base model is capable. It cannot fix broken SQL generation.
+**Insight:** OCTO helps when base model is capable. It cannot fix broken SQL generation.
 
 ---
 
@@ -249,7 +249,7 @@ Phase 1 prioritizes interpretability. Linear blend:
 
 ---
 
-## What BENDER Does Well
+## What OCTO Does Well
 
 1. **Structured reasoning:** Explicit entities, relations, constraints
 2. **Auditability:** Complete provenance trail
@@ -261,7 +261,7 @@ Phase 1 prioritizes interpretability. Linear blend:
 
 ---
 
-## What BENDER Doesn't Do
+## What OCTO Doesn't Do
 
 1. Replace LLMs (coprocessor, not replacement)
 2. Fix broken base models (helps capable models)
@@ -275,8 +275,8 @@ Phase 1 prioritizes interpretability. Linear blend:
 ## Recommendations for Readers
 
 **Start with:**
-1. BENDER_ARCHITECTURE_VISUAL_SUMMARY.md (diagrams first)
-2. Then BENDER_ARCHITECTURE_EXPLORATION.md (detailed dives)
+1. OCTO_ARCHITECTURE_VISUAL_SUMMARY.md (diagrams first)
+2. Then OCTO_ARCHITECTURE_EXPLORATION.md (detailed dives)
 3. Reference EXPLORATION_SUMMARY.md (this file) for navigation
 
 **For specific topics:**
@@ -288,9 +288,9 @@ Phase 1 prioritizes interpretability. Linear blend:
 - Trade-offs → Part 8 of exploration + decisions matrix
 
 **For implementation:**
-- Read `/Users/richiek/work/bender/src/bender/runtime.py` (orchestration)
-- Review `/Users/richiek/work/bender/src/bender/world_state.py` (graph storage)
-- Study `/Users/richiek/work/bender/src/bender/fusion.py` (signal blending)
+- Read `/Users/richiek/work/bender/src/octo/runtime.py` (orchestration)
+- Review `/Users/richiek/work/bender/src/octo/world_state.py` (graph storage)
+- Study `/Users/richiek/work/bender/src/octo/fusion.py` (signal blending)
 - Examine `/Users/richiek/work/bender/implementations/bird/` (reference domain)
 
 ---
@@ -298,17 +298,17 @@ Phase 1 prioritizes interpretability. Linear blend:
 ## Files Analyzed
 
 ### Core Source
-- `/Users/richiek/work/bender/src/bender/runtime.py` (119 lines) - Orchestration
-- `/Users/richiek/work/bender/src/bender/models.py` (142 lines) - Data structures
-- `/Users/richiek/work/bender/src/bender/world_state.py` (201 lines) - Graph storage
-- `/Users/richiek/work/bender/src/bender/fusion.py` (77 lines) - Signal blending
-- `/Users/richiek/work/bender/src/bender/integration.py` (115 lines) - Model contracts
-- `/Users/richiek/work/bender/src/bender/planner.py` (106 lines) - Intent detection
-- `/Users/richiek/work/bender/src/bender/rules.py` (112 lines) - Domain logic
-- `/Users/richiek/work/bender/src/bender/simulator.py` (62 lines) - Validation
-- `/Users/richiek/work/bender/src/bender/world_model_store.py` (324 lines) - FTI storage
-- `/Users/richiek/work/bender/src/bender/retrieval/ann.py` (100+ lines) - ANN search
-- `/Users/richiek/work/bender/src/bender/adapter.py` (99 lines) - LLM wrapper
+- `/Users/richiek/work/bender/src/octo/runtime.py` (119 lines) - Orchestration
+- `/Users/richiek/work/bender/src/octo/models.py` (142 lines) - Data structures
+- `/Users/richiek/work/bender/src/octo/world_state.py` (201 lines) - Graph storage
+- `/Users/richiek/work/bender/src/octo/fusion.py` (77 lines) - Signal blending
+- `/Users/richiek/work/bender/src/octo/integration.py` (115 lines) - Model contracts
+- `/Users/richiek/work/bender/src/octo/planner.py` (106 lines) - Intent detection
+- `/Users/richiek/work/bender/src/octo/rules.py` (112 lines) - Domain logic
+- `/Users/richiek/work/bender/src/octo/simulator.py` (62 lines) - Validation
+- `/Users/richiek/work/bender/src/octo/world_model_store.py` (324 lines) - FTI storage
+- `/Users/richiek/work/bender/src/octo/retrieval/ann.py` (100+ lines) - ANN search
+- `/Users/richiek/work/bender/src/octo/adapter.py` (99 lines) - LLM wrapper
 
 ### Documentation
 - `/Users/richiek/work/bender/docs/ARCHITECTURE.md` (137 lines)
@@ -324,7 +324,7 @@ Phase 1 prioritizes interpretability. Linear blend:
 
 ## Conclusion
 
-BENDER represents a **fundamental architectural shift** from retrieval-based augmentation (RAG) to runtime-based reasoning. Key differentiators:
+OCTO represents a **fundamental architectural shift** from retrieval-based augmentation (RAG) to runtime-based reasoning. Key differentiators:
 
 1. **Graph-based world models** (vs. flat document retrieval)
 2. **Explicit deterministic reasoning** (vs. model-only inference)
@@ -358,16 +358,16 @@ For depth on specific topics:
 | Domain reasoning | Exploration | Part 6 |
 | Architectural decisions | Exploration | Part 8 |
 | Extensibility | Visual Summary | Extension Points |
-| Comparison | Visual Summary | RAG vs BENDER table |
+| Comparison | Visual Summary | RAG vs OCTO table |
 | Diagrams | Visual Summary | All sections |
 
 ---
 
-**Generated:** July 25, 2026  
-**Exploration Status:** Complete ✅  
+**Generated:** July 25, 2026 
+**Exploration Status:** Complete ✅ 
 **Files Created:**
-1. BENDER_ARCHITECTURE_EXPLORATION.md (1,159 lines)
-2. BENDER_ARCHITECTURE_VISUAL_SUMMARY.md (450+ lines)
+1. OCTO_ARCHITECTURE_EXPLORATION.md (1,159 lines)
+2. OCTO_ARCHITECTURE_VISUAL_SUMMARY.md (450+ lines)
 3. EXPLORATION_SUMMARY.md (this file)
 
 All files available in `/Users/richiek/work/bender/`

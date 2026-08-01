@@ -1,4 +1,4 @@
-# BENDER Code Architecture and Design
+# OCTO Code Architecture and Design
 
 ## Scope
 
@@ -6,25 +6,25 @@ This document describes the current repository architecture as implemented, not 
 
 It covers:
 
-- the Python runtime in `src/bender`,
+- the Python runtime in `src/octo`,
 - the reference world-model implementations in `implementations/`,
 - the example and test surfaces,
 - the current native integration direction into ScalarLM's Tokenformer path.
 
 ## Top-level structure
 
-- `src/bender/`
-  Runtime, data models, retrieval, reasoning, fusion, simulation, and integration contracts.
+- `src/octo/`
+ Runtime, data models, retrieval, reasoning, fusion, simulation, and integration contracts.
 - `implementations/`
-  First-party reference world models that depend on `bender` but are not part of the core package.
+ First-party reference world models that depend on `octo` but are not part of the core package.
 - `examples/`
-  Small runnable demonstrations for black-box and native prototype paths.
+ Small runnable demonstrations for black-box and native prototype paths.
 - `tests/`
-  Unit tests covering retrieval, fusion, and end-to-end runtime behavior.
+ Unit tests covering retrieval, fusion, and end-to-end runtime behavior.
 - `docs/`
-  Architecture, runtime, math, and review documents.
+ Architecture, runtime, math, and review documents.
 - `whitepaper/`
-  Architecture paper and reviewer-oriented framing.
+ Architecture paper and reviewer-oriented framing.
 
 ## Core design principle
 
@@ -41,15 +41,15 @@ This makes the runtime the main product surface. Model-specific backends sit beh
 
 An equally important repository rule is:
 
-- `src/bender` stays architecturally pure,
+- `src/octo` stays architecturally pure,
 - benchmark and domain packages live outside core,
 - third parties should be able to look at `implementations/` as the reference pattern for building their own world coprocessors.
 
 ## Main runtime modules
 
-### `src/bender/runtime.py`
+### `src/octo/runtime.py`
 
-`BenderRuntime` is the orchestrator.
+`OctoRuntime` is the orchestrator.
 
 Responsibilities:
 
@@ -63,7 +63,7 @@ Responsibilities:
 
 This is the center of the system.
 
-### `src/bender/models.py`
+### `src/octo/models.py`
 
 This file defines the shared data model:
 
@@ -83,7 +83,7 @@ These types matter because they separate:
 - reasoning state,
 - model-facing output.
 
-### `src/bender/integration.py`
+### `src/octo/integration.py`
 
 This file defines the model boundary.
 
@@ -102,7 +102,7 @@ Design intent:
 
 The important architectural decision is that model coupling lives here, not inside the reasoning modules.
 
-### `src/bender/world_state.py`
+### `src/octo/world_state.py`
 
 `WorldModel` stores typed nodes and relations and exposes retrieval methods.
 
@@ -114,7 +114,7 @@ Current implementation:
 
 This is intentionally simple but architecturally separate from prompting.
 
-### `src/bender/retrieval.py`
+### `src/octo/retrieval.py`
 
 Implements query embedding and retrieval helpers.
 
@@ -137,7 +137,7 @@ That distinction matters:
 - **implemented now**: small in-memory retrieval suitable for toy domains and runtime proof,
 - **target design**: ANN-backed structured retrieval suitable for larger persistent world models.
 
-### `src/bender/planner.py`
+### `src/octo/planner.py`
 
 Adds deterministic execution steps to the cognitive trace.
 
@@ -146,7 +146,7 @@ Current role:
 - represent planned reasoning stages,
 - make the pipeline legible in demos and provenance.
 
-### `src/bender/rules.py`
+### `src/octo/rules.py`
 
 Contains deterministic domain logic.
 
@@ -157,7 +157,7 @@ Current role:
 
 The Hello World penguin example depends heavily on this file.
 
-### `src/bender/simulator.py`
+### `src/octo/simulator.py`
 
 Executes simple task or domain evaluators.
 
@@ -166,7 +166,7 @@ Current implementation:
 - heuristic simulation,
 - placeholder for stronger domain-specific evaluation.
 
-### `src/bender/fusion.py`
+### `src/octo/fusion.py`
 
 Defines the fusion boundary between model-side and graph-side state.
 
@@ -180,7 +180,7 @@ Design intent:
 - keep fusion pluggable,
 - let retrieval, reasoning, and simulation remain independent from model-specific injection code.
 
-### `src/bender/adapter.py`
+### `src/octo/adapter.py`
 
 Provides the user-facing wrapper surface:
 
@@ -193,7 +193,7 @@ This is the easiest entrypoint for demos and tests.
 
 The implemented execution path is:
 
-1. `wrap_llm(...)` constructs a `BenderEngine` / `BenderRuntime`.
+1. `wrap_llm(...)` constructs a `OctoEngine` / `OctoRuntime`.
 2. `WrappedLLM.ask(...)` calls `engine.infer(...)`.
 3. `ModelIntegration.capture(...)` builds a `SemanticFrame`.
 4. `WorldModel.retrieve(...)` returns structured memories.
@@ -254,7 +254,7 @@ Purpose:
 
 Purpose:
 
-- use the real BENDER producer runtime,
+- use the real OCTO producer runtime,
 - load the new ScalarLM Tokenformer prototype modules,
 - demonstrate request-scoped residual influence in a toy PyTorch model.
 
@@ -280,21 +280,21 @@ The current native backend work lives outside this repo in `../scalarlm/vllm-for
 
 Main target files:
 
-- `vllm/tokenformer/bender_coprocessor.py`
+- `vllm/tokenformer/octo_coprocessor.py`
 - `vllm/tokenformer/tokenformer_surgeon.py`
 - `vllm/tokenformer/tokenformer_model_manager.py`
 - `vllm/v1/worker/lora_model_runner_mixin.py`
 
 Implemented design:
 
-- request-scoped `BenderCoprocessorContext`,
-- `BenderCoprocessorAdapter` wrapping late MLP blocks,
+- request-scoped `OctoCoprocessorContext`,
+- `OctoCoprocessorAdapter` wrapping late MLP blocks,
 - per-request batch context activation,
-- worker-side request plumbing carrying `bender_context`.
+- worker-side request plumbing carrying `octo_context`.
 
 Important constraint:
 
-- BENDER is not implemented there as prompt stuffing or a static checkpoint swap.
+- OCTO is not implemented there as prompt stuffing or a static checkpoint swap.
 - The intent is native residual influence per request.
 
 ## Current limitations
@@ -325,12 +325,12 @@ The code is intentionally modular at these boundaries:
 Think of the repository as three concentric layers:
 
 1. **Stable core runtime**
-   `runtime.py`, `models.py`, `integration.py`, `fusion.py`
+ `runtime.py`, `models.py`, `integration.py`, `fusion.py`
 
 2. **Domain reasoning layer**
-   `world_state.py`, `retrieval.py`, `planner.py`, `rules.py`, `simulator.py`
+ `world_state.py`, `retrieval.py`, `planner.py`, `rules.py`, `simulator.py`
 
 3. **Delivery surfaces**
-   `adapter.py`, `examples/`, tests, and external native backends such as ScalarLM Tokenformer.
+ `adapter.py`, `examples/`, tests, and external native backends such as ScalarLM Tokenformer.
 
 That separation is the main architectural asset of the codebase.

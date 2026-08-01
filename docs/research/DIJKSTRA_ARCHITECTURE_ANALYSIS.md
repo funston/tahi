@@ -1,14 +1,14 @@
-# DIJKSTRA vs BENDER: Comparative Architecture Analysis
+# DIJKSTRA vs OCTO: Comparative Architecture Analysis
 
 ## Executive Summary
 
-**Dijkstra** and **BENDER** represent two fundamentally different approaches to extending LLM capabilities beyond their native constraints:
+**Dijkstra** and **OCTO** represent two fundamentally different approaches to extending LLM capabilities beyond their native constraints:
 
 - **DIJKSTRA**: A hardware-first, storage-as-memory infrastructure system that enables Extra Large Language Models (XLMs) with 100T+ parameters through SSD-resident parameter spaces, hardware-accelerated ANN search (CTU), and implicit diffusion-via-attention.
 
-- **BENDER**: A software-first, domain-reasoning coprocessor that augments LLMs with persistent world models, graph-based retrieval, and controlled injection of structured reasoning during inference.
+- **OCTO**: A software-first, domain-reasoning coprocessor that augments LLMs with persistent world models, graph-based retrieval, and controlled injection of structured reasoning during inference.
 
-They are **orthogonal solutions** solving different problems: Dijkstra solves **capacity scaling**, while BENDER solves **reasoning grounding**.
+They are **orthogonal solutions** solving different problems: Dijkstra solves **capacity scaling**, while OCTO solves **reasoning grounding**.
 
 ---
 
@@ -19,12 +19,12 @@ They are **orthogonal solutions** solving different problems: Dijkstra solves **
 
 - Traditional LLMs hit HBM limits (~2TB max on current GPUs)
 - Scaling to 100T parameters requires either:
-  - Distributed training/inference (latency, complexity)
-  - Offloading (bandwidth bottleneck)
-  - Model compression (quality loss)
+ - Distributed training/inference (latency, complexity)
+ - Offloading (bandwidth bottleneck)
+ - Model compression (quality loss)
 - **Solution**: Treat SSD as primary memory, not a cache
 
-### BENDER's Problem
+### OCTO's Problem
 **"How do we make LLMs more reliable, traceable, and domain-aware without retraining or fine-tuning?"**
 
 - LLMs hallucinate and lack grounding in domain knowledge
@@ -39,7 +39,7 @@ They are **orthogonal solutions** solving different problems: Dijkstra solves **
 
 ### 2.1 Hardware Stack
 
-| Component | DIJKSTRA | BENDER |
+| Component | DIJKSTRA | OCTO |
 |-----------|----------|--------|
 | **Primary Memory** | 1PB SSD (Micron 6500 MAX) | Any available (HBM + DRAM) |
 | **Compute** | 8x NVIDIA GB300 GPUs (14 PFLOPS each) | Generic LLM (any model) |
@@ -47,11 +47,11 @@ They are **orthogonal solutions** solving different problems: Dijkstra solves **
 | **CPU Role** | I/O orchestration only | Reasoning engine for graph ops |
 | **Data Movement** | Zero-copy RDMA (GPU↔SSD) | Standard API calls (LLM↔Coprocessor) |
 
-**Key Insight**: Dijkstra is **hardware-specific** (requires NVIDIA GB300 + ConnectX + NVMe SSDs). BENDER is **model-agnostic** (works with any LLM, any hardware).
+**Key Insight**: Dijkstra is **hardware-specific** (requires NVIDIA GB300 + ConnectX + NVMe SSDs). OCTO is **model-agnostic** (works with any LLM, any hardware).
 
 ### 2.2 Memory Model
 
-| Aspect | DIJKSTRA | BENDER |
+| Aspect | DIJKSTRA | OCTO |
 |--------|----------|--------|
 | **What's Stored** | Raw 4-bit NVFP weights (100T+ parameters) | Typed graph nodes/relations (KBs-MBs) |
 | **Storage Medium** | SSD (persistent, ~1PB) | In-memory index + WorldModelStore (versioned) |
@@ -59,7 +59,7 @@ They are **orthogonal solutions** solving different problems: Dijkstra solves **
 | **Update Mechanism** | Training = indexing (encode gradients as PQ codes) | Pre-built world models (versioned snapshots) |
 | **Latency** | <15µs CTU query + 30-70µs token generation | Sub-millisecond retrieval (in-memory) |
 
-**Key Insight**: Dijkstra uses **SSD for model parameters**. BENDER uses **memory for reasoning state**.
+**Key Insight**: Dijkstra uses **SSD for model parameters**. OCTO uses **memory for reasoning state**.
 
 ### 2.3 Retrieval Mechanism
 
@@ -67,13 +67,13 @@ They are **orthogonal solutions** solving different problems: Dijkstra solves **
 
 ```
 Token Embedding (8192-dim)
-  ↓
+ ↓
 CTU: BVH traversal over 100B+ stored embeddings
-  ↓ (<15µs)
+ ↓ (<15µs)
 Top-512 SSD offsets (4KB)
-  ↓
+ ↓
 RDMA gather: 512 × 64-byte shards (32KB)
-  ↓
+ ↓
 FP4 Tensor Cores: weighted sum → output
 ```
 
@@ -82,17 +82,17 @@ FP4 Tensor Cores: weighted sum → output
 - **Search**: BVH traversal with warp-synchronous CUDA kernel
 - **Result**: Top-K weight shards, not documents or vectors
 
-#### BENDER: InMemoryGraphIndex + WorldModel
+#### OCTO: InMemoryGraphIndex + WorldModel
 
 ```
 Query embedding
-  ↓
+ ↓
 InMemoryGraphIndex: embedding-based retrieval
-  ↓ (sub-ms)
+ ↓ (sub-ms)
 Matching graph nodes/relations
-  ↓
+ ↓
 WorldModel.retrieve(): contextual filtering
-  ↓
+ ↓
 Typed results: constraints, hypotheses, provenance
 ```
 
@@ -101,7 +101,7 @@ Typed results: constraints, hypotheses, provenance
 - **Search**: Heuristic similarity + graph traversal
 - **Result**: Semantic constraints, simulation hypotheses, reasoning bounds
 
-**Key Difference**: Dijkstra retrieves **weights**. BENDER retrieves **knowledge**.
+**Key Difference**: Dijkstra retrieves **weights**. OCTO retrieves **knowledge**.
 
 ---
 
@@ -115,10 +115,10 @@ qwen = Qwen3.5(...)
 
 # Tokenformer replaces only final linear projections
 tokenformer = TokenformerLinear(
-    in_dim=8192,
-    out_dim=8192,
-    k=512,
-    embedding_storage=halberd.from_tensor("ssd:/weights/")
+ in_dim=8192,
+ out_dim=8192,
+ k=512,
+ embedding_storage=halberd.from_tensor("ssd:/weights/")
 )
 
 # Inference: Qwen output + Tokenformer residual
@@ -131,14 +131,14 @@ output = qwen(x) + tokenformer(x)
 - Training = indexing: Gradients encoded as new PQ codes, stored on SSD
 - Client-transparent: Looks like standard LLM to external API
 
-### BENDER: Coprocessor Pipeline
+### OCTO: Coprocessor Pipeline
 
 ```python
 # Original LLM (unchanged, any model)
 llm = any_llm(...)
 
-# BENDER runtime
-runtime = BenderRuntime(world_model, planner, rules, simulator)
+# OCTO runtime
+runtime = OctoRuntime(world_model, planner, rules, simulator)
 
 # Parallel inference
 semantic_frame = ModelIntegration.capture(llm_hidden_state)
@@ -155,7 +155,7 @@ output = llm.generate_with_control(prompt, control_packet)
 - Pre-built models: World models versioned and cached
 - Domain-specific rules: Injected before inference starts
 
-**Key Difference**: Dijkstra is an **augmentation** (weights). BENDER is an **intervention** (signals).
+**Key Difference**: Dijkstra is an **augmentation** (weights). OCTO is an **intervention** (signals).
 
 ---
 
@@ -173,21 +173,21 @@ output = llm.generate_with_control(prompt, control_packet)
 
 **Key Insight**: Dijkstra decouples **reasoning** (Qwen, frozen) from **knowledge** (Tokenformer, indexed). Training updates knowledge, not reasoning.
 
-### BENDER: "Pre-Built Models + Domain Rules"
+### OCTO: "Pre-Built Models + Domain Rules"
 
 | Phase | Mechanism |
 |-------|-----------|
 | **Build** | Offline: construct domain world model (graph nodes, relations, rules) |
 | **Version** | Save with semantic versioning (source, version, model_id) |
-| **Load** | At inference: BenderRuntime loads pre-built model on demand |
+| **Load** | At inference: OctoRuntime loads pre-built model on demand |
 | **Execute** | Runtime reasoning: planner + rules + simulator (deterministic) |
 | **Inject** | ControlPacket streamed to LLM during generation |
 
-**Key Insight**: BENDER separates **domain logic** (world model) from **model execution** (LLM). Logic is compiled offline, not trained.
+**Key Insight**: OCTO separates **domain logic** (world model) from **model execution** (LLM). Logic is compiled offline, not trained.
 
 **Fundamental Difference**: 
 - Dijkstra: **Continuous learning** (gradients → indices)
-- BENDER: **Compiled knowledge** (pre-built → injection)
+- OCTO: **Compiled knowledge** (pre-built → injection)
 
 ---
 
@@ -211,7 +211,7 @@ output = llm.generate_with_control(prompt, control_packet)
 - NVIDIA GB300 GPUs + Micron 6500 SSDs + ConnectX-8 RDMA
 - Single rack = 1PB model capacity
 
-### BENDER
+### OCTO
 
 **Best For**:
 - Grounding LLMs in domain-specific knowledge
@@ -236,7 +236,7 @@ output = llm.generate_with_control(prompt, control_packet)
 
 ### Latency
 
-| Operation | DIJKSTRA | BENDER |
+| Operation | DIJKSTRA | OCTO |
 |-----------|----------|--------|
 | CTU Query | 12–18 µs | — |
 | RDMA Read | 30–50 µs | — |
@@ -246,11 +246,11 @@ output = llm.generate_with_control(prompt, control_packet)
 | Reasoning (planner + rules) | — | **1–10ms** |
 | **Total inference time** | **100+ tok/sec** | **50–200 tok/sec** (with reasoning) |
 
-**Insight**: Dijkstra optimizes for **throughput** (tokens/sec). BENDER optimizes for **correctness** (reasoning quality).
+**Insight**: Dijkstra optimizes for **throughput** (tokens/sec). OCTO optimizes for **correctness** (reasoning quality).
 
 ### Bandwidth
 
-| Metric | DIJKSTRA | BENDER |
+| Metric | DIJKSTRA | OCTO |
 |--------|----------|--------|
 | **Per-token RDMA** | 32–64 KB | 0 (no weight transfer) |
 | **Sustained throughput** | 256 GB/s (line rate) | Network limited (1–10 GB/s) |
@@ -266,7 +266,7 @@ output = llm.generate_with_control(prompt, control_packet)
 - **8 racks** = 8PB capacity, 800+ tok/sec (linear)
 - **Bottleneck**: CTU coordination (mitigated via sharding)
 
-### BENDER: Linear Scaling with Model Complexity
+### OCTO: Linear Scaling with Model Complexity
 
 - **Small domain** = <100MB world model, fast retrieval
 - **Large domain** = <1GB world model (in-memory), slower retrieval
@@ -284,8 +284,8 @@ output = llm.generate_with_control(prompt, control_packet)
 - **Consequence**: Models are parameter libraries, not monolithic entities
 - **Mentality**: Hardware-first, maximize utilization of cheap storage
 
-### BENDER's Philosophy
-**"BENDER is a true coprocessor, not just a RAG wrapper."**
+### OCTO's Philosophy
+**"OCTO is a true coprocessor, not just a RAG wrapper."**
 
 - **Problem**: LLMs lack domain grounding
 - **Solution**: Run parallel reasoning, inject structured signals
@@ -304,7 +304,7 @@ output = llm.generate_with_control(prompt, control_packet)
 4. **DiffusionTokenformer**: Implicit diffusion via attention over shards
 5. **Halberd Tensor Abstraction**: SSD-backed tensors with RDMA integration
 
-### BENDER's Novel Ideas
+### OCTO's Novel Ideas
 
 1. **Graph-Based World Model**: Typed nodes/relations for semantic representation
 2. **FTI MLOps Architecture**: Pre-built, versioned world models
@@ -316,44 +316,44 @@ output = llm.generate_with_control(prompt, control_packet)
 
 ## 10. Integration Potential
 
-### Can DIJKSTRA + BENDER Work Together?
+### Can DIJKSTRA + OCTO Work Together?
 
 **YES, orthogonally**:
 
 ```
 [ LLM Input ]
-    ↓
-    ├─ DIJKSTRA: Token → CTU → retrieve weight shards
-    │   (Expand capacity)
-    │
-    └─ BENDER: SemanticFrame → WorldModel → ControlPacket
-       (Inject reasoning)
-    ↓
+ ↓
+ ├─ DIJKSTRA: Token → CTU → retrieve weight shards
+ │ (Expand capacity)
+ │
+ └─ OCTO: SemanticFrame → WorldModel → ControlPacket
+ (Inject reasoning)
+ ↓
 [ Augmented Output ]
 ```
 
 **Concrete Example**:
 - Dijkstra provides 100T-parameter backbone (Qwen3.5 + Tokenformer)
-- BENDER provides domain reasoning (SQL schema planner, code validator)
+- OCTO provides domain reasoning (SQL schema planner, code validator)
 - Result: A 100T XLM that reasons correctly about domain constraints
 
 ### Would They Complement Each Other?
 
 **Partially**:
 - Dijkstra is **horizontal scaling** (more parameters)
-- BENDER is **vertical scaling** (more reasoning depth)
+- OCTO is **vertical scaling** (more reasoning depth)
 - Together: Larger models + smarter reasoning
 
 **Limitations**:
 - Dijkstra requires specific hardware (NVIDIA GB300, ConnectX-8)
-- BENDER works on any LLM, any hardware
+- OCTO works on any LLM, any hardware
 - Integration point is non-trivial (inject during Tokenformer + reasoning loop)
 
 ---
 
 ## 11. Key Differences Summary Table
 
-| Dimension | DIJKSTRA | BENDER |
+| Dimension | DIJKSTRA | OCTO |
 |-----------|----------|--------|
 | **Problem** | Capacity scaling | Reasoning grounding |
 | **Approach** | Hardware-accelerated retrieval | Software coprocessor |
@@ -377,7 +377,7 @@ output = llm.generate_with_control(prompt, control_packet)
 - **Risk**: Requires adoption of non-standard hardware
 - **Window**: 3–5 years before competitors can replicate
 
-### BENDER
+### OCTO
 - **Competitors**: RAG systems (Langchain, Llamaindex), fine-tuning (LoRA, QLoRA)
 - **Defense**: Graph-based reasoning (not just retrieval), FTI architecture
 - **Risk**: Requires domain-specific world model engineering
@@ -393,16 +393,16 @@ output = llm.generate_with_control(prompt, control_packet)
 - Target: **Infrastructure companies, research labs**
 - Timeline: Production-ready now, scaling in 2–3 years
 
-### BENDER
+### OCTO
 - Enables a **new reasoning paradigm** for AI
 - Solves **grounding** (reliable, traceable domain reasoning)
 - Target: **Enterprise AI teams, domain-specific applications**
 - Timeline: Production-ready now, ecosystem in 1–2 years
 
 ### The Future
-- **Dijkstra** might eventually absorb BENDER's reasoning layers (if CTU can index reasoning trajectories)
-- **BENDER** might leverage Dijkstra's infrastructure (if world models scale to PB)
+- **Dijkstra** might eventually absorb OCTO's reasoning layers (if CTU can index reasoning trajectories)
+- **OCTO** might leverage Dijkstra's infrastructure (if world models scale to PB)
 - **Most likely**: They remain complementary, optimized for different problems
 
-> **"DIJKSTRA scales what we compute. BENDER scales how we reason."**
+> **"DIJKSTRA scales what we compute. OCTO scales how we reason."**
 

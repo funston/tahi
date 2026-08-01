@@ -1,14 +1,14 @@
-# BENDER
+# OCTO
 
-**BENDER is a world-model coprocessor framework for LLMs.**
+**OCTO is a world-model coprocessor framework for LLMs.**
 
-It is built around a simple premise: specialized knowledge work should not require either retraining a base model or forcing the model to reconstruct structure from long retrieved prompts. BENDER builds explicit world state at runtime, reasons over that state, and returns structured control to the model.
+It is built around a simple premise: specialized knowledge work should not require either retraining a base model or forcing the model to reconstruct structure from long retrieved prompts. OCTO builds explicit world state at runtime, reasons over that state, and returns structured control to the model.
 
 Version: `0.1.0`
 
-## Why BENDER
+## Why OCTO
 
-- **More structured than RAG:** BENDER operates over typed entities, relations, constraints, and provenance, not only retrieved passages.
+- **More structured than RAG:** OCTO operates over typed entities, relations, constraints, and provenance, not only retrieved passages.
 - **More flexible than retraining:** domain specialization happens in the runtime world model, not by training a separate base model for each domain state.
 - **Built for integration:** the core runtime emits a control packet and fused signal that can be consumed by black-box or open-weight model paths.
 - **Well suited to specialized domains:** biotech, scientific interpretation, and enterprise data systems where domain structure matters more than generic text recall.
@@ -16,7 +16,7 @@ Version: `0.1.0`
 
 ## Architecture Highlights
 
-BENDER follows the **FTI MLOps pattern** for world model management:
+OCTO follows the **FTI MLOps pattern** for world model management:
 
 - **World Model Pipeline** (Feature Pipeline): Pre-build and version domain knowledge graphs
 - **Coprocessor Pipeline** (Inference Pipeline): Runtime retrieval, planning, and fusion
@@ -28,21 +28,21 @@ See [Architecture](docs/ARCHITECTURE.md) for details.
 
 ## Repository Structure
 
-- `src/bender/`
-  The pure core package.
+- `src/octo/`
+ The pure core package.
 - `implementations/`
-  First-party reference world models built on top of the core package.
+ First-party reference world models built on top of the core package.
 - `examples/`
-  Runnable demos.
+ Runnable demos.
 - `docs/`
-  Public documentation.
+ Public documentation.
 - `whitepaper/`
-  The current whitepaper draft.
+ The current whitepaper draft.
 
 Repository rule:
 
-- `bender` must not import from `implementations`
-- `implementations/*` may import from `bender`
+- `octo` must not import from `implementations`
+- `implementations/*` may import from `octo`
 
 ## Quick Start
 
@@ -84,19 +84,19 @@ PYTHONPATH=src python examples/mass_spec_demo.py --mode spectrum --case-id demo_
 ## Reference Implementations
 
 - `implementations/bio`
-  Biomarker interpretation, target profiling, and evidence-record ingestion.
+ Biomarker interpretation, target profiling, and evidence-record ingestion.
 - `implementations/mass_spec`
-  Peak interpretation, analyte/adduct reasoning, and a strong counterexample to plain RAG in a scientific domain.
+ Peak interpretation, analyte/adduct reasoning, and a strong counterexample to plain RAG in a scientific domain.
 - `implementations/bird`
-  Isolated SQL benchmark implementation.
+ Isolated SQL benchmark implementation.
 - `implementations/spider`
-  Isolated benchmark and stress-test implementation.
+ Isolated benchmark and stress-test implementation.
 
 ## Status
 
 The core runtime is real and runnable today:
 
-- `BenderRuntime`
+- `OctoRuntime`
 - `BlackBoxIntegration`
 - `NativeIntegration`
 - `WeightedBlendFusion`

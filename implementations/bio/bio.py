@@ -6,8 +6,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from bender.models import Hypothesis
-from bender.world_state import WorldModel
+from octo.models import Hypothesis
+from octo.world_state import WorldModel
 
 
 def _normalize_identifier(value: str) -> str:

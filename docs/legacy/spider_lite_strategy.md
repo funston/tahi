@@ -1,8 +1,8 @@
-# BENDER Strategy For Spider Lite
+# OCTO Strategy For Spider Lite
 
 ## Purpose
 
-This document describes how BENDER should approach Spider Lite as an extension of the generic SQL coprocessor, not as a separate one-off benchmark stack.
+This document describes how OCTO should approach Spider Lite as an extension of the generic SQL coprocessor, not as a separate one-off benchmark stack.
 
 The design principle is:
 
@@ -16,13 +16,13 @@ Spider 2.0-Lite should be treated as the first practical benchmark target becaus
 
 The right operational assumption is:
 
-- BENDER plugs into the Spider Lite task and metadata format
-- BENDER produces a compact schema-planning packet
+- OCTO plugs into the Spider Lite task and metadata format
+- OCTO produces a compact schema-planning packet
 - a downstream SQL generator or agent consumes that packet
 
 For fast iteration, the first milestone should explicitly allow oracle-table experiments when the benchmark supports them.
 
-## What BENDER should try to win first
+## What OCTO should try to win first
 
 The first realistic target is not full benchmark domination.
 
@@ -34,7 +34,7 @@ It is:
 - benchmark-task packaging
 - and measurable improvement in text-to-SQL prompting or agent execution
 
-That aligns with what BENDER already does well:
+That aligns with what OCTO already does well:
 
 - request-scoped world-model state
 - typed constraints
@@ -48,7 +48,7 @@ That aligns with what BENDER already does well:
 
 Goal:
 
-- turn each Spider Lite task into a BENDER schema-planning packet
+- turn each Spider Lite task into a OCTO schema-planning packet
 
 Inputs:
 
@@ -74,24 +74,24 @@ Success metric:
 This phase should support two modes:
 
 - benchmark-faithful mode
-  - no oracle tables
+ - no oracle tables
 - analysis mode
-  - use released oracle tables only for controlled ablations and quick diagnostics
+ - use released oracle tables only for controlled ablations and quick diagnostics
 
 ### Phase 2: SQL drafting mode
 
 Goal:
 
-- use the BENDER packet to drive a smaller SQL generator prompt or agent loop
+- use the OCTO packet to drive a smaller SQL generator prompt or agent loop
 
 Pattern:
 
 - baseline model sees the whole schema
-- BENDER mode sees a compact packet:
-  - shortlisted tables
-  - shortlisted columns
-  - likely joins
-  - dialect hints
+- OCTO mode sees a compact packet:
+ - shortlisted tables
+ - shortlisted columns
+ - likely joins
+ - dialect hints
 
 Success metric:
 
@@ -102,7 +102,7 @@ Success metric:
 
 Goal:
 
-- use BENDER as the SQL coprocessor during execution and error handling
+- use OCTO as the SQL coprocessor during execution and error handling
 
 Capabilities:
 
@@ -120,16 +120,16 @@ Success metric:
 
 Current base:
 
-- `src/bender/database.py`
-- `src/bender/sql_coprocessor.py`
+- `src/octo/database.py`
+- `src/octo/sql_coprocessor.py`
 
 Current Spider overlay:
 
-- `src/bender/spider.py`
+- `src/octo/spider.py`
 
 Current Spider Lite scaffold:
 
-- `src/bender/spider_lite.py`
+- `src/octo/spider_lite.py`
 
 The Spider Lite scaffold adds:
 
@@ -146,22 +146,22 @@ The recommended loop is:
 
 1. load Spider Lite tasks
 2. load or build schema snapshots for each `db_id`
-3. run BENDER planning to produce:
-   - candidate tables
-   - candidate columns
-   - join-path hypotheses
-   - compact provenance
+3. run OCTO planning to produce:
+ - candidate tables
+ - candidate columns
+ - join-path hypotheses
+ - compact provenance
 4. measure planning metrics first
 5. only then hand the compact packet to a SQL generator or agent
 6. add execution-time repair after baseline planning quality is acceptable
 
-This sequencing matters because Spider Lite is easy to turn into a giant prompt. BENDER should instead force structure:
+This sequencing matters because Spider Lite is easy to turn into a giant prompt. OCTO should instead force structure:
 
 - schema compression first
 - SQL generation second
 - execution repair third
 
-## Methods BENDER should borrow
+## Methods OCTO should borrow
 
 Spider Lite is hard for the same reasons enterprise database copilots are hard:
 
@@ -170,7 +170,7 @@ Spider Lite is hard for the same reasons enterprise database copilots are hard:
 - dialect variation
 - ambiguous join paths
 
-So the BENDER roadmap should deliberately incorporate:
+So the OCTO roadmap should deliberately incorporate:
 
 - information compression
 - self-refinement
@@ -182,13 +182,13 @@ But those should sit on top of the world-model packet rather than replacing it w
 ## Recommended near-term roadmap
 
 1. Start with planning-only evaluation.
-   - measure table recall and join-path accuracy.
+ - measure table recall and join-path accuracy.
 2. Add benchmark metadata ingestion.
-   - docs, schema comments, business descriptions, sample values.
+ - docs, schema comments, business descriptions, sample values.
 3. Add SQL-generation experiments.
-   - baseline prompt vs BENDER-pruned prompt.
+ - baseline prompt vs OCTO-pruned prompt.
 4. Add execution critic and repair loop.
-   - failed SQL should feed back into the coprocessor planner.
+ - failed SQL should feed back into the coprocessor planner.
 5. Only then build full benchmark packaging and automation.
 
 ## What not to do
@@ -210,7 +210,7 @@ The benchmark should pressure-test the world-model coprocessor design:
 
 Spider Lite is useful because it is close to the enterprise database coprocessor story.
 
-It forces BENDER to solve:
+It forces OCTO to solve:
 
 - large schema selection
 - bridge-table inference

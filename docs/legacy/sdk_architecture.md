@@ -1,4 +1,4 @@
-# BENDER SDK Architecture
+# OCTO SDK Architecture
 
 ## Goals
 
@@ -10,15 +10,15 @@
 ## Top-level developer experience
 
 ```python
-import bender
+import octo
 
-wm = bender.WorldModel(domain="legal")
-llm = bender.wrap_llm("claude-like-model", world_model=wm)
+wm = octo.WorldModel(domain="legal")
+llm = octo.wrap_llm("claude-like-model", world_model=wm)
 
 answer = llm.ask(
-    "What precedent conflicts with this argument?",
-    mode="coprocessor",
-    trace=True,
+ "What precedent conflicts with this argument?",
+ mode="coprocessor",
+ trace=True,
 )
 ```
 
@@ -30,7 +30,7 @@ Maintains typed graph state, provenance, embeddings, and schema adapters.
 ### CognitiveState
 Maintains active entities, relations, constraints, hypotheses, retrievals, planner state, simulation state, fused signals, and provenance during a session.
 
-### BenderRuntime
+### OctoRuntime
 Coordinates model-side capture, world-model retrieval, reasoning, simulation, fusion, and packet injection back to the LLM.
 
 ### LLMAdapter
@@ -44,14 +44,14 @@ In the current code this surface is represented by `ModelIntegration`, with `Bla
 
 ## Suggested package structure
 
-- `bender.runtime`
-- `bender.integration`
-- `bender.world_model`
-- `bender.retrieval`
-- `bender.fusion`
-- `bender.reasoning`
-- `bender.simulation`
-- `bender.provenance`
+- `octo.runtime`
+- `octo.integration`
+- `octo.world_model`
+- `octo.retrieval`
+- `octo.fusion`
+- `octo.reasoning`
+- `octo.simulation`
+- `octo.provenance`
 
 ## Modes
 
@@ -67,35 +67,35 @@ Open-weight mode with deeper hidden-state fusion.
 ## Phase 1 API surface
 
 ```python
-import bender
+import octo
 
-wm = bender.WorldModel(domain="biomedical")
-model = bender.wrap_llm(
-    "demo-model",
-    world_model=wm,
-    integration=bender.BlackBoxIntegration(),
+wm = octo.WorldModel(domain="biomedical")
+model = octo.wrap_llm(
+ "demo-model",
+ world_model=wm,
+ integration=octo.BlackBoxIntegration(),
 )
 
 result = model.ask(
-    "Can marine bacteria produce antimalarial compounds?",
-    mode="coprocessor",
-    trace=True,
+ "Can marine bacteria produce antimalarial compounds?",
+ mode="coprocessor",
+ trace=True,
 )
 ```
 
 Native path:
 
 ```python
-model = bender.wrap_llm(
-    "demo-open-weight-model",
-    world_model=wm,
-    integration=bender.NativeIntegration(),
+model = octo.wrap_llm(
+ "demo-open-weight-model",
+ world_model=wm,
+ integration=octo.NativeIntegration(),
 )
 
 result = model.ask(
-    "Can marine bacteria produce antimalarial compounds?",
-    mode="latent",
-    hidden_state=[...],
+ "Can marine bacteria produce antimalarial compounds?",
+ mode="latent",
+ hidden_state=[...],
 )
 ```
 

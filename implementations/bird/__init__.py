@@ -4,22 +4,52 @@ from .bird import (
     BirdHFWorkspace,
     BirdHeuristicSQLCandidateGenerator,
     BirdOllamaSQLCandidateGenerator,
+    BirdSQLCandidate,
     BirdSQLiteDatabaseLoader,
     BirdTask,
     BirdTaskLoader,
     BirdWorkspace,
     enrich_world_with_bird_metadata,
 )
+from .claude_generator import BirdClaudeSQLCandidateGenerator
+from .execution import (
+    BirdExecutionAdapter,
+    BirdExecutionBenchmarkRunner,
+    BirdExecutionPacket,
+    BirdExecutionResult,
+)
+from .sql_generator_coprocessor import (
+    ClaudeSQLGeneratorCoprocessor,
+    EnsembleSQLGeneratorCoprocessor,
+    FallbackSQLGeneratorCoprocessor,
+    HeuristicSQLGeneratorCoprocessor,
+    OllamaSQLGeneratorCoprocessor,
+    SQLGeneratorCoprocessor,
+    as_coprocessor,
+)
 
 __all__ = [
+    "as_coprocessor",
     "BirdABBenchmarkRunner",
     "BirdBenchmarkAdapter",
+    "BirdClaudeSQLCandidateGenerator",
+    "BirdExecutionAdapter",
+    "BirdExecutionBenchmarkRunner",
+    "BirdExecutionPacket",
+    "BirdExecutionResult",
     "BirdHFWorkspace",
     "BirdHeuristicSQLCandidateGenerator",
     "BirdOllamaSQLCandidateGenerator",
+    "BirdSQLCandidate",
     "BirdSQLiteDatabaseLoader",
     "BirdTask",
     "BirdTaskLoader",
     "BirdWorkspace",
+    "ClaudeSQLGeneratorCoprocessor",
+    "EnsembleSQLGeneratorCoprocessor",
+    "FallbackSQLGeneratorCoprocessor",
+    "HeuristicSQLGeneratorCoprocessor",
+    "OllamaSQLGeneratorCoprocessor",
+    "SQLGeneratorCoprocessor",
     "enrich_world_with_bird_metadata",
 ]

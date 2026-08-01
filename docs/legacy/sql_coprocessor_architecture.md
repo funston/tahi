@@ -1,8 +1,8 @@
-# BENDER SQL Coprocessor Architecture
+# OCTO SQL Coprocessor Architecture
 
 ## Purpose
 
-This document describes the SQL-oriented coprocessor architecture now present in `src/bender`.
+This document describes the SQL-oriented coprocessor architecture now present in `src/octo`.
 
 The design principle is:
 
@@ -29,8 +29,8 @@ It is:
 
 Implemented in:
 
-- `src/bender/database.py`
-- `src/bender/sql_coprocessor.py`
+- `src/octo/database.py`
+- `src/octo/sql_coprocessor.py`
 
 Core objects:
 
@@ -45,7 +45,7 @@ Core objects:
 Responsibilities:
 
 - represent tables, columns, sample values, and foreign keys
-- convert schema metadata into a BENDER world model
+- convert schema metadata into a OCTO world model
 - infer candidate tables, columns, join paths, and query intent
 - emit a structured coprocessor packet for database questions
 
@@ -55,7 +55,7 @@ This is the reusable base for new SQL-backed domains.
 
 Implemented today in:
 
-- `PostgresSchemaIntrospector` in `src/bender/database.py`
+- `PostgresSchemaIntrospector` in `src/octo/database.py`
 
 Responsibilities:
 
@@ -76,7 +76,7 @@ This is intentionally adapter-shaped. The next adapters could be:
 
 Implemented today in:
 
-- `build_pagila_fixture_snapshot()` in `src/bender/database.py`
+- `build_pagila_fixture_snapshot()` in `src/octo/database.py`
 
 Purpose:
 
@@ -90,7 +90,7 @@ Pagila is used as a fixture, not as the architecture itself.
 
 Implemented today in:
 
-- `src/bender/spider.py`
+- `src/octo/spider.py`
 
 Core objects:
 
@@ -118,7 +118,7 @@ The right generalization is:
 - Pagila is one dataset
 - Spider is one evaluation target
 
-That lets BENDER extend to:
+That lets OCTO extend to:
 
 - enterprise Postgres
 - warehouse metadata mirrors

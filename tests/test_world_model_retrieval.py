@@ -6,7 +6,7 @@ This test proves BENDER's world model affects which tables are selected.
 
 import unittest
 from implementations.bird import BirdHFWorkspace, BirdSQLiteDatabaseLoader, enrich_world_with_bird_metadata
-from bender import snapshot_to_world_model
+from octo import snapshot_to_world_model
 from implementations.sql import SQLSchemaCoprocessor
 
 

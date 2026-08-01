@@ -12,7 +12,7 @@ if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
 from implementations.spider import (  # noqa: E402
-    BenderSpiderSnowSolveRunner,
+    OctoSpiderSnowSolveRunner,
     NativeSpiderSnowProblemSolver,
     SpiderLiteTask,
     SpiderSnowCandidateReranker,
@@ -107,7 +107,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
     def test_runner_summarizes_stub_solutions(self):
         workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
         schema_repository = SpiderSnowSchemaRepository(workspace)
-        runner = BenderSpiderSnowSolveRunner(
+        runner = OctoSpiderSnowSolveRunner(
             workspace=workspace,
             schema_repository=schema_repository,
             solver=_StubSolver(),
@@ -379,7 +379,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
 
     def test_runner_saves_solution_payload(self):
         workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
-        runner = BenderSpiderSnowSolveRunner(
+        runner = OctoSpiderSnowSolveRunner(
             workspace=workspace,
             solver=_StubSolver(),
         )

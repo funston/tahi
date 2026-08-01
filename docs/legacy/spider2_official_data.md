@@ -8,7 +8,7 @@ Reasons:
 
 - it is the official text-to-SQL setting
 - it is self-contained enough for iterative development
-- it matches the current BENDER SQL coprocessor direction
+- it matches the current OCTO SQL coprocessor direction
 
 ## Official file layout to expect
 
@@ -22,9 +22,9 @@ Useful related directories:
 - `spider2-lite/evaluation_suite/`
 - `spider2-lite/evaluation_suite/gold/`
 
-The current BENDER Spider Lite workspace support is written around that layout.
+The current OCTO Spider Lite workspace support is written around that layout.
 
-## Task fields BENDER should care about
+## Task fields OCTO should care about
 
 For planning mode, the important task fields are:
 
@@ -39,40 +39,40 @@ Optional analysis fields:
 - `oracle_tables`
 - partial `gold_sql`
 
-## How BENDER uses the official data
+## How OCTO uses the official data
 
 The intended workflow is:
 
 1. Load `spider2-lite.jsonl`.
 2. Build or register a schema snapshot for each `db_id`.
 3. Optionally attach released oracle tables for analysis mode.
-4. Run BENDER planning to produce:
-   - candidate tables
-   - candidate columns
-   - candidate join path
-   - recommended bridge tables
-   - provenance
+4. Run OCTO planning to produce:
+ - candidate tables
+ - candidate columns
+ - candidate join path
+ - recommended bridge tables
+ - provenance
 5. Measure planning quality before attempting full SQL generation.
 
-## Current BENDER support
+## Current OCTO support
 
 Current code:
 
-- `src/bender/spider_lite.py`
-  - task loading
-  - official repo-layout discovery
-  - oracle-table attachment
-  - snapshot-manifest loading
+- `src/octo/spider_lite.py`
+ - task loading
+ - official repo-layout discovery
+ - oracle-table attachment
+ - snapshot-manifest loading
 - `examples/spider_lite_planning_demo.py`
-  - demo entrypoint for an official Spider2 checkout
+ - demo entrypoint for an official Spider2 checkout
 - `scripts/build_spider2_sqlite_snapshots.py`
-  - builds `db_id -> snapshot.json` files
+ - builds `db_id -> snapshot.json` files
 - `scripts/build_spider2_world_cache.py`
-  - materializes reusable BENDER world caches per `db_id`
+ - materializes reusable OCTO world caches per `db_id`
 
 ## Recommended precache flow
 
-To keep iteration fast, treat Spider 2.0-Lite as a cached set of BENDER worlds.
+To keep iteration fast, treat Spider 2.0-Lite as a cached set of OCTO worlds.
 
 Recommended sequence:
 
@@ -94,4 +94,4 @@ That should be done with a manifest:
 
 - `db_id -> snapshot.json`
 
-so BENDER can run planning over real Spider Lite tasks without hard-coding benchmark databases into the core runtime.
+so OCTO can run planning over real Spider Lite tasks without hard-coding benchmark databases into the core runtime.

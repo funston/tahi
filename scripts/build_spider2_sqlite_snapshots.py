@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from bender import (
+from octo import (
     SpiderLiteSQLiteDatabaseLoader,
     SpiderLiteSQLiteMetadataLoader,
     SpiderLiteWorkspace,

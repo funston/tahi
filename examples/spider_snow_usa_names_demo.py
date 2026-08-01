@@ -10,7 +10,7 @@ if ROOT not in sys.path:
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender import snapshot_to_world_model
+from octo import snapshot_to_world_model
 from implementations.spider import (
     SpiderSnowSQLBenchmarkAdapter,
     SpiderSnowWorkspace,

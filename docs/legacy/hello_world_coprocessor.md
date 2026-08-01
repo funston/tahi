@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This is the smallest domain that can prove BENDER is behaving like a coprocessor rather than a retrieval wrapper.
+This is the smallest domain that can prove OCTO is behaving like a coprocessor rather than a retrieval wrapper.
 
 The Hello World system must show:
 
@@ -67,7 +67,7 @@ Target insertion points:
 - `../scalarlm/vllm-fork/vllm/tokenformer/tokenformer_model_manager.py`
 - `../scalarlm/vllm-fork/vllm/v1/worker/lora_model_runner_mixin.py`
 
-The BENDER-specific native adapter should:
+The OCTO-specific native adapter should:
 
 1. read request-scoped coprocessor context,
 2. compute `delta_h` from the current hidden state plus graph packet,
@@ -76,7 +76,7 @@ The BENDER-specific native adapter should:
 
 ## Success criteria
 
-A valid Hello World proof shows that BENDER:
+A valid Hello World proof shows that OCTO:
 
 - retrieves symbolic facts and relations,
 - records which rules fired,

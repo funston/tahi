@@ -1,7 +1,7 @@
 import argparse
 import json
 
-from bender import SQLSchemaCoprocessor, build_pagila_fixture_snapshot, summarize_snapshot
+from octo import SQLSchemaCoprocessor, build_pagila_fixture_snapshot, summarize_snapshot
 
 
 DEFAULT_QUERY = "Which tables connect customers to the films they rented?"

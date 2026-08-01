@@ -7,18 +7,18 @@
 
 ## What We Built
 
-BENDER now implements the **Feature/Training/Inference (FTI)** MLOps pattern for world model management, adopting SOTA architecture from Hopsworks rather than "vibe coding."
+OCTO now implements the **Feature/Training/Inference (FTI)** MLOps pattern for world model management, adopting SOTA architecture from Hopsworks rather than "vibe coding."
 
 ## Implementation Summary
 
 ### ✅ Core Components
 
-**1. WorldModel Serialization** (`src/bender/world_state.py`)
+**1. WorldModel Serialization** (`src/octo/world_state.py`)
 - Enhanced `to_dict()` / `from_dict()` methods
 - Preserves `use_ann` flag for ANN-based retrieval
 - JSON serialization with optional gzip compression
 
-**2. WorldModelStore** (`src/bender/world_model_store.py`)
+**2. WorldModelStore** (`src/octo/world_model_store.py`)
 - Versioned storage with semantic versioning (e.g., `bird-dev:v1.0.0`)
 - Lazy loading with `get_or_build()` for instant reuse
 - Manifest tracking (build date, metadata, model counts)
@@ -33,7 +33,7 @@ BENDER now implements the **Feature/Training/Inference (FTI)** MLOps pattern for
 - `README.md`: Architecture highlights with FTI
 - `docs/ARCHITECTURE.md`: Dedicated FTI section
 - `FTI_ANALYSIS.md`: Complete analysis and rationale
-- `BENDER_KILLER.md`: Competitive positioning vs RAG
+- `OCTO_KILLER.md`: Competitive positioning vs RAG
 
 **5. Demo** (`examples/world_model_store_demo.py`)
 - Working demonstration of all features
@@ -42,35 +42,35 @@ BENDER now implements the **Feature/Training/Inference (FTI)** MLOps pattern for
 ## FTI Pattern Mapping
 
 ```
-FTI MLOps               →  BENDER Implementation
+FTI MLOps → OCTO Implementation
 ────────────────────────────────────────────────────
-Feature Pipeline        →  WorldModelStore.save()
-                           Pre-build versioned graphs
+Feature Pipeline → WorldModelStore.save()
+ Pre-build versioned graphs
 
-Training Pipeline       →  SKIP (model-agnostic)
-                           Domain logic in graphs, not weights
+Training Pipeline → SKIP (model-agnostic)
+ Domain logic in graphs, not weights
 
-Inference Pipeline      →  BenderRuntime.infer()
-                           Load pre-built world model
-                           Retrieve → plan → fuse → inject
+Inference Pipeline → OctoRuntime.infer()
+ Load pre-built world model
+ Retrieve → plan → fuse → inject
 ```
 
 ## Usage Example
 
 ```python
-from bender import WorldModel, WorldModelStore
+from octo import WorldModel, WorldModelStore
 
 # Initialize store
-store = WorldModelStore("~/.bender/world-models/", compress=True)
+store = WorldModelStore("~/.octo/world-models/", compress=True)
 
 # Build once, save with version
 world = build_bird_world_model(db_id="california_schools")
 store.save(
-    world,
-    source="bird-dev",
-    version="v1.0.0",
-    model_id="california_schools",
-    metadata={"enrichment": "csv_metadata"}
+ world,
+ source="bird-dev",
+ version="v1.0.0",
+ model_id="california_schools",
+ metadata={"enrichment": "csv_metadata"}
 )
 
 # Later: instant load (no rebuild)
@@ -78,11 +78,11 @@ world = store.load("bird-dev", "v1.0.0", "california_schools")
 
 # Or: lazy loading with caching
 world = store.get_or_build(
-    build_bird_world_model,
-    source="bird-dev",
-    version="v1.0.0",
-    model_id="california_schools",
-    db_id="california_schools"
+ build_bird_world_model,
+ source="bird-dev",
+ version="v1.0.0",
+ model_id="california_schools",
+ db_id="california_schools"
 )
 ```
 
@@ -116,15 +116,15 @@ world = store.get_or_build(
 
 ## Competitive Positioning
 
-### BENDER vs RAG Solutions
+### OCTO vs RAG Solutions
 
 | System | World Model | Versioning | Reproducibility | Graph Relations |
 |--------|-------------|------------|-----------------|-----------------|
 | Langchain RAG | ❌ Flat vectors | ❌ | ❌ | ❌ |
 | FTI RAG (Hopsworks) | ❌ Flat vectors | ✅ Feature store | ✅ | ❌ |
-| **BENDER + FTI** | ✅ Typed graph | ✅ WorldModelStore | ✅ | ✅ |
+| **OCTO + FTI** | ✅ Typed graph | ✅ WorldModelStore | ✅ | ✅ |
 
-**Key Insight:** BENDER gets FTI's versioning/reproducibility benefits PLUS graph reasoning that flat RAG lacks.
+**Key Insight:** OCTO gets FTI's versioning/reproducibility benefits PLUS graph reasoning that flat RAG lacks.
 
 ## Architecture Validation
 
@@ -137,7 +137,7 @@ world = store.get_or_build(
 - ✅ Versioning → Semantic versions with manifests
 - ✅ Point-in-time consistency → Load exact world model version
 
-**This shows we're not "vibe coding"—we're adopting SOTA MLOps patterns with BENDER-specific adaptations.**
+**This shows we're not "vibe coding"—we're adopting SOTA MLOps patterns with OCTO-specific adaptations.**
 
 ## Next Steps (Phases 3-4)
 
@@ -154,10 +154,10 @@ Skipped (already cached): 4
 Total databases: 11
 
 Manifest:
-  Baseline: 207 max nodes, 268 max edges
-  Enriched: 214 max nodes, 288 max edges
+ Baseline: 207 max nodes, 268 max edges
+ Enriched: 214 max nodes, 288 max edges
 
-World models saved to: ~/.bender/world-models
+World models saved to: ~/.octo/world-models
 ================================================================================
 ```
 
@@ -171,9 +171,9 @@ World models saved to: ~/.bender/world-models
 **Build Command:**
 ```bash
 PYTHONPATH=src:. .venv/bin/python scripts/build_bird_world_models.py \
-  --bird-root datasets/bird/dev_20240627 \
-  --store-path ~/.bender/world-models \
-  --version v1.0.0
+ --bird-root datasets/bird/dev_20240627 \
+ --store-path ~/.octo/world-models \
+ --version v1.0.0
 ```
 
 **Actual time:** ~2 minutes for 11 databases (faster than expected)
@@ -182,10 +182,10 @@ PYTHONPATH=src:. .venv/bin/python scripts/build_bird_world_models.py \
 ### 🔄 Benchmark Integration
 ```bash
 # Add --world-model-version flag to benchmark
-python examples/run_bender_bird_execution_benchmark.py \
-  --world-model-version bird-dev:v1.0.0 \
-  --limit 50 \
-  --sql-backend claude
+python examples/run_octo_bird_execution_benchmark.py \
+ --world-model-version bird-dev:v1.0.0 \
+ --limit 50 \
+ --sql-backend claude
 
 # Loads pre-built models instead of rebuilding
 ```
@@ -196,9 +196,9 @@ Expected impact: 3x faster iteration for experiments
 ## Files Changed
 
 ### Core Implementation
-- `src/bender/world_state.py` - Enhanced serialization
-- `src/bender/world_model_store.py` - WorldModelStore class (new)
-- `src/bender/__init__.py` - Export WorldModelStore
+- `src/octo/world_state.py` - Enhanced serialization
+- `src/octo/world_model_store.py` - WorldModelStore class (new)
+- `src/octo/__init__.py` - Export WorldModelStore
 
 ### Tests
 - `tests/test_world_model_store.py` - Full test suite (8 tests, new)
@@ -207,14 +207,14 @@ Expected impact: 3x faster iteration for experiments
 - `README.md` - Architecture highlights
 - `docs/ARCHITECTURE.md` - FTI section
 - `FTI_ANALYSIS.md` - Complete analysis
-- `BENDER_KILLER.md` - Competitive positioning
+- `OCTO_KILLER.md` - Competitive positioning
 
 ### Examples
 - `examples/world_model_store_demo.py` - Usage demonstration (new)
 
 ## Conclusion
 
-**FTI infrastructure is complete, but BENDER results are NOT production-ready.**
+**FTI infrastructure is complete, but OCTO results are NOT production-ready.**
 
 ### Infrastructure ✅
 - Versioned world models for reproducible research
@@ -227,9 +227,9 @@ Expected impact: 3x faster iteration for experiments
 - **Claude:** 30% relative improvement (20% → 26%) ✅
 - **Qwen2.5-coder:14b:** 0% improvement (all systems 15%) ❌
 - **Gemma3:27b:** 0% improvement (all systems 0%) ❌
-- **Conclusion:** BENDER only works with expensive Claude API
+- **Conclusion:** OCTO only works with expensive Claude API
 
 ### Reality Check
-This demonstrates architectural rigor but NOT production viability. BENDER requires high-quality SQL generation to show benefits. Local models fail completely.
+This demonstrates architectural rigor but NOT production viability. OCTO requires high-quality SQL generation to show benefits. Local models fail completely.
 
 **See BIRD_BENCHMARK_RESULTS.md for detailed analysis.**

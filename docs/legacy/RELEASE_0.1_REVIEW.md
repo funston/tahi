@@ -1,10 +1,10 @@
-# BENDER 0.1 Review Cut
+# OCTO 0.1 Review Cut
 
 ## Scope
 
 This `0.1.0` review cut is intentionally narrow:
 
-- `src/bender/` is the pure core package
+- `src/octo/` is the pure core package
 - `implementations/` contains first-party reference world models
 - Spider remains isolated as a benchmark implementation, not the core story
 - `bio` and `mass_spec` are the primary demo surfaces for market and community feedback
@@ -12,16 +12,16 @@ This `0.1.0` review cut is intentionally narrow:
 ## Included In This Cut
 
 - pip-installable core package metadata in `pyproject.toml`
-- explicit core version export from `bender.__version__`
+- explicit core version export from `octo.__version__`
 - optional ANN dependency handling in the retrieval layer
 - biomedical reference implementation with:
-  - biomarker interpretation
-  - target profiling
-  - external evidence-record ingestion
+ - biomarker interpretation
+ - target profiling
+ - external evidence-record ingestion
 - mass spectrometry reference implementation with:
-  - spectrum interpretation
-  - analyte profile
-  - explicit RAG baseline comparison
+ - spectrum interpretation
+ - analyte profile
+ - explicit RAG baseline comparison
 
 ## Demo Commands
 

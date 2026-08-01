@@ -6,12 +6,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from bender.compiler.sql import SQLCompilerPipeline
-from bender.database import SQLForeignKey, SQLSchemaSnapshot
+from octo.compiler.sql import SQLCompilerPipeline
+from octo.database import SQLForeignKey, SQLSchemaSnapshot
 from .spider import SpiderSchemaCoprocessor
 from .spider_lite import SpiderLiteTask, SpiderLiteWorkspace, load_gold_csv_rows
-from bender.validators.sql import SQLResultMatcher
-from bender.world_state import WorldModel
+from octo.validators.sql import SQLResultMatcher
+from octo.world_state import WorldModel
 
 
 def _normalize_identifier(value: str) -> str:

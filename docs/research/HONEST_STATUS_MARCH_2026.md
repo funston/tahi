@@ -1,15 +1,15 @@
-# BENDER Status Report - March 2026
+# OCTO Status Report - March 2026
 
 **Date:** 2026-03-28
 **Author:** Claude (via claude.ai/code)
-**Purpose:** Honest assessment of BENDER's current state
+**Purpose:** Honest assessment of OCTO's current state
 
 ---
 
 ## TL;DR
 
 ✅ **FTI MLOps infrastructure:** Complete, tested, production-quality
-⚠️ **BENDER results:** 30% lift with Claude, 0% lift with local models
+⚠️ **OCTO results:** 30% lift with Claude, 0% lift with local models
 ❌ **Production viability:** No cost-effective deployment path
 
 ---
@@ -26,7 +26,7 @@
 - Full test coverage (8/8 tests passing)
 
 **Files:**
-- `src/bender/world_model_store.py` - Core implementation (300 lines)
+- `src/octo/world_model_store.py` - Core implementation (300 lines)
 - `tests/test_world_model_store.py` - Test suite (8 tests)
 - `examples/world_model_store_demo.py` - Working demo
 - `scripts/build_bird_world_models.py` - Pre-build script
@@ -42,7 +42,7 @@
 - Baseline models: ~100KB total (schema only)
 - Enriched models: ~124KB total (schema + metadata)
 - Build time: ~2 minutes
-- Storage: `~/.bender/world-models/bird-dev-enriched/v1.0.0/`
+- Storage: `~/.octo/world-models/bird-dev-enriched/v1.0.0/`
 
 **Reality:** World model building works. Metadata enrichment loads CSV files as document nodes. No technical issues here.
 
@@ -54,20 +54,20 @@
 **File:** `benchmarks/bird/execution_50_claude_PROOF.json`
 
 ```
-System                    Accuracy    Correct
+System Accuracy Correct
 ────────────────────────────────────────────
-naive_baseline            20.00%      10/50
-rag_baseline              20.00%      10/50
-bender_grounding          20.00%      10/50
-bender_with_evidence      26.00%      13/50  ← 30% relative lift
+naive_baseline 20.00% 10/50
+rag_baseline 20.00% 10/50
+octo_grounding 20.00% 10/50
+octo_with_evidence 26.00% 13/50 ← 30% relative lift
 ```
 
 **Analysis:**
-- BENDER enrichment (metadata + evidence) improves accuracy by 6 percentage points
+- OCTO enrichment (metadata + evidence) improves accuracy by 6 percentage points
 - 30% relative improvement over baseline (20% → 26%)
 - Execution success: 92-94% (SQL runs without syntax errors)
 
-**Reality:** BENDER works when paired with Claude Sonnet 3.5. The 30% lift is real and reproducible.
+**Reality:** OCTO works when paired with Claude Sonnet 3.5. The 30% lift is real and reproducible.
 
 ---
 
@@ -79,21 +79,21 @@ bender_with_evidence      26.00%      13/50  ← 30% relative lift
 **File:** `benchmarks/bird/execution_20_qwen_REAL_ENRICHMENT.json`
 
 ```
-System                    Accuracy    Correct
+System Accuracy Correct
 ────────────────────────────────────────────
-naive_baseline            15.00%      3/20
-rag_baseline              15.00%      3/20
-bender_grounding          15.00%      3/20
-bender_with_evidence      15.00%      3/20  ← NO improvement
+naive_baseline 15.00% 3/20
+rag_baseline 15.00% 3/20
+octo_grounding 15.00% 3/20
+octo_with_evidence 15.00% 3/20 ← NO improvement
 ```
 
 **Analysis:**
 - Baseline accuracy is already low (15%)
 - Execution success: 60% (SQL has syntax errors)
-- BENDER grounding makes ZERO difference
+- OCTO grounding makes ZERO difference
 - Generated SQL is low quality (e.g., `SELECT COUNT(*) AS count FROM frpm`)
 
-**Reality:** Qwen generates poor SQL. BENDER can't fix broken generation.
+**Reality:** Qwen generates poor SQL. OCTO can't fix broken generation.
 
 ---
 
@@ -103,12 +103,12 @@ bender_with_evidence      15.00%      3/20  ← NO improvement
 **File:** `benchmarks/bird/execution_10_gemma27b.json`
 
 ```
-System                    Accuracy    Correct
+System Accuracy Correct
 ────────────────────────────────────────────
-naive_baseline             0.00%      0/10
-rag_baseline               0.00%      0/10
-bender_grounding           0.00%      0/10
-bender_with_evidence       0.00%      0/10  ← NO improvement
+naive_baseline 0.00% 0/10
+rag_baseline 0.00% 0/10
+octo_grounding 0.00% 0/10
+octo_with_evidence 0.00% 0/10 ← NO improvement
 ```
 
 **Analysis:**
@@ -116,7 +116,7 @@ bender_with_evidence       0.00%      0/10  ← NO improvement
 - Accuracy: 0% (SQL returns wrong results)
 - Gemma generates trivial queries like `SELECT COUNT(*)` for complex questions
 
-**Reality:** Gemma3 cannot generate correct SQL on BIRD tasks. BENDER is irrelevant.
+**Reality:** Gemma3 cannot generate correct SQL on BIRD tasks. OCTO is irrelevant.
 
 ---
 
@@ -136,15 +136,15 @@ bender_with_evidence       0.00%      0/10  ← NO improvement
 
 **Local models (free):**
 - Cost: $0
-- Accuracy: 0-15% (no BENDER benefit)
+- Accuracy: 0-15% (no OCTO benefit)
 - Not competitive
 
 ### The Problem
 
-BENDER architecture is sound, but there's no viable deployment path:
+OCTO architecture is sound, but there's no viable deployment path:
 
 1. **Claude works but costs money** - Not sustainable for production
-2. **Local models fail** - Qwen and Gemma show 0% BENDER benefit
+2. **Local models fail** - Qwen and Gemma show 0% OCTO benefit
 3. **No middle ground** - Haven't found a model that's both good AND free
 
 ---
@@ -166,7 +166,7 @@ BENDER architecture is sound, but there's no viable deployment path:
 ### What's True
 
 1. **FTI infrastructure is production-quality** - Clean code, full tests, works as designed
-2. **BENDER improves Claude results by 30%** - Proven with 50-task benchmark
+2. **OCTO improves Claude results by 30%** - Proven with 50-task benchmark
 3. **Architecture is rigorous** - Not "vibe coding", follows SOTA MLOps patterns
 4. **World model enrichment works** - BIRD metadata successfully integrated
 
@@ -178,9 +178,9 @@ BENDER architecture is sound, but there's no viable deployment path:
 
 ### What This Means
 
-BENDER is a **research prototype with solid architecture** that provides measurable benefits when paired with expensive, high-quality SQL generation. It is **NOT a production-ready system** for cost-effective text-to-SQL.
+OCTO is a **research prototype with solid architecture** that provides measurable benefits when paired with expensive, high-quality SQL generation. It is **NOT a production-ready system** for cost-effective text-to-SQL.
 
-The FTI work demonstrates engineering rigor and shows we can adopt SOTA patterns, but it doesn't change the fundamental issue: BENDER needs a better SQL backend than what local models currently provide.
+The FTI work demonstrates engineering rigor and shows we can adopt SOTA patterns, but it doesn't change the fundamental issue: OCTO needs a better SQL backend than what local models currently provide.
 
 ---
 
@@ -206,9 +206,9 @@ The FTI work demonstrates engineering rigor and shows we can adopt SOTA patterns
 
 ### Option 4: Pivot Focus
 - Stop pursuing BIRD leaderboard
-- Use BENDER for domains where world models matter more
+- Use OCTO for domains where world models matter more
 - Focus on biomedical, knowledge graphs, or other graph-heavy domains
-- Accept that text-to-SQL isn't BENDER's strength
+- Accept that text-to-SQL isn't OCTO's strength
 
 ---
 
@@ -221,7 +221,7 @@ The FTI work demonstrates engineering rigor and shows we can adopt SOTA patterns
 - `benchmarks/bird/execution_10_gemma27b.json` - Gemma3 results (no lift)
 
 ### Infrastructure
-- `src/bender/world_model_store.py` - WorldModelStore implementation
+- `src/octo/world_model_store.py` - WorldModelStore implementation
 - `tests/test_world_model_store.py` - Test suite (8/8 passing)
 - `scripts/build_bird_world_models.py` - Pre-build script
 - `examples/world_model_store_demo.py` - Usage demo
@@ -236,7 +236,7 @@ The FTI work demonstrates engineering rigor and shows we can adopt SOTA patterns
 
 ## Bottom Line
 
-The FTI infrastructure is solid. The BENDER architecture is sound. The 30% Claude lift is real.
+The FTI infrastructure is solid. The OCTO architecture is sound. The 30% Claude lift is real.
 
 But we don't have a cost-effective deployment path, and claiming "production-ready" with 0% results on local models was bullshit.
 

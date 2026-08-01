@@ -3,9 +3,9 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from bender.compiler.sql import SQLCompilerPipeline
-from bender.repair.sql import SQLRepairLoop
-from bender.validators.sql import SQLResultMatcher
+from octo.compiler.sql import SQLCompilerPipeline
+from octo.repair.sql import SQLRepairLoop
+from octo.validators.sql import SQLResultMatcher
 
 
 class StubEngine:

@@ -33,28 +33,28 @@ memory, and context that tracks the evolving line of thought.
 ## 2. Key design decisions
 
 - **Post-hoc retro-fit (selected):** freeze 98%+ of the base model; train only `W_K`/`W_V` + a scalar
-  gate. **~<$5k** vs $100k (InstructRetro) vs $1M+ (from scratch).
+ gate. **~<$5k** vs $100k (InstructRetro) vs $1M+ (from scratch).
 - **Flamingo gating:** `tanh(α)` initialized to 0 → bit-identical to the stock LLM at step 0, then
-  learns to open. **Zero catastrophic forgetting.**
+ learns to open. **Zero catastrophic forgetting.**
 - **Late chunking:** full document through a long-context encoder *first*, then mean-pool 64-token spans
-  — keeps global context vs. naive splitting.
+ — keeps global context vs. naive splitting.
 - **Mismatched tokenizers are fine:** BERT/WordPiece retriever + BPE LLM; a trained linear adapter
-  projects vectors into `d_model`. **No re-indexing on model swap.**
+ projects vectors into `d_model`. **No re-indexing on model swap.**
 - **Heterogeneous quantization:** attention at FP16 (reasoning), FFN crushed to INT2/3 (facts now live
-  in the RAG index) → ~60% VRAM cut.
+ in the RAG index) → ~60% VRAM cut.
 - **Interleaved GCCA blocks:** cross-attention inserted every 4th layer — preserves early syntactic
-  processing, adds latency deeper in the stack.
+ processing, adds latency deeper in the stack.
 
 ## 3. Four progressive stages
 
 1. **Stage 1 — Local POC.** Math sandbox — prove α=0 identity, O(1) memory, causality masks.
-   *Mac 24GB · 10k chunks · FAISS flat.*
+ *Mac 24GB · 10k chunks · FAISS flat.*
 2. **Stage 2 — Alignment.** Train adapters on QA triplets + distractors. Target +30%.
-   *DGX Spark · 1M chunks.*
+ *DGX Spark · 1M chunks.*
 3. **Stage 3 — Pre-production (← our hardware).** Async prefetch, multi-hop (FRAMES) benchmarks.
-   *4× RTX PRO 6000 Blackwell · 100M chunks.*
+ *4× RTX PRO 6000 Blackwell · 100M chunks.*
 4. **Stage 4 — Enterprise.** Out-of-core engine, <2ms retrieval, live inserts.
-   *Multi-node · 10TB+ NVMe · 10¹¹ chunks.*
+ *Multi-node · 10TB+ NVMe · 10¹¹ chunks.*
 
 The staged de-risking is genuinely sound (even the doc's own margin note agrees).
 
@@ -67,22 +67,22 @@ layer** that feeds this architecture.
 **But real gaps between our pipeline and what this needs:**
 
 - **Ingestion mode:** we do per-record embedding, not **late chunking** (full-doc encoder → 64-token
-  child vectors). A new mode to build.
+ child vectors). A new mode to build.
 - **Retriever:** must be a fixed **64-token WordPiece/BGE** encoder; we currently run several models.
-  Alignment needed.
+ Alignment needed.
 - **Storage:** Stage 4 wants **<2ms** NVMe/DiskANN. Our NFS tops out ~**88 MB/s**. The out-of-core
-  engine is a major separate build.
+ engine is a major separate build.
 
 ## 5. Risks & open questions
 
 - **Flagged in the doc:** async prefetch depth (hiding NVMe latency), context contamination (retrieval
-  duplicating prompt facts), PCIe bandwidth under 500 concurrent streams.
+ duplicating prompt facts), PCIe bandwidth under 500 concurrent streams.
 - **Scope:** is the ask a Stage 1–2 POC or the Stage 4 moonshot? Three novel systems (custom CCA decode,
-  adapter alignment, out-of-core ANN engine) — each high integration risk.
+ adapter alignment, out-of-core ANN engine) — each high integration risk.
 - **Alignment data:** who builds the 100k instruction-context-response triplets + salient-span masking +
-  distractor sets? InstructRetro calls this the primary open frontier.
+ distractor sets? InstructRetro calls this the primary open frontier.
 - **Critical unknown:** does GCCA's multi-hop advantage over prompt-RAG actually materialize? Everything
-  downstream rides on that one bet.
+ downstream rides on that one bet.
 
 ## 6. Questions to walk in with
 

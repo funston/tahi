@@ -1,6 +1,6 @@
 # True Cognitive Coprocessor Architecture
 
-## What makes BENDER a real coprocessor?
+## What makes OCTO a real coprocessor?
 
 A true coprocessor does more than return retrieved facts. It must:
 
@@ -30,7 +30,7 @@ Weakest form. Good for compatibility, but not enough for the paper's strongest c
 Graph state is serialized or encoded before generation starts.
 
 ### Level 2 — Hidden-state fusion
-BENDER computes graph-derived vectors and fuses them into an adapter, router, or cross-attention module.
+OCTO computes graph-derived vectors and fuses them into an adapter, router, or cross-attention module.
 
 ### Level 3 — Decode-loop coprocessing
 At each major reasoning step or token chunk, the runtime can:
@@ -57,8 +57,8 @@ This packet is the coprocessor's output to the base model.
 
 ## Closed-weight vs open-weight models
 
-For closed-weight APIs, BENDER may operate through structured control/context packets.
-For open-weight models, BENDER can integrate more deeply via hidden-state hooks or adapters.
+For closed-weight APIs, OCTO may operate through structured control/context packets.
+For open-weight models, OCTO can integrate more deeply via hidden-state hooks or adapters.
 
 In the current implementation:
 
@@ -67,7 +67,7 @@ In the current implementation:
 
 ## Practical thesis
 
-BENDER should be presented as a **spectrum architecture**:
+OCTO should be presented as a **spectrum architecture**:
 - immediately deployable at weaker integration levels,
 - increasingly powerful as lower-level model access becomes available.
 

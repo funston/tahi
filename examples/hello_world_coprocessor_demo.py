@@ -1,7 +1,7 @@
 import json
 
-from bender import BlackBoxIntegration, NativeTokenformerIntegration, wrap_llm
-from bender.demo_worlds import build_hello_world_animal_model
+from octo import BlackBoxIntegration, NativeTokenformerIntegration, wrap_llm
+from octo.demo_worlds import build_hello_world_animal_model
 
 
 def print_result(title: str, result: dict) -> None:

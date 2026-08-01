@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from bender import SpiderSnowWorkspace, SpiderSnowflakeMetadataLoader
+from octo import SpiderSnowWorkspace, SpiderSnowflakeMetadataLoader
 
 
 def snapshot_to_dict(snapshot):

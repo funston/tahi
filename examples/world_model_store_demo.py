@@ -7,7 +7,7 @@ reproducible research and 3x faster benchmarks.
 
 from pathlib import Path
 
-from bender import WorldModel, WorldModelStore
+from octo import WorldModel, WorldModelStore
 
 
 def build_example_world_model(domain: str) -> WorldModel:
@@ -28,7 +28,7 @@ def build_example_world_model(domain: str) -> WorldModel:
 
 def main():
     # Initialize store (defaults to gzip compression)
-    store_path = Path.home() / ".bender" / "world-models"
+    store_path = Path.home() / ".octo" / "world-models"
     store = WorldModelStore(store_path, compress=True)
 
     print("=" * 80)

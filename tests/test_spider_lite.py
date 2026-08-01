@@ -13,7 +13,7 @@ if ROOT not in sys.path:
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender import build_pagila_fixture_snapshot, snapshot_to_world_model  # noqa: E402
+from octo import build_pagila_fixture_snapshot, snapshot_to_world_model  # noqa: E402
 from implementations.spider import (  # noqa: E402
     SpiderLiteBenchmarkAdapter,
     SpiderLiteSQLiteDatabaseLoader,

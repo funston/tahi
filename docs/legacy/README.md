@@ -9,6 +9,8 @@ Recently archived here:
 - former benchmark runbooks and planning docs
 - release review notes
 - older benchmark report wrappers
+- pre-RETRO / ScalarLM vLLM integration strategy notes
+- Claude-generated session summaries and architecture-cleanup status reports
 
 The active docs now live at:
 

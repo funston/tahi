@@ -1,8 +1,8 @@
-# BENDER: The World Coprocessor Investment Thesis
+# OCTO: The World Coprocessor Investment Thesis
 
 ## Executive Summary
 
-BENDER represents a paradigm shift in AI enhancement: instead of building larger models or fine-tuning existing ones, it provides **semantic grounding through retrieval-augmented reasoning**. This approach aligns perfectly with recent scaling law discoveries showing that data access matters more than model size.
+OCTO represents a paradigm shift in AI enhancement: instead of building larger models or fine-tuning existing ones, it provides **semantic grounding through retrieval-augmented reasoning**. This approach aligns perfectly with recent scaling law discoveries showing that data access matters more than model size.
 
 ## The Problem
 
@@ -11,26 +11,26 @@ BENDER represents a paradigm shift in AI enhancement: instead of building larger
 3. **Larger models hit diminishing returns** - Chinchilla showed 70B + more data beats 175B + less data
 4. **RAG systems are shallow** - They retrieve documents but don't reason about structured knowledge
 
-## BENDER's Solution: World Coprocessors
+## OCTO's Solution: World Coprocessors
 
 **Core Innovation**: Graph-based world models that provide semantic constraints at token generation time.
 
 ### Key Differentiators
 
 1. **True Coprocessing, Not RAG**
-   - Intervenes at token generation time (not just prompt augmentation)
-   - Maintains structured graph knowledge (not document chunks)
-   - Provides reasoning traces and provenance
+ - Intervenes at token generation time (not just prompt augmentation)
+ - Maintains structured graph knowledge (not document chunks)
+ - Provides reasoning traces and provenance
 
 2. **Aligned with Scaling Laws**
-   - 7B model + 2T retrieval tokens ≈ 70B model performance
-   - 10x efficiency gain demonstrated
-   - Scales data without scaling parameters
+ - 7B model + 2T retrieval tokens ≈ 70B model performance
+ - 10x efficiency gain demonstrated
+ - Scales data without scaling parameters
 
 3. **Production-Ready Architecture**
-   - FTI MLOps pattern: pre-build world models once, use forever
-   - 3x faster iteration than rebuilding
-   - Versioned, reproducible artifacts
+ - FTI MLOps pattern: pre-build world models once, use forever
+ - 3x faster iteration than rebuilding
+ - Versioned, reproducible artifacts
 
 ## Market Opportunity
 
@@ -47,14 +47,14 @@ BENDER represents a paradigm shift in AI enhancement: instead of building larger
 
 ## Competitive Landscape
 
-| Approach | Problem | BENDER's Advantage |
+| Approach | Problem | OCTO's Advantage |
 |----------|---------|-------------------|
 | **RAG** (Pinecone, Weaviate) | Shallow document retrieval | Structured reasoning over graphs |
 | **Fine-tuning** (Together, Replicate) | Expensive, rigid | Dynamic, no retraining needed |
 | **Larger Models** (OpenAI, Anthropic) | Diminishing returns, hallucination | Grounded, efficient, provable |
 
 
-## Why BENDER Wins
+## Why OCTO Wins
 
 ### Technical Moat
 1. **Graph reasoning > document retrieval** - Competitors would need to rebuild from first principles
@@ -70,7 +70,7 @@ BENDER represents a paradigm shift in AI enhancement: instead of building larger
 
 | Risk | Mitigation |
 |------|------------|
-| **LLM providers add native graphs** | BENDER's specialization and marketplace create defensibility |
+| **LLM providers add native graphs** | OCTO's specialization and marketplace create defensibility |
 | **Open source replication** | World model quality and curation is the moat |
 | **Adoption friction** | Start with high-value verticals (SQL, healthcare) |
 
@@ -88,16 +88,16 @@ BENDER represents a paradigm shift in AI enhancement: instead of building larger
 
 ### Ask: $50M Series A
 - **Use of funds**:
-  - 60% Engineering (scale to production)
-  - 20% World model curation
-  - 20% Go-to-market
+ - 60% Engineering (scale to production)
+ - 20% World model curation
+ - 20% Go-to-market
 
 
-**BENDER is building for the future we're heading toward: smaller, grounded, verifiable AI. On premise Private AI **
+**OCTO is building for the future we're heading toward: smaller, grounded, verifiable AI. On premise Private AI **
 
 ## Conclusion
 
-BENDER isn't just another AI tool - it's **fundamental infrastructure for the next generation of AI systems**. As models commoditize, the differentiator will be grounding and reasoning quality. BENDER owns this layer.
+OCTO isn't just another AI tool - it's **fundamental infrastructure for the next generation of AI systems**. As models commoditize, the differentiator will be grounding and reasoning quality. OCTO owns this layer.
 
 **The company that controls semantic grounding controls the AI stack.**
 

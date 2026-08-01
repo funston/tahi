@@ -2,9 +2,9 @@
 
 ## Core Idea
 
-BENDER is a world-model coprocessor for LLMs.
+OCTO is a world-model coprocessor for LLMs.
 
-Instead of asking the model to infer domain structure from retrieved text alone, BENDER:
+Instead of asking the model to infer domain structure from retrieved text alone, OCTO:
 
 1. captures model-side query state
 2. retrieves structured world state
@@ -14,11 +14,11 @@ Instead of asking the model to infer domain structure from retrieved text alone,
 
 ## Core Runtime
 
-The core package lives in `src/bender/`.
+The core package lives in `src/octo/`.
 
 Primary components:
 
-- `BenderRuntime`
+- `OctoRuntime`
 - `WorldModel`
 - `WorldModelStore` (FTI Feature Pipeline)
 - `Planner`
@@ -38,7 +38,7 @@ The runtime contract is:
 
 ## FTI MLOps Architecture
 
-BENDER adopts the Feature/Training/Inference (FTI) MLOps pattern for world model management:
+OCTO adopts the Feature/Training/Inference (FTI) MLOps pattern for world model management:
 
 **World Model Pipeline** (Feature Pipeline analog):
 - Pre-build versioned world models from domain data
@@ -51,7 +51,7 @@ BENDER adopts the Feature/Training/Inference (FTI) MLOps pattern for world model
 - Point-in-time consistency with versioned models
 
 **No Training Pipeline**:
-- BENDER is model-agnostic by design (no fine-tuning)
+- OCTO is model-agnostic by design (no fine-tuning)
 - Domain logic lives in graphs, not weights
 - Maintains architectural purity
 
@@ -67,17 +67,17 @@ Reference: https://www.hopsworks.ai/post/mlops-to-ml-systems-with-fti-pipelines
 
 The repo is intentionally split into:
 
-- `src/bender/`
-  Pure framework and runtime code
+- `src/octo/`
+ Pure framework and runtime code
 - `implementations/`
-  Reference world models built on top of the framework
+ Reference world models built on top of the framework
 - `examples/`
-  Demo entrypoints
+ Demo entrypoints
 
 Architectural rule:
 
-- `bender` must not import from `implementations`
-- `implementations/*` may import from `bender`
+- `octo` must not import from `implementations`
+- `implementations/*` may import from `octo`
 
 This keeps the open-source core clean and shows third parties how to build on top of it.
 
@@ -85,7 +85,7 @@ This keeps the open-source core clean and shows third parties how to build on to
 
 ### Black-box path
 
-For API-only or closed-weight models, BENDER emits structured control context such as:
+For API-only or closed-weight models, OCTO emits structured control context such as:
 
 - active entities
 - hypotheses
@@ -95,7 +95,7 @@ For API-only or closed-weight models, BENDER emits structured control context su
 
 ### Native path
 
-For open-weight models, BENDER is designed to provide request-scoped latent influence through a native backend.
+For open-weight models, OCTO is designed to provide request-scoped latent influence through a native backend.
 
 In this repo, the native path is represented by the integration contracts and prototype demos. Backend-specific notes such as the ScalarLM integration design live in `docs/legacy/` because they are implementation notes, not the core architecture.
 
@@ -105,7 +105,7 @@ For a clearer operational distinction between weak and strong integration, see [
 
 RAG retrieves text and asks the model to reconstruct structure from the prompt.
 
-BENDER explicitly models:
+OCTO explicitly models:
 
 - entities
 - relations
@@ -119,31 +119,31 @@ That is the key architectural distinction. The goal is not merely better retriev
 ## Reference Implementations
 
 - `bio`
-  Biomarker interpretation, target profiling, evidence ingestion
+ Biomarker interpretation, target profiling, evidence ingestion
 - `mass_spec`
-  Analyte/adduct/polarity/instrument reasoning
+ Analyte/adduct/polarity/instrument reasoning
 - `bird`
-  SQL benchmark implementation kept outside core
+ SQL benchmark implementation kept outside core
 - `spider`
-  Stress-test benchmark implementation kept outside core
+ Stress-test benchmark implementation kept outside core
 
 ## Relationship to RETRO / Large-Scale ANN RAG
 
-BENDER is not a competitor to RETRO, InstructRetro, or massive ANN retrieval systems. Those systems optimize for **recall coverage** over unstructured corpora. BENDER optimizes for **correctness, structure, and provenance** in constrained domains.
+OCTO is not a competitor to RETRO, InstructRetro, or massive ANN retrieval systems. Those systems optimize for **recall coverage** over unstructured corpora. OCTO optimizes for **correctness, structure, and provenance** in constrained domains.
 
-Where RETRO/ANN engineering is directly useful to BENDER:
+Where RETRO/ANN engineering is directly useful to OCTO:
 
-- **Level 2/3 native integration:** Gated Chunked Cross-Attention (GCCA) adapters are a concrete recipe for BENDER's native coprocessor mode. The `tanh(α)` gate, frozen base model, and 1-chunk causal offset are all applicable.
+- **Level 2/3 native integration:** Gated Chunked Cross-Attention (GCCA) adapters are a concrete recipe for OCTO's native coprocessor mode. The `tanh(α)` gate, frozen base model, and 1-chunk causal offset are all applicable.
 - **Late chunking:** improves document evidence ingestion in world-model builders.
 - **Out-of-core vector storage:** `WorldModelStore` can adopt DiskANN/Starling-style backends if a world model grows beyond RAM.
 - **Async prefetch:** hides retrieval latency in token-time native mode.
-- **Embedding-space alignment:** Procrustes or MLP projection lets BENDER upgrade embedding models without rebuilding adapters.
+- **Embedding-space alignment:** Procrustes or MLP projection lets OCTO upgrade embedding models without rebuilding adapters.
 
-See the full comparison in [RETRO/ANN vs. BENDER](/Users/richiek/work/bender/docs/RETRO_ANN_VS_BENDER.md).
+See the full comparison in [RETRO/ANN vs. OCTO](/Users/richiek/work/bender/docs/RETRO_ANN_VS_OCTO.md).
 
 ## Cost Model
 
-BENDER's cost is dominated by **domain curation and ontology engineering**, not by storage or embedding compute. A structured SQL world model for an enterprise schema is typically megabytes to gigabytes, not petabytes. This is the opposite of a 10 PB RETRO corpus, where the dominant costs are embedding compute, NVMe storage, and specialized serving hardware.
+OCTO's cost is dominated by **domain curation and ontology engineering**, not by storage or embedding compute. A structured SQL world model for an enterprise schema is typically megabytes to gigabytes, not petabytes. This is the opposite of a 10 PB RETRO corpus, where the dominant costs are embedding compute, NVMe storage, and specialized serving hardware.
 
 ## Recommended Reading
 
@@ -151,6 +151,6 @@ BENDER's cost is dominated by **domain curation and ontology engineering**, not 
 - [Tutorial](/Users/richiek/work/bender/docs/TUTORIAL.md)
 - [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md)
 - [Benchmarking](/Users/richiek/work/bender/docs/BENCHMARKING.md)
-- [RETRO/ANN vs. BENDER](/Users/richiek/work/bender/docs/RETRO_ANN_VS_BENDER.md)
+- [RETRO/ANN vs. OCTO](/Users/richiek/work/bender/docs/RETRO_ANN_VS_OCTO.md)
 - scalarLM-specific backend notes now live in [docs/legacy/NATIVE_SCALARLM.md](/Users/richiek/work/bender/docs/legacy/NATIVE_SCALARLM.md)
 - [Whitepaper Guide](/Users/richiek/work/bender/docs/WHITEPAPER.md)

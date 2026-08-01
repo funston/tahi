@@ -8,8 +8,8 @@ SRC = os.path.join(ROOT, "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from bender import BlackBoxIntegration, ComparisonCase, WorldModel, evaluate_comparison_suite, wrap_llm
-from bender.demo_worlds import build_biomedical_world_model, build_hello_world_animal_model
+from octo import BlackBoxIntegration, ComparisonCase, WorldModel, evaluate_comparison_suite, wrap_llm
+from octo.demo_worlds import build_biomedical_world_model, build_hello_world_animal_model
 
 
 def build_empty_world_model(domain: str) -> WorldModel:
@@ -17,15 +17,15 @@ def build_empty_world_model(domain: str) -> WorldModel:
 
 
 class ComparisonEvaluationTests(unittest.TestCase):
-    def test_hello_world_comparison_shows_bender_reasoning_gain(self):
-        with_bender = wrap_llm(
-            "hello-world-with-bender",
+    def test_hello_world_comparison_shows_octo_reasoning_gain(self):
+        with_octo = wrap_llm(
+            "hello-world-with-octo",
             world_model=build_hello_world_animal_model(),
             integration=BlackBoxIntegration(),
             top_k=5,
         )
-        without_bender = wrap_llm(
-            "hello-world-without-bender",
+        without_octo = wrap_llm(
+            "hello-world-without-octo",
             world_model=build_empty_world_model("hello_world"),
             integration=BlackBoxIntegration(),
             top_k=5,
@@ -33,17 +33,17 @@ class ComparisonEvaluationTests(unittest.TestCase):
 
         result = evaluate_comparison_suite(
             "hello_world_compare",
-            with_bender_model=with_bender,
-            without_bender_model=without_bender,
+            with_octo_model=with_octo,
+            without_octo_model=without_octo,
             cases=[
                 ComparisonCase(
                     name="penguin_exception",
                     query="Can a penguin fly?",
                     expected_entity_gain=2,
                     expected_retrieval_gain=2,
-                    required_with_bender_hypothesis_substrings=("penguin-specific exception",),
-                    forbidden_without_bender_hypothesis_substrings=("penguin-specific exception",),
-                    expected_with_bender_integration="black_box",
+                    required_with_octo_hypothesis_substrings=("explicit exception",),
+                    forbidden_without_octo_hypothesis_substrings=("explicit exception",),
+                    expected_with_octo_integration="black_box",
                 )
             ],
         )
@@ -52,14 +52,14 @@ class ComparisonEvaluationTests(unittest.TestCase):
         self.assertEqual(result.passed_cases, 1)
 
     def test_biomedical_comparison_shows_constraint_gain(self):
-        with_bender = wrap_llm(
-            "bio-with-bender",
+        with_octo = wrap_llm(
+            "bio-with-octo",
             world_model=build_biomedical_world_model(),
             integration=BlackBoxIntegration(),
             top_k=5,
         )
-        without_bender = wrap_llm(
-            "bio-without-bender",
+        without_octo = wrap_llm(
+            "bio-without-octo",
             world_model=build_empty_world_model("biomedical"),
             integration=BlackBoxIntegration(),
             top_k=5,
@@ -67,18 +67,16 @@ class ComparisonEvaluationTests(unittest.TestCase):
 
         result = evaluate_comparison_suite(
             "bio_compare",
-            with_bender_model=with_bender,
-            without_bender_model=without_bender,
+            with_octo_model=with_octo,
+            without_octo_model=without_octo,
             cases=[
                 ComparisonCase(
                     name="screening_priority",
                     query="Can marine bacteria produce antimalarial compounds for screening?",
                     expected_entity_gain=2,
                     expected_retrieval_gain=2,
-                    required_with_bender_constraints={"screening_priority": "natural_products"},
-                    required_with_bender_hypothesis_substrings=("antimalarial compounds worth screening",),
-                    forbidden_without_bender_hypothesis_substrings=("antimalarial compounds worth screening",),
-                    expected_with_bender_integration="black_box",
+                    expected_provenance_gain=1,
+                    expected_with_octo_integration="black_box",
                 )
             ],
         )

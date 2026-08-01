@@ -6,9 +6,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from bender.benchmarking import BenchmarkCaseResult, benchmark_report_to_dict, render_markdown_summary_table, summarize_system_results
-from bender.models import Hypothesis
-from bender.world_state import WorldModel
+from octo.benchmarking import BenchmarkCaseResult, benchmark_report_to_dict, render_markdown_summary_table, summarize_system_results
+from octo.models import Hypothesis
+from octo.world_state import WorldModel
 
 
 PROTON_MASS = 1.007276
@@ -697,20 +697,20 @@ class MassSpecABBenchmarkRunner:
 
     def run(self, cases: list[MassSpecSpectrumCase]) -> dict[str, Any]:
         retrieval_results: list[BenchmarkCaseResult] = []
-        bender_results: list[BenchmarkCaseResult] = []
+        octo_results: list[BenchmarkCaseResult] = []
         for case in cases:
             retrieval = self.adapter.run_retrieval_baseline(case)
-            bender = self.adapter.run_spectrum_case(case)
+            octo = self.adapter.run_spectrum_case(case)
             retrieval_candidate = retrieval.get("candidate_explanation") or {}
-            bender_candidates = bender.get("candidate_explanations", [])
-            bender_candidate = bender_candidates[0] if bender_candidates else {}
+            octo_candidates = octo.get("candidate_explanations", [])
+            octo_candidate = octo_candidates[0] if octo_candidates else {}
             retrieval_correct = (
                 retrieval_candidate.get("analyte_id") == case.expected_analyte_id
                 and retrieval_candidate.get("adduct_id") == case.expected_adduct_id
             )
-            bender_correct = (
-                bender_candidate.get("analyte_id") == case.expected_analyte_id
-                and bender_candidate.get("adduct_id") == case.expected_adduct_id
+            octo_correct = (
+                octo_candidate.get("analyte_id") == case.expected_analyte_id
+                and octo_candidate.get("adduct_id") == case.expected_adduct_id
             )
             retrieval_results.append(
                 BenchmarkCaseResult(
@@ -721,28 +721,28 @@ class MassSpecABBenchmarkRunner:
                     detail=retrieval,
                 )
             )
-            bender_results.append(
+            octo_results.append(
                 BenchmarkCaseResult(
                     case_id=case.case_id,
-                    system="bender",
-                    correct=bender_correct,
+                    system="octo",
+                    correct=octo_correct,
                     metrics={
-                        "top1_exact": 1.0 if bender_correct else 0.0,
-                        "top1_mass_error_da": bender_candidate.get("mass_error_da"),
+                        "top1_exact": 1.0 if octo_correct else 0.0,
+                        "top1_mass_error_da": octo_candidate.get("mass_error_da"),
                     },
-                    detail=bender,
+                    detail=octo,
                 )
             )
         summaries = [
             summarize_system_results("retrieval_only", retrieval_results, metric_names=["top1_exact"]),
-            summarize_system_results("bender", bender_results, metric_names=["top1_exact", "top1_mass_error_da"]),
+            summarize_system_results("octo", octo_results, metric_names=["top1_exact", "top1_mass_error_da"]),
         ]
         payload = benchmark_report_to_dict(
             benchmark_name="mass_spec_ab_peak_assignment",
             summaries=summaries,
             results_by_system={
                 "retrieval_only": retrieval_results,
-                "bender": bender_results,
+                "octo": octo_results,
             },
         )
         payload["markdown_summary"] = render_markdown_summary_table(summaries)
