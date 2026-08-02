@@ -1,0 +1,46 @@
+[
+  {
+    "arm_name": "Arm 1: Base LLM",
+    "em_score": 0.0,
+    "f1_score": 0.0,
+    "constraint_violation_rate": 0.0,
+    "distractor_rejection_20pct": 0.0,
+    "distractor_rejection_50pct": 0.0,
+    "avg_ttft_ms": 0.0018561258912086487,
+    "avg_tps": 11000.0,
+    "peak_vram_gb": 0.0
+  },
+  {
+    "arm_name": "Arm 2: Standard RAG",
+    "em_score": 0.0,
+    "f1_score": 0.0,
+    "constraint_violation_rate": 0.0,
+    "distractor_rejection_20pct": 0.0,
+    "distractor_rejection_50pct": 0.0,
+    "avg_ttft_ms": 0.000567873939871788,
+    "avg_tps": 11000.0,
+    "peak_vram_gb": 0.0
+  },
+  {
+    "arm_name": "Arm 3: OCTO Level 1",
+    "em_score": 0.0,
+    "f1_score": 0.0,
+    "constraint_violation_rate": 0.0,
+    "distractor_rejection_20pct": 0.0,
+    "distractor_rejection_50pct": 0.0,
+    "avg_ttft_ms": 0.0007199123501777649,
+    "avg_tps": 11000.0,
+    "peak_vram_gb": 0.0
+  },
+  {
+    "arm_name": "Arm 4: OCTO Level 3 GCCA",
+    "em_score": 0.0,
+    "f1_score": 0.0,
+    "constraint_violation_rate": 0.0,
+    "distractor_rejection_20pct": 0.0,
+    "distractor_rejection_50pct": 0.0,
+    "avg_ttft_ms": 0.013943994417786598,
+    "avg_tps": 11000.0,
+    "peak_vram_gb": 0.0
+  }
+]

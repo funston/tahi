@@ -96,6 +96,17 @@ class NativeIntegration(ModelIntegration):
         )
 
     def inject(self, frame: SemanticFrame, state: CognitiveState, fused: FusedSignal) -> ControlPacket:
+        metadata = {
+            "mode": frame.mode,
+            "adapter_action": "hidden_state_delta",
+            "hidden_state_present": frame.hidden_state is not None,
+        }
+        try:
+            import torch
+            metadata["native_tensor"] = torch.tensor(fused.vector, dtype=torch.float32).unsqueeze(0).unsqueeze(0)
+        except ImportError:
+            pass
+
         return ControlPacket(
             integration=self.name,
             prompt_hints=[
@@ -107,11 +118,8 @@ class NativeIntegration(ModelIntegration):
             constraints=dict(state.constraints),
             fused_vector=fused.vector,
             provenance=state.provenance,
-            metadata={
-                "mode": frame.mode,
-                "adapter_action": "hidden_state_delta",
-                "hidden_state_present": frame.hidden_state is not None,
-            },
+            metadata=metadata,
         )
+
 
 

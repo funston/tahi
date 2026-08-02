@@ -80,12 +80,15 @@ class OctoNativeAdapter(nn.Module):
                 hidden_states = output[0] if isinstance(output, tuple) else output
                 gcca = self.gcca_layers[layer_idx_str]
 
-                # Match batch dimension if needed
+                # Match batch dimension and device if needed
                 retrieved = self._current_retrieved_memory
+                if retrieved.device != hidden_states.device:
+                    retrieved = retrieved.to(hidden_states.device)
                 if retrieved.dim() == 2:
                     retrieved = retrieved.unsqueeze(0)
                 if retrieved.size(0) != hidden_states.size(0):
                     retrieved = retrieved.expand(hidden_states.size(0), -1, -1)
+
 
                 modified_hidden = gcca(hidden_states, retrieved)
 
