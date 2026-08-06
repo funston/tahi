@@ -1,0 +1,100 @@
+================================================================================
+RETRO-v2 / OCTO LEVEL 3 — PRE-FLIGHT VALIDATION PROJECT (POC SPECIFICATION)
+================================================================================
+
+Date: 2026-08-03
+Goal: De-risk $5,000,000 in proposed hardware/data expenditure by empirically 
+      validating Gated Chunked Cross-Attention (GCCA) hidden-state vector injection
+      on existing GPU infrastructure before purchasing hardware.
+
+--------------------------------------------------------------------------------
+1. EXECUTIVE SUMMARY & CONSULTANT PITCH
+--------------------------------------------------------------------------------
+
+Pitch to Leadership:
+"Before committing $5 Million to NVMe vector hardware and multi-terabyte data 
+pipelines, we can run a zero-hardware-cost 'Pre-Flight Validation Harness' 
+on our existing GPUs to empirically test whether RETRO-v2 hidden-state cross-attention 
+actually works.
+
+By running a 500-question Oracle-Memory Ablation (injecting guaranteed gold documents) 
+alongside Salient Span Masking on a small 10,000-document slice, we will measure 
+whether the neural gate (alpha) actually opens and outperforms standard text RAG 
+under ideal conditions. 
+
+If the adapter fails to open when given perfect data, we stop immediately and save 
+the company $5M; if it succeeds, we give leadership verified, pre-registered benchmark 
+data to justify the hardware investment with zero financial risk."
+
+Key Business ROI:
+- Eliminates $5,000,000 in premature capital expenditure.
+- Provides empirical proof of performance before signing vendor contracts.
+- Uses existing local GPU resources.
+
+--------------------------------------------------------------------------------
+2. TECHNICAL CONTEXT & THE ARCHITECTURAL RISK
+--------------------------------------------------------------------------------
+
+Difference Between Standard RAG and RETRO-v2 / OCTO Level 3:
+- Standard RAG pastes raw text into the prompt context window.
+- RETRO-v2 / OCTO Level 3 injects vector embeddings directly into intermediate LLM 
+  hidden layers via Gated Chunked Cross-Attention (GCCA) forward hooks.
+
+The Core Architectural Risk:
+The LLM uses a learned neural gate (alpha) to control memory injection:
+  HiddenState_new = HiddenState_old + tanh(alpha) * CrossAttention(HiddenState, Memory)
+
+If alpha remains near zero (alpha ~ 0.00), the neural gate stays shut, the LLM 
+ignores the memory vectors, and Level 3 performs identically to un-augmented base LLM.
+
+--------------------------------------------------------------------------------
+3. THE 4-STAGE WORK PLAN
+--------------------------------------------------------------------------------
+
+STAGE 1: Dataset Masking & Hard Negatives
+  Task 1.1: Salient Span Masking
+            Mask out key entity names, dates, and numbers in training prompts so 
+            the LLM cannot answer from parametric memory and is forced to rely 
+            on vector memory.
+  Task 1.2: Hard-Negative Distractors
+            Inject 20% random/irrelevant document vectors into training rows to 
+            teach the gate to close when presented with noise.
+
+STAGE 2: Oracle Pre-Flight Training Pass
+  Task 2.1: GCCA Adapter Training
+            Train the 7 GCCA cross-attention layers on GPU using the masked dataset 
+            + Gold-Standard document vectors.
+  Task 2.2: Gate Activation Audit (alpha Readout)
+            Read tanh(alpha) values across all layers.
+            - Pass Criteria: Max tanh(alpha) > 0.25 (Gate opened for Gold memory).
+            - Fail Criteria: Max tanh(alpha) < 0.05 (Gate remained shut).
+
+STAGE 3: Full Length-Controlled Benchmark (N=500)
+  Task 3.1: 4-Arm Evaluation
+            Evaluate all 4 arms under strict length-matched decoding (--max-new-tokens 35):
+            1. Base LLM (No context)
+            2. Text-Prompt RAG (Text context pasted into prompt)
+            3. Identity Control (alpha = 0, asserts 0 token mismatches)
+            4. RETRO / OCTO Level 3 (Trained GCCA adapter)
+  Task 3.2: Bootstrap Significance Analysis
+            Compute 95% Confidence Intervals for Token F1 and Fact Coverage.
+
+STAGE 4: Executive Decision & Deliverables
+  Option A (Success - F1 >= 0.128):
+           Level 3 hidden-state injection matches/surpasses Text RAG. Present 
+           pre-registered benchmark data to leadership to justify $5M hardware build.
+  Option B (Failure - F1 < 0.128):
+           Level 3 fails to match Text RAG under ideal conditions. Cancel $5M hardware 
+           build immediately (saving $5M) and publish the evaluation paper.
+
+--------------------------------------------------------------------------------
+4. DECISION MATRIX
+--------------------------------------------------------------------------------
+
+| Outcome | Gate Alpha | F1 vs RAG | Executive Action |
+|---|---|---|---|
+| Success | > 0.25 | >= 0.128 | Approve $5M hardware funding for full RETRO scaling |
+| Retrieval Bottleneck | > 0.25 | < 0.128 | Fix retrieval recall before buying hardware |
+| Architecture Failure | < 0.05 | < 0.128 | Cancel $5M build; save $5M and publish negative result |
+
+================================================================================

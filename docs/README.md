@@ -1,47 +1,31 @@
-# Documentation
+# OCTO Documentation
 
-This directory is the public documentation surface for OCTO.
+Welcome to the official documentation suite for **OCTO**, an AI-driven World-Model Coprocessor framework for Large Language Models.
 
-## Start Here
+---
 
-- [Quick Start](QUICKSTART.md)
-- [Tutorial](TUTORIAL.md)
-- [Architecture](ARCHITECTURE.md)
-- [Benchmarking](BENCHMARKING.md)
-- [Integration Levels](INTEGRATION_LEVELS.md)
-- [RETRO/ANN vs. OCTO](RETRO_ANN_VS_OCTO.md)
-- [Whitepaper Guide](WHITEPAPER.md)
+## Core Documentation
 
-## Demos & Investor Materials
+- 🚀 [**Quick Start**](QUICKSTART.md) — Installation, environment setup, and runnable entrypoints.
+- 📐 [**Architecture**](ARCHITECTURE.md) — Technical deep-dive on Kùzu C++ Property Graph, PyTorch RGAT GNN Encoders, and Level 3 Native GCCA hidden-state injection.
+- 📊 [**Platform Status**](STATUS.md) — Present-day platform health, verified benchmark metrics, and subsystem test suite coverage.
+- 🧪 [**Benchmarking Guide**](BENCHMARKING.md) — Complete benchmark reproduction runbook, identity control assertions ($\alpha=0$), and NLI evaluators.
+- 💼 [**Investor Pitch**](INVESTOR_PITCH.md) — Executive pitch deck, value proposition, and market opportunity.
+- 📋 [**RETRO Pre-Flight POC Plan**](RETRO_POC.txt) — 6-day zero-hardware-cost validation specification to de-risk $5M capital expenditure.
+- 📄 [**Research Paper (Systems)**](RESEARCH_PAPER.md) — *OCTO: Latent Relational Graph Attention Networks for Direct Hidden-State Injection in Frozen Large Language Models* (NeurIPS / ICLR).
+- 🔬 [**Research Paper (Evaluation Methodology)**](EVAL_METHODOLOGY_PAPER.md) — *Inert Instruments: Silent Failure Modes in RAG Faithfulness Evaluation* (NeurIPS D&B / ACM REP).
 
-- [OCTO Status & Roadmap (start here)](octo-status-and-roadmap.md)
-- [Investor Proof Slide](investor-proof-slide.md)
-- [Friend Pitch Email](friend-pitch-email.txt)
-- [Real SQL Demo](real-sql-demo.md)
-- [Spider 2.0 Lite Demo](spider-lite-demo.md)
-- [BIRD Table Recall Demo](bird-table-recall.md)
-- [BIRD Enriched World Models](bird-enriched-world-models.md)
-- [World-Model Training Loop](world-model-training-loop.md)
-- [USA_NAMES Solution Deep Dive](usa-names-solution.md)
-- [USA_NAMES World-Model Enrichment](usa-names-world-model.md)
+---
 
-## Release And Planning
+## Subsystem Code Map
 
-- [Roadmap](ROADMAP.md)
+- `src/octo/graph/gnn_encoder.py` — PyTorch Relational Graph Attention Network (RGAT) Subgraph Encoder.
+- `src/octo/world_state.py` — Kùzu C++ Property Graph Engine & Additive Structural Support scoring.
+- `src/octo/native/gcca_layer.py` — PyTorch Gated Chunked Cross-Attention (GCCA) residual layer.
+- `src/octo/eval/nli_evaluator.py` — DeBERTa NLI Cross-Encoder with Passage-Level Max Aggregation.
 
-## Research & Deep Dives
+---
 
-Exploratory architecture, comparisons, and project plans live under [docs/research](/Users/richiek/work/bender/docs/research).
+## Archives & Historical Audits
 
-## Reference Implementations
-
-- `implementations/bio`
-- `implementations/mass_spec`
-- `implementations/bird`
-- `implementations/spider`
-- `implementations/sql`
-- `implementations/wikipedia`
-
-## Legacy Material
-
-Older design notes, benchmark notes, Claude-generated session summaries, and superseded docs live under [docs/legacy](/Users/richiek/work/bender/docs/legacy) for archival review.
+All legacy documentation, initial analysis notes, and secondary drafts are archived in [`docs/archive/`](archive/).

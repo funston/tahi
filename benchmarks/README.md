@@ -4,14 +4,10 @@ This directory stores reproducible benchmark inputs, machine-readable results, a
 
 Layout:
 
-- `benchmarks/bird/bird_benchmark_report.html`
- - primary BIRD benchmark artifact
 - `benchmarks/sql_grounding_report.html`
  - secondary aggregate SQL benchmark page
 - `benchmarks/sql_grounding_report.svg`
  - optional single-image SQL benchmark report
-- `benchmarks/bird/`
- - BIRD benchmark artifacts and JSON results
 - `benchmarks/gretel/`
  - Gretel synthetic text-to-SQL grounding benchmark inputs and JSON results
 - `benchmarks/mass_spec/`
@@ -23,7 +19,6 @@ Naming convention:
  - benchmark input sample or frozen dataset slice
 - `*_report.json`
  - machine-readable benchmark output for reproducibility and scripting
-- `bird_benchmark_report.html`
  - primary benchmark report to open first
 - `sql_grounding_report.html`
  - secondary aggregate report

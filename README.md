@@ -72,14 +72,13 @@ PYTHONPATH=src python examples/mass_spec_demo.py --mode spectrum --case-id demo_
 
 ## Documentation
 
-- [Quick Start](/Users/richiek/work/bender/docs/QUICKSTART.md)
-- [Tutorial](/Users/richiek/work/bender/docs/TUTORIAL.md)
-- [Architecture](/Users/richiek/work/bender/docs/ARCHITECTURE.md)
-- [Benchmarking](/Users/richiek/work/bender/docs/BENCHMARKING.md)
-- [BIRD Benchmark Report](/Users/richiek/work/bender/benchmarks/bird/bird_benchmark_report.html)
-- [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md)
-- [Whitepaper Guide](/Users/richiek/work/bender/docs/WHITEPAPER.md)
-- [Docs Index](/Users/richiek/work/bender/docs/README.md)
+- [Quick Start](docs/QUICKSTART.md)
+- [Tutorial](docs/TUTORIAL.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Benchmarking](docs/BENCHMARKING.md)
+- [Integration Levels](docs/INTEGRATION_LEVELS.md)
+- [Whitepaper Guide](docs/WHITEPAPER.md)
+- [Docs Index](docs/README.md)
 
 ## Reference Implementations
 
@@ -87,7 +86,6 @@ PYTHONPATH=src python examples/mass_spec_demo.py --mode spectrum --case-id demo_
  Biomarker interpretation, target profiling, and evidence-record ingestion.
 - `implementations/mass_spec`
  Peak interpretation, analyte/adduct reasoning, and a strong counterexample to plain RAG in a scientific domain.
-- `implementations/bird`
  Isolated SQL benchmark implementation.
 - `implementations/spider`
  Isolated benchmark and stress-test implementation.

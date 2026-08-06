@@ -59,7 +59,7 @@ class ArmResult:
 @dataclass
 class BenchmarkItem:
     item_id: str
-    domain: str  # e.g., HotpotQA, LegalBench, DEA, BIRD_SQL
+    domain: str  # e.g., HotpotQA, LegalBench, DEA
     query: str
     target_answer: str
     retrieved_context: str
@@ -420,9 +420,9 @@ def load_hotpotqa_dataset(num_samples: int = 10) -> List[BenchmarkItem]:
 
 
 def create_synthetic_dataset(num_samples: int = 10) -> List[BenchmarkItem]:
-    """Generate multi-domain evaluation benchmark items (HotpotQA, LegalBench, DEA, BIRD)."""
+    """Generate multi-domain evaluation benchmark items (HotpotQA, LegalBench, DEA)."""
     dataset = []
-    domains = ["HotpotQA", "LegalBench", "DEA_Analogue", "BIRD_SQL"]
+    domains = ["HotpotQA", "LegalBench", "DEA_Analogue"]
 
     for i in range(num_samples):
         dom = domains[i % len(domains)]

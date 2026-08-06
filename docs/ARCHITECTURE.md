@@ -42,7 +42,6 @@ OCTO adopts the Feature/Training/Inference (FTI) MLOps pattern for world model m
 
 **World Model Pipeline** (Feature Pipeline analog):
 - Pre-build versioned world models from domain data
-- Store with semantic versioning (e.g., `bird-dev:v1.0.0`)
 - Reproducible builds with metadata tracking
 
 **Coprocessor Pipeline** (Inference Pipeline analog):
@@ -97,9 +96,9 @@ For API-only or closed-weight models, OCTO emits structured control context such
 
 For open-weight models, OCTO is designed to provide request-scoped latent influence through a native backend.
 
-In this repo, the native path is represented by the integration contracts and prototype demos. Backend-specific notes such as the ScalarLM integration design live in `docs/legacy/` because they are implementation notes, not the core architecture.
+In this repo, the native path is represented by the integration contracts, the PyTorch GCCA modules in `src/octo/native/`, and prototype demos.
 
-For a clearer operational distinction between weak and strong integration, see [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md).
+For a clearer operational distinction between weak and strong integration, see [Integration Levels](docs/INTEGRATION_LEVELS.md).
 
 ## Why This Is Not Plain RAG
 
@@ -122,7 +121,6 @@ That is the key architectural distinction. The goal is not merely better retriev
  Biomarker interpretation, target profiling, evidence ingestion
 - `mass_spec`
  Analyte/adduct/polarity/instrument reasoning
-- `bird`
  SQL benchmark implementation kept outside core
 - `spider`
  Stress-test benchmark implementation kept outside core
@@ -139,7 +137,7 @@ Where RETRO/ANN engineering is directly useful to OCTO:
 - **Async prefetch:** hides retrieval latency in token-time native mode.
 - **Embedding-space alignment:** Procrustes or MLP projection lets OCTO upgrade embedding models without rebuilding adapters.
 
-See the full comparison in [RETRO/ANN vs. OCTO](/Users/richiek/work/bender/docs/RETRO_ANN_VS_OCTO.md).
+See the full comparison in [RETRO/ANN vs. OCTO](docs/RETRO_ANN_VS_OCTO.md).
 
 ## Cost Model
 
@@ -147,10 +145,9 @@ OCTO's cost is dominated by **domain curation and ontology engineering**, not by
 
 ## Recommended Reading
 
-- [Quick Start](/Users/richiek/work/bender/docs/QUICKSTART.md)
-- [Tutorial](/Users/richiek/work/bender/docs/TUTORIAL.md)
-- [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md)
-- [Benchmarking](/Users/richiek/work/bender/docs/BENCHMARKING.md)
-- [RETRO/ANN vs. OCTO](/Users/richiek/work/bender/docs/RETRO_ANN_VS_OCTO.md)
-- scalarLM-specific backend notes now live in [docs/legacy/NATIVE_SCALARLM.md](/Users/richiek/work/bender/docs/legacy/NATIVE_SCALARLM.md)
-- [Whitepaper Guide](/Users/richiek/work/bender/docs/WHITEPAPER.md)
+- [Quick Start](docs/QUICKSTART.md)
+- [Tutorial](docs/TUTORIAL.md)
+- [Integration Levels](docs/INTEGRATION_LEVELS.md)
+- [Benchmarking](docs/BENCHMARKING.md)
+- [RETRO/ANN vs. OCTO](docs/RETRO_ANN_VS_OCTO.md)
+- [Whitepaper Guide](docs/WHITEPAPER.md)

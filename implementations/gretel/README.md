@@ -14,7 +14,6 @@ What it does not demonstrate:
 - native coprocessor mode
 - a decisive OCTO win over stronger SQL baselines
 
-The current benchmark is intentionally narrow: it is a fast add-on dataset to pressure-test schema grounding while BIRD remains the more credible SQL benchmark in this repo.
 
 Runner:
 

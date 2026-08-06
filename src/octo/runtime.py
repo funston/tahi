@@ -57,10 +57,27 @@ class OctoRuntime:
             "Captured a semantic frame from the model-side query state.",
         )
 
+        # Only override the world model's own encoder with a caller-supplied
+        # vector when that vector is a REAL model hidden state (the native Level
+        # 2/3 path). `frame.text_embedding` is the character-sum hash from
+        # `octo.retrieval.legacy.embed_text`, produced at the encoder's width so
+        # the dimensions match -- which meant passing it here silently replaced
+        # sentence-transformer retrieval with hash retrieval and raised no error.
+        #
+        # That is the defect that made every OCTO arm retrieve worse than the
+        # RAG baseline it was being compared against, while appearing to use the
+        # same index. See tests/test_runtime_retrieval_quality.py.
+        query_embedding = None
+        if hidden_state is not None and frame.hidden_state is not None:
+            query_embedding = frame.hidden_state
+        elif not self.world_model.use_ann:
+            # No real encoder available; the hash embedding is all there is.
+            query_embedding = frame.text_embedding
+
         retrievals = self.world_model.retrieve(
             query=frame.semantic_query or query,
             top_k=self.top_k,
-            query_embedding=frame.hidden_state or frame.text_embedding,
+            query_embedding=query_embedding,
         )
         state.retrievals = retrievals
         self.planner.plan(query, state)

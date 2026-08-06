@@ -13,13 +13,24 @@ if SRC not in sys.path:
 from octo import build_schema_compression_plan, snapshot_to_world_model  # noqa: E402
 from implementations.spider import SpiderSnowflakeMetadataLoader  # noqa: E402
 
+import pytest  # noqa: E402
+
+SPIDER2_ROOT = os.environ.get("SPIDER2_ROOT", "")
+pytestmark = pytest.mark.skipif(
+    not SPIDER2_ROOT or not os.path.isdir(SPIDER2_ROOT),
+    reason="Spider2 dataset not present; set SPIDER2_ROOT to run these tests.",
+)
+
+
+
+
 
 class SchemaCompressionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         loader = SpiderSnowflakeMetadataLoader()
         cls.snapshot = loader.load(
-            "/Users/richiek/work/Spider2/spider2-snow/resource/databases/TCGA_MITELMAN",
+            SPIDER2_ROOT + "/spider2-snow/resource/databases/TCGA_MITELMAN",
             db_id="TCGA_MITELMAN",
         )
 

@@ -71,17 +71,17 @@ class WorldModelStore:
         store = WorldModelStore("~/.octo/world-models/")
 
         # Build and save
-        world = build_bird_world_model(db_id="california_schools")
+        world = build_dea_world_model(source="federal-register")
         store.save(
             world,
-            source="bird-dev",
+            source="dea-scheduling",
             version="v1.0.0",
             db_id="california_schools",
             metadata={"enrichment": "csv_metadata"}
         )
 
         # Load
-        world = store.load("bird-dev", "v1.0.0", db_id="california_schools")
+        world = store.load("dea-scheduling", "v1.0.0", model_id="analogues")
     """
 
     def __init__(self, base_path: str | Path, compress: bool = True):
@@ -121,7 +121,7 @@ class WorldModelStore:
 
         Args:
             world_model: WorldModel instance to save
-            source: Source identifier (e.g., "bird-dev", "sql-postgres")
+            source: Source identifier (e.g., "dea-scheduling", "hotpotqa-wiki")
             version: Semantic version (e.g., "v1.0.0")
             model_id: Model identifier (e.g., db_id, schema_name)
             metadata: Optional build metadata
@@ -230,7 +230,7 @@ class WorldModelStore:
         Build a world model and save it.
 
         Args:
-            builder: Function that builds WorldModel (e.g., build_bird_world_model)
+            builder: Function that builds WorldModel (e.g., build_dea_world_model)
             source: Source identifier
             version: Semantic version
             model_id: Model identifier

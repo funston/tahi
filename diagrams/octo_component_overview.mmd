@@ -28,7 +28,6 @@ flowchart TB
         direction LR
         BIO["🧬 Bio"]
         MS["🧪 Mass Spec"]
-        BIRD["🐦 BIRD"]
         SPIDER["🕷️ Spider"]
         SQL["🗄️ SQL"]
     end
@@ -49,7 +48,6 @@ flowchart TB
 
     BIO --> WM
     MS --> WM
-    BIRD --> WM
     SPIDER --> WM
     SQL --> WM
 
@@ -62,4 +60,4 @@ flowchart TB
     class RT,INT,WM,PLN,RE,SIM,FUS core
     class BB,NI,NTI model
     class WMS,IDX storage
-    class BIO,MS,BIRD,SPIDER,SQL domain
+    class BIO,MS,SPIDER,SQL domain

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Optional, Sequence
+from typing import Any, Optional, Sequence
 
 from .models import CognitiveState, ControlPacket, FusedSignal, SemanticFrame, coerce_vector
 from .retrieval import embed_text, tokenize
@@ -95,7 +95,7 @@ class NativeIntegration(ModelIntegration):
             metadata={"integration": self.name},
         )
 
-    def inject(self, frame: SemanticFrame, state: CognitiveState, fused: FusedSignal) -> ControlPacket:
+    def inject(self, frame: SemanticFrame, state: CognitiveState, fused: FusedSignal, world_model: Optional[Any] = None) -> ControlPacket:
         metadata = {
             "mode": frame.mode,
             "adapter_action": "hidden_state_delta",
@@ -103,7 +103,32 @@ class NativeIntegration(ModelIntegration):
         }
         try:
             import torch
-            metadata["native_tensor"] = torch.tensor(fused.vector, dtype=torch.float32).unsqueeze(0).unsqueeze(0)
+            if world_model is not None:
+                from .native.memory import build_memory_tensor
+                mem_tensor = build_memory_tensor(state, world_model)
+                if mem_tensor is not None:
+                    metadata["native_tensor"] = mem_tensor
+                else:
+                    metadata["native_tensor"] = torch.tensor(fused.vector, dtype=torch.float32).unsqueeze(0).unsqueeze(0)
+            elif state.retrievals:
+                # Build per-slot vector matrix from retrievals
+                from .native.memory import node_texts
+                slots = []
+                for r in state.retrievals:
+                    text = r.attributes.get("text") or r.attributes.get("summary") or r.label
+                    slots.append(embed_text(text, width=len(fused.vector)))
+                if not slots:
+                    slots = [fused.vector]
+                metadata["native_tensor"] = torch.tensor(slots, dtype=torch.float32).unsqueeze(0)
+            elif state.entities:
+                # Build per-entity slot vectors
+                slots = []
+                for e in state.entities:
+                    label = e.attributes.get("text") or e.label
+                    slots.append(embed_text(label, width=len(fused.vector)))
+                metadata["native_tensor"] = torch.tensor(slots, dtype=torch.float32).unsqueeze(0)
+            else:
+                metadata["native_tensor"] = torch.tensor(fused.vector, dtype=torch.float32).unsqueeze(0).unsqueeze(0)
         except ImportError:
             pass
 

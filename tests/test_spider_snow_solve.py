@@ -12,6 +12,8 @@ if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
 from implementations.spider import (  # noqa: E402
+
+
     OctoSpiderSnowSolveRunner,
     NativeSpiderSnowProblemSolver,
     SpiderLiteTask,
@@ -34,6 +36,15 @@ from implementations.spider import (  # noqa: E402
     SpiderSnowWorkspace,
     select_stratified_spider_snow_tasks,
 )
+
+import pytest  # noqa: E402
+
+SPIDER2_ROOT = os.environ.get("SPIDER2_ROOT", "")
+pytestmark = pytest.mark.skipif(
+    not SPIDER2_ROOT or not os.path.isdir(SPIDER2_ROOT),
+    reason="Spider2 dataset not present; set SPIDER2_ROOT to run these tests.",
+)
+
 
 
 class _StubSolver:
@@ -93,7 +104,7 @@ class _StubCandidateReranker(SpiderSnowCandidateReranker):
 
 class SpiderSnowSolveTests(unittest.TestCase):
     def test_problem_loader_loads_eval_criteria_and_reference_rows(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         loader = SpiderSnowProblemLoader(workspace)
         task = next(task for task in loader.load_tasks() if task.task_id == "sf_bq286")
 
@@ -105,7 +116,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
         self.assertEqual(problem.eval_criteria["instance_id"], "sf_bq286")
 
     def test_runner_summarizes_stub_solutions(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         schema_repository = SpiderSnowSchemaRepository(workspace)
         runner = OctoSpiderSnowSolveRunner(
             workspace=workspace,
@@ -124,7 +135,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
         self.assertEqual(schema_repository.cached_db_ids(), [])
 
     def test_native_solver_builds_plan_and_scores_against_gold(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         loader = SpiderSnowProblemLoader(workspace)
         task = next(task for task in loader.load_tasks() if task.task_id == "sf_bq286")
         problem = loader.load_problem(task, eval_criteria_by_id=loader.load_eval_criteria())
@@ -147,7 +158,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
         self.assertIn("task_context", solution.raw_result)
 
     def test_database_coprocessor_builds_per_db_task_context(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         loader = SpiderSnowProblemLoader(workspace)
         problem = next(problem for problem in loader.load_problems(task_ids=["sf_bq286"]))
         coprocessor = SpiderSnowDatabaseCoprocessor(
@@ -163,7 +174,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
         self.assertIn("relevant_documents", context.to_generation_context())
 
     def test_database_coprocessor_builds_task_packet(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         loader = SpiderSnowProblemLoader(workspace)
         problem = next(problem for problem in loader.load_problems(task_ids=["sf_bq286"]))
         coprocessor = SpiderSnowDatabaseCoprocessor(
@@ -183,7 +194,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
         self.assertEqual(packet.preferred_table_family, "CURRENT")
 
     def test_native_solver_returns_explicit_unsupported_error(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         loader = SpiderSnowProblemLoader(workspace)
         task = SpiderLiteTask(
             task_id="sf_unknown999",
@@ -207,7 +218,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
         self.assertEqual(fake_engine.executed_sql, [])
 
     def test_native_solver_executes_ranked_candidates_in_order(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         loader = SpiderSnowProblemLoader(workspace)
         task = next(task for task in loader.load_tasks() if task.task_id == "sf_bq286")
         problem = loader.load_problem(task, eval_criteria_by_id=loader.load_eval_criteria())
@@ -268,7 +279,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
         self.assertEqual(solution.raw_result["candidate_generation"]["ranked_count"], 2)
 
     def test_native_solver_prefers_gold_matching_candidate_over_first_executable(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         loader = SpiderSnowProblemLoader(workspace)
         task = next(task for task in loader.load_tasks() if task.task_id == "sf_bq286")
         problem = loader.load_problem(task, eval_criteria_by_id=loader.load_eval_criteria())
@@ -325,7 +336,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
         self.assertEqual(solution.score, 1.0)
 
     def test_native_solver_repairs_unknown_identifier_and_retries(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         loader = SpiderSnowProblemLoader(workspace)
         task = next(task for task in loader.load_tasks() if task.task_id == "sf_bq286")
         problem = loader.load_problem(task, eval_criteria_by_id=loader.load_eval_criteria())
@@ -378,7 +389,7 @@ class SpiderSnowSolveTests(unittest.TestCase):
         self.assertEqual(solution.score, 1.0)
 
     def test_runner_saves_solution_payload(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         runner = OctoSpiderSnowSolveRunner(
             workspace=workspace,
             solver=_StubSolver(),

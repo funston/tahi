@@ -13,6 +13,8 @@ if SRC not in sys.path:
 
 from octo import snapshot_to_world_model  # noqa: E402
 from implementations.spider import (  # noqa: E402
+
+
     SpiderLiteTask,
     SpiderSnowSQLGenerator,
     SpiderSnowWorkspace,
@@ -23,12 +25,21 @@ from implementations.spider import (  # noqa: E402
     resolve_tcga_schema_plan,
 )
 
+import pytest  # noqa: E402
+
+SPIDER2_ROOT = os.environ.get("SPIDER2_ROOT", "")
+pytestmark = pytest.mark.skipif(
+    not SPIDER2_ROOT or not os.path.isdir(SPIDER2_ROOT),
+    reason="Spider2 dataset not present; set SPIDER2_ROOT to run these tests.",
+)
+
+
 
 class SpiderSnowTests(unittest.TestCase):
     def test_metadata_loader_builds_snapshot(self):
         loader = SpiderSnowflakeMetadataLoader()
         snapshot = loader.load(
-            "/Users/richiek/work/Spider2/spider2-snow/resource/databases/USA_NAMES",
+            SPIDER2_ROOT + "/spider2-snow/resource/databases/USA_NAMES",
             db_id="USA_NAMES",
         )
 
@@ -37,7 +48,7 @@ class SpiderSnowTests(unittest.TestCase):
         self.assertTrue(any(column.name == "name" for table in snapshot.tables for column in table.columns))
 
     def test_workspace_loads_usa_names_task_and_oracle_tables(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         tasks = workspace.attach_oracle_tables(workspace.load_tasks())
         task = next(task for task in tasks if task.task_id == "sf_bq286")
 
@@ -47,7 +58,7 @@ class SpiderSnowTests(unittest.TestCase):
     def test_generator_builds_usa_names_query(self):
         loader = SpiderSnowflakeMetadataLoader()
         snapshot = loader.load(
-            "/Users/richiek/work/Spider2/spider2-snow/resource/databases/USA_NAMES",
+            SPIDER2_ROOT + "/spider2-snow/resource/databases/USA_NAMES",
             db_id="USA_NAMES",
         )
         generator = SpiderSnowSQLGenerator()
@@ -70,10 +81,10 @@ class SpiderSnowTests(unittest.TestCase):
         self.assertIn('"gender" = \'F\'', sql)
 
     def test_world_enrichment_adds_documents(self):
-        workspace = SpiderSnowWorkspace("/Users/richiek/work/Spider2")
+        workspace = SpiderSnowWorkspace(SPIDER2_ROOT)
         loader = SpiderSnowflakeMetadataLoader()
         snapshot = loader.load(
-            "/Users/richiek/work/Spider2/spider2-snow/resource/databases/USA_NAMES",
+            SPIDER2_ROOT + "/spider2-snow/resource/databases/USA_NAMES",
             db_id="USA_NAMES",
         )
         world = snapshot_to_world_model(snapshot)
@@ -89,7 +100,7 @@ class SpiderSnowTests(unittest.TestCase):
     def test_tcga_domain_plan_prefers_copy_number_and_cytobands(self):
         loader = SpiderSnowflakeMetadataLoader()
         snapshot = loader.load(
-            "/Users/richiek/work/Spider2/spider2-snow/resource/databases/TCGA_MITELMAN",
+            SPIDER2_ROOT + "/spider2-snow/resource/databases/TCGA_MITELMAN",
             db_id="TCGA_MITELMAN",
         )
         query = (
@@ -107,7 +118,7 @@ class SpiderSnowTests(unittest.TestCase):
     def test_tcga_domain_plan_merges_into_constraints(self):
         loader = SpiderSnowflakeMetadataLoader()
         snapshot = loader.load(
-            "/Users/richiek/work/Spider2/spider2-snow/resource/databases/TCGA_MITELMAN",
+            SPIDER2_ROOT + "/spider2-snow/resource/databases/TCGA_MITELMAN",
             db_id="TCGA_MITELMAN",
         )
         planning_result = {
@@ -133,7 +144,7 @@ class SpiderSnowTests(unittest.TestCase):
     def test_generator_builds_tcga_overlap_query(self):
         loader = SpiderSnowflakeMetadataLoader()
         snapshot = loader.load(
-            "/Users/richiek/work/Spider2/spider2-snow/resource/databases/TCGA_MITELMAN",
+            SPIDER2_ROOT + "/spider2-snow/resource/databases/TCGA_MITELMAN",
             db_id="TCGA_MITELMAN",
         )
         generator = SpiderSnowSQLGenerator()
@@ -154,7 +165,7 @@ class SpiderSnowTests(unittest.TestCase):
     def test_generator_builds_tcga_ranked_cytoband_query(self):
         loader = SpiderSnowflakeMetadataLoader()
         snapshot = loader.load(
-            "/Users/richiek/work/Spider2/spider2-snow/resource/databases/TCGA_MITELMAN",
+            SPIDER2_ROOT + "/spider2-snow/resource/databases/TCGA_MITELMAN",
             db_id="TCGA_MITELMAN",
         )
         generator = SpiderSnowSQLGenerator()
@@ -175,7 +186,7 @@ class SpiderSnowTests(unittest.TestCase):
     def test_generator_rejects_unsupported_task_instead_of_select_star_fallback(self):
         loader = SpiderSnowflakeMetadataLoader()
         snapshot = loader.load(
-            "/Users/richiek/work/Spider2/spider2-snow/resource/databases/USA_NAMES",
+            SPIDER2_ROOT + "/spider2-snow/resource/databases/USA_NAMES",
             db_id="USA_NAMES",
         )
         generator = SpiderSnowSQLGenerator()

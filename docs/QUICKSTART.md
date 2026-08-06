@@ -31,7 +31,7 @@ Note:
 
 - these quick-start demos use **structured control mode**
 - they do **not** require the native ScalarLM backend
-- native coprocessor mode is documented in [Integration Levels](/Users/richiek/work/bender/docs/INTEGRATION_LEVELS.md)
+- native coprocessor mode is documented in [Integration Levels](docs/INTEGRATION_LEVELS.md)
 
 ## Run A Knowledge-Heavy Demo
 
@@ -48,7 +48,6 @@ PYTHONPATH=src python examples/mass_spec_demo.py --mode spectrum --case-id demo_
 ## Run Tests
 
 ```bash
-pytest tests/test_bio.py tests/test_mass_spec.py tests/test_bird.py tests/test_hello_world_pipeline.py -q
 ```
 
 ## Repo Layout
