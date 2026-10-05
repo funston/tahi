@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from octo import (
+from tahi import (
     SpiderLiteSQLiteDatabaseLoader,
     SpiderLiteSQLiteMetadataLoader,
     SpiderLiteWorkspace,

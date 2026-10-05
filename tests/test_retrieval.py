@@ -2,13 +2,12 @@ import os
 import sys
 import unittest
 
-
 ROOT = os.path.dirname(os.path.dirname(__file__))
 SRC = os.path.join(ROOT, "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from octo.world_state import WorldModel
+from tahi.world_state import WorldModel
 
 
 class RetrievalTests(unittest.TestCase):
@@ -47,3 +46,26 @@ class RetrievalTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_embedding_text_falls_back_to_text_when_no_summary():
+    """A node with `text` and no `summary` must index on its content.
+
+    It previously indexed on its label alone, so a document store built the
+    obvious way retrieved on identifiers rather than content -- no error, no
+    warning, just uniformly wrong neighbours.
+    """
+    from tahi.world_state import WorldModel
+
+    wm = WorldModel(use_ann=False)
+    wm.upsert_node("fact::0", label="fact::0", text="Kismet was directed by William Dieterle.")
+    assert "William Dieterle" in wm.embedding_text("fact::0")
+
+
+def test_embedding_text_prefers_summary_when_both_present():
+    """Existing callers that set both keep byte-identical behaviour."""
+    from tahi.world_state import WorldModel
+
+    wm = WorldModel(use_ann=False)
+    wm.upsert_node("doc::1", label="doc::1", summary="short form", text="the very long form")
+    assert wm.embedding_text("doc::1") == "doc::1 short form"

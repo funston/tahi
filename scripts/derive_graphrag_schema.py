@@ -103,7 +103,8 @@ def main() -> int:
     print(f"questions whose evidence names 'the ontology': {mentions_ontology}\n")
 
     kept = [(k, c) for k, c in kinds.most_common() if c >= args.min_count]
-    print(f"{'NODE KIND (mined from \"<Kind> includes\")':<38}{'count':>7}")
+    header = 'NODE KIND (mined from "<Kind> includes")'
+    print(f"{header:<38}{'count':>7}")
     print("-" * 46)
     for k, c in kept:
         print(f"{k:<38}{c:>7}")

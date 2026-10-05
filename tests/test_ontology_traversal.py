@@ -1,5 +1,5 @@
 """
-Demonstrable Integration Test: Typed Ontology Traversal in OCTO.
+Demonstrable Integration Test: Typed Ontology Traversal in TAHI.
 
 Verifies that:
 1. OntologySchema validates node types and relation triples.
@@ -8,8 +8,9 @@ Verifies that:
 """
 
 import unittest
-from octo.graph.ontology import OntologySchema, get_default_enterprise_rag_ontology
-from octo.world_state import WorldModel
+
+from tahi.graph.ontology import get_default_enterprise_rag_ontology
+from tahi.world_state import WorldModel
 
 
 class TestOntologyTraversal(unittest.TestCase):
@@ -19,7 +20,7 @@ class TestOntologyTraversal(unittest.TestCase):
     def test_ontology_schema_validation(self):
         self.assertTrue(self.ontology.validate_node("n1", {"type": "document"}))
         self.assertTrue(self.ontology.validate_node("n2", {"type": "project"}))
-        
+
         # Valid triples
         self.assertTrue(self.ontology.validate_relation("document", "MENTIONS", "entity"))
         self.assertTrue(self.ontology.validate_relation("project", "HAS_DOC", "document"))

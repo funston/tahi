@@ -18,8 +18,10 @@ import unittest
 import numpy as np
 import torch
 
-from octo.native.memory_store import (
-    MemoryStore, MemoryStoreError, encode_texts, load_memory_store,
+from tahi.native.memory_store import (
+    MemoryStoreError,
+    encode_texts,
+    load_memory_store,
     save_memory_store,
 )
 

@@ -1,4 +1,4 @@
-"""EnterpriseRAG-Bench adapter for OCTO evaluation."""
+"""EnterpriseRAG-Bench adapter for TAHI evaluation."""
 
 from .dataset import (
     CATEGORY_COUNTS,

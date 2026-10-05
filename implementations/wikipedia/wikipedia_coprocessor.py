@@ -1,7 +1,7 @@
 """
 wikipedia_coprocessor.py
 
-A BENDER world coprocessor for Wikipedia multi-hop QA.
+A TAHI world coprocessor for Wikipedia multi-hop QA.
 
 It combines:
   - semantic retrieval over pages/chunks (vector index)
@@ -18,12 +18,12 @@ import re
 from collections import deque
 from typing import Any, Optional
 
-from octo.adapter import WrappedLLM, wrap_llm
-from octo.integration import BlackBoxIntegration, ModelIntegration
-from octo.models import CognitiveState, EntityRef, Hypothesis
-from octo.planner import Planner
-from octo.rules import RuleEngine
-from octo.world_state import WorldModel
+from tahi.adapter import WrappedLLM, wrap_llm
+from tahi.integration import BlackBoxIntegration, ModelIntegration
+from tahi.models import CognitiveState, EntityRef, Hypothesis
+from tahi.planner import Planner
+from tahi.rules import RuleEngine
+from tahi.world_state import WorldModel
 
 
 # ---------------------------------------------------------------------------
@@ -265,7 +265,7 @@ class WikipediaRuleEngine(RuleEngine):
 # ---------------------------------------------------------------------------
 
 class WikipediaCoprocessor:
-    """End-to-end BENDER coprocessor for Wikipedia multi-hop QA."""
+    """End-to-end TAHI coprocessor for Wikipedia multi-hop QA."""
 
     def __init__(self, model: WrappedLLM, world_model: WorldModel):
         self.model = model

@@ -1,4 +1,4 @@
-# OCTO — Investment Recommendation & Exact Next Steps
+# TAHI — Investment Recommendation & Exact Next Steps
 
 **Date:** 2026-08-03
 **Question addressed:** Is this project worth further investment, and if so, what exactly happens next?
@@ -32,9 +32,9 @@ The measurement apparatus also killed its own most attractive result: the n=20 p
 
 ## 3. Why the L3 null is not yet a verdict on the architecture
 
-Comparing OCTO's Level 3 against the RETRO-v2 specification in `RAG with ANN.txt` — which shares the same core mechanism — reveals that OCTO implemented the **gating skeleton** and none of the **training regime** that makes it work:
+Comparing TAHI's Level 3 against the RETRO-v2 specification in `RAG with ANN.txt` — which shares the same core mechanism — reveals that TAHI implemented the **gating skeleton** and none of the **training regime** that makes it work:
 
-| Ingredient | RETRO-v2 spec | OCTO as run |
+| Ingredient | RETRO-v2 spec | TAHI as run |
 |---|---|---|
 | Alignment examples | 100,000 triplets; 1B–5B tokens | **350 examples** |
 | Salient Span Masking | REALM-style: mask entities/dates so the gate *must* open | **absent** |
@@ -56,7 +56,7 @@ Compounding this: `supporting_fact_recall` is **0.0395**, so the memory tensor h
 
 Unlike L3, graph retrieval *has* had a fair test. The additive-support fix removed the arithmetic barrier that made expansion impossible — and results still did not improve:
 
-| Family | n | Vector RAG | OCTO Graph |
+| Family | n | Vector RAG | TAHI Graph |
 |---|---:|---:|---:|
 | **Overall** | 50 | **0.5744** | **0.5220** |
 | Negation | 15 | 0.6227 | 0.4987 |
@@ -117,7 +117,7 @@ If α will not open with oracle memory, salient span masking, and 10× the data,
 
 ### Parallel track — the methods paper (independent of all the above)
 
-Roughly 80% earned already, needs no GPU, no corpus, and does not depend on whether OCTO works:
+Roughly 80% earned already, needs no GPU, no corpus, and does not depend on whether TAHI works:
 
 - The identity-control protocol (α=0 reproduces base token-for-token, 0 mismatches)
 - The length-control result that killed the project's own headline

@@ -1,4 +1,4 @@
-# Training dependencies for OCTO specialist coprocessors
+# Training dependencies for TAHI specialist coprocessors
 # Install on DGX with: pip install -r requirements-train.txt
 
 torch>=2.5.0

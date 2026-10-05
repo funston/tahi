@@ -1,4 +1,4 @@
-""" Wikipedia multi-hop QA world coprocessor for BENDER."""
+""" Wikipedia multi-hop QA world coprocessor for TAHI."""
 
 from .wikipedia_coprocessor import (
     WikipediaCoprocessor,

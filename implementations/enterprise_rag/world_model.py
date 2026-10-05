@@ -1,7 +1,7 @@
 """
-Build an OCTO WorldModel from the EnterpriseRAG-Bench corpus.
+Build an TAHI WorldModel from the EnterpriseRAG-Bench corpus.
 
-This is where OCTO either earns its keep or does not. `StandaloneRAG` sees the
+This is where TAHI either earns its keep or does not. `StandaloneRAG` sees the
 same documents as a flat list of text chunks. The world model additionally
 carries typed relations lifted from source metadata:
 
@@ -13,7 +13,7 @@ carries typed relations lifted from source metadata:
     doc --about--------> company     (HubSpot deals)
 
 Nothing here is hand-curated. Every edge comes from a structured field that the
-source system already populated, which is the practical answer to OCTO's main
+source system already populated, which is the practical answer to TAHI's main
 scaling objection: for enterprise systems of record, the ontology is a byproduct
 of the data, not a consulting engagement.
 
@@ -28,7 +28,7 @@ import re
 from collections import Counter
 from typing import Iterable
 
-from octo.world_state import WorldModel
+from tahi.world_state import WorldModel
 
 from .dataset import EnterpriseDocument
 
@@ -175,7 +175,7 @@ def graph_health(stats: dict[str, int]) -> list[str]:
     if edges == 0:
         problems.append(
             "The world model has ZERO relation edges -- it is a vector index with "
-            "extra steps. Any OCTO-vs-RAG null result here says nothing about the "
+            "extra steps. Any TAHI-vs-RAG null result here says nothing about the "
             "structural thesis. Check that corpus metadata is being parsed."
         )
     elif edges / docs < 0.5:

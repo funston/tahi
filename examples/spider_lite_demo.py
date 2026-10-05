@@ -1,6 +1,6 @@
-"""Real-world Spider 2.0 Lite table-recall evaluation for OCTO.
+"""Real-world Spider 2.0 Lite table-recall evaluation for TAHI.
 
-This script evaluates OCTO's SQL schema coprocessor on the 135 SQLite
+This script evaluates TAHI's SQL schema coprocessor on the 135 SQLite
 (local*) tasks from the Spider 2.0 Lite benchmark. It reports table
 recall: the fraction of gold-relevant tables that appear in the
 coprocessor's top-k candidate table list. No LLM calls are made; the
@@ -39,8 +39,8 @@ from implementations.spider.spider_lite import (
     SpiderLiteBenchmarkAdapter,
     enrich_world_with_spider_sqlite_metadata,
 )
-from octo.database import snapshot_to_world_model
-from octo.world_state import WorldModel
+from tahi.database import snapshot_to_world_model
+from tahi.world_state import WorldModel
 
 
 def load_local_tasks_with_gold(
@@ -108,7 +108,7 @@ def build_db_assets(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Spider 2.0 Lite OCTO table-recall demo")
+    parser = argparse.ArgumentParser(description="Spider 2.0 Lite TAHI table-recall demo")
     parser.add_argument(
         "--spider2-root",
         type=Path,
@@ -218,7 +218,7 @@ def main() -> None:
 
     if args.output:
         payload = {
-            "octo": results,
+            "tahi": results,
             "baseline": baseline_results,
             "top_k": args.top_k,
         }

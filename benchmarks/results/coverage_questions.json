@@ -1,0 +1,162 @@
+[
+  {
+    "qid": "q000",
+    "subject_id": "Compound::DB00336",
+    "subject": "Nitrofural",
+    "metaedge": "CdG",
+    "relation": "downregulates",
+    "question": "List every gene that the compound Nitrofural downregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q001",
+    "subject_id": "Compound::DB00908",
+    "subject": "Quinidine",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "List every gene that the compound Quinidine binds. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q002",
+    "subject_id": "Compound::DB00499",
+    "subject": "Flutamide",
+    "metaedge": "CdG",
+    "relation": "downregulates",
+    "question": "List every gene that the compound Flutamide downregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q003",
+    "subject_id": "Compound::DB01039",
+    "subject": "Fenofibrate",
+    "metaedge": "CuG",
+    "relation": "upregulates",
+    "question": "List every gene that the compound Fenofibrate upregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q004",
+    "subject_id": "Compound::DB00188",
+    "subject": "Bortezomib",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "List every gene that the compound Bortezomib binds. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q005",
+    "subject_id": "Compound::DB00153",
+    "subject": "Ergocalciferol",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "List every gene that the compound Ergocalciferol binds. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q006",
+    "subject_id": "Compound::DB01130",
+    "subject": "Prednicarbate",
+    "metaedge": "CuG",
+    "relation": "upregulates",
+    "question": "List every gene that the compound Prednicarbate upregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q007",
+    "subject_id": "Compound::DB00136",
+    "subject": "Calcitriol",
+    "metaedge": "CdG",
+    "relation": "downregulates",
+    "question": "List every gene that the compound Calcitriol downregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q008",
+    "subject_id": "Compound::DB01175",
+    "subject": "Escitalopram",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "List every gene that the compound Escitalopram binds. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q009",
+    "subject_id": "Compound::DB01174",
+    "subject": "Phenobarbital",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "List every gene that the compound Phenobarbital binds. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q010",
+    "subject_id": "Compound::DB01394",
+    "subject": "Colchicine",
+    "metaedge": "CdG",
+    "relation": "downregulates",
+    "question": "List every gene that the compound Colchicine downregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q011",
+    "subject_id": "Compound::DB00903",
+    "subject": "Ethacrynic acid",
+    "metaedge": "CuG",
+    "relation": "upregulates",
+    "question": "List every gene that the compound Ethacrynic acid upregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q012",
+    "subject_id": "Compound::DB00531",
+    "subject": "Cyclophosphamide",
+    "metaedge": "CdG",
+    "relation": "downregulates",
+    "question": "List every gene that the compound Cyclophosphamide downregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q013",
+    "subject_id": "Compound::DB06589",
+    "subject": "Pazopanib",
+    "metaedge": "CuG",
+    "relation": "upregulates",
+    "question": "List every gene that the compound Pazopanib upregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q014",
+    "subject_id": "Compound::DB00864",
+    "subject": "Tacrolimus",
+    "metaedge": "CuG",
+    "relation": "upregulates",
+    "question": "List every gene that the compound Tacrolimus upregulates. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q015",
+    "subject_id": "Disease::DOID:12365",
+    "subject": "malaria",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "List every gene associated with the disease malaria. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q016",
+    "subject_id": "Disease::DOID:5408",
+    "subject": "Paget's disease of bone",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "List every gene associated with the disease Paget's disease of bone. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q017",
+    "subject_id": "Disease::DOID:1094",
+    "subject": "attention deficit hyperactivity disorder",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "List every gene associated with the disease attention deficit hyperactivity disorder. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q018",
+    "subject_id": "Disease::DOID:11555",
+    "subject": "Fuchs' endothelial dystrophy",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "List every gene associated with the disease Fuchs' endothelial dystrophy. Answer with gene symbols separated by commas, nothing else."
+  },
+  {
+    "qid": "q019",
+    "subject_id": "Disease::DOID:13189",
+    "subject": "gout",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "List every gene associated with the disease gout. Answer with gene symbols separated by commas, nothing else."
+  }
+]

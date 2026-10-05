@@ -32,7 +32,7 @@ for p in (str(ROOT), str(ROOT / "src")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from octo.validate.linker import EntityLinker  # noqa: E402
+from tahi.validate.linker import EntityLinker  # noqa: E402
 
 
 def swap(s, rng):

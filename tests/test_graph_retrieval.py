@@ -1,7 +1,7 @@
 """
 RED tests for graph-aware retrieval.
 
-These encode the behaviour `WorldModel.retrieve` must have for OCTO to be
+These encode the behaviour `WorldModel.retrieve` must have for TAHI to be
 anything other than dense retrieval over a polluted index. They are written to
 FAIL against the current implementation; each one names the defect it pins.
 
@@ -12,7 +12,7 @@ Current defects, both confirmed on the 511,962-document EnterpriseRAG-Bench run:
       candidates, so "graph retrieval" was vector search wearing a hat.
 
   D2  Entity nodes share the document index. 107,467 `space::`/`person::`/
-      `ticket::` nodes competed with documents for top-k slots, so OCTO's
+      `ticket::` nodes competed with documents for top-k slots, so TAHI's
       effective document budget was smaller than the baseline's at the same k.
       Measured effect: doc_recall 0.408 -> 0.331 against plain dense retrieval.
 
@@ -31,7 +31,7 @@ for p in (ROOT, os.path.join(ROOT, "src")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from octo.world_state import WorldModel  # noqa: E402
+from tahi.world_state import WorldModel  # noqa: E402
 
 QUERY = "What is the rollout date for Project Halcyon?"
 

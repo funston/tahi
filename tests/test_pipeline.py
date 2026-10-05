@@ -2,13 +2,12 @@ import os
 import sys
 import unittest
 
-
 ROOT = os.path.dirname(os.path.dirname(__file__))
 SRC = os.path.join(ROOT, "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from octo import BlackBoxIntegration, NativeIntegration, WorldModel, wrap_llm
+from tahi import BlackBoxIntegration, NativeIntegration, WorldModel, wrap_llm
 
 
 def build_world_model() -> WorldModel:

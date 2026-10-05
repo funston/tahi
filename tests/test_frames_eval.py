@@ -1,4 +1,4 @@
-"""Tests for the OCTO FRAMES evaluation."""
+"""Tests for the TAHI FRAMES evaluation."""
 
 from implementations.frames import evaluate_frames, load_frames_sample
 from implementations.frames.frames_eval import FramesCoprocessor
@@ -33,6 +33,6 @@ def test_retrieval_returns_evidence():
 def test_evaluate_frames_runs():
     report = evaluate_frames(max_samples=2)
     assert "rag" in report
-    assert "octo" in report
+    assert "tahi" in report
     assert "delta" in report
     assert report["rag"]["total"] == 2

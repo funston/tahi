@@ -2,7 +2,7 @@
 """
 build-world-model.py
 
-Standalone pipeline to build a hybrid BENDER world model from a document corpus.
+Standalone pipeline to build a hybrid TAHI world model from a document corpus.
 
 A hybrid world model contains:
   - a knowledge-graph layer (entities, relations, document structure)
@@ -21,7 +21,7 @@ Input JSONL format (one document per line):
 The pipeline will:
   1. Parse documents into pages / sections.
   2. Extract entities and internal/semantic relations.
-  3. Build a BENDER WorldModel graph.
+  3. Build a TAHI WorldModel graph.
   4. Encode pages/sections into embeddings.
   5. Attach a FaissIndex (or InMemoryGraphIndex) to the world model.
   6. Save the result (WorldModelStore or raw JSON).
@@ -35,11 +35,10 @@ import argparse
 import gzip
 import json
 import re
-from collections import defaultdict
-from pathlib import Path
-from typing import Any, Iterable
-
 import sys
+from collections.abc import Iterable
+from pathlib import Path
+from typing import Any
 
 # Ensure src/ is importable when running the script directly.
 ROOT = Path(__file__).resolve().parent.parent
@@ -47,11 +46,10 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from octo.retrieval import get_encoder
-from octo.retrieval.ann import FaissIndex
-from octo.world_model_store import WorldModelStore
-from octo.world_state import WorldModel
-
+from tahi.retrieval import get_encoder
+from tahi.retrieval.ann import FaissIndex
+from tahi.world_model_store import WorldModelStore
+from tahi.world_state import WorldModel
 
 # ---------------------------------------------------------------------------
 # Tokenization / chunking helpers
@@ -277,7 +275,7 @@ class HybridWorldModelBuilder:
             world_model._encoder = self.encoder
 
         # also attach an in-memory graph index as fallback
-        from octo.retrieval import InMemoryGraphIndex
+        from tahi.retrieval import InMemoryGraphIndex
 
         records = [(node_id, texts[i], metadata[i]) for i, node_id in enumerate(node_ids)]
         world_model._index = InMemoryGraphIndex.from_records(records)
@@ -309,7 +307,7 @@ def load_documents(path: str) -> Iterable[dict[str, Any]]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build a hybrid BENDER world model.")
+    parser = argparse.ArgumentParser(description="Build a hybrid TAHI world model.")
     parser.add_argument("--input", required=True, help="Path to input documents (.jsonl, .json, or .jsonl.gz).")
     parser.add_argument("--output", required=True, help="Output path for world model (.json, .json.gz, or directory for WorldModelStore).")
     parser.add_argument("--domain", default="generic", help="Domain tag for the world model.")

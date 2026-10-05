@@ -21,7 +21,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--spider2-root", required=True)
     parser.add_argument("--snapshot-manifest", required=True)
-    parser.add_argument("--world-cache-index", help="Optional world cache index JSON for prebuilt BENDER worlds.")
+    parser.add_argument("--world-cache-index", help="Optional world cache index JSON for prebuilt TAHI worlds.")
     parser.add_argument("--tasks", help="Optional JSON/JSONL task file. Defaults to official spider2-lite.jsonl.")
     parser.add_argument(
         "--use-oracle-tables",

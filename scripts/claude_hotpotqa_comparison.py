@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
-Simple HotpotQA comparison: BENDER vs Iterative RAG
+Simple HotpotQA comparison: TAHI vs Iterative RAG
 Proves that graph traversal beats iterative retrieval for multi-hop questions.
 
 Run from project root:
     python scripts/claude_hotpotqa_comparison.py
 """
 
-import json
 import sys
 from pathlib import Path
 
@@ -16,8 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'src'))
 sys.path.insert(0, str(ROOT))
 
-from octo.world_state import WorldModel
-from implementations.wikipedia import WikipediaCoprocessor
+from tahi.world_state import WorldModel
 
 
 def build_simple_wikipedia_world():
@@ -148,8 +146,8 @@ def iterative_rag(question, world_model, max_iterations=3):
     return all_retrievals[-1].label if all_retrievals else None, [r.label for r in all_retrievals]
 
 
-def octo_graph_traversal(question, world_model):
-    """BENDER: Use graph structure to find multi-hop answers."""
+def tahi_graph_traversal(question, world_model):
+    """TAHI: Use graph structure to find multi-hop answers."""
     # First, get seed entities through retrieval
     retrievals = world_model.retrieve(question, top_k=2)
 
@@ -173,7 +171,7 @@ def octo_graph_traversal(question, world_model):
     for _ in range(2):  # Max 2 hops
         # Get edges from current node
         edges_found = False
-        for src, rel, dst, attrs in world_model.edges:
+        for src, _rel, dst, _attrs in world_model.edges:
             if src == current:
                 # Move to destination
                 current = dst
@@ -192,10 +190,10 @@ def octo_graph_traversal(question, world_model):
 
 
 def run_comparison():
-    """Compare BENDER vs Iterative RAG on multi-hop questions."""
+    """Compare TAHI vs Iterative RAG on multi-hop questions."""
 
     print("=" * 60)
-    print("BENDER vs Iterative RAG Comparison")
+    print("TAHI vs Iterative RAG Comparison")
     print("=" * 60)
 
     # Build world model
@@ -212,7 +210,7 @@ def run_comparison():
 
     results = {
         'iterative_rag': {'correct': 0, 'total': 0},
-        'octo': {'correct': 0, 'total': 0}
+        'tahi': {'correct': 0, 'total': 0}
     }
 
     for question, gold_answer in questions:
@@ -222,7 +220,7 @@ def run_comparison():
 
         # Test Iterative RAG
         rag_answer, rag_path = iterative_rag(question, world)
-        print(f"Iterative RAG:")
+        print("Iterative RAG:")
         print(f"  Path: {' → '.join(rag_path)}")
         print(f"  Answer: {rag_answer}")
         rag_correct = rag_answer == gold_answer
@@ -231,16 +229,16 @@ def run_comparison():
         if rag_correct:
             results['iterative_rag']['correct'] += 1
 
-        # Test BENDER
-        octo_answer, octo_path = octo_graph_traversal(question, world)
-        print(f"BENDER:")
-        print(f"  Path: {' → '.join(octo_path)}")
-        print(f"  Answer: {octo_answer}")
-        octo_correct = octo_answer == gold_answer
-        print(f"  Correct: {'✅' if octo_correct else '❌'}")
-        results['octo']['total'] += 1
-        if octo_correct:
-            results['octo']['correct'] += 1
+        # Test TAHI
+        tahi_answer, tahi_path = tahi_graph_traversal(question, world)
+        print("TAHI:")
+        print(f"  Path: {' → '.join(tahi_path)}")
+        print(f"  Answer: {tahi_answer}")
+        tahi_correct = tahi_answer == gold_answer
+        print(f"  Correct: {'✅' if tahi_correct else '❌'}")
+        results['tahi']['total'] += 1
+        if tahi_correct:
+            results['tahi']['correct'] += 1
 
     # Summary
     print("\n" + "=" * 60)
@@ -248,16 +246,16 @@ def run_comparison():
     print("=" * 60)
 
     rag_acc = results['iterative_rag']['correct'] / results['iterative_rag']['total']
-    octo_acc = results['octo']['correct'] / results['octo']['total']
+    tahi_acc = results['tahi']['correct'] / results['tahi']['total']
 
     print(f"Iterative RAG: {results['iterative_rag']['correct']}/{results['iterative_rag']['total']} = {rag_acc:.0%}")
-    print(f"BENDER:        {results['octo']['correct']}/{results['octo']['total']} = {octo_acc:.0%}")
+    print(f"TAHI:        {results['tahi']['correct']}/{results['tahi']['total']} = {tahi_acc:.0%}")
 
-    if octo_acc > rag_acc:
-        print("\n✅ BENDER WINS!")
+    if tahi_acc > rag_acc:
+        print("\n✅ TAHI WINS!")
         print("   Graph traversal beats iterative RAG for multi-hop reasoning.")
         print("   Key advantage: Structured paths vs. unstructured retrieval loops.")
-    elif octo_acc == rag_acc:
+    elif tahi_acc == rag_acc:
         print("\n⚠️ TIE - Need more complex examples")
     else:
         print("\n❌ Iterative RAG wins - investigate why")

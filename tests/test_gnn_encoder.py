@@ -9,13 +9,14 @@ Verifies that:
 """
 
 import unittest
+
 import torch
 
-from octo.graph.gnn_encoder import RelationalGraphAttentionLayer, SubgraphRGATEncoder
-from octo.models import CognitiveState, RetrievedMemory
-from octo.native.gcca_layer import GatedChunkedCrossAttention
-from octo.native.memory import build_memory_tensor, memory_is_informative
-from octo.world_state import WorldModel
+from tahi.graph.gnn_encoder import SubgraphRGATEncoder
+from tahi.models import CognitiveState, RetrievedMemory
+from tahi.native.gcca_layer import GatedChunkedCrossAttention
+from tahi.native.memory import build_memory_tensor, memory_is_informative
+from tahi.world_state import WorldModel
 
 
 class TestGNNEncoder(unittest.TestCase):

@@ -1,5 +1,5 @@
 """
-MuSiQue multi-hop evaluation for OCTO.
+MuSiQue multi-hop evaluation for TAHI.
 
 MuSiQue is a harder multi-hop QA benchmark. Because the full dataset is not on
 HuggingFace, this module ships with a small sample and supports loading a local
@@ -7,7 +7,7 @@ JSON file in MuSiQue format.
 
 Comparison:
   - RAG baseline: vector retrieval over paragraphs
-  - OCTO: vector retrieval + graph edges between paragraphs
+  - TAHI: vector retrieval + graph edges between paragraphs
 """
 
 from __future__ import annotations
@@ -18,9 +18,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from octo.baseline_rag import RAGDocument, StandaloneRAG
-from octo.llm_client import LLMClient
-from octo.world_state import WorldModel
+from tahi.baseline_rag import RAGDocument, StandaloneRAG
+from tahi.llm_client import LLMClient
+from tahi.world_state import WorldModel
 
 
 @dataclass
@@ -169,7 +169,7 @@ Answer:"""
 
 
 def _coprocessor_documents(coprocessor: MusiqueCoprocessor) -> list[RAGDocument]:
-    """Extract raw text documents from the OCTO world model for the RAG baseline."""
+    """Extract raw text documents from the TAHI world model for the RAG baseline."""
     documents: list[RAGDocument] = []
     for node_id, node in coprocessor.world_model.nodes.items():
         text = node.get("text", "")
@@ -219,9 +219,9 @@ def evaluate_musique(
     llm_client = llm_client or LLMClient.from_env()
 
     rag_correct = 0
-    octo_correct = 0
+    tahi_correct = 0
     rag_recall = 0
-    octo_recall = 0
+    tahi_recall = 0
     total = 0
     results: list[dict[str, Any]] = []
 
@@ -238,7 +238,7 @@ def evaluate_musique(
         rag.build_index()
 
         rag_answer, _rag_model, rag_retrievals = rag.answer(question.text)
-        octo_packet = coprocessor.answer()
+        tahi_packet = coprocessor.answer()
 
         rag_evidence = [
             {
@@ -249,14 +249,14 @@ def evaluate_musique(
         ]
 
         rag_ok = _score(rag_answer, question.answer)
-        octo_ok = _score(octo_packet.answer, question.answer)
+        tahi_ok = _score(tahi_packet.answer, question.answer)
         rag_rec = _retrieval_recall(question.answer, rag_evidence)
-        octo_rec = _retrieval_recall(question.answer, octo_packet.evidence)
+        tahi_rec = _retrieval_recall(question.answer, tahi_packet.evidence)
 
         rag_correct += int(rag_ok)
-        octo_correct += int(octo_ok)
+        tahi_correct += int(tahi_ok)
         rag_recall += int(rag_rec)
-        octo_recall += int(octo_rec)
+        tahi_recall += int(tahi_rec)
         total += 1
 
         results.append(
@@ -265,11 +265,11 @@ def evaluate_musique(
                 "question": question.text,
                 "expected": question.answer,
                 "rag_answer": rag_answer,
-                "octo_answer": octo_packet.answer,
+                "tahi_answer": tahi_packet.answer,
                 "rag_correct": rag_ok,
-                "octo_correct": octo_ok,
+                "tahi_correct": tahi_ok,
                 "rag_retrieval_recall": rag_rec,
-                "octo_retrieval_recall": octo_rec,
+                "tahi_retrieval_recall": tahi_rec,
             }
         )
 
@@ -281,13 +281,13 @@ def evaluate_musique(
             "retrieval_correct": rag_recall,
             "retrieval_recall": rag_recall / total if total else 0.0,
         },
-        "octo": {
-            "correct": octo_correct,
+        "tahi": {
+            "correct": tahi_correct,
             "total": total,
-            "accuracy": octo_correct / total if total else 0.0,
-            "retrieval_correct": octo_recall,
-            "retrieval_recall": octo_recall / total if total else 0.0,
+            "accuracy": tahi_correct / total if total else 0.0,
+            "retrieval_correct": tahi_recall,
+            "retrieval_recall": tahi_recall / total if total else 0.0,
         },
-        "delta": (octo_correct / total if total else 0.0) - (rag_correct / total if total else 0.0),
+        "delta": (tahi_correct / total if total else 0.0) - (rag_correct / total if total else 0.0),
         "results": results,
     }

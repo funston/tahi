@@ -35,7 +35,7 @@ for p in (str(ROOT), str(ROOT / "src")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from octo.graph.metaqa_graph import MetaQAGraph  # noqa: E402
+from tahi.graph.metaqa_graph import MetaQAGraph  # noqa: E402
 
 
 def levels(g: MetaQAGraph, start: str, max_hops: int,

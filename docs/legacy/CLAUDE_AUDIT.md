@@ -132,8 +132,8 @@ mean degree 2.41 · median degree 1 · max 119
    377 nodes have five or more
 ```
 
-OCTO's claim is that an answer is reached by following a chain of facts. **69% of nodes are dead
-ends.** Whatever Step 3 reports, the `octo_graph` arm has very little structure to exploit — and a
+TAHI's claim is that an answer is reached by following a chain of facts. **69% of nodes are dead
+ends.** Whatever Step 3 reports, the `tahi_graph` arm has very little structure to exploit — and a
 loss would be uninterpretable, indistinguishable from "the thesis is wrong."
 
 `GATE1_SPEC.md` §2.2 specifies exactly the instrument for this:
@@ -185,7 +185,7 @@ effect for the chosen n.**
 |---|---|
 | Header | *"Status: spec, not implemented"* — it is built, run, and $0.2758 spent |
 | §1.2 | *"What `build_corpus_graph.py` does today, and why it is wrong"* describes the pre-fix version; reads as a live defect list but is history |
-| §7 vs Appendix B | **Direct contradiction.** §7: ReasonEmbed enhancements *"are incorporated into OCTO's roadmap"* with concrete protocols. Appendix B: *"PARKED. Not in scope for Gate 1… it is not a work item."* |
+| §7 vs Appendix B | **Direct contradiction.** §7: ReasonEmbed enhancements *"are incorporated into TAHI's roadmap"* with concrete protocols. Appendix B: *"PARKED. Not in scope for Gate 1… it is not a work item."* |
 | §7.3 vs B.0 | §7.3 defines reasoning intensity as a **difference** of losses; B.0 and the source paper define it as a **ratio** |
 | §7 style | Different voice and LaTeX formatting from the rest of the document — appears pasted in from another source |
 | `manifest.json` | `num_edges: 5316` but `relation_distribution` sums to **5701** (Δ 385) — presumably pre- vs post-dedup, but unlabelled |

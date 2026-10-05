@@ -9,7 +9,7 @@ Linear, Google Drive, HubSpot, Fireflies, GitHub, Jira, Confluence) and 500
 questions in ten categories, with labelled gold document IDs.
 
 Why this benchmark rather than HotpotQA: several of its categories are direct
-tests of the structural claim OCTO makes, and flat vector similarity has no
+tests of the structural claim TAHI makes, and flat vector similarity has no
 mechanism for them.
 
     project_related    aggregate across documents linked by project  -> graph edges
@@ -33,7 +33,7 @@ KNOWN LIMITATIONS -- state these in any writeup:
     or results are not reproducible run to run.
   * 500 questions total, but per-category N is small (high_level=10,
     conflicting_info=20). Only `basic` (175) and `semantic` (125) support
-    per-category significance; see octo.eval.stats.required_n.
+    per-category significance; see tahi.eval.stats.required_n.
 """
 
 from __future__ import annotations
@@ -60,7 +60,7 @@ CATEGORY_COUNTS: dict[str, int] = {
     "high_level": 10,
 }
 
-# Categories where OCTO's structural thesis predicts an advantage over flat
+# Categories where TAHI's structural thesis predicts an advantage over flat
 # dense retrieval. Declared here, before any run, so the prediction is on record.
 STRUCTURE_SENSITIVE: frozenset[str] = frozenset({
     "project_related",
@@ -128,7 +128,7 @@ class EnterpriseDocument:
         here comes from the filesystem layout the source systems already
         imposed. That is the point: for enterprise systems of record the
         ontology is a byproduct of how the data is stored, not a consulting
-        engagement -- which is the direct test of OCTO's main scaling objection.
+        engagement -- which is the direct test of TAHI's main scaling objection.
         """
         semantics = {
             "slack": ("channel", "in_channel"),
@@ -260,7 +260,7 @@ def summarize(questions: list[EnterpriseQuestion]) -> dict[str, Any]:
     """Category breakdown plus a power warning for underpowered categories."""
     from collections import Counter
 
-    from octo.eval.stats import required_n
+    from tahi.eval.stats import required_n
 
     counts = Counter(q.category for q in questions)
     need = required_n(0.10)  # items to detect a 10-point delta at 95%/80%

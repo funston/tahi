@@ -37,3 +37,9 @@ snowflake_creds.json
 
 # macOS system files
 ._*
+
+# Large local data, model checkpoints, and env files holding API keys
+data/
+checkpoints/
+*.env
+.tahi-vllm.env

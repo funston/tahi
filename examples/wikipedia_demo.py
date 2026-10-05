@@ -24,7 +24,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from implementations.wikipedia import WikipediaCoprocessor
-from octo.world_state import WorldModel
+from tahi.world_state import WorldModel
 
 
 def build_tiny_wikipedia_world() -> WorldModel:

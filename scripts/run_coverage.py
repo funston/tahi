@@ -33,8 +33,8 @@ import argparse
 import csv
 import gzip
 import json
-import re
 import random
+import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -206,7 +206,7 @@ def main() -> int:
         subject = id_to_name[subject_id]
         gold_ids = by_subject[(subject_id, metaedge)]
         gold = sorted({id_to_name[g] for g in gold_ids if g in id_to_name})
-        gold_norm = {norm(g): g for g in gold}
+        {norm(g): g for g in gold}
 
         question = template.format(s=subject)
         answer = llm.ask(question)
@@ -274,7 +274,7 @@ def main() -> int:
         L.append(f"### {r['subject']} — {r['relation']} "
                  f"(`{r['subject_id']}`, `{r['metaedge']}`)\n")
         L.append(f"**Question:** {r['question']}\n")
-        L.append(f"**Model answered verbatim:**\n")
+        L.append("**Model answered verbatim:**\n")
         L.append("```")
         L.append(r["answer"][:1500] or "(empty)")
         L.append("```\n")

@@ -1,0 +1,49 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Inter, system-ui, sans-serif', 'fontSize': '15px', 'primaryColor': '#0d9488', 'primaryTextColor': '#ffffff', 'primaryBorderColor': '#115e59', 'lineColor': '#64748b', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#fff7ed' }}}%%
+flowchart TB
+    subgraph Enterprise["🏢 Enterprise Data"]
+        SF["☁️ Snowflake / Data Warehouse"]
+    end
+
+    subgraph Rel["🔗 RelationalAI"]
+        direction TB
+        SEM["Semantic Model"]
+        GR["Graph Reasoning"]
+        OPT["Optimization & Rules"]
+    end
+
+    subgraph Bend["🧠 Tahi"]
+        direction TB
+        RT["TahiRuntime"]
+        WM["World Model"]
+        CP["Control Packet"]
+    end
+
+    subgraph Generation["🤖 Generation"]
+        LLM["LLM"]
+        OUT["Answer + Provenance"]
+    end
+
+    SF -->|schema + data| SEM
+    SEM -->|enriched entities| WM
+    SEM -->|relational graph| GR
+    GR -->|constraints| OPT
+
+    Q["💬 User Query"] --> RT
+    RT --> WM
+    WM --> RT
+    RT --> CP
+    CP --> LLM
+    LLM --> OUT
+    OPT -.->|constraint signal| CP
+
+    classDef enterprise fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a,font-size:14px
+    classDef rel fill:#fff7ed,stroke:#f97316,stroke-width:2px,color:#7c2d12,font-size:14px
+    classDef tahi fill:#f0fdfa,stroke:#0d9488,stroke-width:3px,color:#134e4a,font-size:14px
+    classDef gen fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,color:#581c87,font-size:14px
+    classDef query fill:#e0e7ff,stroke:#4f46e5,stroke-width:2px,color:#312e81,font-size:14px
+
+    class SF enterprise
+    class SEM,GR,OPT rel
+    class RT,WM,CP tahi
+    class LLM,OUT gen
+    class Q query

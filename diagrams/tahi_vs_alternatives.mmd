@@ -1,0 +1,48 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Inter, system-ui, sans-serif', 'fontSize': '14px', 'primaryColor': '#0d9488', 'primaryTextColor': '#ffffff', 'primaryBorderColor': '#115e59', 'lineColor': '#64748b', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#fff7ed' }}}%%
+flowchart TB
+    subgraph Problem["🎯 Goal: Make LLMs know and obey domain knowledge"]
+        D["Domain Knowledge"]
+        LLM["General-Purpose LLM"]
+    end
+
+    subgraph FineTuning["❌ Fine-Tuning / LoRA"]
+        direction TB
+        D --> TR["Retrain / Adapt Weights"]
+        TR -->|weeks, $$$| LLM_FT["Specialized LLM"]
+        LLM_FT --> O_FT["Output"]
+    end
+
+    subgraph RAG["⚠️ RAG"]
+        direction TB
+        D --> DOC["Documents"]
+        DOC --> EMB["Embedding Index"]
+        Q_RAG["Query"] --> EMB
+        EMB --> TOP["Top-k Text Chunks"]
+        TOP --> PROMPT["Prompt"]
+        PROMPT --> LLM_RAG["LLM"]
+        LLM_RAG --> O_RAG["Output"]
+    end
+
+    subgraph Tahi["✅ Tahi"]
+        direction TB
+        D --> WM["World Model\nEntities + Relations + Constraints"]
+        Q_B["Query"] --> CAP["Capture"]
+        CAP --> RET["Retrieve"]
+        RET --> RULES["Rules + Simulation"]
+        RULES --> CP["Control Packet"]
+        CP --> INJ["Inject"]
+        INJ --> LLM_B["LLM"]
+        LLM_B --> O_B["Output + Provenance"]
+    end
+
+    classDef problem fill:#fef2f2,stroke:#ef4444,stroke-width:2px,color:#7f1d1d,font-size:14px
+    classDef ft fill:#f1f5f9,stroke:#94a3b8,stroke-width:2px,color:#475569,font-size:13px
+    classDef rag fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#78350f,font-size:13px
+    classDef tahi fill:#f0fdfa,stroke:#0d9488,stroke-width:3px,color:#134e4a,font-size:14px
+    classDef win fill:#22c55e,stroke:#15803d,stroke-width:2px,color:#fff,font-size:13px,font-weight:bold
+
+    class FineTuning problem
+    class TR,LLM_FT,O_FT ft
+    class DOC,EMB,Q_RAG,TOP,PROMPT,LLM_RAG,O_RAG rag
+    class WM,Q_B,CAP,RET,RULES,CP,INJ,LLM_B,O_B tahi
+    class Tahi win

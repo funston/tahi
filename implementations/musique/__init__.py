@@ -1,4 +1,4 @@
-"""OCTO MuSiQue multi-hop evaluation."""
+"""TAHI MuSiQue multi-hop evaluation."""
 
 from .musique_eval import evaluate_musique, load_musique_sample
 

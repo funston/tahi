@@ -1,4 +1,5 @@
 import json
+
 import tiktoken
 
 print("Building 100% real, self-contained audit web application (docs/audit_demo.html)...")
@@ -30,7 +31,7 @@ html_content = f"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OCTO — Real 1-Click Audit Verification System</title>
+  <title>TAHI — Real 1-Click Audit Verification System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -54,7 +55,7 @@ html_content = f"""<!DOCTYPE html>
       color: var(--text-main);
       font-family: 'Inter', sans-serif;
       padding: 2rem;
-      background-image: 
+      background-image:
         radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.18) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.18) 0px, transparent 50%);
       background-attachment: fixed;
@@ -216,7 +217,7 @@ html_content = f"""<!DOCTYPE html>
 <div class="container">
   <header>
     <div class="header-title">
-      <h1>OCTO Real 1-Click Audit Verification System</h1>
+      <h1>TAHI Real 1-Click Audit Verification System</h1>
       <p>Zero Hardcoding · Embedded Real Graph (5,224 Edges) & Medical Corpus (185 Chunks)</p>
     </div>
     <div class="badge-status">
@@ -235,7 +236,7 @@ html_content = f"""<!DOCTYPE html>
     <!-- Panel 1: Matched Graph Traversal Edges -->
     <div class="panel">
       <div class="panel-title">
-        <span>🕸️ OCTO Graph Traversal (graph_clean/graph.json)</span>
+        <span>🕸️ TAHI Graph Traversal (graph_clean/graph.json)</span>
         <span id="edgeCountBadge" style="font-size: 0.85rem; color: var(--text-muted);">0 edges</span>
       </div>
       <div id="edgesList">
@@ -262,10 +263,10 @@ html_content = f"""<!DOCTYPE html>
 
   function initApp() {{
     const sel = document.getElementById('questionSelect');
-    sel.innerHTML = DATA.questions.map((q, idx) => 
+    sel.innerHTML = DATA.questions.map((q, idx) =>
       `<option value="${{idx}}">[${{q.question_type}}] ${{escapeHtml(q.question)}}</option>`
     ).join('');
-    
+
     onQuestionSelect();
   }}
 
@@ -273,12 +274,12 @@ html_content = f"""<!DOCTYPE html>
     const idx = parseInt(document.getElementById('questionSelect').value);
     const q = DATA.questions[idx];
 
-    document.getElementById('questionMeta').innerHTML = 
+    document.getElementById('questionMeta').innerHTML =
       `<strong>Category:</strong> ${{q.question_type}} &nbsp;|&nbsp; <strong>Question ID:</strong> ${{q.id}}`;
 
     // Perform real graph edge matching against query words
     const words = q.question.toLowerCase().split(/\\W+/).filter(w => w.length > 3);
-    const matchedEdges = DATA.edges.filter(e => 
+    const matchedEdges = DATA.edges.filter(e =>
       words.some(w => e.source.toLowerCase().includes(w) || e.target.toLowerCase().includes(w) || e.relation.toLowerCase().includes(w))
     );
 
@@ -288,7 +289,7 @@ html_content = f"""<!DOCTYPE html>
   function renderEdges(edges, queryText) {{
     const listEl = document.getElementById('edgesList');
     document.getElementById('edgeCountBadge').innerText = `${{edges.length}} edges matched`;
-    
+
     if (!edges || edges.length === 0) {{
       listEl.innerHTML = '<div class="empty-state">No matching graph edges found for this question words.</div>';
       return;

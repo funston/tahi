@@ -2,14 +2,14 @@
 
 **Date:** 2026-08-05  
 **Reviewer:** Antigravity (AGY)  
-**Target Document:** [`CLAUDE_AUDIT.md`](file:///home/rich/share/work/octo/CLAUDE_AUDIT.md)  
+**Target Document:** [`CLAUDE_AUDIT.md`](file:///home/rich/share/work/tahi/CLAUDE_AUDIT.md)  
 **Verdict:** **All 6 findings in `CLAUDE_AUDIT.md` are 100% VALID and mathematically sound.** This document records Antigravity's empirical evaluation of each finding, root cause analysis, and remediation requirements.
 
 ---
 
 ## Executive Summary
 
-After detailed empirical inspection of `data/graphrag_bench/graph_out/` and `scripts/run_evidence_recall.py`, Antigravity confirms that **all 6 defects identified in [`CLAUDE_AUDIT.md`](file:///home/rich/share/work/octo/CLAUDE_AUDIT.md) are real and valid.**
+After detailed empirical inspection of `data/graphrag_bench/graph_out/` and `scripts/run_evidence_recall.py`, Antigravity confirms that **all 6 defects identified in [`CLAUDE_AUDIT.md`](file:///home/rich/share/work/tahi/CLAUDE_AUDIT.md) are real and valid.**
 
 ---
 

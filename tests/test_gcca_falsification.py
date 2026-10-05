@@ -22,9 +22,9 @@ for p in (ROOT, SRC):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from octo.integration import NativeIntegration  # noqa: E402
-from octo.models import CognitiveState, EntityRef, FusedSignal  # noqa: E402
-from octo.native.gcca_layer import GatedChunkedCrossAttention  # noqa: E402
+from tahi.integration import NativeIntegration  # noqa: E402
+from tahi.models import CognitiveState, EntityRef, FusedSignal  # noqa: E402
+from tahi.native.gcca_layer import GatedChunkedCrossAttention  # noqa: E402
 
 
 class GCCAIdentityTests(unittest.TestCase):

@@ -1,0 +1,1725 @@
+{
+  "schema_version": "1.0",
+  "n_repos": 8,
+  "n_affected": 5,
+  "prevalence_by_defect": {
+    "placeholder_output_on_error": 2,
+    "substring_exact_match": 5,
+    "silent_component_fallback": 1
+  },
+  "reports": [
+    {
+      "repo": "ragas",
+      "files_scanned": 387,
+      "lines_scanned": 72607,
+      "findings": [
+        {
+          "defect": "placeholder_output_on_error",
+          "severity": "confounding",
+          "repo": "ragas",
+          "file": "examples/ragas_examples/workflow_eval/workflow.py",
+          "line": 374,
+          "function": "classify_email",
+          "evidence": "return \"Bug Report\"  # Default fallback",
+          "rationale": "A broad handler returns placeholder text where model output is expected. Downstream scoring treats it as a real generation, producing a results file that is structurally indistinguishable from a valid run."
+        },
+        {
+          "defect": "placeholder_output_on_error",
+          "severity": "confounding",
+          "repo": "ragas",
+          "file": "examples/ragas_examples/workflow_eval/workflow.py",
+          "line": 503,
+          "function": "generate_response",
+          "evidence": "return \"Thank you for contacting support. We will review your request and get back to you soon.\"",
+          "rationale": "A broad handler returns placeholder text where model output is expected. Downstream scoring treats it as a real generation, producing a results file that is structurally indistinguishable from a valid run."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "tests/unit/test_quoted_spans_collections.py",
+          "line": 252,
+          "function": "test_empty_contexts",
+          "evidence": "assert \"0/1\" in result.reason",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "tests/unit/test_chrf_score_collections.py",
+          "line": 73,
+          "function": "test_empty_reference",
+          "evidence": "assert \"Empty input\" in result.reason",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "tests/unit/test_chrf_score_collections.py",
+          "line": 82,
+          "function": "test_empty_response",
+          "evidence": "assert \"Empty input\" in result.reason",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "tests/unit/prompt/test_dynamic_few_shot_prompt.py",
+          "line": 188,
+          "function": "test_save_load_with_embedding_model",
+          "evidence": "assert \"embeddings\" in data",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "tests/unit/prompt/test_dynamic_few_shot_prompt.py",
+          "line": 259,
+          "function": "test_include_embeddings_parameter",
+          "evidence": "assert \"embeddings\" in data_with",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "tests/unit/backends/test_inmemory.py",
+          "line": 194,
+          "function": "test_save_empty_operations",
+          "evidence": "assert \"empty_dataset\" in backend.list_datasets()",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "src/ragas/embeddings/base.py",
+          "line": 648,
+          "function": "_infer_embedding_provider_from_llm",
+          "evidence": "if pattern in llm_class_name:",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "src/ragas/embeddings/base.py",
+          "line": 781,
+          "function": "_is_legacy_embedding_call",
+          "evidence": "if interface in (\"legacy\", \"modern\"):",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "src/ragas/embeddings/base.py",
+          "line": 827,
+          "function": "_create_modern_embedding",
+          "evidence": "if \"/\" in provider and model is None:",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "ragas",
+          "file": "src/ragas/metrics/collections/tool_call_accuracy/util.py",
+          "line": 35,
+          "function": "exact_match_args",
+          "evidence": "if arg in pred_args and str(pred_args[arg]) == str(ref_args[arg]):",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        }
+      ],
+      "parse_failures": []
+    },
+    {
+      "repo": "ARES",
+      "files_scanned": 24,
+      "lines_scanned": 8305,
+      "findings": [],
+      "parse_failures": []
+    },
+    {
+      "repo": "phoenix",
+      "files_scanned": 1408,
+      "lines_scanned": 381447,
+      "findings": [
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "packages/phoenix-otel/tests/test_settings.py",
+          "line": 278,
+          "function": "test_permission_warning_emitted_once",
+          "evidence": "assert \"accessible by other users\" in warnings[0].message",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "packages/phoenix-client/tests/client/utils/test_config.py",
+          "line": 247,
+          "function": "test_permission_warning_emitted_once",
+          "evidence": "assert \"accessible by other users\" in warnings[0].message",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "packages/phoenix-evals/tests/phoenix/evals/test_evaluators.py",
+          "line": 1071,
+          "function": "test_evaluate_dataframe_empty_dataframe",
+          "evidence": "assert \"mock_evaluator_execution_details\" in result_df.columns",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/integration/server/test_db_disk_usage_monitor.py",
+          "line": 196,
+          "function": "test_email_warning_and_insertion_blocking",
+          "evidence": "assert _support_email in soup.get_text(), (",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/integration/db_migrations/test_data_migration_a1b2c3d4e5f6_ldap_schema_migration.py",
+          "line": 393,
+          "function": "_test_local_null_email",
+          "evidence": "assert \"non_ldap_auth_has_email\" in error_message, (",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/integration/db_migrations/test_data_migration_a1b2c3d4e5f6_ldap_schema_migration.py",
+          "line": 423,
+          "function": "_test_oauth_null_email",
+          "evidence": "assert \"non_ldap_auth_has_email\" in error_message, (",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/integration/db_migrations/test_data_migration_a1b2c3d4e5f6_ldap_schema_migration.py",
+          "line": 895,
+          "function": "_test_downgrade_null_email",
+          "evidence": "assert \"null\" in error_message or \"not null\" in error_message, (",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/utilities/test_template_formatters.py",
+          "line": 300,
+          "function": "test_mustache_tool_formatter_empty_tools",
+          "evidence": "assert \"No tools available\" in result",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/test_ldap.py",
+          "line": 240,
+          "function": "test_missing_email_attribute_rejected",
+          "evidence": "assert \"missing required email attribute\" in caplog.text",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/agents/test_agent_factory.py",
+          "line": 198,
+          "function": "test_wrapped_model_emits_cache_breakpoint_end_to_end",
+          "evidence": "assert _DEFAULT_PROMPTS.base.render() in _get_concatenated_text(cached_blocks)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/agents/test_agent_factory.py",
+          "line": 531,
+          "function": "test_ui_context_instructions_are_absent_when_context_is_empty",
+          "evidence": "assert \"<phoenix_gql_mutations_policy>\" in uncached_texts",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/test_code_evaluator_runner.py",
+          "line": 146,
+          "function": "test_python_harness_embeds_inputs_as_native_literal",
+          "evidence": "assert \"_inputs = {'key': 'value'}\" in harness",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/test_code_evaluator_runner.py",
+          "line": 781,
+          "function": "test_happy_path_emits_four_spans_with_expected_attributes",
+          "evidence": "assert INPUT_VALUE in evaluator_attrs",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/test_code_evaluator_runner.py",
+          "line": 1041,
+          "function": "test_wasm_empty_secret_set_emits_verbatim",
+          "evidence": "assert \"value\" in input_val",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/test_subscriptions.py",
+          "line": 227,
+          "function": "test_invocation_parameter_validation_error_is_emitted",
+          "evidence": "assert \"The thinking budget must be less than max tokens.\" in payloads[0].message",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/test_subscriptions.py",
+          "line": 280,
+          "function": "test_openai_text_response_emits_expected_payloads_and_records_expected_span",
+          "evidence": "assert \"france\" in response_text.lower()",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/test_subscriptions.py",
+          "line": 427,
+          "function": "test_openai_emits_expected_payloads_and_records_expected_span_on_error",
+          "evidence": "assert \"401\" in (status_message := error_payload[\"chatCompletion\"][\"message\"])",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/test_subscriptions.py",
+          "line": 780,
+          "function": "test_openai_tool_call_messages_emits_expected_payloads_and_records_expected_span",
+          "evidence": "assert \"sunny\" in response_text.lower()",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/test_subscriptions.py",
+          "line": 948,
+          "function": "test_anthropic_text_response_emits_expected_payloads_and_records_expected_span",
+          "evidence": "assert \"france\" in response_text.lower()",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/test_subscriptions.py",
+          "line": 2241,
+          "function": "test_evaluator_emits_evaluation_chunk_and_persists_annotation",
+          "evidence": "\"evaluator\" in attributes.pop(f\"{LLM_INPUT_MESSAGES}.0.{MESSAGE_CONTENT}\").lower()",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/agents/capabilities/contexts/test_capabilities.py",
+          "line": 561,
+          "function": "test_renders_empty_scaffold_when_unset",
+          "evidence": "assert \"<next_experiment_scaffold/>\" in content",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/mutations/test_evaluator_mutations.py",
+          "line": 1060,
+          "function": "test_create_dataset_llm_evaluator_rejects_empty_output_configs",
+          "evidence": "assert \"at least 1 item\" in result.errors[0].message.lower()",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/mutations/test_dataset_split_mutations.py",
+          "line": 247,
+          "function": "test_empty_color_is_rejected",
+          "evidence": "assert \"Color cannot be empty\" in response.errors[0].message",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/mutations/test_annotation_config_mutations.py",
+          "line": 631,
+          "function": "test_create_categorical_config_with_empty_values_returns_expected_error",
+          "evidence": "assert \"Values must be non-empty\" in error.message",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/helpers/test_evaluators.py",
+          "line": 1472,
+          "function": "test_exact_match_evaluator_with_nested_paths",
+          "evidence": "assert \"matches\" in result[\"explanation\"]",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/helpers/test_evaluators.py",
+          "line": 1504,
+          "function": "test_exact_match_evaluator_mismatch_with_nested_paths",
+          "evidence": "assert \"does not match\" in result[\"explanation\"]",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/routers/v1/test_annotation_configs.py",
+          "line": 317,
+          "function": "test_create_categorical_config_with_empty_values_returns_expected_error",
+          "evidence": "assert \"Values must be non-empty\" in response.text",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/routers/v1/test_projects.py",
+          "line": 555,
+          "function": "test_list_projects_empty",
+          "evidence": "assert \"data\" in data, \"Response should contain a 'data' field with projects\"",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/routers/v1/test_datasets.py",
+          "line": 56,
+          "function": "test_get_empty_dataset",
+          "evidence": "assert \"created_at\" in dataset_json",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/routers/v1/test_spans.py",
+          "line": 1753,
+          "function": "test_span_search_filter_by_attribute_empty_key",
+          "evidence": "assert \"key must not be empty\" in resp.text",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/server/api/routers/v1/test_spans.py",
+          "line": 1818,
+          "function": "test_otlp_span_search_filter_by_attribute_empty_key",
+          "evidence": "assert \"key must not be empty\" in resp.text",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/trace/gen_ai/test_conversion.py",
+          "line": 314,
+          "function": "test_embedding_invocation_parameters_key_for_embeddings",
+          "evidence": "assert SpanAttributes.EMBEDDING_INVOCATION_PARAMETERS in out",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/trace/gen_ai/test_conversion.py",
+          "line": 620,
+          "function": "test_input_message_does_not_emit_finish_reason",
+          "evidence": "assert not any(\".message.finish_reason\" in k for k in out)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/trace/gen_ai/test_conversion.py",
+          "line": 637,
+          "function": "test_empty_finish_reason_is_skipped",
+          "evidence": "assert not any(\".message.finish_reason\" in k for k in out)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/db/types/test_evaluators.py",
+          "line": 102,
+          "function": "test_empty_string_rejected",
+          "evidence": "assert \"cannot be empty\" in str(exc_info.value)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/pxi/evals/test_evaluators.py",
+          "line": 460,
+          "function": "test_variant_list_with_empty_list_fails",
+          "evidence": "assert \"non-empty list\" in result[\"metadata\"][\"set_time_range\"][\"reason\"]",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/pxi/evals/test_datasets.py",
+          "line": 77,
+          "function": "test_empty_file_raises_validation_error",
+          "evidence": "assert \"Dataset is empty\" in str(exc_info.value)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/pxi/evals/test_datasets.py",
+          "line": 116,
+          "function": "test_empty_examples_raises_validation_error",
+          "evidence": "assert \"at least one example\" in str(exc_info.value)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/pxi/evals/test_datasets.py",
+          "line": 151,
+          "function": "test_empty_evaluators_field_raises_validation_error",
+          "evidence": "assert \"evaluators must be a non-empty list\" in str(exc_info.value)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/pxi/evals/test_datasets.py",
+          "line": 201,
+          "function": "test_empty_splits_raises_validation_error",
+          "evidence": "assert \"must define non-empty splits\" in str(exc_info.value)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "tests/unit/pxi/evals/test_reporting.py",
+          "line": 266,
+          "function": "test_markdown_fences_survive_embedded_backtick_runs",
+          "evidence": "assert \"````text\" in markdown",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "src/phoenix/server/daemons/db_disk_usage_monitor.py",
+          "line": 178,
+          "function": "_send_warning_emails",
+          "evidence": "if email in valid_emails",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "phoenix",
+          "file": "internal_docs/vignettes/otel-contextvars-async/contextvars_async_gen_demo.py",
+          "line": 270,
+          "function": "run_empirical_tests",
+          "evidence": "assert \"different Context\" in str(_gen_reset_error[0])",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        }
+      ],
+      "parse_failures": []
+    },
+    {
+      "repo": "trulens",
+      "files_scanned": 506,
+      "lines_scanned": 115706,
+      "findings": [
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "trulens",
+          "file": "src/apps/langgraph/trulens/apps/langgraph/trace_provider.py",
+          "line": 1386,
+          "function": "_extract_embedded_tool_results",
+          "evidence": "if tool_name.lower() in {\"thinking\", \"text\", \"json\", \"annotation\"}:",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "trulens",
+          "file": "src/core/trulens/core/utils/trace_provider.py",
+          "line": 468,
+          "function": "_extract_embedded_tool_results",
+          "evidence": "if tool_name.lower() in {\"thinking\", \"text\", \"json\", \"annotation\"}:",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "silent_component_fallback",
+          "severity": "confounding",
+          "repo": "trulens",
+          "file": "src/core/trulens/core/utils/python.py",
+          "line": 169,
+          "function": "safer_getattr",
+          "evidence": "return default",
+          "rationale": "A broad exception handler returns a substitute component. The caller cannot distinguish the substitute from the real one, so a dependency failure silently changes what is being measured while the run reports success."
+        }
+      ],
+      "parse_failures": []
+    },
+    {
+      "repo": "llama_index",
+      "files_scanned": 3837,
+      "lines_scanned": 453110,
+      "findings": [
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-core/tests/agent/workflow/test_multi_agent_workflow.py",
+          "line": 228,
+          "function": "test_workflow_execution_empty",
+          "evidence": "if \"FAILURE: Your previous response was empty\" in event.input[-1].content:",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-core/tests/agent/workflow/test_single_agent_workflow.py",
+          "line": 167,
+          "function": "test_empty_calculator_agent",
+          "evidence": "assert \"30\" in str(response.response)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-core/llama_index/core/embeddings/utils.py",
+          "line": 83,
+          "function": "resolve_embed_model",
+          "evidence": "embed_model.split(\":\")[1] if \":\" in embed_model else \"ViT-B/32\"",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-openai/tests/test_llms_openai.py",
+          "line": 12,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-openrouter/tests/test_llms_openrouter.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-oci-data-science/tests/test_llms_oci_data_science.py",
+          "line": 27,
+          "function": "test_embedding_class",
+          "evidence": "assert FunctionCallingLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-replicate/tests/test_llms_replicate.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-predibase/tests/test_llms_predibase.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-lmstudio/tests/test_llms_lmstudio.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-sagemaker-endpoint/tests/test_llms_sagemaker_endpoint.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-portkey/tests/test_llms_portkey.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-openvino-genai/tests/test_llm_openvino_genai.py",
+          "line": 8,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-baseten/tests/test_llms_baseten.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-llama-api/tests/test_llms_llama_api.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-stepfun/tests/test_llms_stepfun.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-friendli/tests/test_llms_friendli.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-xinference/tests/test_llms_xinference.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-yi/tests/test_llms_yi.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-bedrock/tests/test_llms_bedrock.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-ai21/tests/test_llms_ai21.py",
+          "line": 117,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-cohere/tests/test_llms_cohere.py",
+          "line": 43,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-reka/tests/test_llms_reka.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-ovhcloud/tests/test_llms_ovhcloud.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-monsterapi/tests/test_llms_monsterapi.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-konko/tests/test_llms_konko.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-neutrino/tests/test_llms_neutrino.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-localai/tests/test_llms_localai.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-fireworks/tests/test_llms_fireworks.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-asi/tests/test_llms_asi.py",
+          "line": 13,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-ibm/tests/test_llms_ibm.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-vllm/tests/test_llms_vllm.py",
+          "line": 9,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-databricks/tests/test_llms_databricks.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-opea/tests/test_llms_opea.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-nvidia-triton/tests/test_llms_nvidia_triton.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-together/tests/test_llms_together.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-anyscale/tests/test_llms_anyscale.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-pipeshift/tests/test_llms_pipeshift.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-anthropic/tests/test_llms_anthropic.py",
+          "line": 32,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-keywordsai/tests/test_llms_keywordsai.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-huggingface/tests/test_llms_huggingface.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-nvidia-tensorrt/tests/test_llms_nvidia_tensorrt.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-oci-genai/tests/test_llms_oci_genai.py",
+          "line": 9,
+          "function": "test_oci_genai_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-rungpt/tests/test_llms_rungpt.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-langchain/tests/test_llms_langchain.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-ollama/tests/test_llms_ollama.py",
+          "line": 53,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-meta/tests/test_llms_llama.py",
+          "line": 8,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-azure-openai/tests/test_llms_azure_openai.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-cometapi/tests/test_llms_cometapi.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-gigachat/tests/test_llms_gigachat.py",
+          "line": 15,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-everlyai/tests/test_llms_everlyai.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-octoai/tests/test_llms_octoai.py",
+          "line": 11,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-perplexity/tests/test_llms_perplexity.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-groq/tests/test_llms_groq.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-palm/tests/test_llms_palm.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-llama-cpp/tests/test_llms_llama_cpp.py",
+          "line": 12,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-litellm/tests/test_llms_litellm.py",
+          "line": 26,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-bedrock-converse/tests/test_llms_bedrock_converse.py",
+          "line": 910,
+          "function": "test_bedrock_converse_agent_workflow_empty_text_error",
+          "evidence": "\"The text field in the ContentBlock object\" in error_msg",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-bedrock-converse/tests/test_llms_bedrock_converse.py",
+          "line": 935,
+          "function": "test_bedrock_converse_integration_chat_with_empty_system_prompt",
+          "evidence": "assert \"4\" in response.message.content",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-bedrock-converse/tests/test_llms_bedrock_converse.py",
+          "line": 956,
+          "function": "test_bedrock_converse_integration_chat_with_empty_assistant_message",
+          "evidence": "assert any(num in response.message.content for num in [\"1\", \"2\", \"3\"])",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-cortex/tests/test_llms_cortex.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-openai-like/tests/test_llms_openai_like.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-paieas/tests/test_llms_paieas.py",
+          "line": 13,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-cerebras/tests/test_llms_cerebras.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/llms/llama-index-llms-huggingface-api/tests/test_llms_huggingface_api.py",
+          "line": 9,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseLLM.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/vector_stores/llama-index-vector-stores-postgres/tests/test_postgres.py",
+          "line": 3221,
+          "function": "test_mmr_query_filters_out_empty_embeddings_in_mixed_results",
+          "evidence": "assert \"v1\" in result.ids",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/vector_stores/llama-index-vector-stores-volcenginemysql/tests/test_vector_stores_volcenginemysql.py",
+          "line": 182,
+          "function": "test_create_table_if_missing_emits_vector_index_ddl",
+          "evidence": "assert \"CREATE TABLE IF NOT EXISTS `test_table`\" in str(stmt)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/vector_stores/llama-index-vector-stores-vertexaivectorsearch/tests/test_vector_stores_vertexaivectorsearch.py",
+          "line": 2128,
+          "function": "test_v2_delete_nodes_by_filters_valid_empty_filters",
+          "evidence": "assert \"Input filter set is empty after conversion\" in caplog.text",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/vector_stores/llama-index-vector-stores-vertexaivectorsearch/tests/test_vector_stores_vertexaivectorsearch.py",
+          "line": 2147,
+          "function": "test_v2_adelete_nodes_by_filters_valid_empty_filters",
+          "evidence": "assert \"Input filter set is empty after conversion\" in caplog.text",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/vector_stores/llama-index-vector-stores-vertexaivectorsearch/tests/test_vector_stores_vertexaivectorsearch.py",
+          "line": 2794,
+          "function": "test_v2_get_nodes_empty_filters",
+          "evidence": "assert \"Input filter set is empty after conversion\" in caplog.text",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/vector_stores/llama-index-vector-stores-vertexaivectorsearch/tests/test_vector_stores_vertexaivectorsearch.py",
+          "line": 2813,
+          "function": "test_v2_aget_nodes_empty_filters",
+          "evidence": "assert \"Input filter set is empty after conversion\" in caplog.text",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-ibm/tests/test_embeddings_ibm.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-sagemaker-endpoint/tests/test_embeddings_sagemaker_endpoint.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-langchain/tests/test_embeddings_langchain.py",
+          "line": 7,
+          "function": "test_langchain_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-upstage/tests/unit_tests/test_embeddings_upstage.py",
+          "line": 22,
+          "function": "test_upstage_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-nomic/tests/test_embeddings_nomic.py",
+          "line": 7,
+          "function": "test_embedding_class",
+          "evidence": "assert MultiModalEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-huggingface-optimum-intel/tests/test_embeddings_huggingface_optimum_intel.py",
+          "line": 7,
+          "function": "test_optimum_intel_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-gigachat/tests/test_embeddings_gigachat.py",
+          "line": 7,
+          "function": "test_embedding_function",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-yandexgpt/tests/test_embeddings_yandexgpt.py",
+          "line": 7,
+          "function": "test_embedding_function",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-yandexgpt/llama_index/embeddings/yandexgpt/base.py",
+          "line": 127,
+          "function": "_embed",
+          "evidence": "if \"embedding\" in response:",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-openai/tests/test_embeddings_openai.py",
+          "line": 10,
+          "function": "test_openai_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-databricks/tests/test_embeddings_databricks.py",
+          "line": 17,
+          "function": "test_dashscope_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-vertex/tests/test_embeddings_vertex.py",
+          "line": 244,
+          "function": "test_image_embedding_path",
+          "evidence": "self.assertTrue(\"image\" in keyword_args)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-vertex/llama_index/embeddings/vertex/base.py",
+          "line": 89,
+          "function": "_get_embedding_request",
+          "evidence": "if model_name in _UNSUPPORTED_TASK_TYPE_MODEL:",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-openai-like/tests/test_embeddings_openai_like.py",
+          "line": 8,
+          "function": "test_openai_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-openvino-genai/llama_index/embeddings/openvino_genai/base.py",
+          "line": 113,
+          "function": "_embed",
+          "evidence": "if \"token_type_ids\" in (input.any_name for input in self._model.inputs):",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-clip/tests/test_embeddings_clip.py",
+          "line": 7,
+          "function": "test_azure_openai_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-oci-genai/tests/test_oci_genai.py",
+          "line": 34,
+          "function": "test_embedding_call",
+          "evidence": "if \"Hello\" in d:",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-oci-genai/tests/test_embeddings_oci_genai.py",
+          "line": 7,
+          "function": "test_oci_genai_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-voyageai/tests/test_embeddings_voyageai.py",
+          "line": 77,
+          "function": "test_voyageai_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-voyageai/tests/test_embeddings_voyageai.py",
+          "line": 496,
+          "function": "test_video_embedding_unsupported_model",
+          "evidence": "assert \"does not support video embeddings\" in str(excinfo.value)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-voyageai/tests/test_embeddings_voyageai.py",
+          "line": 511,
+          "function": "test_video_embedding_no_video_support",
+          "evidence": "assert \"Video support requires voyageai>=0.3.6\" in str(excinfo.value)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-voyageai/llama_index/embeddings/voyageai/base.py",
+          "line": 395,
+          "function": "_embed",
+          "evidence": "if self.model_name in CONTEXT_MODELS:",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-text-embeddings-inference/tests/test_embeddings_text_embeddings_inference.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-vertex-endpoint/tests/test_embeddings_vertex_endpoint.py",
+          "line": 7,
+          "function": "test_text_inference_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-nvidia/tests/test_integration.py",
+          "line": 61,
+          "function": "test_embed_query_invalid_dimensions",
+          "evidence": "assert \"400\" in str(exc.value)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-nvidia/tests/test_integration.py",
+          "line": 73,
+          "function": "test_embed_documents_invalid_dimensions",
+          "evidence": "assert \"400\" in str(exc.value)",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-oci-data-science/tests/test_embeddings_oci_data_science.py",
+          "line": 12,
+          "function": "test_oci_data_science_embedding_class",
+          "evidence": "assert BaseEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/embeddings/llama-index-embeddings-dashscope/tests/test_embeddings_dashscope.py",
+          "line": 7,
+          "function": "test_dashscope_embedding_class",
+          "evidence": "assert MultiModalEmbedding.__name__ in names_of_base_classes",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/storage/chat_store/llama-index-storage-chat-store-postgres/tests/test_chat_store_postgres_chat_store.py",
+          "line": 387,
+          "function": "test_empty_table_name_defaults_to_chatstore",
+          "evidence": "assert default_table_name in tables",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "placeholder_output_on_error",
+          "severity": "confounding",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/readers/llama-index-readers-confluence/llama_index/readers/confluence/base.py",
+          "line": 911,
+          "function": "process_msg",
+          "evidence": "return \"Error processing .msg file.\"",
+          "rationale": "A broad handler returns placeholder text where model output is expected. Downstream scoring treats it as a real generation, producing a results file that is structurally indistinguishable from a valid run."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/tools/llama-index-tools-mcp/tests/test_tools_mcp.py",
+          "line": 581,
+          "function": "test_by_tool_empty_dict_keeps_global",
+          "evidence": "assert \"b\" in schema[\"properties\"]",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/tools/llama-index-tools-aws-bedrock-agentcore/tests/test_code_interpreter.py",
+          "line": 683,
+          "function": "test_list_code_interpreters_empty",
+          "evidence": "assert \"No code interpreters found\" in result",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/tools/llama-index-tools-aws-bedrock-agentcore/tests/test_browser.py",
+          "line": 564,
+          "function": "test_list_browsers_empty",
+          "evidence": "assert \"No browsers found\" in result",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "llama_index",
+          "file": "llama-index-integrations/tools/llama-index-tools-mcp-discovery/tests/test_mcp_discovery.py",
+          "line": 116,
+          "function": "test_discover_tools_empty",
+          "evidence": "assert \"Found 0 tools\" in result or \"Following tools are found\" in result",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        }
+      ],
+      "parse_failures": []
+    },
+    {
+      "repo": "beir",
+      "files_scanned": 101,
+      "lines_scanned": 10335,
+      "findings": [],
+      "parse_failures": []
+    },
+    {
+      "repo": "pyserini",
+      "files_scanned": 336,
+      "lines_scanned": 47686,
+      "findings": [],
+      "parse_failures": []
+    },
+    {
+      "repo": "primeqa",
+      "files_scanned": 601,
+      "lines_scanned": 56029,
+      "findings": [
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "primeqa",
+          "file": "extensions/ir_benchmarking/colbert/indexing/collection_indexer.py",
+          "line": 119,
+          "function": "_sample_embeddings",
+          "evidence": "local_sample = [passage for pid, passage in local_pids if pid in sampled_pids]",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "primeqa",
+          "file": "primeqa/components/embeddings/dpr_embeddings.py",
+          "line": 124,
+          "function": "get_embeddings",
+          "evidence": "if \"max_num_documents\" in kwargs",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        },
+        {
+          "defect": "substring_exact_match",
+          "severity": "misleading",
+          "repo": "primeqa",
+          "file": "primeqa/ir/dense/colbert_top/colbert/indexing/collection_indexer.py",
+          "line": 116,
+          "function": "_sample_embeddings",
+          "evidence": "local_sample = [passage for pid, passage in local_pids if pid in sampled_pids]",
+          "rationale": "A containment test (`in`) inside a function named for exact match. Yields EM=1.0 for predictions that merely contain the reference, so EM can exceed F1 -- a mathematically impossible pairing that is nonetheless reported."
+        }
+      ],
+      "parse_failures": [
+        "extensions/ir_benchmarking/colbert/data/collection.py"
+      ]
+    }
+  ]
+}

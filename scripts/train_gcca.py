@@ -27,7 +27,7 @@ Training data format (JSONL), one record per line:
     {"query": "...", "answer": "...", "memory_texts": ["doc text", "..."]}
 
 `memory_texts` are the retrieved node texts for that query -- produce them with
-`octo.native.memory.node_texts` so training and inference see the same shape.
+`tahi.native.memory.node_texts` so training and inference see the same shape.
 """
 
 from __future__ import annotations
@@ -50,10 +50,10 @@ for p in (str(ROOT), str(ROOT / "src")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from octo.native.huggingface_adapter import OctoNativeAdapter  # noqa: E402
+from tahi.native.huggingface_adapter import TahiNativeAdapter  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-log = logging.getLogger("octo.train_gcca")
+log = logging.getLogger("tahi.train_gcca")
 
 PROMPT_TEMPLATE = "QUESTION: {query}\nANSWER:"
 
@@ -159,7 +159,7 @@ def collate(batch: list[dict], pad_id: int) -> dict:
             "attention_mask": attn, "memory": memory}
 
 
-def trainable_report(adapter: OctoNativeAdapter) -> tuple[int, int]:
+def trainable_report(adapter: TahiNativeAdapter) -> tuple[int, int]:
     trainable = sum(p.numel() for p in adapter.parameters() if p.requires_grad)
     total = sum(p.numel() for p in adapter.parameters())
     return trainable, total
@@ -216,7 +216,7 @@ def main() -> int:
 
     store = None
     if args.memory_store:
-        from octo.native.memory_store import load_memory_store
+        from tahi.native.memory_store import load_memory_store
         store = load_memory_store(args.memory_store)
         if store.d_model != _Enc.dimension:
             log.error("Memory store is d=%d but encoder %r is d=%d. The store was "
@@ -227,7 +227,7 @@ def main() -> int:
         log.warning("No --memory-store: memory will be re-encoded here and must be "
                     "re-encoded identically at eval time. Prefer a store.")
 
-    adapter = OctoNativeAdapter(
+    adapter = TahiNativeAdapter(
         base_model=base,
         d_retriever=_Enc.dimension,
         interleave_step=args.interleave_step,

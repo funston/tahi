@@ -132,7 +132,8 @@ def main() -> int:
     print(f"  abstained               {abst}/{len(rows)}")
     print()
     for me, rs in sorted(by_rel.items()):
-        g = sum(r["n_gold"] for r in rs); m = sum(r["n_matched"] for r in rs)
+        g = sum(r["n_gold"] for r in rs)
+        m = sum(r["n_matched"] for r in rs)
         print(f"  {me} {rs[0]['relation']:16s} {m:3d}/{g:3d}  {m/g if g else 0:6.1%}")
     print(f"\n  report: {args.out}")
     return 0

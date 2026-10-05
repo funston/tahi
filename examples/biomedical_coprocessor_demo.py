@@ -1,7 +1,7 @@
 import json
 
-from octo import BlackBoxIntegration, NativeIntegration, wrap_llm
-from octo.demo_worlds import build_biomedical_world_model
+from tahi import BlackBoxIntegration, NativeIntegration, wrap_llm
+from tahi.demo_worlds import build_biomedical_world_model
 
 
 if __name__ == "__main__":

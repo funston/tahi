@@ -11,9 +11,9 @@
 
    ```bash
      # From your laptop (or same machine)
-     export OCTO_LLM_PROVIDER=vllm
+     export TAHI_LLM_PROVIDER=vllm
      export VLLM_BASE_URL=http://your-dgx-ip:8000/v1
-     export OCTO_LLM_MODEL=Qwen/Qwen2.5-72B-Instruct-AWQ
+     export TAHI_LLM_MODEL=Qwen/Qwen2.5-72B-Instruct-AWQ
      export VLLM_API_KEY=not-needed
 
      python examples/run_dea_eval.py
@@ -34,13 +34,13 @@ Review & Proposal Docs
 
  • docs/retro-v2-review.md — Deep-dive review of retro-v2-brief.md and retro-v2-falsification-plan.md.
  • Validates the science-vs-systems split and Tier 0 kill test.
- • Adds OCTO as a structured-reasoning competitor in the experiment matrix.
+ • Adds TAHI as a structured-reasoning competitor in the experiment matrix.
  • Identifies gaps: no structured competitor, no provenance metrics, corpus mismatch (Wikipedia benchmarks vs. Semantic Scholar), missing cost-per-correct-answer analysis.
- • Provides OCTO-specific kill criteria and a recommended next step.
+ • Provides TAHI-specific kill criteria and a recommended next step.
 
  • docs/wikipedia-coprocessor-proposal.md — Full proposal for a Wikipedia multi-hop QA world coprocessor.
  • Targets HotpotQA, 2WikiMultiHopQA, MuSiQue, FRAMES.
- • Defines baselines: base LLM, single-shot RAG, iterative RAG, OCTO graph traversal.
+ • Defines baselines: base LLM, single-shot RAG, iterative RAG, TAHI graph traversal.
  • Includes metrics (EM/F1, bridge-entity recall, path correctness, hallucination rate, cost).
  • 4-phase implementation plan.
 
@@ -48,7 +48,7 @@ Review & Proposal Docs
 
  • scripts/build-world-model.py — General hybrid world-model builder.
  • Input: JSON/JSONL documents.
- • Output: OCTO WorldModel with graph layer + vector index.
+ • Output: TAHI WorldModel with graph layer + vector index.
  • Builds wiki_page / wiki_chunk / wiki_entity nodes, links_to / mentions edges.
  • Supports WorldModelStore versioning or raw JSON(.gz).
  • Tested on a 4-doc sample.
@@ -59,7 +59,7 @@ Review & Proposal Docs
  • implementations/wikipedia/wikipedia_coprocessor.py
  • WikipediaPlanner — plans multi-hop graph traversal.
  • WikipediaRuleEngine — validates paths and surfaces bridge entities.
- • WikipediaCoprocessor — end-to-end wrapper around OCTO runtime.
+ • WikipediaCoprocessor — end-to-end wrapper around TAHI runtime.
  • Includes deterministic BFS graph traversal with seed-entity exclusion.
 
  Demo & Benchmark
@@ -79,5 +79,5 @@ Review & Proposal Docs
  Your intuition about the hybrid model is correct: knowledge graph + vector DB. The graph gives deterministic multi-hop paths and provenance; the vector index gives semantic seed retrieval. That's
  exactly what build-world-model.py and the Wikipedia coprocessor implement.
 
- The cost comparison in retro-v2-review.md and the proposal doc highlights the core difference: RETRO's upfront cost is embedding trillions of tokens + PB-scale NVMe; OCTO's cost is domain
+ The cost comparison in retro-v2-review.md and the proposal doc highlights the core difference: RETRO's upfront cost is embedding trillions of tokens + PB-scale NVMe; TAHI's cost is domain
  curation + small structured graphs.

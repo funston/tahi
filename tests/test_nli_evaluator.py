@@ -8,7 +8,8 @@ Verifies that:
 """
 
 import unittest
-from octo.eval.nli_evaluator import NLIEvaluator
+
+from tahi.eval.nli_evaluator import NLIEvaluator
 
 
 class TestNLIEvaluator(unittest.TestCase):
@@ -17,7 +18,7 @@ class TestNLIEvaluator(unittest.TestCase):
         try:
             cls.evaluator = NLIEvaluator(model_name="cross-encoder/nli-deberta-v3-base")
         except Exception as e:
-            raise unittest.SkipTest(f"NLI model download/init unavailable: {e}")
+            raise unittest.SkipTest(f"NLI model download/init unavailable: {e}") from e
 
     def test_true_claim_is_entailed(self):
         evidence = "The compound was scheduled under the Controlled Substances Act in 2018."

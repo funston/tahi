@@ -1,5 +1,5 @@
 """
-Unit tests for PyTorch GCCA Native Residual Injection modules (src/octo/native/).
+Unit tests for PyTorch GCCA Native Residual Injection modules (src/tahi/native/).
 
 Verifies:
 1. Zero-disruption property (tanh(alpha) = 0 output logits are identical to base hidden states).
@@ -9,11 +9,10 @@ Verifies:
 
 from __future__ import annotations
 
-import pytest
 import torch
 import torch.nn as nn
 
-from octo.native import GatedChunkedCrossAttention, OctoNativeAdapter
+from tahi.native import GatedChunkedCrossAttention, TahiNativeAdapter
 
 
 def test_gcca_zero_disruption_at_initialization():
@@ -74,10 +73,10 @@ class DummyModel(nn.Module):
         return out
 
 
-def test_octo_native_adapter_interleaving_and_hooks():
-    """OctoNativeAdapter should freeze base model parameters and attach GCCA hooks."""
+def test_tahi_native_adapter_interleaving_and_hooks():
+    """TahiNativeAdapter should freeze base model parameters and attach GCCA hooks."""
     base_model = DummyModel(num_layers=8, d_model=64)
-    adapter = OctoNativeAdapter(base_model, d_retriever=32, interleave_step=4)
+    adapter = TahiNativeAdapter(base_model, d_retriever=32, interleave_step=4)
 
     # Check parameter freezing (<2% parameters trainable)
     trainable_params = [p for p in adapter.parameters() if p.requires_grad]

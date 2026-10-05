@@ -14,7 +14,7 @@ This script answers three questions in order, and refuses to skip any:
   (a) WHAT THE TEST DID       -- provenance read out of the artifact and the
                                  checkpoint, never retyped from a log.
   (b) WHAT IT WAS SUPPOSED TO -- the pre-registered conditions in
-      DO                        docs/OCTO_ENDGAME_PLAN.md section 2.
+      DO                        docs/TAHI_ENDGAME_PLAN.md section 2.
   (c) DO (a) AND (b) AGREE,   -- conformance, validity, independent
       AND DO THE CONCLUSIONS     re-derivation of every headline number from
       FOLLOW?                    per-item data, then the decision bands applied
@@ -49,7 +49,7 @@ for p in (str(ROOT), str(ROOT / "src")):
         sys.path.insert(0, p)
 
 # ---------------------------------------------------------------------------
-# The pre-registration, transcribed from docs/OCTO_ENDGAME_PLAN.md section 2.
+# The pre-registration, transcribed from docs/TAHI_ENDGAME_PLAN.md section 2.
 # These are the committed values. If a run does not match them, that is a
 # finding about the run, not a reason to edit this block.
 # ---------------------------------------------------------------------------
@@ -398,7 +398,7 @@ def main() -> int:
 
     A.say(f"  primary readout   max|tanh(alpha)| = {alpha_max:.5f}")
     A.say(f"  bands             PASS > {PASS_ALPHA}   FAIL < {FAIL_ALPHA}")
-    A.say(f"  reference         0.0199 (epoch 2) / 0.0426 (epoch 14), voided run")
+    A.say("  reference         0.0199 (epoch 2) / 0.0426 (epoch 14), voided run")
     if key_cmp:
         A.say(f"  secondary         l3_trained vs base token_f1: "
               f"{key_cmp.get('delta'):+.4f} "
@@ -412,7 +412,7 @@ def main() -> int:
     if alpha_max < FAIL_ALPHA:
         verdict = "FAIL"
         meaning = ("GCCA did not open the gate even on zero-noise oracle memory. "
-                   "OCTO Level 3 is dead, and RETRO-v2's Claim A is damaged with "
+                   "TAHI Level 3 is dead, and RETRO-v2's Claim A is damaged with "
                    "it. This is a real, publishable negative result.")
     elif alpha_max > PASS_ALPHA and acc_ok:
         verdict = "PASS"

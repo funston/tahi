@@ -1,9 +1,9 @@
 """
-HotpotQA multi-hop evaluation for OCTO.
+HotpotQA multi-hop evaluation for TAHI.
 
 Uses the HotpotQA dev set (or a bundled sample) and compares:
   - RAG baseline: vector retrieval over supporting facts
-  - OCTO: vector retrieval + graph edges between facts and articles
+  - TAHI: vector retrieval + graph edges between facts and articles
 
 The world model is built from the provided supporting facts for each question,
 so the comparison isolates the value of graph structure over plain retrieval.
@@ -17,9 +17,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from octo.baseline_rag import RAGDocument, StandaloneRAG
-from octo.llm_client import LLMClient
-from octo.world_state import WorldModel
+from tahi.baseline_rag import RAGDocument, StandaloneRAG
+from tahi.llm_client import LLMClient
+from tahi.world_state import WorldModel
 
 
 @dataclass
@@ -188,7 +188,7 @@ def _retrieval_recall(expected: str, evidence: list[dict[str, Any]]) -> bool:
 
 
 def _coprocessor_documents(coprocessor: HotpotQACoprocessor) -> list[RAGDocument]:
-    """Extract raw text documents from the OCTO world model for the RAG baseline."""
+    """Extract raw text documents from the TAHI world model for the RAG baseline."""
     documents: list[RAGDocument] = []
     for node_id, node in coprocessor.world_model.nodes.items():
         text = node.get("text", "")
@@ -292,14 +292,14 @@ def evaluate_hotpotqa(
     *,
     llm_client: LLMClient | None = None,
 ) -> dict[str, Any]:
-    """Compare OCTO vs a standalone RAG baseline on HotpotQA supporting facts."""
+    """Compare TAHI vs a standalone RAG baseline on HotpotQA supporting facts."""
     samples = load_hotpotqa_sample(max_samples=max_samples)
     llm_client = llm_client or LLMClient.from_env()
 
     rag_correct = 0
-    octo_correct = 0
+    tahi_correct = 0
     rag_recall = 0
-    octo_recall = 0
+    tahi_recall = 0
     total = 0
     results: list[dict[str, Any]] = []
 
@@ -320,7 +320,7 @@ def evaluate_hotpotqa(
             system='Answer the question using only the provided facts. '
                   'If the facts do not contain the answer, say "I don\'t know".',
         )
-        octo_packet = coprocessor.answer()
+        tahi_packet = coprocessor.answer()
 
         rag_evidence = [
             {"text": r.text, "source": r.metadata.get("source", r.doc_id) if r.metadata else r.doc_id}
@@ -328,14 +328,14 @@ def evaluate_hotpotqa(
         ]
 
         rag_ok = _score(rag_answer_text, question.answer)
-        octo_ok = _score(octo_packet.answer, question.answer)
+        tahi_ok = _score(tahi_packet.answer, question.answer)
         rag_rec = _retrieval_recall(question.answer, rag_evidence)
-        octo_rec = _retrieval_recall(question.answer, octo_packet.evidence)
+        tahi_rec = _retrieval_recall(question.answer, tahi_packet.evidence)
 
         rag_correct += int(rag_ok)
-        octo_correct += int(octo_ok)
+        tahi_correct += int(tahi_ok)
         rag_recall += int(rag_rec)
-        octo_recall += int(octo_rec)
+        tahi_recall += int(tahi_rec)
         total += 1
 
         results.append(
@@ -344,13 +344,13 @@ def evaluate_hotpotqa(
                 "question": question.text,
                 "expected": question.answer,
                 "rag_answer": rag_answer_text,
-                "octo_answer": octo_packet.answer,
+                "tahi_answer": tahi_packet.answer,
                 "rag_correct": rag_ok,
-                "octo_correct": octo_ok,
+                "tahi_correct": tahi_ok,
                 "rag_retrieval_recall": rag_rec,
-                "octo_retrieval_recall": octo_rec,
+                "tahi_retrieval_recall": tahi_rec,
                 "rag_model": rag_model_name,
-                "octo_model": octo_packet.model,
+                "tahi_model": tahi_packet.model,
             }
         )
 
@@ -362,13 +362,13 @@ def evaluate_hotpotqa(
             "retrieval_correct": rag_recall,
             "retrieval_recall": rag_recall / total if total else 0.0,
         },
-        "octo": {
-            "correct": octo_correct,
+        "tahi": {
+            "correct": tahi_correct,
             "total": total,
-            "accuracy": octo_correct / total if total else 0.0,
-            "retrieval_correct": octo_recall,
-            "retrieval_recall": octo_recall / total if total else 0.0,
+            "accuracy": tahi_correct / total if total else 0.0,
+            "retrieval_correct": tahi_recall,
+            "retrieval_recall": tahi_recall / total if total else 0.0,
         },
-        "delta": (octo_correct / total if total else 0.0) - (rag_correct / total if total else 0.0),
+        "delta": (tahi_correct / total if total else 0.0) - (rag_correct / total if total else 0.0),
         "results": results,
     }

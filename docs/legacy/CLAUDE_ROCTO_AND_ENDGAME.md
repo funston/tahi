@@ -1,9 +1,9 @@
-# ROCTO (joint validation harness) + OCTO Endgame Plan
+# ROCTO (joint validation harness) + TAHI Endgame Plan
 
 **Date:** 2026-08-03
 **Two questions answered:**
 1. Is there a codebase we can bring to the RETRO/ANN company to validate their architecture before $10M of hardware?
-2. What exactly brings OCTO home — to success or to validated failure?
+2. What exactly brings TAHI home — to success or to validated failure?
 
 ---
 
@@ -36,9 +36,9 @@ Measured at n=500: `l3_alpha0` vs `base`, delta 0.0, CI [0.0, 0.0], across every
 | Verified identity control | `run_l3_native.py`, `gcca_layer.py` | Their Stage 1 Test 1, done |
 | 4-arm ablation harness | `run_l3_native.py` | Their "dynamic ablation toggling" requirement |
 | Frozen-base adapter training | `scripts/train_gcca.py` | <5% trainable, no catastrophic forgetting |
-| Fail-loud preflight | `octo/eval/preflight.py` | Refuses to run degraded |
-| Degraded-artifact refusal | `octo/eval/manifest.py` | `validate()` won't write a compromised result |
-| Paired bootstrap + power | `octo/eval/stats.py` | CIs, McNemar, `required_n` |
+| Fail-loud preflight | `tahi/eval/preflight.py` | Refuses to run degraded |
+| Degraded-artifact refusal | `tahi/eval/manifest.py` | `validate()` won't write a compromised result |
+| Paired bootstrap + power | `tahi/eval/stats.py` | CIs, McNemar, `required_n` |
 | **Defect taxonomy** | `docs/archive/` | The specific ways this class of system fakes a win |
 
 ## The credential that matters
@@ -83,7 +83,7 @@ That last row is the elegant part. **ROCTO = one harness, one GCCA, two memory b
 
 ---
 
-# Part 2 — OCTO endgame: 6 weeks to a definitive answer
+# Part 2 — TAHI endgame: 6 weeks to a definitive answer
 
 Four gates. Each is pre-registered before running. **Every outcome, pass or fail, is publishable.** No gate is skipped — skipping Tier 0 and Tier 1 and jumping to Tier 2 is exactly how the project got here.
 
@@ -105,7 +105,7 @@ Retrain adapters. Read α.
 | Outcome | Meaning |
 |---|---|
 | **PASS** — α materially above 0.02, and `l3_trained` > `base` on the structural pool with CI excluding zero | Architecture works. Memory quality is the bottleneck. Proceed |
-| **FAIL** — α stays near zero with perfect memory | GCCA cannot use even ideal input. **OCTO L3 is dead, and RETRO-v2's premise is damaged with it.** Stop and publish |
+| **FAIL** — α stays near zero with perfect memory | GCCA cannot use even ideal input. **TAHI L3 is dead, and RETRO-v2's premise is damaged with it.** Stop and publish |
 
 This is the highest-information experiment available and it costs a week.
 
@@ -113,12 +113,12 @@ This is the highest-information experiment available and it costs a week.
 
 `docs/archive/retro-v2-review.md` §6 specified this as the *first* step and it was skipped.
 
-Build a small Wikipedia entity-graph world model. Evaluate on HotpotQA / MuSiQue / 2WikiMultiHopQA against four arms: base, single-shot RAG, iterative RAG, OCTO graph traversal.
+Build a small Wikipedia entity-graph world model. Evaluate on HotpotQA / MuSiQue / 2WikiMultiHopQA against four arms: base, single-shot RAG, iterative RAG, TAHI graph traversal.
 
 | Outcome | Meaning |
 |---|---|
 | **PASS** — iterative or graph beats single-shot, CI excludes zero | Continuous retrieval is validated. Proceed |
-| **FAIL** | Re-retrieving during reasoning does not help. **Both OCTO and RETRO-v2 lose their foundation.** Publish |
+| **FAIL** | Re-retrieving during reasoning does not help. **Both TAHI and RETRO-v2 lose their foundation.** Publish |
 
 ## Weeks 3–5 — GATE C: Can a real truth layer be built?
 

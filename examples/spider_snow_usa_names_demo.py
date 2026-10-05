@@ -10,7 +10,7 @@ if ROOT not in sys.path:
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from octo import snapshot_to_world_model
+from tahi import snapshot_to_world_model
 from implementations.spider import (
     SpiderSnowSQLBenchmarkAdapter,
     SpiderSnowWorkspace,
@@ -23,7 +23,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--spider2-root", default="/Users/richiek/work/Spider2")
     parser.add_argument("--task-id", default="sf_bq286")
-    parser.add_argument("--credentials-path", default="/Users/richiek/work/bender/snowflake_creds.json")
+    parser.add_argument("--credentials-path", default="/Users/richiek/work/tahi/snowflake_creds.json")
     args = parser.parse_args()
 
     workspace = SpiderSnowWorkspace(args.spider2_root)

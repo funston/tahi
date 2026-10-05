@@ -1,4 +1,4 @@
-"""Compare one-shot RAG vs. OCTO with an enriched USA_NAMES world model.
+"""Compare one-shot RAG vs. TAHI with an enriched USA_NAMES world model.
 
 This script isolates the value of a better-structured world model for the
 USA_NAMES Spider task. It shows that a generic schema world model misses the
@@ -25,12 +25,12 @@ import json
 
 from implementations.spider.spider import SpiderSchemaCoprocessor
 from implementations.spider.spider_lite import SpiderLiteTask
-from octo.database import SQLSchemaSnapshot, snapshot_to_world_model
-from octo.retrieval.legacy import InMemoryGraphIndex, embed_text, token_overlap_score
-from octo.world_state import WorldModel
+from tahi.database import SQLSchemaSnapshot, snapshot_to_world_model
+from tahi.retrieval.legacy import InMemoryGraphIndex, embed_text, token_overlap_score
+from tahi.world_state import WorldModel
 
 
-SNAPSHOT_PATH = Path("/Users/richiek/work/Spider2/octo_snapshots/snowflake/USA_NAMES.json")
+SNAPSHOT_PATH = Path("/Users/richiek/work/Spider2/tahi_snapshots/snowflake/USA_NAMES.json")
 
 QUESTION = (
     "Can you tell me the name of the most popular female baby in Wyoming for "
@@ -204,16 +204,16 @@ def main() -> None:
     rag_candidates = one_shot_rag_candidates(snapshot, QUESTION, top_k=16)
     evaluate("1) One-shot keyword RAG", rag_candidates)
 
-    # 2. OCTO with a generic (un-enriched) world model.
+    # 2. TAHI with a generic (un-enriched) world model.
     generic_world = snapshot_to_world_model(snapshot)
     generic_candidates = run_coprocessor(generic_world)
-    evaluate("2) OCTO generic world model", generic_candidates)
+    evaluate("2) TAHI generic world model", generic_candidates)
 
-    # 3. OCTO with an enriched world model.
+    # 3. TAHI with an enriched world model.
     enriched_world = snapshot_to_world_model(snapshot)
     enrich_usa_names_world_model(enriched_world)
     enriched_candidates = run_coprocessor(enriched_world)
-    evaluate("3) OCTO enriched world model", enriched_candidates)
+    evaluate("3) TAHI enriched world model", enriched_candidates)
 
     print("\n" + "=" * 70)
     print("Take-away")

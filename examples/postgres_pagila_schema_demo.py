@@ -1,7 +1,7 @@
 import argparse
 import json
 
-from octo import (
+from tahi import (
     PostgresSchemaIntrospector,
     SQLSchemaCoprocessor,
     build_pagila_fixture_snapshot,
@@ -52,7 +52,7 @@ def main() -> None:
     print("QUESTION")
     print(args.query)
     print()
-    print("BENDER RESULT")
+    print("TAHI RESULT")
     print(json.dumps(result, indent=2))
 
 

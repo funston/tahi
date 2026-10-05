@@ -2,11 +2,11 @@
 """
 hotpotqa_demo.py
 
-End-to-end demo: build a BENDER world model from HotpotQA supporting documents
-and compare BENDER graph traversal against RAG baselines on multi-hop questions.
+End-to-end demo: build a TAHI world model from HotpotQA supporting documents
+and compare TAHI graph traversal against RAG baselines on multi-hop questions.
 
 This is designed to be the simplest provable demo that:
-  1. BENDER builds a world coprocessor from domain data.
+  1. TAHI builds a world coprocessor from domain data.
   2. Graph traversal beats single-shot and iterative RAG on multi-hop QA.
   3. The result is measurable with exact-match and F1 scores.
 
@@ -39,7 +39,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from implementations.wikipedia import WikipediaCoprocessor
-from octo.world_state import WorldModel
+from tahi.world_state import WorldModel
 
 
 WORD_RE = re.compile(r"[a-z0-9_']+", re.IGNORECASE)
@@ -176,7 +176,7 @@ def baseline_iterative_rag(
     return "\n".join(context_parts)
 
 
-def octo_answer(
+def tahi_answer(
     question: str,
     world_model: WorldModel,
     llm_generate_fn: Callable[[str], str] | None = None,
@@ -243,7 +243,7 @@ def evaluate(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="HotpotQA BENDER demo.")
+    parser = argparse.ArgumentParser(description="HotpotQA TAHI demo.")
     parser.add_argument("--hotpotqa", required=True, help="Path to HotpotQA dev JSON.")
     parser.add_argument("--limit", type=int, default=50, help="Number of examples.")
     parser.add_argument("--output", required=True, help="Output JSON report path.")
@@ -254,7 +254,7 @@ def main() -> None:
     examples = load_hotpotqa(args.hotpotqa, limit=args.limit)
     print(f"Loaded {len(examples)} examples.")
 
-    print("Building BENDER world model from supporting documents...")
+    print("Building TAHI world model from supporting documents...")
     world_model = build_world_model_from_hotpotqa(examples)
     print(f"World model: {len(world_model.nodes)} nodes, {len(world_model.edges)} edges.")
 
@@ -295,7 +295,7 @@ def main() -> None:
     systems: dict[str, Callable[[str], dict[str, Any]]] = {
         "single_shot_rag": lambda q: {"answer": baseline_single_shot_rag(q, world_model)},
         "iterative_rag": lambda q: {"answer": baseline_iterative_rag(q, world_model)},
-        "octo": lambda q: octo_answer(q, world_model, llm_generate_fn),
+        "tahi": lambda q: tahi_answer(q, world_model, llm_generate_fn),
     }
 
     for name, answer_fn in systems.items():

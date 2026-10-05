@@ -1,22 +1,43 @@
-# OCTO
+# Tahi
 
-**OCTO is a world-model coprocessor framework for LLMs.**
+**Tahi is a world-model coprocessor framework for LLMs.**
 
-It is built around a simple premise: specialized knowledge work should not require either retraining a base model or forcing the model to reconstruct structure from long retrieved prompts. OCTO builds explicit world state at runtime, reasons over that state, and returns structured control to the model.
+It is built around a simple premise: specialized knowledge work should not require either retraining a base model or forcing the model to reconstruct structure from long retrieved prompts. Tahi builds explicit world state at runtime, reasons over that state, and returns structured control to the model.
 
 Version: `0.1.0`
 
-## Why OCTO
+## Why Tahi
 
-- **More structured than RAG:** OCTO operates over typed entities, relations, constraints, and provenance, not only retrieved passages.
+- **More structured than RAG:** Tahi operates over typed entities, relations, constraints, and provenance, not only retrieved passages.
 - **More flexible than retraining:** domain specialization happens in the runtime world model, not by training a separate base model for each domain state.
 - **Built for integration:** the core runtime emits a control packet and fused signal that can be consumed by black-box or open-weight model paths.
 - **Well suited to specialized domains:** biotech, scientific interpretation, and enterprise data systems where domain structure matters more than generic text recall.
 - **Production-ready MLOps:** adopts FTI (Feature/Training/Inference) patterns with versioned world models, reproducible builds, and 3x faster benchmarks.
 
+## What we are building now: TahiRetro
+
+**Keep the model frozen, and let it re-aim retrieval while it is writing** — every 64
+generated tokens, keyed on the text it just produced, injected into the residual stream
+instead of the prompt. The retrieval substrate is Tahi's graph (vector seeding plus typed
+edge expansion) rather than RETRO's flat text chunks.
+
+This is RETRO's chunked cross-attention schedule with Tahi's structured substrate. The
+schedule is the bet: single-shot retrieval cannot fetch what the question does not name,
+so multi-hop questions with a hidden bridge entity are unreachable until the model has
+written the bridge itself.
+
+- Spec, arms, and kill criteria: **[docs/TAHIRETRO_SPEC.md](docs/TAHIRETRO_SPEC.md)**
+- Mechanism: `src/tahi/native/chunked_decode.py`, `src/tahi/native/gcca_layer.py`
+- Verified properties (Tier 1): `tests/test_chunked_gcca.py`
+- See it fire: `PYTHONPATH=src python examples/tahiretro_chunked_demo.py`
+
+Status: mechanics built and verified — `alpha=0` bit-identical to the base model, no
+causal leak across chunk boundaries, O(1) resident memory. **No accuracy claim has been
+made.** The earlier Level 3 benchmark measured one-shot injection, not this schedule.
+
 ## Architecture Highlights
 
-OCTO follows the **FTI MLOps pattern** for world model management:
+Tahi follows the **FTI MLOps pattern** for world model management:
 
 - **World Model Pipeline** (Feature Pipeline): Pre-build and version domain knowledge graphs
 - **Coprocessor Pipeline** (Inference Pipeline): Runtime retrieval, planning, and fusion
@@ -28,7 +49,7 @@ See [Architecture](docs/ARCHITECTURE.md) for details.
 
 ## Repository Structure
 
-- `src/octo/`
+- `src/tahi/`
  The pure core package.
 - `implementations/`
  First-party reference world models built on top of the core package.
@@ -41,8 +62,8 @@ See [Architecture](docs/ARCHITECTURE.md) for details.
 
 Repository rule:
 
-- `octo` must not import from `implementations`
-- `implementations/*` may import from `octo`
+- `tahi` must not import from `implementations`
+- `implementations/*` may import from `tahi`
 
 ## Quick Start
 
@@ -94,7 +115,7 @@ PYTHONPATH=src python examples/mass_spec_demo.py --mode spectrum --case-id demo_
 
 The core runtime is real and runnable today:
 
-- `OctoRuntime`
+- `TahiRuntime`
 - `BlackBoxIntegration`
 - `NativeIntegration`
 - `WeightedBlendFusion`

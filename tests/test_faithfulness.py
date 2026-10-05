@@ -22,8 +22,10 @@ for p in (ROOT, os.path.join(ROOT, "src")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from octo.eval.faithfulness import (  # noqa: E402
-    fact_coverage, groundedness, score_faithfulness,
+from tahi.eval.faithfulness import (  # noqa: E402
+    fact_coverage,
+    groundedness,
+    score_faithfulness,
 )
 
 

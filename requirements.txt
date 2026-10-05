@@ -1,4 +1,4 @@
-# OCTO Requirements
+# TAHI Requirements
 
 # Core dependencies
 numpy>=1.26.0

@@ -1,7 +1,7 @@
 import json
 
-from octo import BlackBoxIntegration, NativeTokenformerIntegration, wrap_llm
-from octo.demo_worlds import build_hello_world_animal_model
+from tahi import BlackBoxIntegration, NativeTokenformerIntegration, wrap_llm
+from tahi.demo_worlds import build_hello_world_animal_model
 
 
 def print_result(title: str, result: dict) -> None:

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tahi Visual Architecture Overview</title>
+    <style>
+        :root {
+            --bg: #fafafa;
+            --fg: #1a1a1a;
+            --muted: #666;
+            --accent: #2563eb;
+            --border: #e5e5e5;
+            --card: #fff;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+            color: #fff;
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+        }
+        header h1 { margin: 0 0 0.75rem; font-size: 2.75rem; font-weight: 800; letter-spacing: -0.02em; }
+        header p { margin: 0; color: rgba(255,255,255,0.9); max-width: 720px; margin-left: auto; margin-right: auto; font-size: 1.15rem; }
+        main { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+        .diagram {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .diagram h2 { margin-top: 0; font-size: 1.35rem; }
+        .diagram p { color: var(--muted); margin-top: -0.5rem; margin-bottom: 1.5rem; }
+        .diagram img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tahi Visual Architecture Overview</h1>
+        <p>High-level diagrams illustrating the Tahi world-coprocessor design, integration patterns, cognitive lifecycle, and joint architecture with RelationalAI.</p>
+    </header>
+
+    <main>
+        <div class="diagram" style="background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);">
+            <h2>1. Value Proposition</h2>
+            <p>The investor one-liner: the problem Tahi solves, the solution, and the outcome.</p>
+            <img src="../diagrams/tahi_value_proposition.svg" alt="Tahi Value Proposition">
+        </div>
+
+        <div class="diagram">
+            <h2>2. Component Overview</h2>
+            <p>Core runtime modules, model integrations, storage layers, and reference domain implementations.</p>
+            <img src="../diagrams/tahi_component_overview.svg" alt="Tahi Component Overview">
+        </div>
+
+        <div class="diagram">
+            <h2>3. Cognitive Lifecycle</h2>
+            <p>How a user query flows through capture, retrieval, planning, rules, simulation, fusion, and injection into LLM generation.</p>
+            <img src="../diagrams/tahi_cognitive_lifecycle.svg" alt="Tahi Cognitive Lifecycle">
+        </div>
+
+        <div class="diagram">
+            <h2>4. Coprocessor Architecture</h2>
+            <p>The structural relationship between the LLM, Tahi Gardens runtime, world models, and grounding signals.</p>
+            <img src="../diagrams/tahi_coprocessor_architecture.svg" alt="Tahi Coprocessor Architecture">
+        </div>
+
+        <div class="diagram">
+            <h2>5. Integration Levels</h2>
+            <p>Progressive adoption paths from external API calls through native tokenformer integration.</p>
+            <img src="../diagrams/tahi_integration_levels.svg" alt="Tahi Integration Levels">
+        </div>
+
+        <div class="diagram">
+            <h2>6. Joint Architecture with RelationalAI</h2>
+            <p>How Tahi and RelationalAI can combine semantic world models with relational knowledge graphs.</p>
+            <img src="../diagrams/tahi_relationalai_joint_architecture.svg" alt="Tahi RelationalAI Joint Architecture">
+        </div>
+
+        <div class="diagram">
+            <h2>7. Tahi vs. Alternatives</h2>
+            <p>Positioning Tahi against RAG, fine-tuning, and agent-only approaches.</p>
+            <img src="../diagrams/tahi_vs_alternatives.svg" alt="Tahi vs Alternatives">
+        </div>
+
+        <div class="diagram">
+            <h2>8. KAA Inference Loop</h2>
+            <p>The Knowledge-Action-Answer loop for grounded, iterative inference.</p>
+            <img src="../diagrams/kaa_inference_loop.svg" alt="KAA Inference Loop">
+        </div>
+    </main>
+
+    <footer>
+        <p>Tahi Gardens architecture diagrams · <a href="../diagrams">View source .mmd files</a> · <a href="investor_brief_tahi_gardens.md">Investor brief</a></p>
+    </footer>
+</body>
+</html>

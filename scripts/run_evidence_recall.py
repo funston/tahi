@@ -65,7 +65,7 @@ def build_question_relevant_graph_context(
 ) -> str:
     """Retrieve top-K graph nodes and edges matching words/concepts in the question."""
     q_tokens = tokenize_text(question)
-    
+
     # Score nodes by word overlap with query
     scored_nodes: list[tuple[float, str]] = []
     for n in graph_nodes:
@@ -86,7 +86,7 @@ def build_question_relevant_graph_context(
         s_id, t_id, r = e.get("source"), e.get("target"), e.get("relation")
         s_name = nodes_by_id.get(s_id, {}).get("name", str(s_id))
         t_name = nodes_by_id.get(t_id, {}).get("name", str(t_id))
-        
+
         if s_id in top_node_ids or t_id in top_node_ids:
             relevant_edges.append(e)
         else:
@@ -104,7 +104,7 @@ def build_question_relevant_graph_context(
         s_name = nodes_by_id.get(e["source"], {}).get("name", str(e["source"]))
         t_name = nodes_by_id.get(e["target"], {}).get("name", str(e["target"]))
         lines.append(f"- ({s_name}) --[{e['relation']}]--> ({t_name})")
-        
+
     return "\n".join(lines)
 
 
@@ -116,10 +116,10 @@ def get_stratified_questions(questions: list[dict[str, Any]], n_total: int = 100
     by_type: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
     for q in questions:
         by_type[q.get("question_type", "Fact Retrieval")].append(q)
-    
+
     per_type = max(1, n_total // len(by_type))
     sampled: list[dict[str, Any]] = []
-    for q_type, q_list in sorted(by_type.items()):
+    for _q_type, q_list in sorted(by_type.items()):
         sampled.extend(random.sample(q_list, min(per_type, len(q_list))))
     return sampled
 
@@ -148,7 +148,7 @@ async def main_async() -> int:
 
     graph_data = json.loads(graph_path.read_text(encoding="utf-8"))
     questions_data = json.loads(questions_path.read_text(encoding="utf-8"))
-    
+
     if args.limit_questions:
         if args.stratified:
             questions_data = get_stratified_questions(questions_data, n_total=args.limit_questions, seed=args.seed)
@@ -171,7 +171,7 @@ async def main_async() -> int:
         q_text = q.get("question", "")
         q_type = q.get("question_type", "Unknown")
         evidence_list = q.get("evidence", [])
-        
+
         if not evidence_list:
             continue
 

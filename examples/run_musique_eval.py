@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the OCTO MuSiQue multi-hop evaluation.
+"""Run the TAHI MuSiQue multi-hop evaluation.
 
 Usage:
     export OPENAI_API_KEY="..."
@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
 from implementations.musique import evaluate_musique
-from octo.results_reporter import write_eval_artifacts
+from tahi.results_reporter import write_eval_artifacts
 
 
 def main():
@@ -45,7 +45,7 @@ def main():
     print(f"  MD:   {paths['md']}")
     print(f"  SVG:  {paths['svg']}")
     print(f"\n  RAG accuracy:   {report['rag']['accuracy']:.1%}")
-    print(f"  OCTO accuracy:  {report['octo']['accuracy']:.1%}")
+    print(f"  TAHI accuracy:  {report['tahi']['accuracy']:.1%}")
     print(f"  Delta:          {report['delta']:+.1%}")
 
 

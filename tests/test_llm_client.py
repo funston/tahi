@@ -1,10 +1,8 @@
 """Tests for the swappable LLM client."""
 
-import os
 
-import pytest
 
-from octo.llm_client import LLMClient, is_configured
+from tahi.llm_client import LLMClient, is_configured
 
 
 def _clear_env(monkeypatch):
@@ -50,8 +48,8 @@ def test_is_configured_true_for_kimi(monkeypatch):
 def test_vllm_provider_uses_openai_client_and_local_defaults(monkeypatch):
     """vllm provider routes through the OpenAI-compatible client with local defaults."""
     _clear_env(monkeypatch)
-    monkeypatch.setenv("OCTO_LLM_PROVIDER", "vllm")
-    monkeypatch.setenv("OCTO_LLM_MODEL", "Qwen/Qwen2.5-32B-Instruct")
+    monkeypatch.setenv("TAHI_LLM_PROVIDER", "vllm")
+    monkeypatch.setenv("TAHI_LLM_MODEL", "Qwen/Qwen2.5-32B-Instruct")
 
     client = LLMClient.from_env()
     assert client.provider == "vllm"
@@ -62,7 +60,7 @@ def test_vllm_provider_uses_openai_client_and_local_defaults(monkeypatch):
 def test_kimi_provider_uses_moonshot_defaults(monkeypatch):
     """kimi provider routes to Moonshot's OpenAI-compatible endpoint."""
     _clear_env(monkeypatch)
-    monkeypatch.setenv("OCTO_LLM_PROVIDER", "kimi")
+    monkeypatch.setenv("TAHI_LLM_PROVIDER", "kimi")
     monkeypatch.setenv("MOONSHOT_API_KEY", "sk-test")
 
     client = LLMClient.from_env()

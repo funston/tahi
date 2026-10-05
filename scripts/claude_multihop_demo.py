@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple demo showing BENDER's graph traversal beats iterative RAG
+Simple demo showing TAHI's graph traversal beats iterative RAG
 for multi-hop questions with "hidden bridge entities".
 
 Run from project root:
@@ -15,22 +15,6 @@ def demo_multihop():
     print("=" * 60)
 
     # The knowledge graph
-    graph = {
-        'nodes': {
-            'jane_austen': {'label': 'Jane Austen', 'text': 'Jane Austen was an English novelist'},
-            'england': {'label': 'England', 'text': 'England is a country, capital London'},
-            'london': {'label': 'London', 'text': 'London is the capital of England'},
-            'barack_obama': {'label': 'Barack Obama', 'text': 'Barack Obama was born in Hawaii'},
-            'hawaii': {'label': 'Hawaii', 'text': 'Hawaii is a US state, capital Honolulu'},
-            'honolulu': {'label': 'Honolulu', 'text': 'Honolulu is the capital of Hawaii'},
-        },
-        'edges': [
-            ('jane_austen', 'born_in', 'england'),
-            ('england', 'capital', 'london'),
-            ('barack_obama', 'born_in', 'hawaii'),
-            ('hawaii', 'capital', 'honolulu'),
-        ]
-    }
 
     questions = [
         {
@@ -61,8 +45,8 @@ def demo_multihop():
         print("   → Answer: London")
         print("   ✅ Works, but needs 2-3 retrieval rounds")
 
-        # 2. GRAPH TRAVERSAL (what BENDER does)
-        print("\n2. GRAPH TRAVERSAL (BENDER):")
+        # 2. GRAPH TRAVERSAL (what TAHI does)
+        print("\n2. GRAPH TRAVERSAL (TAHI):")
         print("   Step 1: Find seed entity 'Jane Austen'")
         print("   Step 2: Follow edge: Jane Austen --born_in--> England")
         print("   Step 3: Follow edge: England --capital--> London")
@@ -85,7 +69,7 @@ def demo_multihop():
     print("   2. Finds hidden bridge entities deterministically")
     print("   3. O(1) memory vs O(n) for iterative RAG")
     print("   4. No hallucination - only follows real edges")
-    print("\n🎯 This proves BENDER's thesis:")
+    print("\n🎯 This proves TAHI's thesis:")
     print("   Structured world models > Unstructured retrieval")
     print("=" * 60)
 

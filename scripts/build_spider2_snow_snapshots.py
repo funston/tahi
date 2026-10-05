@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from octo import SpiderSnowWorkspace, SpiderSnowflakeMetadataLoader
+from tahi import SpiderSnowflakeMetadataLoader, SpiderSnowWorkspace
 
 
 def snapshot_to_dict(snapshot):

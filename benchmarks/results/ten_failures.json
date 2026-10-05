@@ -1,0 +1,284 @@
+{
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "n": 10,
+ "fixed": 10,
+ "rows": [
+  {
+   "question": "who starred in the movies whose director also directed See No Evil, Hear No Evil",
+   "correct_answers": [
+    "Valerie Perrine",
+    "Al Pacino",
+    "Barbara Harris",
+    "Lee Grant",
+    "Tuesday Weld",
+    "James Coburn",
+    "Maureen Stapleton",
+    "Ian Bannen",
+    "Richard Pryor",
+    "Nick Nolte",
+    "Ali MacGraw",
+    "Judd Hirsch",
+    "Michael Douglas",
+    "Steve Lawrence",
+    "Dyan Cannon",
+    "Dick Shawn",
+    "Steve Martin",
+    "Lee Remick",
+    "Patrick McGoohan",
+    "Alan Arkin",
+    "George Peppard",
+    "Jill Clayburgh",
+    "JoBeth Williams",
+    "Peter Falk",
+    "Bette Midler",
+    "Judith Ivey",
+    "George C. Scott",
+    "James Coco",
+    "Tom Arnold",
+    "Gene Wilder",
+    "Walter Matthau",
+    "Ralph Macchio",
+    "Ryan O'Neal",
+    "David Paymer",
+    "Sophia Loren",
+    "Rod Steiger",
+    "John Marley",
+    "Charles Grodin",
+    "Chill Wills",
+    "Mary Steenburgen",
+    "Rock Hudson",
+    "James Garner",
+    "Natalie Wood",
+    "Dudley Moore",
+    "Julie Andrews",
+    "Richard E. Grant",
+    "Catherine O'Hara",
+    "Shelley Long",
+    "Peter O'Toole",
+    "James Belushi",
+    "Ray Milland",
+    "Melvyn Douglas",
+    "Robin Tunney"
+   ],
+   "unaided": "Morgan Freeman and Sidney Poitier",
+   "graph_facts": [
+    "See No Evil, Hear No Evil was directed by Arthur Hiller.",
+    "Arthur Hiller directed Author! Author!.",
+    "Author! Author! starred Al Pacino."
+   ],
+   "with_facts": "Al Pacino",
+   "fixed": true
+  },
+  {
+   "question": "when did the films release whose screenwriters also wrote Flakes",
+   "correct_answers": [
+    "2006"
+   ],
+   "unaided": "2014",
+   "graph_facts": [
+    "Flakes starred Aaron Stanford.",
+    "Aaron Stanford starred in Live Free or Die.",
+    "Live Free or Die was released in 2006."
+   ],
+   "with_facts": "2006",
+   "fixed": true
+  },
+  {
+   "question": "what types are the movies written by the screenwriter of Miami Blues",
+   "correct_answers": [
+    "Crime"
+   ],
+   "unaided": "drama and crime",
+   "graph_facts": [
+    "Miami Blues was directed by George Armitage.",
+    "George Armitage directed Hit Man.",
+    "Hit Man is a Crime film."
+   ],
+   "with_facts": "Crime",
+   "fixed": true
+  },
+  {
+   "question": "which person directed the films acted by the actors in Our Man in Havana",
+   "correct_answers": [
+    "Elia Kazan",
+    "Gary Trousdale",
+    "Lee Sholem",
+    "Dorothy Arzner",
+    "Richard Quine",
+    "Zalman King",
+    "Walter Lang",
+    "Richard Brooks",
+    "George Seaton",
+    "Marshall Brickman",
+    "Henry King",
+    "Lewis Allen",
+    "Michael Anderson",
+    "Ronald Neame",
+    "Nancy Meyers",
+    "Sidney Lanfield",
+    "Ethan Coen",
+    "Anthony Mann",
+    "Charles Crichton",
+    "H. Bruce Humberstone",
+    "David Lean",
+    "Jean Renoir",
+    "Jean Negulesco",
+    "David Swift",
+    "Peter Glenville",
+    "Anthony Kimmins",
+    "John Ford",
+    "Nicholas Ray",
+    "Wayne Wang",
+    "Henry Cass",
+    "Jean Delannoy",
+    "Roman Polanski",
+    "Alexander Mackendrick",
+    "Alfred Hitchcock",
+    "Charles Vidor",
+    "Andrew V. McLaglen",
+    "Frank Borzage",
+    "Delmer Daves",
+    "Delbert Mann",
+    "Sam Peckinpah",
+    "William Dieterle",
+    "Henry Hathaway",
+    "Les Mayfield",
+    "Ken Hughes",
+    "Kirk Wise",
+    "Robert Hamer",
+    "Jack Gold",
+    "Andr\u00e9 De Toth",
+    "Henry Koster",
+    "James Neilson",
+    "Chris Columbus"
+   ],
+   "unaided": "Vincente Minnelli",
+   "graph_facts": [
+    "Our Man in Havana starred Alec Guinness.",
+    "Alec Guinness starred in Cromwell.",
+    "Cromwell was directed by Ken Hughes."
+   ],
+   "with_facts": "Ken Hughes",
+   "fixed": true
+  },
+  {
+   "question": "when did the movies written by Sword of the Beast writers release",
+   "correct_answers": [
+    "1964",
+    "1969"
+   ],
+   "unaided": "2013",
+   "graph_facts": [
+    "Sword of the Beast was directed by Hideo Gosha.",
+    "Hideo Gosha directed Goyokin.",
+    "Goyokin was released in 1969."
+   ],
+   "with_facts": "1969",
+   "fixed": true
+  },
+  {
+   "question": "what genres are the films directed by the Tsotsi director",
+   "correct_answers": [
+    "Action",
+    "Thriller"
+   ],
+   "unaided": "crime, drama",
+   "graph_facts": [
+    "Tsotsi was directed by Gavin Hood.",
+    "Gavin Hood directed Ender's Game.",
+    "Ender's Game is a Action film."
+   ],
+   "with_facts": "Action",
+   "fixed": true
+  },
+  {
+   "question": "who are the directors of movies whose writers also wrote Before the Devil Knows You're Dead",
+   "correct_answers": [
+    "Henrik Ruben Genz"
+   ],
+   "unaided": "John Carpenter and David Cronenberg",
+   "graph_facts": [
+    "Before the Devil Knows You're Dead was written by Kelly Masterson.",
+    "Kelly Masterson wrote Good People.",
+    "Good People was directed by Henrik Ruben Genz."
+   ],
+   "with_facts": "Henrik Ruben Genz",
+   "fixed": true
+  },
+  {
+   "question": "who are the directors of films whose writers also wrote Deconstructing Harry",
+   "correct_answers": [
+    "Martin Scorsese",
+    "Marco Martins",
+    "Herbert Ross",
+    "Woody Allen",
+    "Penny Panayotopoulou",
+    "Francis Ford Coppola",
+    "Howard Morris"
+   ],
+   "unaided": "David Cronenberg and David Lynch",
+   "graph_facts": [
+    "Deconstructing Harry was directed by Woody Allen.",
+    "Woody Allen directed A Midsummer Night's Sex Comedy.",
+    "A Midsummer Night's Sex Comedy was directed by Woody Allen."
+   ],
+   "with_facts": "Woody Allen",
+   "fixed": true
+  },
+  {
+   "question": "who acted in the movies directed by the director of Legal Eagles",
+   "correct_answers": [
+    "Warren Oates",
+    "Ashton Kutcher",
+    "Arnold Schwarzenegger",
+    "Orlando Jones",
+    "David Duchovny",
+    "Luke Wilson",
+    "Julianne Moore",
+    "Pamela Reed",
+    "Frank Langella",
+    "Billy Crystal",
+    "Dan Aykroyd",
+    "Sigourney Weaver",
+    "Seann William Scott",
+    "Rainn Wilson",
+    "Uma Thurman",
+    "Robin Williams",
+    "Anne Heche",
+    "Anna Faris",
+    "Natalie Portman",
+    "Danny DeVito",
+    "Harrison Ford",
+    "Kevin Kline",
+    "Harold Ramis",
+    "Bill Murray",
+    "Penelope Ann Miller",
+    "Kevin Dunn",
+    "Nastassja Kinski"
+   ],
+   "unaided": "David Thewlis, Michael Gambon, and Richard Griffiths acted in the movies directed by David Yates, the director of Harry Potter film series.",
+   "graph_facts": [
+    "Legal Eagles was directed by Ivan Reitman.",
+    "Ivan Reitman directed Dave.",
+    "Dave starred Frank Langella."
+   ],
+   "with_facts": "Frank Langella",
+   "fixed": true
+  },
+  {
+   "question": "what languages are the movies that share actors with Platinum Blonde in",
+   "correct_answers": [
+    "French",
+    "Italian"
+   ],
+   "unaided": "English, French, and German",
+   "graph_facts": [
+    "Platinum Blonde starred Loretta Young.",
+    "Loretta Young starred in Come to the Stable.",
+    "Come to the Stable is in French."
+   ],
+   "with_facts": "French",
+   "fixed": true
+  }
+ ]
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-OCTO proof of concept on a public knowledge graph.
+TAHI proof of concept on a public knowledge graph.
 
 The question, plainly: given an existing public KG, does consulting it at
 generation time make the answers more accurate than the bare LLM?
@@ -11,7 +11,7 @@ says -- a fact somebody else curated, not one we invented. Two arms answer the
 same questions and the output is a side-by-side sheet for a human to mark up.
 
     ARM A  base       the LLM answers from parametric memory alone
-    ARM B  octo       the LLM answers, then OCTO queries the graph and
+    ARM B  tahi       the LLM answers, then TAHI queries the graph and
                       corrects the answer when it is not one the graph supports
 
 Arm B is deliberately NOT prompt-stuffing. Nothing is injected before
@@ -36,7 +36,7 @@ import random
 import re
 import sys
 from collections import defaultdict
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -236,9 +236,9 @@ def main() -> int:
             "question": q.text,
             "graph_answer": "; ".join(q.gold_names[:5]),
             "n_valid_answers": len(q.gold_names),
-            "A_without_octo": a_text,
-            "B_with_octo": b_text,
-            "octo_corrected": was_corrected,
+            "A_without_tahi": a_text,
+            "B_with_tahi": b_text,
+            "tahi_corrected": was_corrected,
             "A_auto_match": bool(a_match),
             "B_auto_match": bool(b_match),
             "HUMAN_VERDICT_A": "",
@@ -258,9 +258,9 @@ def main() -> int:
     json_path.write_text(json.dumps({
         "model": args.model, "n": len(questions), "seed": args.seed,
         "graph": "Hetionet v1.0 (Himmelstein et al. 2017)",
-        "auto_match_without_octo": a_hit,
-        "auto_match_with_octo": b_hit,
-        "octo_corrections": corrected,
+        "auto_match_without_tahi": a_hit,
+        "auto_match_with_tahi": b_hit,
+        "tahi_corrections": corrected,
         "rows": rows,
     }, indent=2), encoding="utf-8")
 
@@ -270,9 +270,9 @@ def main() -> int:
     print("HETIONET POC")
     print("=" * 62)
     print(f"  questions                 {n}")
-    print(f"  A  without OCTO  correct  {a_hit}/{n}  ({a_hit/n:.1%})")
-    print(f"  B  with OCTO     correct  {b_hit}/{n}  ({b_hit/n:.1%})")
-    print(f"  OCTO intervened on        {corrected}/{n}")
+    print(f"  A  without TAHI  correct  {a_hit}/{n}  ({a_hit/n:.1%})")
+    print(f"  B  with TAHI     correct  {b_hit}/{n}  ({b_hit/n:.1%})")
+    print(f"  TAHI intervened on        {corrected}/{n}")
     print()
     print("  These are AUTOMATIC string matches and are only a rough guide.")
     print(f"  The real result is the human review of {csv_path}:")

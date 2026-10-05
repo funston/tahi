@@ -118,11 +118,11 @@ def token_chunk_text(text: str, model_name: str = "gpt-4o-mini",
         enc = tiktoken.encoding_for_model(model_name)
     except KeyError:
         enc = tiktoken.get_encoding("cl100k_base")
-        
+
     tokens = enc.encode(text)
     step = chunk_size - overlap
     chunks: list[dict[str, Any]] = []
-    
+
     idx = 0
     while idx < len(tokens):
         chunk_tokens = tokens[idx : idx + chunk_size]
@@ -135,7 +135,7 @@ def token_chunk_text(text: str, model_name: str = "gpt-4o-mini",
         idx += step
         if idx >= len(tokens) and len(chunks) > 0:
             break
-            
+
     return chunks
 
 
@@ -208,14 +208,14 @@ def main() -> int:
     edges_list: list[dict[str, Any]] = []
     seen_edges: set[tuple[str, str, str]] = set()
     relation_counts: defaultdict[str, int] = defaultdict(int)
-    
+
     in_tok = out_tok = 0
     started = time.perf_counter()
 
     for i, ch in enumerate(chunks):
         chunk_id = ch["chunk_id"]
         ch_text = ch["text"]
-        
+
         if i % 5 == 0 or i == len(chunks) - 1:
             print(f"  Processing chunk {i+1}/{len(chunks)} [{chunk_id}] (nodes={len(nodes_map)}, edges={len(edges_list)})...", flush=True)
 
@@ -302,7 +302,7 @@ def main() -> int:
     # Construct final graph JSON & NetworkX GraphML
     nx_graph = nx.DiGraph()
     json_nodes = []
-    
+
     for n_id, n_info in sorted(nodes_map.items()):
         json_nodes.append({
             "id": n_id,
@@ -355,7 +355,7 @@ def main() -> int:
         "wall_clock_s": wall_clock,
         "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     }
-    
+
     manifest_path = out_dir / "manifest.json"
     manifest_path.write_text(json.dumps(manifest_data, indent=2), encoding="utf-8")
 

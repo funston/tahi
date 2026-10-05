@@ -1,4 +1,4 @@
-from octo.knowledge_attention import KnowledgeAttention
+from tahi.knowledge_attention import KnowledgeAttention
 
 layer = KnowledgeAttention(d_model=4)
 q = [

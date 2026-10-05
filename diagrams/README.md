@@ -1,23 +1,23 @@
-# Octo Architecture Diagrams
+# Tahi Architecture Diagrams
 
 All diagrams are authored in [Mermaid](https://mermaid.js.org/) (`.mmd`) and rendered to SVG.
 
 | Diagram | Source | Rendered SVG |
 |---------|--------|--------------|
-| Value Proposition | [octo_value_proposition.mmd](octo_value_proposition.mmd) | [octo_value_proposition.svg](octo_value_proposition.svg) |
-| Component Overview | [octo_component_overview.mmd](octo_component_overview.mmd) | [octo_component_overview.svg](octo_component_overview.svg) |
-| Cognitive Lifecycle | [octo_cognitive_lifecycle.mmd](octo_cognitive_lifecycle.mmd) | [octo_cognitive_lifecycle.svg](octo_cognitive_lifecycle.svg) |
-| Coprocessor Architecture | [octo_coprocessor_architecture.mmd](octo_coprocessor_architecture.mmd) | [octo_coprocessor_architecture.svg](octo_coprocessor_architecture.svg) |
-| Integration Levels | [octo_integration_levels.mmd](octo_integration_levels.mmd) | [octo_integration_levels.svg](octo_integration_levels.svg) |
-| Joint Architecture with RelationalAI | [octo_relationalai_joint_architecture.mmd](octo_relationalai_joint_architecture.mmd) | [octo_relationalai_joint_architecture.svg](octo_relationalai_joint_architecture.svg) |
-| Octo vs. Alternatives | [octo_vs_alternatives.mmd](octo_vs_alternatives.mmd) | [octo_vs_alternatives.svg](octo_vs_alternatives.svg) |
+| Value Proposition | [tahi_value_proposition.mmd](tahi_value_proposition.mmd) | [tahi_value_proposition.svg](tahi_value_proposition.svg) |
+| Component Overview | [tahi_component_overview.mmd](tahi_component_overview.mmd) | [tahi_component_overview.svg](tahi_component_overview.svg) |
+| Cognitive Lifecycle | [tahi_cognitive_lifecycle.mmd](tahi_cognitive_lifecycle.mmd) | [tahi_cognitive_lifecycle.svg](tahi_cognitive_lifecycle.svg) |
+| Coprocessor Architecture | [tahi_coprocessor_architecture.mmd](tahi_coprocessor_architecture.mmd) | [tahi_coprocessor_architecture.svg](tahi_coprocessor_architecture.svg) |
+| Integration Levels | [tahi_integration_levels.mmd](tahi_integration_levels.mmd) | [tahi_integration_levels.svg](tahi_integration_levels.svg) |
+| Joint Architecture with RelationalAI | [tahi_relationalai_joint_architecture.mmd](tahi_relationalai_joint_architecture.mmd) | [tahi_relationalai_joint_architecture.svg](tahi_relationalai_joint_architecture.svg) |
+| Tahi vs. Alternatives | [tahi_vs_alternatives.mmd](tahi_vs_alternatives.mmd) | [tahi_vs_alternatives.svg](tahi_vs_alternatives.svg) |
 | KAA Inference Loop | [kaa_inference_loop.mmd](kaa_inference_loop.mmd) | [kaa_inference_loop.svg](kaa_inference_loop.svg) |
 
 ## HTML Gallery
 
 A styled HTML overview page is available at:
 
-- [`docs/octo_gardens_visual_overview.html`](../docs/octo_gardens_visual_overview.html)
+- [`docs/tahi_visual_overview.html`](../docs/tahi_visual_overview.html)
 
 Open it in a browser to view all diagrams in one place.
 

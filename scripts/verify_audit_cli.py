@@ -1,9 +1,11 @@
 import argparse
 import json
+
 import tiktoken
 
+
 def main():
-    parser = argparse.ArgumentParser(description="OCTO Real 1-Click Audit Verification CLI")
+    parser = argparse.ArgumentParser(description="TAHI Real 1-Click Audit Verification CLI")
     parser.add_argument("--question-idx", type=int, default=0, help="Question index in medical_questions.json")
     args = parser.parse_args()
 
@@ -23,7 +25,7 @@ def main():
     q = questions[args.question_idx]
 
     print("\n============================================================")
-    print("OCTO REAL 1-CLICK AUDIT VERIFICATION CLI")
+    print("TAHI REAL 1-CLICK AUDIT VERIFICATION CLI")
     print("============================================================")
     print(f"Question Index: #{args.question_idx} [{q['question_type']}]")
     print(f"Question     : {q['question']}\n")
@@ -32,7 +34,7 @@ def main():
     words = [w.lower() for w in q['question'].split() if len(w) > 3]
     matched_edges = [e for e in graph['edges'] if any(w in e['source'].lower() or w in e['target'].lower() or w in e['relation'].lower() for w in words)]
 
-    print(f"OCTO Graph Traversal Matched {len(matched_edges)} Real Edges in graph_clean/graph.json")
+    print(f"TAHI Graph Traversal Matched {len(matched_edges)} Real Edges in graph_clean/graph.json")
     print("------------------------------------------------------------")
 
     for idx, e in enumerate(matched_edges[:3]):
@@ -41,7 +43,7 @@ def main():
         print(f"\n[{idx+1}] Graph Edge Claim:")
         print(f"    ({e['source']}) --[{e['relation']}]--> ({e['target']})")
         print(f"    Source Chunk Pointer: {cid}")
-        print(f"    1-Click Audited Corpus Sentence:")
+        print("    1-Click Audited Corpus Sentence:")
         print(f"    \"{raw_chunk[:250].strip()}...\"")
 
     print("\n============================================================\n")

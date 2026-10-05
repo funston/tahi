@@ -10,7 +10,7 @@ Verifies that:
 import unittest
 from pathlib import Path
 
-from octo.graph.owl_ontology import OWLOntology
+from tahi.graph.owl_ontology import OWLOntology
 
 
 class TestOWLOntology(unittest.TestCase):

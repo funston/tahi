@@ -1,4 +1,4 @@
-"""OCTO HotpotQA multi-hop evaluation."""
+"""TAHI HotpotQA multi-hop evaluation."""
 
 from .hotpotqa_eval import evaluate_hotpotqa, load_hotpotqa_sample
 

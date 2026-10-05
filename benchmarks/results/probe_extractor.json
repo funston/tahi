@@ -1,0 +1,210 @@
+{
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "real_correct": 9,
+  "real_n": 9,
+  "fake_correct": 3,
+  "fake_n": 9,
+  "format_failures": 0,
+  "per_condition": {
+    "affirm_simple": {
+      "real": 1,
+      "fake": 1
+    },
+    "deny_simple": {
+      "real": 1,
+      "fake": 0
+    },
+    "deny_contraction": {
+      "real": 1,
+      "fake": 0
+    },
+    "deny_never": {
+      "real": 1,
+      "fake": 0
+    },
+    "deny_lexical": {
+      "real": 1,
+      "fake": 1
+    },
+    "deny_except": {
+      "real": 1,
+      "fake": 0
+    },
+    "double_negation": {
+      "real": 1,
+      "fake": 0
+    },
+    "scoped_negation": {
+      "real": 1,
+      "fake": 1
+    },
+    "scoped_affirm": {
+      "real": 1,
+      "fake": 0
+    }
+  },
+  "rows": [
+    {
+      "condition": "affirm_simple",
+      "arm": "real",
+      "sentence": "Aspirin binds COX-1.",
+      "gold": "affirmed",
+      "got": "affirmed",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "affirm_simple",
+      "arm": "fake",
+      "sentence": "Zelphamide binds KRT9X.",
+      "gold": "affirmed",
+      "got": "affirmed",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "deny_simple",
+      "arm": "real",
+      "sentence": "Aspirin does not bind COX-1.",
+      "gold": "denied",
+      "got": "denied",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "deny_simple",
+      "arm": "fake",
+      "sentence": "Zelphamide does not bind KRT9X.",
+      "gold": "denied",
+      "got": null,
+      "format_ok": true,
+      "raw": "[{\"subject\": \"KRT9X\", \"relation\": \"binds\", \"object\": \"Zelphamide\", \"polarity\": \"denied\", \"verbatim\": \"Zelphamide does not bind KRT9X.\", \"subject_node\": null, \"object_node\": null, \"unresolved\": []}]"
+    },
+    {
+      "condition": "deny_contraction",
+      "arm": "real",
+      "sentence": "Aspirin doesn't bind COX-1.",
+      "gold": "denied",
+      "got": "denied",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "deny_contraction",
+      "arm": "fake",
+      "sentence": "Zelphamide doesn't bind KRT9X.",
+      "gold": "denied",
+      "got": null,
+      "format_ok": true,
+      "raw": "[{\"subject\": \"KRT9X\", \"relation\": \"binds\", \"object\": \"Zelphamide\", \"polarity\": \"denied\", \"verbatim\": \"Zelphamide doesn't bind KRT9X.\", \"subject_node\": null, \"object_node\": null, \"unresolved\": []}]"
+    },
+    {
+      "condition": "deny_never",
+      "arm": "real",
+      "sentence": "Aspirin never binds COX-1.",
+      "gold": "denied",
+      "got": "denied",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "deny_never",
+      "arm": "fake",
+      "sentence": "Zelphamide never binds KRT9X.",
+      "gold": "denied",
+      "got": null,
+      "format_ok": true,
+      "raw": "[{\"subject\": \"KRT9X\", \"relation\": \"binds\", \"object\": \"Zelphamide\", \"polarity\": \"denied\", \"verbatim\": \"Zelphamide never binds KRT9X.\", \"subject_node\": null, \"object_node\": null, \"unresolved\": []}]"
+    },
+    {
+      "condition": "deny_lexical",
+      "arm": "real",
+      "sentence": "Aspirin lacks affinity for COX-1.",
+      "gold": "denied",
+      "got": "denied",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "deny_lexical",
+      "arm": "fake",
+      "sentence": "Zelphamide lacks affinity for KRT9X.",
+      "gold": "denied",
+      "got": "denied",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "deny_except",
+      "arm": "real",
+      "sentence": "Aspirin binds everything except COX-1.",
+      "gold": "denied",
+      "got": "denied",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "deny_except",
+      "arm": "fake",
+      "sentence": "Zelphamide binds everything except KRT9X.",
+      "gold": "denied",
+      "got": null,
+      "format_ok": true,
+      "raw": "[{\"subject\": \"Zelphamide\", \"relation\": \"binds\", \"object\": \"everything\", \"polarity\": \"affirmed\", \"verbatim\": \"Zelphamide binds everything\", \"subject_node\": null, \"object_node\": null, \"unresolved\": []},"
+    },
+    {
+      "condition": "double_negation",
+      "arm": "real",
+      "sentence": "Aspirin does not fail to bind COX-1.",
+      "gold": "affirmed",
+      "got": "affirmed",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "double_negation",
+      "arm": "fake",
+      "sentence": "Zelphamide does not fail to bind KRT9X.",
+      "gold": "affirmed",
+      "got": null,
+      "format_ok": true,
+      "raw": "[{\"subject\": \"KRT9X\", \"relation\": \"binds\", \"object\": \"Zelphamide\", \"polarity\": \"affirmed\", \"verbatim\": \"Zelphamide does not fail to bind KRT9X.\", \"subject_node\": null, \"object_node\": null, \"unresolved"
+    },
+    {
+      "condition": "scoped_negation",
+      "arm": "real",
+      "sentence": "Aspirin binds COX-2, not COX-1.",
+      "gold": "denied",
+      "got": "denied",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "scoped_negation",
+      "arm": "fake",
+      "sentence": "Zelphamide binds BRN4Q, not KRT9X.",
+      "gold": "denied",
+      "got": "denied",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "scoped_affirm",
+      "arm": "real",
+      "sentence": "Aspirin binds COX-1, not COX-2.",
+      "gold": "affirmed",
+      "got": "affirmed",
+      "format_ok": true,
+      "raw": ""
+    },
+    {
+      "condition": "scoped_affirm",
+      "arm": "fake",
+      "sentence": "Zelphamide binds KRT9X, not BRN4Q.",
+      "gold": "affirmed",
+      "got": null,
+      "format_ok": true,
+      "raw": "[{\"subject\": \"KRT9X\", \"relation\": \"binds\", \"object\": \"Zelphamide\", \"polarity\": \"affirmed\", \"verbatim\": \"\", \"subject_node\": null, \"object_node\": null, \"unresolved\": []}, {\"subject\": \"BRN4Q\", \"relation\""
+    }
+  ]
+}

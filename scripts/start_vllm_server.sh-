@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start a vLLM OpenAI-compatible server for OCTO coprocessors.
+# Start a vLLM OpenAI-compatible server for TAHI coprocessors.
 #
 # Usage:
 #   scripts/start_vllm_server.sh --model Qwen/Qwen2.5-32B-Instruct --port 8000

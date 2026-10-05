@@ -1,4 +1,4 @@
-"""Tests for the OCTO HotpotQA evaluation."""
+"""Tests for the TAHI HotpotQA evaluation."""
 
 from implementations.hotpotqa import evaluate_hotpotqa, load_hotpotqa_sample
 from implementations.hotpotqa.hotpotqa_eval import HotpotQACoprocessor
@@ -38,7 +38,7 @@ def test_retrieval_returns_evidence():
 def test_evaluate_hotpotqa_runs():
     report = evaluate_hotpotqa(max_samples=2)
     assert "rag" in report
-    assert "octo" in report
+    assert "tahi" in report
     assert "delta" in report
     assert report["rag"]["total"] == 2
-    assert report["octo"]["total"] == 2
+    assert report["tahi"]["total"] == 2

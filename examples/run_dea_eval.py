@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the OCTO drug-enforcement coprocessor evaluation.
+"""Run the TAHI drug-enforcement coprocessor evaluation.
 
 Usage:
     export OPENAI_API_KEY="..."
@@ -30,8 +30,8 @@ from implementations.drug_enforcement.dea_eval import (
     build_default_coprocessor,
     load_dea_eval_questions,
 )
-from octo.baseline_rag import StandaloneRAG
-from octo.results_reporter import write_eval_artifacts
+from tahi.baseline_rag import StandaloneRAG
+from tahi.results_reporter import write_eval_artifacts
 
 
 def main():
@@ -57,12 +57,12 @@ def main():
     print(f"  MD:   {paths['md']}")
     print(f"  SVG:  {paths['svg']}")
     print(f"\n  RAG accuracy:   {report['rag']['accuracy']:.1%}")
-    print(f"  OCTO accuracy:  {report['octo']['accuracy']:.1%}")
+    print(f"  TAHI accuracy:  {report['tahi']['accuracy']:.1%}")
     print(f"  Delta:          {report['delta']:+.1%}")
 
 
 def _run_verbose():
-    """Run standalone RAG and OCTO side-by-side and print every prompt/answer/evidence."""
+    """Run standalone RAG and TAHI side-by-side and print every prompt/answer/evidence."""
     coprocessor = build_default_coprocessor()
 
     # Standalone RAG over the same raw documents; no graph access.
@@ -81,7 +81,7 @@ def _run_verbose():
             q.text,
             system="You answer controlled-substance questions from provided DEA sources only.",
         )
-        octo_packet = coprocessor.answer(q)
+        tahi_packet = coprocessor.answer(q)
 
         print("--- RAG EVIDENCE ---")
         for i, e in enumerate(rag_evidence):
@@ -91,12 +91,12 @@ def _run_verbose():
         print(f"RAG MODEL:  {rag_model}")
         print()
 
-        print("--- OCTO EVIDENCE ---")
-        for i, e in enumerate(octo_packet.evidence):
+        print("--- TAHI EVIDENCE ---")
+        for i, e in enumerate(tahi_packet.evidence):
             print(f"[{i+1}] {e['node_id']} (score {e['score']:.3f}, origin {e['origin']})")
             print(f"    {e['text'][:200]}")
-        print(f"OCTO ANSWER: {octo_packet.answer}")
-        print(f"OCTO MODEL:  {octo_packet.model}")
+        print(f"TAHI ANSWER: {tahi_packet.answer}")
+        print(f"TAHI MODEL:  {tahi_packet.model}")
         print()
 
 

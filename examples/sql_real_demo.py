@@ -2,7 +2,7 @@
 """
 sql_real_demo.py
 
-A REAL, executable demo of OCTO's SQL schema coprocessor against a live SQLite
+A REAL, executable demo of TAHI's SQL schema coprocessor against a live SQLite
 database. This is designed to be shown to technical investors or partners: no
 toy metrics, no hand-tuned paths, no fake RAG strawman.
 
@@ -10,9 +10,9 @@ What it does:
  1. Builds a small but realistic Pagila-like SQLite database from the existing
     fixture snapshot plus deterministic synthetic data.
  2. Asks 4 natural-language questions that require multi-table joins.
- 3. Runs OCTO's SQLSchemaCoprocessor to generate SQL from the schema graph.
+ 3. Runs TAHI's SQLSchemaCoprocessor to generate SQL from the schema graph.
  4. Runs a real keyword-based RAG baseline to generate SQL from schema chunks.
- 5. Executes gold, OCTO, and RAG SQL against the live database.
+ 5. Executes gold, TAHI, and RAG SQL against the live database.
  6. Reports only observed, verifiable metrics: execution success, row-count
     accuracy, and exact result-set match.
 
@@ -43,8 +43,8 @@ if str(SRC) not in sys.path:
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from octo import build_pagila_fixture_snapshot
-from octo.database import SQLForeignKey, SQLSchemaSnapshot
+from tahi import build_pagila_fixture_snapshot
+from tahi.database import SQLForeignKey, SQLSchemaSnapshot
 from implementations.sql import SQLSchemaCoprocessor
 
 
@@ -330,7 +330,7 @@ def generate_sql_from_control_packet(
     candidate_tables: list[str],
     join_path: list[str],
 ) -> str:
-    """Deterministic SQL generator from an OCTO control packet."""
+    """Deterministic SQL generator from an TAHI control packet."""
     fk_map = _build_fk_map(snapshot)
     tables = [_normalize_table(t) for t in candidate_tables]
     count_query = _is_count_question(question)
@@ -553,7 +553,7 @@ def run_demo(rebuild_db: bool = False) -> dict[str, Any]:
     results: list[dict[str, Any]] = []
 
     print("=" * 70)
-    print("OCTO Real SQL Demo — live SQLite execution")
+    print("TAHI Real SQL Demo — live SQLite execution")
     print(f"Database: {DB_PATH}")
     print("=" * 70)
 
@@ -569,16 +569,16 @@ def run_demo(rebuild_db: bool = False) -> dict[str, Any]:
         print(f" Gold SQL: {gold.gold_sql.strip()}")
         print(f" Gold rows: {len(gold_rows)}")
 
-        # OCTO generation and execution.
-        octo_result = coprocessor.ask(gold.question, trace=False)
-        octo_tables = octo_result.get("constraints", {}).get("candidate_tables", [])
-        octo_path = octo_result.get("constraints", {}).get("candidate_join_path", [])
-        octo_sql = generate_sql_from_control_packet(snapshot, gold.question, octo_tables, octo_path)
-        octo_ok, octo_rows, octo_err = _execute_sql(DB_PATH, octo_sql)
-        octo_score = _score(gold_rows, octo_rows)
-        print(f" OCTO SQL: {octo_sql.strip()}")
-        print(f" OCTO executed: {octo_ok}", f"error: {octo_err}" if not octo_ok else "")
-        print(f" OCTO score: {octo_score}")
+        # TAHI generation and execution.
+        tahi_result = coprocessor.ask(gold.question, trace=False)
+        tahi_tables = tahi_result.get("constraints", {}).get("candidate_tables", [])
+        tahi_path = tahi_result.get("constraints", {}).get("candidate_join_path", [])
+        tahi_sql = generate_sql_from_control_packet(snapshot, gold.question, tahi_tables, tahi_path)
+        tahi_ok, tahi_rows, tahi_err = _execute_sql(DB_PATH, tahi_sql)
+        tahi_score = _score(gold_rows, tahi_rows)
+        print(f" TAHI SQL: {tahi_sql.strip()}")
+        print(f" TAHI executed: {tahi_ok}", f"error: {tahi_err}" if not tahi_ok else "")
+        print(f" TAHI score: {tahi_score}")
 
         # RAG baseline generation and execution.
         rag_sql = _rag_generate_sql(snapshot, gold.question)
@@ -592,22 +592,22 @@ def run_demo(rebuild_db: bool = False) -> dict[str, Any]:
             "id": gold.id,
             "question": gold.question,
             "gold_count": len(gold_rows),
-            "octo": {"sql": octo_sql, "executed": octo_ok, "error": octo_err, **octo_score},
+            "tahi": {"sql": tahi_sql, "executed": tahi_ok, "error": tahi_err, **tahi_score},
             "rag": {"sql": rag_sql, "executed": rag_ok, "error": rag_err, **rag_score},
         })
 
-    octo_correct = sum(1 for r in results if r["octo"]["exact_match"])
+    tahi_correct = sum(1 for r in results if r["tahi"]["exact_match"])
     rag_correct = sum(1 for r in results if r["rag"]["exact_match"])
-    octo_exec = sum(1 for r in results if r["octo"]["executed"])
+    tahi_exec = sum(1 for r in results if r["tahi"]["executed"])
     rag_exec = sum(1 for r in results if r["rag"]["executed"])
 
     summary = {
         "total_questions": len(results),
-        "octo_exact_match": octo_correct,
+        "tahi_exact_match": tahi_correct,
         "rag_exact_match": rag_correct,
-        "octo_execution_success": octo_exec,
+        "tahi_execution_success": tahi_exec,
         "rag_execution_success": rag_exec,
-        "octo_exact_match_rate": round(octo_correct / len(results), 3) if results else 0.0,
+        "tahi_exact_match_rate": round(tahi_correct / len(results), 3) if results else 0.0,
         "rag_exact_match_rate": round(rag_correct / len(results), 3) if results else 0.0,
     }
 
@@ -625,7 +625,7 @@ def run_demo(rebuild_db: bool = False) -> dict[str, Any]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="OCTO real SQL demo")
+    parser = argparse.ArgumentParser(description="TAHI real SQL demo")
     parser.add_argument("--rebuild", action="store_true", help="Rebuild the SQLite database")
     parser.add_argument(
         "--output", default="/tmp/sql_real_demo_report.json", help="JSON report path"

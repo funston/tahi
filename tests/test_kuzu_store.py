@@ -9,7 +9,7 @@ not finish inside a 30-minute timeout.
 The load-bearing test here is `test_shared_entity_documents_enumerates_a_set`:
 set completion is the one retrieval behaviour dense similarity cannot provide at
 any corpus size. Similarity ranks by closeness; it has no notion of "all members
-of this group". If that test ever fails, OCTO has no mechanism the baseline
+of this group". If that test ever fails, TAHI has no mechanism the baseline
 lacks.
 """
 
@@ -23,7 +23,7 @@ for p in (ROOT, os.path.join(ROOT, "src")):
         sys.path.insert(0, p)
 
 try:
-    from octo.graph import KuzuGraphStore, build_adjacency
+    from tahi.graph import KuzuGraphStore, build_adjacency
     HAVE_KUZU = True
 except ImportError:  # pragma: no cover
     HAVE_KUZU = False

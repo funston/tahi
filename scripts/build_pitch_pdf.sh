@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Render docs/OCTO_INVESTOR_PITCH.md to PDF exactly as written.
+# Render docs/TAHI_INVESTOR_PITCH.md to PDF exactly as written.
 # Usage: ./scripts/build_pitch_pdf.sh
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MD="$ROOT/docs/OCTO_INVESTOR_PITCH.md"
-HTML="$ROOT/docs/OCTO_INVESTOR_PITCH.html"
-PDF="$ROOT/docs/OCTO_INVESTOR_PITCH.pdf"
-CSS="$ROOT/docs/OCTO_INVESTOR_PITCH.css"
+MD="$ROOT/docs/TAHI_INVESTOR_PITCH.md"
+HTML="$ROOT/docs/TAHI_INVESTOR_PITCH.html"
+PDF="$ROOT/docs/TAHI_INVESTOR_PITCH.pdf"
+CSS="$ROOT/docs/TAHI_INVESTOR_PITCH.css"
 
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
@@ -31,7 +31,7 @@ pandoc "$MD" \
  --from markdown \
  --to html \
  --standalone \
- --css="OCTO_INVESTOR_PITCH.css" \
+ --css="TAHI_INVESTOR_PITCH.css" \
  --output="$HTML"
 
 "$CHROME" \

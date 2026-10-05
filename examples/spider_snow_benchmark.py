@@ -30,7 +30,7 @@ def main() -> None:
     parser.add_argument("--spider2-root", default="/Users/richiek/work/Spider2")
     parser.add_argument("--snapshot-manifest", required=True)
     parser.add_argument("--world-cache-index", required=True)
-    parser.add_argument("--credentials-path", default="/Users/richiek/work/bender/snowflake_creds.json")
+    parser.add_argument("--credentials-path", default="/Users/richiek/work/tahi/snowflake_creds.json")
     parser.add_argument(
         "--task-id",
         action="append",

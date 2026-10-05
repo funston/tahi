@@ -14,7 +14,7 @@ NOT_COVERED (the graph does not know).
 
 import unittest
 
-from octo.validate import GraphFactValidator, Verdict
+from tahi.validate import GraphFactValidator, Verdict
 
 
 class _Graph:

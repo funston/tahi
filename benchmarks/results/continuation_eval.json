@@ -1,0 +1,163 @@
+{
+ "n_items": 600,
+ "k_budget": 5,
+ "totals": {
+  "relevance": 200,
+  "boundary0": 200,
+  "continuation": 400,
+  "boundary1": 200,
+  "boundary2": 200
+ },
+ "arms": {
+  "flat-A": {
+   "1": {
+    "relevance": 0.35,
+    "boundary0": 0.35,
+    "continuation": 0.0775,
+    "boundary1": 0.0,
+    "boundary2": 0.155
+   },
+   "3": {
+    "relevance": 0.685,
+    "boundary0": 0.685,
+    "continuation": 0.1475,
+    "boundary1": 0.135,
+    "boundary2": 0.16
+   },
+   "5": {
+    "relevance": 0.835,
+    "boundary0": 0.835,
+    "continuation": 0.2525,
+    "boundary1": 0.31,
+    "boundary2": 0.195
+   },
+   "10": {
+    "relevance": 0.915,
+    "boundary0": 0.915,
+    "continuation": 0.355,
+    "boundary1": 0.465,
+    "boundary2": 0.245
+   }
+  },
+  "random-A": {
+   "1": {
+    "relevance": 0.0,
+    "boundary0": 0.0,
+    "continuation": 0.0075,
+    "boundary1": 0.0,
+    "boundary2": 0.015
+   },
+   "3": {
+    "relevance": 0.0,
+    "boundary0": 0.0,
+    "continuation": 0.015,
+    "boundary1": 0.0,
+    "boundary2": 0.03
+   },
+   "5": {
+    "relevance": 0.0,
+    "boundary0": 0.0,
+    "continuation": 0.0175,
+    "boundary1": 0.0,
+    "boundary2": 0.035
+   },
+   "10": {
+    "relevance": 0.0,
+    "boundary0": 0.0,
+    "continuation": 0.04,
+    "boundary1": 0.0,
+    "boundary2": 0.08
+   }
+  },
+  "flat-B": {
+   "1": {
+    "relevance": 0.96,
+    "boundary0": 0.96,
+    "continuation": 0.18,
+    "boundary1": 0.09,
+    "boundary2": 0.27
+   },
+   "3": {
+    "relevance": 0.975,
+    "boundary0": 0.975,
+    "continuation": 0.8625,
+    "boundary1": 0.9,
+    "boundary2": 0.825
+   },
+   "5": {
+    "relevance": 0.98,
+    "boundary0": 0.98,
+    "continuation": 0.89,
+    "boundary1": 0.92,
+    "boundary2": 0.86
+   },
+   "10": {
+    "relevance": 0.99,
+    "boundary0": 0.99,
+    "continuation": 0.9025,
+    "boundary1": 0.925,
+    "boundary2": 0.88
+   }
+  },
+  "graph-B": {
+   "1": {
+    "relevance": 0.1,
+    "boundary0": 0.1,
+    "continuation": 0.0825,
+    "boundary1": 0.09,
+    "boundary2": 0.075
+   },
+   "3": {
+    "relevance": 0.325,
+    "boundary0": 0.325,
+    "continuation": 0.3275,
+    "boundary1": 0.34,
+    "boundary2": 0.315
+   },
+   "5": {
+    "relevance": 0.505,
+    "boundary0": 0.505,
+    "continuation": 0.4925,
+    "boundary1": 0.51,
+    "boundary2": 0.475
+   },
+   "10": {
+    "relevance": 0.81,
+    "boundary0": 0.81,
+    "continuation": 0.83,
+    "boundary1": 0.85,
+    "boundary2": 0.81
+   }
+  },
+  "random-B": {
+   "1": {
+    "relevance": 0.0,
+    "boundary0": 0.0,
+    "continuation": 0.0025,
+    "boundary1": 0.0,
+    "boundary2": 0.005
+   },
+   "3": {
+    "relevance": 0.0,
+    "boundary0": 0.0,
+    "continuation": 0.0175,
+    "boundary1": 0.0,
+    "boundary2": 0.035
+   },
+   "5": {
+    "relevance": 0.0,
+    "boundary0": 0.0,
+    "continuation": 0.0275,
+    "boundary1": 0.0,
+    "boundary2": 0.055
+   },
+   "10": {
+    "relevance": 0.0,
+    "boundary0": 0.0,
+    "continuation": 0.06,
+    "boundary1": 0.0,
+    "boundary2": 0.12
+   }
+  }
+ }
+}

@@ -5,7 +5,7 @@ Run Step 3 3-Arm Generation Benchmark per docs/GATE1_SPEC.md §3.
 Evaluates:
   1. base        : Un-augmented gpt-4o-mini (No context)
   2. vector_rag  : Dense BGE-Large vector retrieval over 1200-token chunks
-  3. octo_graph  : OCTO Property Graph retrieval over Kùzu C++ Graph
+  3. tahi_graph  : TAHI Property Graph retrieval over Kùzu C++ Graph
 
 Strictly outputs GraphRAG-Bench compatible JSON files for generation_eval.py and retrieval_eval.py.
 """
@@ -14,16 +14,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import os
 import re
 import sys
-import time
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import tiktoken
+
+logger = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent.parent
 for p in (str(ROOT), str(ROOT / "src"), str(ROOT / "third_party" / "graphrag_bench_eval")):
@@ -71,7 +73,7 @@ class VectorRetriever:
         self.model_name = model_name
         self.st_model = SentenceTransformer(model_name)
         self.chunks = corpus_chunks
-        
+
         # Encode corpus chunks (without query instruction prefix)
         chunk_texts = [c["text"] for c in corpus_chunks]
         self.chunk_embeddings = self.st_model.encode(chunk_texts, show_progress_bar=True, normalize_embeddings=True)
@@ -82,25 +84,25 @@ class VectorRetriever:
             query_str = f"Represent this sentence for searching relevant passages: {question}"
         else:
             query_str = question
-            
+
         q_emb = self.st_model.encode([query_str], normalize_embeddings=True)[0]
         scores = np.dot(self.chunk_embeddings, q_emb)
         top_indices = np.argsort(scores)[::-1][:top_k]
-        
+
         retrieved_texts = [self.chunks[idx]["text"] for idx in top_indices]
         full_context = "\n\n---\n\n".join(retrieved_texts)
-        
+
         # Cap at max_tokens using tiktoken
         enc = tiktoken.get_encoding("cl100k_base")
         tokens = enc.encode(full_context)
         if len(tokens) > max_tokens:
             full_context = enc.decode(tokens[:max_tokens])
-            
+
         return full_context
 
 
 class GraphRetriever:
-    """OCTO Property Graph retriever with BGE Dense Neural Node Matching & 2-Hop BFS Traversal."""
+    """TAHI Property Graph retriever with BGE Dense Neural Node Matching & 2-Hop BFS Traversal."""
     def __init__(self, graph_data: dict[str, Any], embedding_model: str = "BAAI/bge-large-en-v1.5"):
         from sentence_transformers import SentenceTransformer
         self.nodes = graph_data.get("nodes", [])
@@ -133,7 +135,7 @@ class GraphRetriever:
             query_str = question
 
         q_emb = self.st_model.encode([query_str], normalize_embeddings=True)[0]
-        
+
         # Dense cosine similarity node matching
         scores = np.dot(self.node_embeddings, q_emb)
         top_node_indices = np.argsort(scores)[::-1][:top_k]
@@ -158,14 +160,14 @@ class GraphRetriever:
 
         # Hop 2: Secondary neighbor edges (Multi-Hop Path Expansion)
         for n_id in hop1_neighbors[:10]:
-            for neighbor_id, edge in self.adj.get(n_id, []):
+            for _neighbor_id, edge in self.adj.get(n_id, []):
                 e_key = (edge.get("source"), edge.get("target"), edge.get("relation"))
                 if e_key not in seen_edge_keys:
                     seen_edge_keys.add(e_key)
                     traversed_edges.append(edge)
 
         if not traversed_edges:
-            logger.warning(f"OCTO Graph Traversal found 0 matching edges for query: '{question[:60]}...'")
+            logger.warning(f"TAHI Graph Traversal found 0 matching edges for query: '{question[:60]}...'")
             return "RETRIEVED PROPERTY GRAPH SUBGRAPH:\nNo relevant graph paths found."
 
         # Format Graph Subgraph Context with Edge Provenance
@@ -231,13 +233,13 @@ def main() -> int:
     if args.limit_questions:
         questions = questions[: args.limit_questions]
 
-    print(f"STEP 3 3-ARM BENCHMARK: {len(questions)} questions across base, vector_rag, octo_graph", flush=True)
+    print(f"STEP 3 3-ARM BENCHMARK: {len(questions)} questions across base, vector_rag, tahi_graph", flush=True)
 
     # Initialize Retrievers
     vec_retriever = VectorRetriever(chunks, model_name=args.embedding_model)
     graph_retriever = GraphRetriever(graph_data, embedding_model=args.embedding_model)
 
-    arms = ["base", "vector_rag", "octo_graph"]
+    arms = ["base", "vector_rag", "tahi_graph"]
     results_by_arm: dict[str, list[dict[str, Any]]] = {arm: [] for arm in arms}
 
     for i, q_item in enumerate(questions):
@@ -258,7 +260,7 @@ def main() -> int:
             elif arm == "vector_rag":
                 context_str = vec_retriever.retrieve(q_text, top_k=5, max_tokens=4000)
                 user_msg = RAG_PROMPT_TEMPLATE.format(context=context_str, question=q_text)
-            elif arm == "octo_graph":
+            elif arm == "tahi_graph":
                 context_str = graph_retriever.retrieve(q_text, top_k=5, max_tokens=4000)
                 user_msg = RAG_PROMPT_TEMPLATE.format(context=context_str, question=q_text)
 

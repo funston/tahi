@@ -1,0 +1,26 @@
+{
+  "model": "claude-opus-5 (parametric memory only, no retrieval, no graph access)",
+  "protocol": "Questions generated with seed 7. Answers written before any gold data was displayed in the session. Subjects from the seed-0 run (Thiamine, Testosterone, Clarithromycin) were excluded to avoid contamination.",
+  "answers": {
+    "q000": "I don't know",
+    "q001": "KCNH2, SCN5A, KCNQ1, CACNA1C, CYP2D6, ABCB1, KCNJ2, CHRM2",
+    "q002": "AR, KLK3, TMPRSS2, FKBP5, NKX3-1, CDK1, CCNB1",
+    "q003": "PPARA, CPT1A, ACOX1, FABP1, APOA1, APOA2, PDK4, ANGPTL4, HMGCS2, SLC25A20",
+    "q004": "PSMB5, PSMB1, PSMB2, PSMB8, PSMB9, PSMA1, PSMD1",
+    "q005": "VDR, GC, CYP2R1, CYP27B1, CYP24A1, RXRA",
+    "q006": "NR3C1, FKBP5, TSC22D3, KLF15, PER1, ZBTB16, DUSP1",
+    "q007": "CYP27B1, PTH, IL2, IFNG, CCND1, MYC, CDKN1A",
+    "q008": "SLC6A4, HTR2A, HTR1A",
+    "q009": "GABRA1, GABRB2, GABRG2, NR1I2, NR1I3, CYP2B6, GABRA2",
+    "q010": "TUBB, TUBA1A, IL1B, TNF, SELE, NLRP3, CCL2",
+    "q011": "HMOX1, NQO1, HSPA1A, GSTP1, TXNRD1, SLC12A1",
+    "q012": "MKI67, CCNB1, TOP2A, CDK1, AURKA, BRCA1",
+    "q013": "HMOX1, DDIT3, VEGFA, KDR, FLT1, PDGFRB",
+    "q014": "FKBP1A, PPP3CA, NFATC1, IL2, TGFB1, MTOR",
+    "q015": "HBB, G6PD, ACKR1, HBA1, HBA2, ABO, CD36, ICAM1, TNF, NOS2, IL10, CR1, SLC4A1, HP",
+    "q016": "SQSTM1, TNFRSF11A, TNFRSF11B, CSF1, OPTN, DCSTAMP, VCP, NUP205, RIN3, TM7SF4",
+    "q017": "DRD4, DRD5, SLC6A3, SLC6A4, HTR1B, SNAP25, DBH, ADGRL3, COMT, MAOA, NOS1, TPH2",
+    "q018": "TCF4, COL8A2, SLC4A11, ZEB1, AGBL1, LOXHD1, KANK4, ATP1B1, TCF8",
+    "q019": "SLC2A9, ABCG2, SLC22A12, SLC17A1, SLC17A3, GCKR, PDZK1, SLC16A9, INHBC, RREB1, NRXN2, ALDH16A1, NLRP3, SLC22A11"
+  }
+}

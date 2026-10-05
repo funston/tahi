@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BENDER Tier 0 Test - Does graph traversal beat simple retrieval for multi-hop?
+TAHI Tier 0 Test - Does graph traversal beat simple retrieval for multi-hop?
 
 This test proves that graph traversal can solve multi-hop questions
 that simple retrieval cannot.
@@ -47,8 +47,8 @@ def simple_graph_test():
     print(f"   Best match: {graph['nodes'][best_match]['label']}")
     print(f"   Is this the answer? {'Yes' if best_match == 'london' else 'No'}")
 
-    # Test 2: Graph traversal (what BENDER does)
-    print("\n2. GRAPH TRAVERSAL (BENDER):")
+    # Test 2: Graph traversal (what TAHI does)
+    print("\n2. GRAPH TRAVERSAL (TAHI):")
 
     # Start from Jane Austen, follow edges
     path = []
@@ -56,14 +56,14 @@ def simple_graph_test():
     path.append(graph['nodes'][current]['label'])
 
     # Find edge from jane_austen
-    for src, rel, dst in graph['edges']:
+    for src, _rel, dst in graph['edges']:
         if src == current:
             current = dst
             path.append(graph['nodes'][current]['label'])
             break
 
     # Find edge from england
-    for src, rel, dst in graph['edges']:
+    for src, _rel, dst in graph['edges']:
         if src == current:
             current = dst
             path.append(graph['nodes'][current]['label'])
@@ -80,7 +80,7 @@ def simple_graph_test():
         print("   - Simple retrieval found: Jane Austen (wrong)")
         print("   - Graph traversal found: London (correct)")
         print("\n   This proves multi-hop reasoning requires graph structure.")
-        print("   PROCEED with BENDER approach.")
+        print("   PROCEED with TAHI approach.")
     else:
         print("❌ Test inconclusive")
     print("=" * 60)
@@ -88,12 +88,12 @@ def simple_graph_test():
     return current == 'london'
 
 
-def test_with_octo():
-    """Test using actual BENDER code if available"""
+def test_with_tahi():
+    """Test using actual TAHI code if available"""
     try:
         import sys
         sys.path.insert(0, 'src')
-        from octo.world_state import WorldModel
+        from tahi.world_state import WorldModel
 
         # Build world
         world = WorldModel(domain='test', use_ann=False)
@@ -104,7 +104,7 @@ def test_with_octo():
         world.add_edge('england', 'capital', 'london')
         world.build_index()
 
-        print("\n✓ BENDER modules loaded successfully")
+        print("\n✓ TAHI modules loaded successfully")
         print(f"  Created graph with {len(world.nodes)} nodes, {len(world.edges)} edges")
 
         # Simple BFS to find path
@@ -125,7 +125,7 @@ def test_with_octo():
                     return path
 
                 # Explore neighbors
-                for src, rel, dst, _ in world.neighbors(node):
+                for src, _rel, dst, _ in world.neighbors(node):
                     next_node = dst if src == node else src
                     if next_node not in visited:
                         queue.append((next_node, path + [next_node]))
@@ -138,7 +138,7 @@ def test_with_octo():
             return True
 
     except ImportError:
-        print("\n⚠ Could not load BENDER modules")
+        print("\n⚠ Could not load TAHI modules")
         print("  Make sure to install: pip install -r requirements.txt")
 
     return False
@@ -148,9 +148,9 @@ if __name__ == "__main__":
     # Run simple test that always works
     simple_success = simple_graph_test()
 
-    # Try with real BENDER if available
-    print("\nTesting with actual BENDER modules...")
-    octo_success = test_with_octo()
+    # Try with real TAHI if available
+    print("\nTesting with actual TAHI modules...")
+    tahi_success = test_with_tahi()
 
     if simple_success:
         print("\n✅ Core hypothesis validated: Graph traversal beats simple retrieval")

@@ -1,7 +1,7 @@
-# Feedback: "Where OCTO Wins" Summary
+# Feedback: "Where TAHI Wins" Summary
 
 **Date:** 2026-08-03
-**Subject:** Review of the plain-English summary claiming OCTO wins on (1) fact retrieval and (2) Level 1 prompting, with Level 3 "needing more training."
+**Subject:** Review of the plain-English summary claiming TAHI wins on (1) fact retrieval and (2) Level 1 prompting, with Level 3 "needing more training."
 **Method:** Each claim checked against `benchmarks/results/*.json`, `checkpoints/gcca/gcca_epoch2.pt`, and the runner source. Provenance given for every counter-figure.
 
 ---
@@ -10,8 +10,8 @@
 
 | Claim | Verdict |
 |---|---|
-| 1. Kùzu graph engine finds better information than vector RAG | **Contradicted** — OCTO is worse on the aggregate and on 3 of 4 perturbation families; the cited win rests on n=2 |
-| 2. OCTO Level 1 prompting beats base (0.075 → 0.128 F1) | **Numbers correct, attribution wrong** — that arm is the dense baseline, and the run contains no graph-vs-no-graph contrast |
+| 1. Kùzu graph engine finds better information than vector RAG | **Contradicted** — TAHI is worse on the aggregate and on 3 of 4 perturbation families; the cited win rests on n=2 |
+| 2. TAHI Level 1 prompting beats base (0.075 → 0.128 F1) | **Numbers correct, attribution wrong** — that arm is the dense baseline, and the run contains no graph-vs-no-graph contrast |
 | 3. Level 3 needs more training | **Right conclusion, unverified diagnosis, major omission** — L3 is also *significantly worse than RAG*, and there is no GNN in the Level 3 path at all |
 | — | **Omitted entirely:** the n=500 run falsified the pilot's headline result |
 
@@ -19,7 +19,7 @@ Three of the four headline numbers do not survive contact with the artifacts.
 
 ---
 
-## Claim 1 — "OCTO's graph engine finds better, more accurate information"
+## Claim 1 — "TAHI's graph engine finds better, more accurate information"
 
 **Cited:** 0.7300 AUC on numeric claims vs 0.6500 for vector RAG (+8.0%, "22.8% error reduction"), and a "2.03× wider margin."
 
@@ -29,15 +29,15 @@ Three of the four headline numbers do not survive contact with the artifacts.
 
 The full table from the same artifact:
 
-| Family | n | Vector RAG AUC | OCTO Graph AUC | |
+| Family | n | Vector RAG AUC | TAHI Graph AUC | |
 |---|---:|---:|---:|---|
-| **Overall** | 50 | **0.5744** | **0.5220** | OCTO worse |
-| Negation | 15 | 0.6227 | 0.4987 | OCTO worse, at chance |
-| Entity | 11 | 0.5400 | 0.4509 | OCTO worse |
+| **Overall** | 50 | **0.5744** | **0.5220** | TAHI worse |
+| Negation | 15 | 0.6227 | 0.4987 | TAHI worse, at chance |
+| Entity | 11 | 0.5400 | 0.4509 | TAHI worse |
 | Swap | 22 | 0.5518 | 0.5545 | tie |
-| Numeric | **2** | 0.6500 | 0.7300 | OCTO better |
+| Numeric | **2** | 0.6500 | 0.7300 | TAHI better |
 
-OCTO loses on the aggregate and on three of four families. The single win is the smallest sample in the file. Selecting it and omitting the rest is the exact practice `benchmarks/PREREGISTRATION_enterprise_rag.md` forbids in advance:
+TAHI loses on the aggregate and on three of four families. The single win is the smallest sample in the file. Selecting it and omitting the rest is the exact practice `benchmarks/PREREGISTRATION_enterprise_rag.md` forbids in advance:
 
 > We do not re-cut the data by category, swap the primary metric, or expand N looking for a favourable slice.
 
@@ -47,7 +47,7 @@ OCTO loses on the aggregate and on three of four families. The single win is the
 
 ---
 
-## Claim 2 — "OCTO Text Prompt RAG: 0.128 F1 vs 0.075 base"
+## Claim 2 — "TAHI Text Prompt RAG: 0.128 F1 vs 0.075 base"
 
 **The numbers are correct.** From `l3_native_run.json` (n=500):
 
@@ -59,13 +59,13 @@ delta +0.0528   CI [+0.0378, +0.0675]   excludes zero
 
 That is a real, significant, well-powered result.
 
-**But it is the baseline's result, not OCTO's.** `benchmarks/run_l3_native.py:18` defines the arm in its own docstring:
+**But it is the baseline's result, not TAHI's.** `benchmarks/run_l3_native.py:18` defines the arm in its own docstring:
 
 > `rag_prompt   dense top-k pasted into the prompt   (Level 1 baseline)`
 
 Further, all four arms share a **single** retrieval call (`run_l3_native.py:287`), so this run contains no dense-only versus graph-expanded contrast. There is nothing in it that can attribute any part of the gain to the graph.
 
-Combined with Claim 1's finding that graph expansion alters retrieval in roughly 1 query in 40, the honest reading is: **retrieval beats no retrieval.** That is the founding result of RAG (Lewis et al., 2020), and relabelling the dense baseline as "OCTO RAG" claims the baseline's win for the product.
+Combined with Claim 1's finding that graph expansion alters retrieval in roughly 1 query in 40, the honest reading is: **retrieval beats no retrieval.** That is the founding result of RAG (Lewis et al., 2020), and relabelling the dense baseline as "TAHI RAG" claims the baseline's win for the product.
 
 ---
 
@@ -103,7 +103,7 @@ memory = build_memory_tensor(state, wm, max_slots=args.max_slots,
                              device=args.device)
 ```
 
-No `gnn_encoder` argument. It defaults to `None` (`src/octo/native/memory.py:43`), the guard at `memory.py:117` is false, and the function returns L2-normalised **sentence-transformer embeddings**. The manifest confirms: `encoder = "sentence-transformers (d=384)"`.
+No `gnn_encoder` argument. It defaults to `None` (`src/tahi/native/memory.py:43`), the guard at `memory.py:117` is false, and the function returns L2-normalised **sentence-transformer embeddings**. The manifest confirms: `encoder = "sentence-transformers (d=384)"`.
 
 The summary describes Level 3 as injecting "graph vectors" into hidden layers. It injects dense text embeddings. `SubgraphRGATEncoder` remains referenced only by its own file, its own test, and an unused parameter — and still has no training script.
 
@@ -154,7 +154,7 @@ This is a clean, well-powered confirmation that the pilot result was a verbosity
 | Claim | Requirement |
 |---|---|
 | Graph finds better information | Overall AUC above the vector baseline, with per-family n ≥ 30. Currently 0.5220 vs 0.5744 with n=2 on the cited family |
-| Level 1 is an OCTO win | A dense-only arm alongside the graph-expanded arm, with the delta attributable to expansion. Currently one shared retrieval call |
+| Level 1 is an TAHI win | A dense-only arm alongside the graph-expanded arm, with the delta attributable to expansion. Currently one shared retrieval call |
 | Level 3 needs more training | An oracle-memory ablation showing α grows when the memory is known-good. Otherwise (3) and (4) above remain live |
 
 None of these are expensive. The oracle-memory ablation in particular is the highest-information experiment available and would settle the Level 3 question in roughly a week.

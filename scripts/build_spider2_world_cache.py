@@ -6,8 +6,9 @@ import argparse
 import json
 from pathlib import Path
 
-from octo import SpiderLiteWorkspace, snapshot_to_world_model
-from octo.spider_lite import enrich_world_with_spider_sqlite_metadata
+from tahi.spider_lite import enrich_world_with_spider_sqlite_metadata
+
+from tahi import SpiderLiteWorkspace, snapshot_to_world_model
 
 
 def main() -> None:

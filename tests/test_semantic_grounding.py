@@ -8,10 +8,11 @@ Verifies that:
 """
 
 import unittest
-from octo.grounding import Grounder
-from octo.models import CognitiveState, EntityRef
-from octo.rules import RuleEngine
-from octo.world_state import WorldModel
+
+from tahi.grounding import Grounder
+from tahi.models import CognitiveState, EntityRef
+from tahi.rules import RuleEngine
+from tahi.world_state import WorldModel
 
 
 class TestSemanticGrounding(unittest.TestCase):

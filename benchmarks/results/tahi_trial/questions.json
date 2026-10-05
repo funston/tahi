@@ -1,0 +1,242 @@
+[
+  {
+    "qid": "t000",
+    "subject_id": "Compound::DB06691",
+    "subject": "Mepyramine",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Mepyramine bind?"
+  },
+  {
+    "qid": "t001",
+    "subject_id": "Compound::DB06274",
+    "subject": "Alvimopan",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Alvimopan bind?"
+  },
+  {
+    "qid": "t002",
+    "subject_id": "Compound::DB00489",
+    "subject": "Sotalol",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Sotalol bind?"
+  },
+  {
+    "qid": "t003",
+    "subject_id": "Compound::DB00131",
+    "subject": "Adenosine monophosphate",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Adenosine monophosphate bind?"
+  },
+  {
+    "qid": "t004",
+    "subject_id": "Compound::DB01233",
+    "subject": "Metoclopramide",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Metoclopramide bind?"
+  },
+  {
+    "qid": "t005",
+    "subject_id": "Compound::DB01023",
+    "subject": "Felodipine",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Felodipine bind?"
+  },
+  {
+    "qid": "t006",
+    "subject_id": "Disease::DOID:0050742",
+    "subject": "nicotine dependence",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease nicotine dependence?"
+  },
+  {
+    "qid": "t007",
+    "subject_id": "Compound::DB00537",
+    "subject": "Ciprofloxacin",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Ciprofloxacin bind?"
+  },
+  {
+    "qid": "t008",
+    "subject_id": "Compound::DB00814",
+    "subject": "Meloxicam",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Meloxicam bind?"
+  },
+  {
+    "qid": "t009",
+    "subject_id": "Compound::DB01171",
+    "subject": "Moclobemide",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Moclobemide bind?"
+  },
+  {
+    "qid": "t010",
+    "subject_id": "Compound::DB01621",
+    "subject": "Pipotiazine",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Pipotiazine bind?"
+  },
+  {
+    "qid": "t011",
+    "subject_id": "Compound::DB08827",
+    "subject": "Lomitapide",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Lomitapide bind?"
+  },
+  {
+    "qid": "t012",
+    "subject_id": "Disease::DOID:12185",
+    "subject": "otosclerosis",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease otosclerosis?"
+  },
+  {
+    "qid": "t013",
+    "subject_id": "Compound::DB00770",
+    "subject": "Alprostadil",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Alprostadil bind?"
+  },
+  {
+    "qid": "t014",
+    "subject_id": "Compound::DB00513",
+    "subject": "Aminocaproic Acid",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Aminocaproic Acid bind?"
+  },
+  {
+    "qid": "t015",
+    "subject_id": "Compound::DB04552",
+    "subject": "Niflumic Acid",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Niflumic Acid bind?"
+  },
+  {
+    "qid": "t016",
+    "subject_id": "Compound::DB00193",
+    "subject": "Tramadol",
+    "metaedge": "CbG",
+    "relation": "binds",
+    "question": "What genes does the compound Tramadol bind?"
+  },
+  {
+    "qid": "t017",
+    "subject_id": "Disease::DOID:11949",
+    "subject": "Creutzfeldt-Jakob disease",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease Creutzfeldt-Jakob disease?"
+  },
+  {
+    "qid": "t018",
+    "subject_id": "Disease::DOID:0060119",
+    "subject": "pharynx cancer",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease pharynx cancer?"
+  },
+  {
+    "qid": "t019",
+    "subject_id": "Disease::DOID:90",
+    "subject": "degenerative disc disease",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease degenerative disc disease?"
+  },
+  {
+    "qid": "t020",
+    "subject_id": "Disease::DOID:11555",
+    "subject": "Fuchs' endothelial dystrophy",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease Fuchs' endothelial dystrophy?"
+  },
+  {
+    "qid": "t021",
+    "subject_id": "Disease::DOID:13189",
+    "subject": "gout",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease gout?"
+  },
+  {
+    "qid": "t022",
+    "subject_id": "Disease::DOID:2998",
+    "subject": "testicular cancer",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease testicular cancer?"
+  },
+  {
+    "qid": "t023",
+    "subject_id": "Disease::DOID:13378",
+    "subject": "Kawasaki disease",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease Kawasaki disease?"
+  },
+  {
+    "qid": "t024",
+    "subject_id": "Disease::DOID:0060073",
+    "subject": "lymphatic system cancer",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease lymphatic system cancer?"
+  },
+  {
+    "qid": "t025",
+    "subject_id": "Disease::DOID:216",
+    "subject": "dental caries",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease dental caries?"
+  },
+  {
+    "qid": "t026",
+    "subject_id": "Disease::DOID:10941",
+    "subject": "intracranial aneurysm",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease intracranial aneurysm?"
+  },
+  {
+    "qid": "t027",
+    "subject_id": "Disease::DOID:1964",
+    "subject": "fallopian tube cancer",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease fallopian tube cancer?"
+  },
+  {
+    "qid": "t028",
+    "subject_id": "Disease::DOID:1245",
+    "subject": "vulva cancer",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease vulva cancer?"
+  },
+  {
+    "qid": "t029",
+    "subject_id": "Disease::DOID:5408",
+    "subject": "Paget's disease of bone",
+    "metaedge": "DaG",
+    "relation": "associates",
+    "question": "What genes are associated with the disease Paget's disease of bone?"
+  }
+]

@@ -4,7 +4,7 @@ Build GCCA training data -- and the memory store both training and evaluation re
 
 Two memory sources:
 
-  --memory-source retrieved   Memory slots are the documents OCTO actually
+  --memory-source retrieved   Memory slots are the documents TAHI actually
                               surfaced for each question, taken from a completed
                               benchmark run. This is the deployment condition.
 
@@ -52,12 +52,14 @@ for p in (str(ROOT), str(ROOT / "src")):
         sys.path.insert(0, p)
 
 from implementations.enterprise_rag import (  # noqa: E402
-    STRUCTURE_SENSITIVE, iter_documents, load_questions,
+    STRUCTURE_SENSITIVE,
+    iter_documents,
+    load_questions,
 )
-from octo.native.memory_store import encode_texts, save_memory_store  # noqa: E402
+from tahi.native.memory_store import encode_texts, save_memory_store  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-log = logging.getLogger("octo.gcca_data")
+log = logging.getLogger("tahi.gcca_data")
 
 MAX_DOC_CHARS = 1200
 
@@ -70,8 +72,8 @@ def main() -> int:
                          "--memory-source retrieved and for --require-base-failure.")
     ap.add_argument("--questions", required=True)
     ap.add_argument("--corpus", required=True)
-    ap.add_argument("--arm", default="octo_l1",
-                    help="Which arm's retrievals to train on (default: octo_l1)")
+    ap.add_argument("--arm", default="tahi_l1",
+                    help="Which arm's retrievals to train on (default: tahi_l1)")
     ap.add_argument("--memory-source", choices=("retrieved", "oracle"),
                     default="retrieved")
     ap.add_argument("--require-base-failure", action="store_true",

@@ -1,0 +1,160 @@
+{
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "n_items": 400,
+ "conventions": "docs/EVAL_CONVENTIONS.md",
+ "conditions": {
+  "closed": {
+   "hits_at_1": 0.22,
+   "hits_at_1_ci": [
+    0.18217324955825856,
+    0.26315382917756264
+   ],
+   "full": 0.0075,
+   "answer_set_f1": 0.13046348975098976,
+   "answer_logprob": -7.921693774461747,
+   "n": 400,
+   "n_logprob": 200
+  },
+  "random": {
+   "hits_at_1": 0.2325,
+   "hits_at_1_ci": [
+    0.1937657455982035,
+    0.2763235171226257
+   ],
+   "full": 0.0225,
+   "answer_set_f1": 0.10671804837319543,
+   "answer_logprob": -9.597088052034378,
+   "n": 400,
+   "n_logprob": 200
+  },
+  "gold": {
+   "hits_at_1": 0.9375,
+   "hits_at_1_ci": [
+    0.9093652829110908,
+    0.9573111565641887
+   ],
+   "full": 0.1525,
+   "answer_set_f1": 0.3833470910052012,
+   "answer_logprob": -5.310585383474827,
+   "n": 400,
+   "n_logprob": 200
+  },
+  "gold+noise": {
+   "hits_at_1": 0.68,
+   "hits_at_1_ci": [
+    0.6327588055173099,
+    0.7238166438668052
+   ],
+   "full": 0.105,
+   "answer_set_f1": 0.2980723175308948,
+   "answer_logprob": -5.39197347342968,
+   "n": 400,
+   "n_logprob": 200
+  }
+ },
+ "comparisons": {
+  "wrong facts supplied": {
+   "gained": 31,
+   "lost": 26,
+   "p_value": 0.5962416305866568,
+   "test": "chi-square, continuity-corrected",
+   "p_value_holm": 0.5962416305866568
+  },
+  "correct facts supplied": {
+   "gained": 288,
+   "lost": 1,
+   "p_value": 1.6408552545889394e-63,
+   "test": "chi-square, continuity-corrected",
+   "p_value_holm": 4.922565763766818e-63
+  },
+  "correct facts mixed with wrong ones": {
+   "gained": 195,
+   "lost": 11,
+   "p_value": 3.108900131055206e-37,
+   "test": "chi-square, continuity-corrected",
+   "p_value_holm": 6.217800262110412e-37
+  }
+ },
+ "examples": [
+  {
+   "question": "who starred in the movies whose director also directed See No Evil, Hear No Evil",
+   "answers": [
+    "Valerie Perrine",
+    "Al Pacino",
+    "Barbara Harris"
+   ],
+   "facts": [
+    "See No Evil, Hear No Evil was directed by Arthur Hiller.",
+    "Arthur Hiller directed Author! Author!.",
+    "Author! Author! starred Al Pacino."
+   ],
+   "closed": "Morgan Freeman and Sidney Poitier",
+   "random": "Alia Shawkat",
+   "gold": "Al Pacino",
+   "gold+noise": "Alia Shawkat"
+  },
+  {
+   "question": "when did the films release whose screenwriters also wrote Flakes",
+   "answers": [
+    "2006"
+   ],
+   "facts": [
+    "Flakes starred Aaron Stanford.",
+    "Aaron Stanford starred in Live Free or Die.",
+    "Live Free or Die was released in 2006."
+   ],
+   "closed": "2014",
+   "random": "1978",
+   "gold": "2006",
+   "gold+noise": "2006"
+  },
+  {
+   "question": "what types are the movies written by the screenwriter of Miami Blues",
+   "answers": [
+    "Crime"
+   ],
+   "facts": [
+    "Miami Blues was directed by George Armitage.",
+    "George Armitage directed Hit Man.",
+    "Hit Man is a Crime film."
+   ],
+   "closed": "drama and crime",
+   "random": "drama and action",
+   "gold": "Crime",
+   "gold+noise": "Crime"
+  },
+  {
+   "question": "which person directed the films acted by the actors in Our Man in Havana",
+   "answers": [
+    "Elia Kazan",
+    "Gary Trousdale",
+    "Lee Sholem"
+   ],
+   "facts": [
+    "Our Man in Havana starred Alec Guinness.",
+    "Alec Guinness starred in Cromwell.",
+    "Cromwell was directed by Ken Hughes."
+   ],
+   "closed": "Vincente Minnelli",
+   "random": "Istv\u00e1n Szab\u00f3",
+   "gold": "Ken Hughes",
+   "gold+noise": "Alec Guinness"
+  },
+  {
+   "question": "when did the movies written by Sword of the Beast writers release",
+   "answers": [
+    "1964",
+    "1969"
+   ],
+   "facts": [
+    "Sword of the Beast was directed by Hideo Gosha.",
+    "Hideo Gosha directed Goyokin.",
+    "Goyokin was released in 1969."
+   ],
+   "closed": "2013",
+   "random": "2006",
+   "gold": "1969",
+   "gold+noise": "1969"
+  }
+ ]
+}

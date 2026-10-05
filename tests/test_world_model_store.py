@@ -4,9 +4,8 @@ Tests for WorldModelStore (FTI Feature Pipeline)
 
 import tempfile
 import unittest
-from pathlib import Path
 
-from octo import WorldModel, WorldModelStore
+from tahi import WorldModel, WorldModelStore
 
 
 class WorldModelStoreTests(unittest.TestCase):
@@ -76,7 +75,7 @@ class WorldModelStoreTests(unittest.TestCase):
         self.assertEqual(len(world2.nodes), 1)
 
         # Force rebuild
-        world3 = self.store.get_or_build(
+        self.store.get_or_build(
             builder,
             source="test",
             version="v1.0.0",

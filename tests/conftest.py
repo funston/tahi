@@ -1,4 +1,4 @@
-"""Shared pytest configuration for the OCTO test suite."""
+"""Shared pytest configuration for the TAHI test suite."""
 
 import os
 import sys

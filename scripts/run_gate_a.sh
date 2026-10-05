@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Gate A -- symmetric oracle-memory ablation.
-# Pre-registration: docs/OCTO_ENDGAME_PLAN.md section 2.
+# Pre-registration: docs/TAHI_ENDGAME_PLAN.md section 2.
 #
 # Step 1 trains GCCA adapters on zero-noise gold-document memory.
 # Step 2 scores the held-out split using the SAME memory bytes.

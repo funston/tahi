@@ -1,7 +1,7 @@
-You are continuing development of the OCTO research repo.
+You are continuing development of the Tahi research repo.
 
 Current direction:
-- OCTO is a true cognitive coprocessor for LLMs.
+- Tahi is a true cognitive coprocessor for LLMs.
 - The base LLM is primarily a perception and language interface.
 - World models, graph reasoning, and simulation run alongside inference.
 - We want to avoid full retraining of the base model.

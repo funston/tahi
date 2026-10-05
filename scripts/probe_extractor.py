@@ -41,8 +41,9 @@ for p in (str(ROOT), str(ROOT / "src")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from octo.validate.claim_extractor import (  # noqa: E402
-    ClaimExtractionError, ClaimExtractor, _parse_json_array,
+from tahi.validate.claim_extractor import (  # noqa: E402
+    ClaimExtractionError,
+    ClaimExtractor,
 )
 
 RELATIONS = ["binds", "treats", "causes", "participates_in"]
@@ -200,7 +201,7 @@ def main() -> int:
             arm: sum(1 for r in rows if r.arm == arm and r.correct)
             for arm in ("real", "fake")
         }
-    print("  PER CONDITION (correct out of %d each)" % args.repeats)
+    print(f"  PER CONDITION (correct out of {args.repeats} each)")
     for cond, d in per_cond.items():
         print(f"    {cond:18s} real={d['real']}  fake={d['fake']}")
 

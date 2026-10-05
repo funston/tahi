@@ -1,6 +1,6 @@
 """Solve one real Spider 2.0 Snow task (USA_NAMES / sf_bq286) end-to-end.
 
-This script shows OCTO taking a natural-language Spider question, grounding it
+This script shows TAHI taking a natural-language Spider question, grounding it
 in a schema world model, and emitting a correct SQL query through a small
 domain-specific generator. Because the real data lives in BigQuery/Snowflake
 public datasets we do not have cloud credentials for, the script validates the
@@ -28,10 +28,10 @@ import json
 from implementations.spider.spider import SpiderSchemaCoprocessor
 from implementations.spider.spider_lite import SpiderLiteTask
 from implementations.spider.spider_snow_sql import SpiderSnowSQLGenerator
-from octo.database import SQLSchemaSnapshot, snapshot_to_world_model
+from tahi.database import SQLSchemaSnapshot, snapshot_to_world_model
 
 
-SNAPSHOT_PATH = Path("/Users/richiek/work/Spider2/octo_snapshots/snowflake/USA_NAMES.json")
+SNAPSHOT_PATH = Path("/Users/richiek/work/Spider2/tahi_snapshots/snowflake/USA_NAMES.json")
 
 TASK_RECORD = {
     "instance_id": "sf_bq286",
@@ -108,7 +108,7 @@ def main() -> None:
     constraints = result["constraints"]
 
     print("=" * 70)
-    print("OCTO coprocessor output")
+    print("TAHI coprocessor output")
     print("=" * 70)
     print(f"Candidate tables: {constraints.get('candidate_tables')}")
     print(f"Candidate columns: {constraints.get('candidate_columns')}")
@@ -144,7 +144,7 @@ def main() -> None:
         print(f"Match: {predicted_name == GOLD_ANSWER}")
 
         if predicted_name == GOLD_ANSWER:
-            print("\n✅ OCTO solved the USA_NAMES Spider task.")
+            print("\n✅ TAHI solved the USA_NAMES Spider task.")
         else:
             print("\n❌ Predicted answer does not match gold.")
     finally:

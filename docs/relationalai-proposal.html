@@ -1,0 +1,438 @@
+<title>Monotone — graph-verified generation</title>
+<style>
+  :root{
+    --paper:#F8F9FA; --panel:#FFFFFF; --ink:#101419; --ink2:#5C6672; --ink3:#8A94A1;
+    --rule:#D8DDE3; --rule2:#EBEEF2; --accent:#1F51A8; --accent-soft:rgba(31,81,168,.09);
+    --grid:rgba(31,81,168,.05); --logo-filter:none;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0C0F13; --panel:#12171D; --ink:#E8ECF1; --ink2:#96A1AE; --ink3:#6B7683;
+      --rule:#232A33; --rule2:#1A2027; --accent:#6FA0F0; --accent-soft:rgba(111,160,240,.13);
+      --grid:rgba(111,160,240,.055); --logo-filter:invert(1);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0C0F13; --panel:#12171D; --ink:#E8ECF1; --ink2:#96A1AE; --ink3:#6B7683;
+    --rule:#232A33; --rule2:#1A2027; --accent:#6FA0F0; --accent-soft:rgba(111,160,240,.13);
+    --grid:rgba(111,160,240,.055); --logo-filter:invert(1);
+  }
+  :root[data-theme="light"]{
+    --paper:#F8F9FA; --panel:#FFFFFF; --ink:#101419; --ink2:#5C6672; --ink3:#8A94A1;
+    --rule:#D8DDE3; --rule2:#EBEEF2; --accent:#1F51A8; --accent-soft:rgba(31,81,168,.09);
+    --grid:rgba(31,81,168,.05); --logo-filter:none;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:16px/1.65 var(--sans); -webkit-font-smoothing:antialiased;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:34px 34px;
+  }
+  .page{max-width:940px; margin:0 auto; padding:0 24px 96px;}
+  .col{max-width:720px;}
+
+  /* ---------- masthead ---------- */
+  header{padding:64px 0 0;}
+  .logo{display:block; width:250px; max-width:64%; height:auto; filter:var(--logo-filter);}
+  .eyebrow{
+    font:600 11px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink3); margin:0 0 14px;
+  }
+  h1{
+    font:700 clamp(30px,4.6vw,46px)/1.12 var(--sans); letter-spacing:-.022em;
+    margin:34px 0 0; text-wrap:balance; max-width:17ch;
+  }
+  .lede{font-size:18px; line-height:1.6; color:var(--ink2); margin:18px 0 0; max-width:56ch;}
+
+  /* ---------- the step rule: the mark, used as structure ---------- */
+  .steprule{display:block; width:100%; height:16px; margin:52px 0 44px; overflow:visible;}
+  .steprule path{fill:none; stroke:var(--rule); stroke-width:1.5;}
+
+  /* ---------- readout band ---------- */
+  .readout{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:1px;
+    background:var(--rule); border:1px solid var(--rule); margin:36px 0 0;
+  }
+  .cell{background:var(--panel); padding:18px 16px;}
+  .cell b{
+    display:block; font:500 30px/1 var(--mono); letter-spacing:-.03em;
+    font-variant-numeric:tabular-nums;
+  }
+  .cell b.hero{color:var(--accent);}
+  .cell span{
+    display:block; margin-top:9px; font:600 10px/1.3 var(--sans);
+    letter-spacing:.11em; text-transform:uppercase; color:var(--ink3);
+  }
+
+  /* ---------- plot ---------- */
+  figure{margin:36px 0 0; border:1px solid var(--rule); background:var(--panel); padding:26px 24px 18px;}
+  figcaption{
+    font:600 10px/1.4 var(--sans); letter-spacing:.11em; text-transform:uppercase;
+    color:var(--ink3); margin:0 0 18px;
+  }
+  .plot{width:100%; height:auto; display:block;}
+  .plot .axis{stroke:var(--rule); stroke-width:1;}
+  .plot .tick{fill:var(--ink3); font:500 9px var(--mono);}
+  .plot .lbl{fill:var(--ink2); font:500 10px var(--mono);}
+  .plot .val{fill:var(--ink); font:500 13px var(--mono);}
+  .plot .val.hi{fill:var(--accent);}
+  .plot .step{fill:none; stroke:var(--accent); stroke-width:2.5;
+              stroke-linejoin:miter; stroke-linecap:butt;}
+  .plot .dot{fill:var(--accent);}
+  @media (prefers-reduced-motion:no-preference){
+    .plot .step{stroke-dasharray:1200; stroke-dashoffset:1200; animation:draw 1.5s .25s cubic-bezier(.65,0,.35,1) forwards;}
+    .plot .dot{opacity:0; animation:pop .3s 1.55s ease-out forwards;}
+  }
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  @keyframes pop{to{opacity:1;}}
+
+  /* ---------- sections ---------- */
+  section{margin:0;}
+  h2{
+    font:700 12px/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
+    color:var(--ink3); margin:0 0 20px;
+  }
+  h3{font:650 19px/1.35 var(--sans); letter-spacing:-.012em; margin:38px 0 10px; text-wrap:balance;}
+  h3 + p{margin-top:0;}
+  p{margin:0 0 16px; max-width:66ch;}
+  .col p:last-child{margin-bottom:0;}
+  strong{font-weight:650;}
+  em{font-style:normal; color:var(--accent);}
+  code{font:13px var(--mono); background:var(--accent-soft); padding:1px 5px; border-radius:2px;}
+
+  blockquote{
+    margin:0 0 16px; padding:0 0 0 20px; border-left:2px solid var(--accent);
+    color:var(--ink2); max-width:60ch;
+  }
+  blockquote p{margin:0;}
+
+  /* ---------- tables ---------- */
+  .scroll{overflow-x:auto; margin:0 0 6px;}
+  table{border-collapse:collapse; width:100%; min-width:440px; font-size:14.5px;}
+  th{
+    font:600 10px/1.4 var(--sans); letter-spacing:.11em; text-transform:uppercase;
+    color:var(--ink3); text-align:left; padding:0 14px 10px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  td{padding:13px 14px 13px 0; border-bottom:1px solid var(--rule2); vertical-align:top;}
+  tr:last-child td{border-bottom:1px solid var(--rule);}
+  td:last-child,th:last-child{padding-right:0;}
+  .num{text-align:right; font-family:var(--mono); font-variant-numeric:tabular-nums;
+       white-space:nowrap;}
+  .zero{color:var(--accent); font-weight:600;}
+  .lead{font-weight:600; width:30%;}
+  .rank{font:500 12px var(--mono); color:var(--accent); width:24px; padding-right:0;}
+  .note{font-size:13.5px; color:var(--ink2); margin:12px 0 0; max-width:70ch;}
+
+  /* ---------- callout ---------- */
+  .claim{
+    border:1px solid var(--rule); border-left:3px solid var(--accent);
+    background:var(--panel); padding:20px 22px; margin:26px 0;
+  }
+  .claim p{margin:0; max-width:62ch;}
+
+  footer{margin-top:24px; padding-top:26px; border-top:1px solid var(--rule);
+         font-size:13px; color:var(--ink3);}
+  footer p{max-width:72ch; margin:0 0 8px;}
+  a{color:var(--accent);}
+  a:focus-visible,summary:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+</style>
+
+<div class="page">
+
+<header>
+  <img class="logo" alt="Monotone — Artificial Intelligence"
+       src="data:image/png;base64,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">
+  <h1>A knowledge graph that fixes wrong answers and breaks none.</h1>
+  <p class="lede">One experiment, what it showed, what it didn't — and some ideas I'd like to
+  kick around with you.</p>
+
+  <div class="readout">
+    <div class="cell"><b>0.02</b><span>RAG baseline</span></div>
+    <div class="cell"><b class="hero">0.79</b><span>with the graph</span></div>
+    <div class="cell"><b>77</b><span>answers fixed</span></div>
+    <div class="cell"><b class="hero">0</b><span>answers broken</span></div>
+    <div class="cell"><b>&lt;.0001</b><span>McNemar exact</span></div>
+  </div>
+
+  <figure>
+    <figcaption>MetaQA 3-hop · n = 100 · exact set match, no LLM judge</figcaption>
+    <svg class="plot" viewBox="0 0 700 210" role="img"
+         aria-label="Step plot: accuracy rises from 0.01 with prompt-stuffing to 0.37 with in-generation constraint to 0.79 with post-generation correction, and never falls.">
+      <line class="axis" x1="58" y1="176" x2="678" y2="176"/>
+      <line class="axis" x1="58" y1="18"  x2="58"  y2="176"/>
+      <text class="tick" x="50" y="180" text-anchor="end">0</text>
+      <text class="tick" x="50" y="102" text-anchor="end">.40</text>
+      <text class="tick" x="50" y="26"  text-anchor="end">.80</text>
+      <path class="step" d="M58 172 L196 172 L196 141 L334 141 L334 103 L472 103 L472 26 L678 26"/>
+      <circle class="dot" cx="678" cy="26" r="4.5"/>
+      <text class="lbl" x="127" y="196" text-anchor="middle">baseline</text>
+      <text class="lbl" x="265" y="196" text-anchor="middle">pre-gen</text>
+      <text class="lbl" x="403" y="196" text-anchor="middle">in-gen</text>
+      <text class="lbl" x="560" y="196" text-anchor="middle">post-gen</text>
+      <text class="val"    x="127" y="164" text-anchor="middle">.02</text>
+      <text class="val"    x="265" y="133" text-anchor="middle">.18</text>
+      <text class="val"    x="403" y="95"  text-anchor="middle">.37</text>
+      <text class="val hi" x="560" y="18"  text-anchor="middle">.79</text>
+    </svg>
+  </figure>
+</header>
+
+<svg class="steprule" viewBox="0 0 940 16" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 13 L560 13 L560 3 L940 3"/></svg>
+
+<section class="col">
+  <h2>The experiment</h2>
+  <p>Take a benchmark where the knowledge graph <em>is</em> the dataset's ground truth, so
+  extraction quality is never a variable. Answers are entity lists, so scoring is exact set
+  equality and no LLM sits in judgement. Then write the same knowledge out as sentences and
+  give that to a dense retriever.</p>
+  <p>The text arm and the graph arm now hold <strong>identical information</strong>. The only
+  difference between them is access method — similarity search against traversal. Anything
+  that moves is attributable to that and nothing else.</p>
+  <p>Three places the graph can act, tested separately on the same 100 held-out questions,
+  same model, same seed.</p>
+</section>
+
+<div class="col scroll" style="margin-top:22px">
+<table>
+  <tr><th>when the graph is consulted</th><th class="num">baseline</th>
+      <th class="num">with graph</th><th class="num">fixed</th><th class="num">broken</th></tr>
+  <tr><td><strong>Post-generation</strong> — answer, diff against the graph, re-ask</td>
+      <td class="num">0.020</td><td class="num">0.790</td><td class="num">77</td>
+      <td class="num zero">0</td></tr>
+  <tr><td>&nbsp;&nbsp;same, with the few-shot examples removed</td>
+      <td class="num">0.020</td><td class="num">0.590</td><td class="num">57</td>
+      <td class="num zero">0</td></tr>
+  <tr><td><strong>In-generation</strong> — mask the logits at every decode step</td>
+      <td class="num">0.000</td><td class="num">0.370</td><td class="num">37</td>
+      <td class="num zero">0</td></tr>
+  <tr><td><strong>Pre-generation</strong> — paste graph results into the prompt</td>
+      <td class="num">0.010</td><td class="num">0.180</td><td class="num">17</td>
+      <td class="num zero">0</td></tr>
+</table>
+</div>
+<p class="col note">McNemar exact, two-sided, on the discordant cells: p &lt; 0.0001 every row.
+Post- and pre-generation use gpt-4o-mini with BGE-large-en-v1.5. In-generation is a local
+Qwen2.5-1.5B-Instruct, where the constraint overrode the model's own top choice on
+<strong>44% of decode steps</strong>.</p>
+
+<div class="col claim">
+  <p><strong>The column that matters is <em>broken</em>.</strong> Zero, in every arm, on two
+  models, under both query-derivation methods. A corrector that fixes some answers and breaks
+  others cannot be deployed where the answer matters, because nothing tells you which happened
+  to any single answer. At zero, the worst case for any answer is “no better than before”.</p>
+</div>
+
+<section class="col">
+  <h3>Two findings that outlive the benchmark</h3>
+  <p><strong>Injection point beat retrieval, four to one.</strong> Identical graph, identical
+  query, identical model, identical candidates: <em>0.18</em> pasted into the prompt,
+  <em>0.79</em> handed back as a diff of what was provably wrong. Prompt-stuffing a knowledge
+  graph is the common integration and the weakest of the three by a wide margin.</p>
+  <p><strong>The model ends up transcribing, not reasoning.</strong> End-to-end accuracy
+  (0.790) equals the traversal's own exact-match rate (0.790), to three decimals. The
+  correction loop drives the model to recite the supported set — so graph precision
+  <em>is</em> the score. Improve the traversal and the number moves; change the LLM and it
+  likely does not.</p>
+</section>
+
+<svg class="steprule" viewBox="0 0 940 16" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 13 L400 13 L400 3 L940 3"/></svg>
+
+<section class="col">
+  <h2>What this does not show</h2>
+  <p>Stated at the same volume as the result, because these are what a reviewer finds in ten
+  minutes.</p>
+</section>
+
+<div class="col scroll" style="margin-top:20px">
+<table>
+  <tr><td class="lead">The graph was free</td>
+      <td>MetaQA's graph is dataset ground truth. Extraction quality was never tested — and our
+      own extraction on enterprise prose scored <strong>&minus;0.12</strong> against its own
+      source documents.</td></tr>
+  <tr><td class="lead">Traversal recall is 0.790</td>
+      <td>On 21% of questions the traversal cannot reach a gold answer at all. A hard ceiling
+      that no amount of prompting recovers.</td></tr>
+  <tr><td class="lead">Nine relations</td>
+      <td>Deriving a query by enumeration is O(|R|³). It does not survive a schema with
+      hundreds of relation types.</td></tr>
+  <tr><td class="lead">No entity linking</td>
+      <td>The subject entity is supplied by the dataset in every arm.</td></tr>
+  <tr><td class="lead">Weak baseline, one seed</td>
+      <td>RAG scores 2%. Every figure is seed 0, n = 100. Two weak systems compared, not a
+      strong baseline against a stronger one.</td></tr>
+  <tr><td class="lead">Far from the ceiling</td>
+      <td>Published MetaQA 3-hop: GraftNet 77.7 · PullNet 91.4 · EmbedKGQA 94.8.</td></tr>
+</table>
+</div>
+
+<div class="col claim">
+  <p><strong>The first limit is the whole reason for this conversation.</strong> The condition
+  that makes these numbers clean — a maintained, resolved, governed knowledge graph — is the
+  condition RelationalAI's customers already live in permanently.</p>
+</div>
+
+<svg class="steprule" viewBox="0 0 940 16" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 13 L240 13 L240 3 L940 3"/></svg>
+
+<section class="col">
+  <h2>Some ideas worth exploring</h2>
+  <p>None of this is a pitch — it's the list I'd bring to a whiteboard. Every one of them is a
+  measurement first: run it on real data, look at the number, then decide whether there's
+  anything there. Roughly in order of how well it fits what Rel already does.</p>
+
+  <h3>1 &nbsp;·&nbsp; Automate the loop you already describe</h3>
+  <p>Your own page says <em>“if Rel gets something wrong, you fix it.”</em> That's a human
+  catching the error. This is the same loop with the semantic model doing the catching —
+  generate, query the model, diff, hand back only what's provably wrong, ask again. I'm not
+  proposing a new idea here. It's the thing you already designed, without the human in it.</p>
+
+  <h3>2 &nbsp;·&nbsp; The number Spider 2.0 can't give you</h3>
+  <p>A leaderboard result is a public-benchmark number. Nobody at AT&amp;T runs Spider — they
+  want the error rate on <em>their</em> schema, and sooner or later somebody in risk asks for
+  it in writing. A per-customer eval harness would answer that: paired arms, held-out
+  questions, McNemar exact, fixed and broken counts, pass conditions written down
+  <em>before</em> the run.</p>
+  <p>Honestly this is the piece of my work that's furthest along — the measurement scaffolding
+  is more mature than the mechanism it was built to measure.</p>
+
+  <h3>3 &nbsp;·&nbsp; Wanting to be right vs. being unable to be wrong</h3>
+  <p>Fine-tuning shifts probabilities. It makes fabrication unlikely, never impossible. Masking
+  the sampler makes an entity that isn't in the semantic model <strong>unreachable</strong> —
+  the decoder physically cannot emit it. Those are different guarantees and they stack; I'd
+  never argue for one instead of the other.</p>
+  <p>What it buys you is a sentence you can't currently write: <em>the agent cannot name a
+  supplier, account or counterparty that isn't in your governed data.</em></p>
+
+  <h3>4 &nbsp;·&nbsp; A hunch about Open Telco</h3>
+  <p>Half-formed, but it nags at me. Open Telco is a serious body of work — 31 fine-tuned
+  models across the whole stack, embedders, rerankers, LLMs, safety variants that abstain when
+  context looks thin. Trained on 326k examples curated by a hundred-plus domain experts out of
+  3GPP, O-RAN, IETF and GSMA. Reranker MRR@10 0.952. Nothing about it is sloppy.</p>
+  <p>Two things caught my eye, neither of which is a criticism.</p>
+  <p>There's <strong>no structured layer anywhere in it</strong> — their own summary says the
+  system “relies on retrieved passage context rather than structured semantic
+  representations.” Which is odd, because 3GPP and O-RAN are about as structured as a corpus
+  gets: releases, procedures, interfaces, parameter identifiers, and formal relationships
+  between all of them. It reads like a semantic model waiting to happen. Strange thing to say
+  to <em>you</em>, given that's your business and AT&amp;T's already your customer.</p>
+  <p>And under their own limitations: <em>“generated content requires verification before
+  operational use.”</em> Same sentence, essentially, as “if Rel gets something wrong, you fix
+  it.” Both of you landed on a human doing the checking.</p>
+  <p><strong>The hunch:</strong> with a reranker that good, the retrieval is fine — so if
+  answers are still wrong, the failure has moved downstream of ranking. I'd want to know how
+  often a generated answer names a spec, release, interface or parameter that appears in none
+  of the retrieved passages. If that number is meaningfully above zero, no amount of further
+  reranking touches it, because it's a decode-time thing. Their datasets are public, so it's an
+  afternoon to find out. Might be nothing. Might be the whole story.</p>
+
+  <h3>5 &nbsp;·&nbsp; Legend, where this might just fall out</h3>
+  <p>I gather the thinking on the Legend side has been to train or fine-tune something to
+  learn Pure and do text-to-Legend. Worth asking whether that's the hard way round.</p>
+  <p>Everything that made my results caveat-heavy was about the graph — where does it come
+  from, is it trustworthy, what did extraction cost us. With Legend, <strong>the graph is
+  already there and it's formal.</strong> A Legend model is a typed class/property/association
+  graph, version-controlled through SDLC. Nothing to extract, nothing to trust, nothing to
+  maintain separately. That's the condition my whole experiment had to borrow from a benchmark,
+  and Legend just… has it.</p>
+  <p>Then there's the compiler, which feels like the interesting bit. My correction loop works
+  by handing the model a list of what's provably wrong with its answer. Legend's compiler
+  already produces exactly that, and better than I could —
+  <code>Class Person has no property 'birthDate'</code>, type errors, multiplicity violations.
+  A free, exact checker with no LLM judging anything.</p>
+  <p><strong>Where fine-tuning seems like the harder road:</strong> a trained model learns one
+  firm's Legend model, and the next firm has a different one. Models change through SDLC
+  constantly, so it goes stale. And Pure corpora are thin — Legend's niche, there's no
+  Spider-sized pile of training data to draw on. Whereas constraining the decoder to the
+  grammar plus whatever model is currently loaded needs no examples at all and works on a model
+  it's never seen.</p>
+  <p>Two things I'd poke at if this went anywhere. <strong>The eval set may already exist</strong>
+  — Legend Services are curated, tested, version-controlled queries sitting in the repo. Turn
+  one into a natural-language question, see if it round-trips. Ground truth is the real query
+  and its real output, so no judge is needed and nobody has to build a benchmark. And
+  <strong>entitlements might become a decode-time property</strong>: Legend already carries
+  ownership and validation constructs, so if the allowed vocabulary is filtered by the caller's
+  entitlements, the agent can't <em>construct</em> a query over data it shouldn't see. For the
+  FINOS banks that sentence might matter more than any accuracy number.</p>
+  <p>All speculative. I haven't looked at whether Pure's grammar comes out in a usable shape,
+  and a query can compile fine and still answer the wrong question. But it feels like it wants
+  to work.</p>
+
+  <h3>6 &nbsp;·&nbsp; Poke at how “grounded” actually works</h3>
+  <p>Really just a question. How does the semantic model reach the generation? If it's context
+  assembled into a prompt — the usual answer — then the 0.18-vs-0.79 result applies directly
+  and is cheap to test on your stack. Either it finds headroom or it doesn't, and I'd rather
+  know that before suggesting anything else.</p>
+</section>
+
+<section class="col">
+  <h2>Why I think this fits at all</h2>
+  <p>Short version: the thing my experiment was missing is the thing you already sell.</p>
+  <p>Every caveat on my numbers comes back to one fact — the graph was handed to me by a
+  benchmark. I never had to build it, so I never proved I could. When I did try extracting one
+  from ordinary enterprise prose, it scored <em>&minus;0.12</em> against its own source
+  documents, which is a polite way of saying it was worse than nothing. That gap is the entire
+  reason I'd be having this conversation with you rather than with anyone else. A maintained,
+  resolved, governed semantic model is the precondition my results quietly assume, and it's
+  what your customers already live in.</p>
+  <p>The other half is that the failures I chased weren't where I expected. Retrieval kept
+  turning out to be fine — the right material was there, and the answer still came out wrong.
+  What moved the number was <strong>where the knowledge met the generation</strong>: same
+  graph, same query, same model, same candidates, <em>0.18</em> pasted into a prompt against
+  <em>0.79</em> handed back as a diff of errors. That's a stage nobody optimises, sitting
+  downstream of everything everybody does optimise.</p>
+  <p>And it's all inference-time. No training, no retraining when the model changes, nothing
+  that competes with superalignment or reranking or fine-tuning — it sits after them and picks
+  up what they structurally can't. Which is why I keep landing on “this composes with what
+  they've built” rather than “this replaces it.”</p>
+  <p>Could easily be that your semantic layer already closes most of this through context, in
+  which case there's not much here and it's a short conversation. But it seems worth an
+  afternoon to find out.</p>
+</section>
+
+<section class="col">
+  <h3>What you'd actually have to give me</h3>
+  <p>One function. That's the whole coupling surface:</p>
+  <blockquote><p><code>supported(question) -&gt; set[str]</code> — the entities the semantic
+  model will vouch for.</p></blockquote>
+  <p>Ontology, entity resolution, query execution, row-level access, freshness — all stay
+  exactly where they are. Nothing parses your semantic model, nothing stores triples, nothing
+  needs write access, and no data leaves your environment.</p>
+</section>
+
+<svg class="steprule" viewBox="0 0 940 16" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 13 L120 13 L120 3 L940 3"/></svg>
+
+<section class="col">
+  <h2>If any of it's interesting</h2>
+  <p>Nothing here is built and I'm not proposing to build anything yet. The sensible next step
+  for any of them is the same: pick one, spend a few days, get a number, and let the number
+  decide whether there's a real thing here.</p>
+  <p>If it ever got past that, the shape I'd want is three arms on the same questions and model
+  — current retrieval, graph context in the prompt, correction loop — with the scoring agreed
+  before the run. More than zero fixed, exactly zero broken, and significance measured against
+  <em>the prompt-stuffing arm</em>, not the no-graph baseline, since that's the easy comparison
+  and the one that flatters me.</p>
+  <p>And if it doesn't clear that bar, the honest read is that your semantic layer is already
+  getting most of the value through context and the only thing left is the audit trail. I'd
+  write that up the same way as a win.</p>
+</section>
+
+<footer class="col">
+  <p>Every figure on this page is reproducible from per-question JSON artifacts; nothing is
+  reported that is absent from them. Also built, trained for fifteen epochs and measured: a
+  gated cross-attention adapter injecting graph memory into hidden states. It moved exact match
+  by +0.002. It is not part of anything proposed here.</p>
+  <p>Monotone, August 2026. Written for a conversation, not as a formal proposal. Quoted
+  phrases come from RelationalAI's and Open Telco's public pages and belong to them; no
+  affiliation or endorsement is implied.</p>
+</footer>
+
+</div>

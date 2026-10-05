@@ -19,10 +19,8 @@ if ROOT not in sys.path:
 
 from implementations.wikipedia import (
     WikipediaCoprocessor,
-    WikipediaPlanner,
-    WikipediaRuleEngine,
 )
-from octo.world_state import WorldModel
+from tahi.world_state import WorldModel
 
 
 class TestWikipediaCoprocessor(unittest.TestCase):

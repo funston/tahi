@@ -1,0 +1,432 @@
+{
+ "n_items": 1200,
+ "n_questions_requested": 400,
+ "totals": {
+  "relevance": 400,
+  "continuation": 800
+ },
+ "diagnostics": {
+  "entity_link_rate": 1.0,
+  "entity_link_rate_by_relation": {
+   "relevance": 1.0,
+   "continuation": 1.0
+  },
+  "target_in_linked_neighbours": 0.9925,
+  "graph_candidates_mean": 28.455,
+  "graph_candidates_median": 17.0,
+  "graph_candidates_p90": 41.100000000000136,
+  "graph_candidates_le_k": 0.029166666666666667,
+  "reach_by_relation": {
+   "relevance": 0.995,
+   "continuation": 0.99125
+  },
+  "fallback_fire_rate": {
+   "relevance": 0.0,
+   "continuation": 0.0
+  },
+  "target_rank_by_relation": {
+   "relevance": {
+    "median": 5.0,
+    "mean": 6.14070351758794,
+    "p90": 12.0
+   },
+   "continuation": {
+    "median": 11.0,
+    "mean": 22.96216897856242,
+    "p90": 38.0
+   }
+  },
+  "candidates_by_relation": {
+   "relevance": {
+    "median": 11.0,
+    "mean": 13.0925
+   },
+   "continuation": {
+    "median": 22.0,
+    "mean": 36.13625
+   }
+  }
+ },
+ "arms": {
+  "dense": {
+   "answer": {
+    "1": {
+     "relevance": 0.935,
+     "continuation": 0.19625
+    },
+    "3": {
+     "relevance": 0.9825,
+     "continuation": 0.6225
+    },
+    "5": {
+     "relevance": 0.99,
+     "continuation": 0.71625
+    },
+    "10": {
+     "relevance": 0.9925,
+     "continuation": 0.7875
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.02
+    },
+    "3": {
+     "relevance": 0.0575,
+     "continuation": 0.0575
+    },
+    "5": {
+     "relevance": 0.12,
+     "continuation": 0.06125
+    },
+    "10": {
+     "relevance": 0.195,
+     "continuation": 0.0725
+    }
+   }
+  },
+  "bm25": {
+   "answer": {
+    "1": {
+     "relevance": 0.75,
+     "continuation": 0.3325
+    },
+    "3": {
+     "relevance": 0.865,
+     "continuation": 0.96125
+    },
+    "5": {
+     "relevance": 0.9125,
+     "continuation": 0.98
+    },
+    "10": {
+     "relevance": 0.9625,
+     "continuation": 0.9825
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.03625
+    },
+    "3": {
+     "relevance": 0.13,
+     "continuation": 0.1475
+    },
+    "5": {
+     "relevance": 0.205,
+     "continuation": 0.22875
+    },
+    "10": {
+     "relevance": 0.3,
+     "continuation": 0.345
+    }
+   }
+  },
+  "hybrid": {
+   "answer": {
+    "1": {
+     "relevance": 0.955,
+     "continuation": 0.24625
+    },
+    "3": {
+     "relevance": 0.9925,
+     "continuation": 0.94
+    },
+    "5": {
+     "relevance": 0.9975,
+     "continuation": 0.98
+    },
+    "10": {
+     "relevance": 1.0,
+     "continuation": 0.98375
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.03625
+    },
+    "3": {
+     "relevance": 0.175,
+     "continuation": 0.095
+    },
+    "5": {
+     "relevance": 0.2325,
+     "continuation": 0.1575
+    },
+    "10": {
+     "relevance": 0.3875,
+     "continuation": 0.2325
+    }
+   }
+  },
+  "graph": {
+   "answer": {
+    "1": {
+     "relevance": 0.7675,
+     "continuation": 0.3925
+    },
+    "3": {
+     "relevance": 0.995,
+     "continuation": 0.56625
+    },
+    "5": {
+     "relevance": 0.995,
+     "continuation": 0.68875
+    },
+    "10": {
+     "relevance": 0.995,
+     "continuation": 0.835
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.01
+    },
+    "3": {
+     "relevance": 0.26,
+     "continuation": 0.09375
+    },
+    "5": {
+     "relevance": 0.5525,
+     "continuation": 0.235
+    },
+    "10": {
+     "relevance": 0.925,
+     "continuation": 0.44625
+    }
+   }
+  },
+  "graph+hybrid": {
+   "answer": {
+    "1": {
+     "relevance": 0.7675,
+     "continuation": 0.3925
+    },
+    "3": {
+     "relevance": 0.995,
+     "continuation": 0.56625
+    },
+    "5": {
+     "relevance": 0.9975,
+     "continuation": 0.68875
+    },
+    "10": {
+     "relevance": 1.0,
+     "continuation": 0.835
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.01
+    },
+    "3": {
+     "relevance": 0.26,
+     "continuation": 0.09375
+    },
+    "5": {
+     "relevance": 0.5525,
+     "continuation": 0.235
+    },
+    "10": {
+     "relevance": 0.925,
+     "continuation": 0.44625
+    }
+   }
+  },
+  "graph|hybrid": {
+   "answer": {
+    "1": {
+     "relevance": 0.7675,
+     "continuation": 0.3925
+    },
+    "3": {
+     "relevance": 0.9975,
+     "continuation": 0.84
+    },
+    "5": {
+     "relevance": 0.9975,
+     "continuation": 0.955
+    },
+    "10": {
+     "relevance": 1.0,
+     "continuation": 0.98375
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.01
+    },
+    "3": {
+     "relevance": 0.22,
+     "continuation": 0.10375
+    },
+    "5": {
+     "relevance": 0.395,
+     "continuation": 0.21375
+    },
+    "10": {
+     "relevance": 0.78,
+     "continuation": 0.39
+    }
+   }
+  },
+  "graph>hybrid": {
+   "answer": {
+    "1": {
+     "relevance": 0.7675,
+     "continuation": 0.3925
+    },
+    "3": {
+     "relevance": 0.995,
+     "continuation": 0.56625
+    },
+    "5": {
+     "relevance": 0.995,
+     "continuation": 0.68875
+    },
+    "10": {
+     "relevance": 0.995,
+     "continuation": 0.835
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.01
+    },
+    "3": {
+     "relevance": 0.26,
+     "continuation": 0.09375
+    },
+    "5": {
+     "relevance": 0.5525,
+     "continuation": 0.235
+    },
+    "10": {
+     "relevance": 0.925,
+     "continuation": 0.44625
+    }
+   }
+  },
+  "graph|hybrid>hybrid": {
+   "answer": {
+    "1": {
+     "relevance": 0.7675,
+     "continuation": 0.3925
+    },
+    "3": {
+     "relevance": 0.9975,
+     "continuation": 0.84
+    },
+    "5": {
+     "relevance": 0.9975,
+     "continuation": 0.955
+    },
+    "10": {
+     "relevance": 1.0,
+     "continuation": 0.98375
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.01
+    },
+    "3": {
+     "relevance": 0.22,
+     "continuation": 0.10375
+    },
+    "5": {
+     "relevance": 0.395,
+     "continuation": 0.21375
+    },
+    "10": {
+     "relevance": 0.78,
+     "continuation": 0.39
+    }
+   }
+  },
+  "tahi-expand": {
+   "answer": {
+    "1": {
+     "relevance": 0.9525,
+     "continuation": 0.185
+    },
+    "3": {
+     "relevance": 0.9825,
+     "continuation": 0.88375
+    },
+    "5": {
+     "relevance": 0.9875,
+     "continuation": 0.94125
+    },
+    "10": {
+     "relevance": 0.995,
+     "continuation": 0.97
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0075,
+     "continuation": 0.0275
+    },
+    "3": {
+     "relevance": 0.2575,
+     "continuation": 0.15875
+    },
+    "5": {
+     "relevance": 0.3825,
+     "continuation": 0.26125
+    },
+    "10": {
+     "relevance": 0.58,
+     "continuation": 0.37875
+    }
+   }
+  },
+  "random": {
+   "answer": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.0075
+    },
+    "3": {
+     "relevance": 0.0,
+     "continuation": 0.025
+    },
+    "5": {
+     "relevance": 0.0,
+     "continuation": 0.03625
+    },
+    "10": {
+     "relevance": 0.0025,
+     "continuation": 0.06375
+    }
+   },
+   "target": {
+    "1": {
+     "relevance": 0.0,
+     "continuation": 0.0
+    },
+    "3": {
+     "relevance": 0.0,
+     "continuation": 0.0
+    },
+    "5": {
+     "relevance": 0.0,
+     "continuation": 0.0
+    },
+    "10": {
+     "relevance": 0.0,
+     "continuation": 0.0
+    }
+   }
+  }
+ }
+}

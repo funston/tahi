@@ -1,0 +1,5442 @@
+{
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "n": 30,
+  "total_graph_facts": 314,
+  "summary": {
+    "A": {
+      "label": "frontier (Opus)",
+      "correct": 88,
+      "coverage": 0.2802547770700637,
+      "stated": 165,
+      "manual": 77,
+      "zero": 1
+    },
+    "B": {
+      "label": "local 1.5B",
+      "correct": 10,
+      "coverage": 0.03184713375796178,
+      "stated": 101,
+      "manual": 91,
+      "zero": 24
+    },
+    "C": {
+      "label": "local + prompt (RAG)",
+      "correct": 236,
+      "coverage": 0.7515923566878981,
+      "stated": 237,
+      "manual": 1,
+      "zero": 5
+    },
+    "D": {
+      "label": "local + CONSTRAINED",
+      "correct": 138,
+      "coverage": 0.4394904458598726,
+      "stated": 138,
+      "manual": 0,
+      "zero": 0
+    },
+    "E": {
+      "label": "local + prompt + CONSTRAINED",
+      "correct": 299,
+      "coverage": 0.9522292993630573,
+      "stated": 299,
+      "manual": 0,
+      "zero": 0
+    },
+    "F": {
+      "label": "local + CONSTRAINED (gateless, O(1))",
+      "correct": 314,
+      "coverage": 1.0,
+      "stated": 314,
+      "manual": 0,
+      "zero": 0
+    }
+  },
+  "mean_intervention_rate": 0.3934165190366153,
+  "rows": [
+    {
+      "qid": "t000",
+      "subject_id": "Compound::DB06691",
+      "subject": "Mepyramine",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Mepyramine bind?",
+      "gold": [
+        "CYP2D6",
+        "HRH1",
+        "SLC22A4",
+        "SLC22A5"
+      ],
+      "n_gold": 4,
+      "linked_node": "Compound::DB06691",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "CYP2D6",
+        "HRH1",
+        "SLC22A4",
+        "SLC22A5"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.3076923076923077,
+        "blocked_steps": 4,
+        "total_steps": 13,
+        "n_allowed": 4
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 24,
+        "n_allowed": 4
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.5,
+        "blocked_steps": 12,
+        "total_steps": 24,
+        "n_allowed": 4
+      },
+      "A_raw": "HRH1, CYP2D6",
+      "B_raw": "ADORA2A, ADRA1B",
+      "C_raw": "CYP2D6, HRH1, SLC22A4, SLC22A5",
+      "D_raw": "CYP2D6, SLC22A5",
+      "E_raw": "CYP2D6, HRH1, SLC22A4, SLC22A5",
+      "F_raw": "CYP2D6, SLC22A5, SLC22A4, HRH1",
+      "A_said": [
+        "HRH1",
+        "CYP2D6"
+      ],
+      "A_correct": [
+        "HRH1",
+        "CYP2D6"
+      ],
+      "A_n": 2,
+      "A_manual": [],
+      "B_said": [
+        "ADORA2A",
+        "ADRA1B"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "ADORA2A",
+        "ADRA1B"
+      ],
+      "C_said": [
+        "CYP2D6",
+        "HRH1",
+        "SLC22A4",
+        "SLC22A5"
+      ],
+      "C_correct": [
+        "CYP2D6",
+        "HRH1",
+        "SLC22A4",
+        "SLC22A5"
+      ],
+      "C_n": 4,
+      "C_manual": [],
+      "D_said": [
+        "CYP2D6",
+        "SLC22A5"
+      ],
+      "D_correct": [
+        "CYP2D6",
+        "SLC22A5"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "CYP2D6",
+        "HRH1",
+        "SLC22A4",
+        "SLC22A5"
+      ],
+      "E_correct": [
+        "CYP2D6",
+        "HRH1",
+        "SLC22A4",
+        "SLC22A5"
+      ],
+      "E_n": 4,
+      "E_manual": [],
+      "F_said": [
+        "CYP2D6",
+        "SLC22A5",
+        "SLC22A4",
+        "HRH1"
+      ],
+      "F_correct": [
+        "CYP2D6",
+        "SLC22A5",
+        "SLC22A4",
+        "HRH1"
+      ],
+      "F_n": 4,
+      "F_manual": []
+    },
+    {
+      "qid": "t001",
+      "subject_id": "Compound::DB06274",
+      "subject": "Alvimopan",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Alvimopan bind?",
+      "gold": [
+        "OPRD1",
+        "OPRK1",
+        "OPRM1"
+      ],
+      "n_gold": 3,
+      "linked_node": "Compound::DB06274",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "OPRD1",
+        "OPRK1",
+        "OPRM1"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.3333333333333333,
+        "blocked_steps": 3,
+        "total_steps": 9,
+        "n_allowed": 3
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 14,
+        "n_allowed": 3
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.35714285714285715,
+        "blocked_steps": 5,
+        "total_steps": 14,
+        "n_allowed": 3
+      },
+      "A_raw": "OPRM1, OPRK1, OPRD1",
+      "B_raw": "I don't know",
+      "C_raw": "OPRD1, OPRK1, OPRM1",
+      "D_raw": "OPRM1, OPRD1",
+      "E_raw": "OPRD1, OPRK1, OPRM1",
+      "F_raw": "OPRM1, OPRD1, OPRK1",
+      "A_said": [
+        "OPRM1",
+        "OPRK1",
+        "OPRD1"
+      ],
+      "A_correct": [
+        "OPRM1",
+        "OPRK1",
+        "OPRD1"
+      ],
+      "A_n": 3,
+      "A_manual": [],
+      "B_said": [],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [],
+      "C_said": [
+        "OPRD1",
+        "OPRK1",
+        "OPRM1"
+      ],
+      "C_correct": [
+        "OPRD1",
+        "OPRK1",
+        "OPRM1"
+      ],
+      "C_n": 3,
+      "C_manual": [],
+      "D_said": [
+        "OPRM1",
+        "OPRD1"
+      ],
+      "D_correct": [
+        "OPRM1",
+        "OPRD1"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "OPRD1",
+        "OPRK1",
+        "OPRM1"
+      ],
+      "E_correct": [
+        "OPRD1",
+        "OPRK1",
+        "OPRM1"
+      ],
+      "E_n": 3,
+      "E_manual": [],
+      "F_said": [
+        "OPRM1",
+        "OPRD1",
+        "OPRK1"
+      ],
+      "F_correct": [
+        "OPRM1",
+        "OPRD1",
+        "OPRK1"
+      ],
+      "F_n": 3,
+      "F_manual": []
+    },
+    {
+      "qid": "t002",
+      "subject_id": "Compound::DB00489",
+      "subject": "Sotalol",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Sotalol bind?",
+      "gold": [
+        "ADRB1",
+        "ADRB2",
+        "KCNH2"
+      ],
+      "n_gold": 3,
+      "linked_node": "Compound::DB00489",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ADRB1",
+        "ADRB2",
+        "KCNH2"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.3333333333333333,
+        "blocked_steps": 5,
+        "total_steps": 15,
+        "n_allowed": 3
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.07692307692307693,
+        "blocked_steps": 1,
+        "total_steps": 13,
+        "n_allowed": 3
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.3333333333333333,
+        "blocked_steps": 5,
+        "total_steps": 15,
+        "n_allowed": 3
+      },
+      "A_raw": "ADRB1, ADRB2, KCNH2",
+      "B_raw": "KLF14, KLF9, NKX2-5",
+      "C_raw": "I don't know",
+      "D_raw": "KCNH2, ADRB1, ADRB2",
+      "E_raw": "ADRB1, ADRB2, KCNH2",
+      "F_raw": "KCNH2, ADRB1, ADRB2",
+      "A_said": [
+        "ADRB1",
+        "ADRB2",
+        "KCNH2"
+      ],
+      "A_correct": [
+        "ADRB1",
+        "ADRB2",
+        "KCNH2"
+      ],
+      "A_n": 3,
+      "A_manual": [],
+      "B_said": [
+        "KLF14",
+        "KLF9",
+        "NKX2-5"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "KLF14",
+        "KLF9",
+        "NKX2-5"
+      ],
+      "C_said": [],
+      "C_correct": [],
+      "C_n": 0,
+      "C_manual": [],
+      "D_said": [
+        "KCNH2",
+        "ADRB1",
+        "ADRB2"
+      ],
+      "D_correct": [
+        "KCNH2",
+        "ADRB1",
+        "ADRB2"
+      ],
+      "D_n": 3,
+      "D_manual": [],
+      "E_said": [
+        "ADRB1",
+        "ADRB2",
+        "KCNH2"
+      ],
+      "E_correct": [
+        "ADRB1",
+        "ADRB2",
+        "KCNH2"
+      ],
+      "E_n": 3,
+      "E_manual": [],
+      "F_said": [
+        "KCNH2",
+        "ADRB1",
+        "ADRB2"
+      ],
+      "F_correct": [
+        "KCNH2",
+        "ADRB1",
+        "ADRB2"
+      ],
+      "F_n": 3,
+      "F_manual": []
+    },
+    {
+      "qid": "t003",
+      "subject_id": "Compound::DB00131",
+      "subject": "Adenosine monophosphate",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Adenosine monophosphate bind?",
+      "gold": [
+        "ACSL1",
+        "ACSS1",
+        "ACSS2",
+        "ADCY1",
+        "ADK",
+        "AMPD1",
+        "APRT",
+        "CREB1",
+        "FBP1",
+        "HINT1",
+        "PDE4B",
+        "PDE4D",
+        "PIM1",
+        "PRKAA1",
+        "PRKAB1",
+        "PRKAB2",
+        "PYGL",
+        "SRC"
+      ],
+      "n_gold": 18,
+      "linked_node": "Compound::DB00131",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ACSL1",
+        "ACSS1",
+        "ACSS2",
+        "ADCY1",
+        "ADK",
+        "AMPD1",
+        "APRT",
+        "CREB1",
+        "FBP1",
+        "HINT1",
+        "PDE4B",
+        "PDE4D",
+        "PIM1",
+        "PRKAA1",
+        "PRKAB1",
+        "PRKAB2",
+        "PYGL",
+        "SRC"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.423728813559322,
+        "blocked_steps": 25,
+        "total_steps": 59,
+        "n_allowed": 18
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.018867924528301886,
+        "blocked_steps": 1,
+        "total_steps": 53,
+        "n_allowed": 18
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.4861111111111111,
+        "blocked_steps": 35,
+        "total_steps": 72,
+        "n_allowed": 18
+      },
+      "A_raw": "PRKAA1, PRKAA2, PRKAB1, PRKAG1, AMPD1, ADSL, ATIC, ADORA1",
+      "B_raw": "ADORA2A, ADORA3",
+      "C_raw": "AMPD1, PDE4B, PDE4D",
+      "D_raw": "ADK, ADCY1, ACSS2, ACSS1, ACSL1, PDE4B, PDE4D, PIM1, PRKAA1, PRKAB1, PRKAB2, HINT1, FBP1, PYGL",
+      "E_raw": "AMPD1, ADCY1, ACSS2, ACSL1, APRT, PDE4B, PDE4D, PIM1, PRKAA1, PRKAB1, PRKAB2, PYGL, SRC",
+      "F_raw": "ADK, ADCY1, ACSS2, ACSS1, ACSL1, PDE4B, PDE4D, PIM1, PRKAA1, PRKAB1, PRKAB2, HINT1, FBP1, PYGL, CREB1, SRC, APRT, AMPD1",
+      "A_said": [
+        "PRKAA1",
+        "PRKAA2",
+        "PRKAB1",
+        "PRKAG1",
+        "AMPD1",
+        "ADSL",
+        "ATIC",
+        "ADORA1"
+      ],
+      "A_correct": [
+        "PRKAA1",
+        "PRKAB1",
+        "AMPD1"
+      ],
+      "A_n": 3,
+      "A_manual": [
+        "PRKAA2",
+        "PRKAG1",
+        "ADSL",
+        "ATIC",
+        "ADORA1"
+      ],
+      "B_said": [
+        "ADORA2A",
+        "ADORA3"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "ADORA2A",
+        "ADORA3"
+      ],
+      "C_said": [
+        "AMPD1",
+        "PDE4B",
+        "PDE4D"
+      ],
+      "C_correct": [
+        "AMPD1",
+        "PDE4B",
+        "PDE4D"
+      ],
+      "C_n": 3,
+      "C_manual": [],
+      "D_said": [
+        "ADK",
+        "ADCY1",
+        "ACSS2",
+        "ACSS1",
+        "ACSL1",
+        "PDE4B",
+        "PDE4D",
+        "PIM1",
+        "PRKAA1",
+        "PRKAB1",
+        "PRKAB2",
+        "HINT1",
+        "FBP1",
+        "PYGL"
+      ],
+      "D_correct": [
+        "ADK",
+        "ADCY1",
+        "ACSS2",
+        "ACSS1",
+        "ACSL1",
+        "PDE4B",
+        "PDE4D",
+        "PIM1",
+        "PRKAA1",
+        "PRKAB1",
+        "PRKAB2",
+        "HINT1",
+        "FBP1",
+        "PYGL"
+      ],
+      "D_n": 14,
+      "D_manual": [],
+      "E_said": [
+        "AMPD1",
+        "ADCY1",
+        "ACSS2",
+        "ACSL1",
+        "APRT",
+        "PDE4B",
+        "PDE4D",
+        "PIM1",
+        "PRKAA1",
+        "PRKAB1",
+        "PRKAB2",
+        "PYGL",
+        "SRC"
+      ],
+      "E_correct": [
+        "AMPD1",
+        "ADCY1",
+        "ACSS2",
+        "ACSL1",
+        "APRT",
+        "PDE4B",
+        "PDE4D",
+        "PIM1",
+        "PRKAA1",
+        "PRKAB1",
+        "PRKAB2",
+        "PYGL",
+        "SRC"
+      ],
+      "E_n": 13,
+      "E_manual": [],
+      "F_said": [
+        "ADK",
+        "ADCY1",
+        "ACSS2",
+        "ACSS1",
+        "ACSL1",
+        "PDE4B",
+        "PDE4D",
+        "PIM1",
+        "PRKAA1",
+        "PRKAB1",
+        "PRKAB2",
+        "HINT1",
+        "FBP1",
+        "PYGL",
+        "CREB1",
+        "SRC",
+        "APRT",
+        "AMPD1"
+      ],
+      "F_correct": [
+        "ADK",
+        "ADCY1",
+        "ACSS2",
+        "ACSS1",
+        "ACSL1",
+        "PDE4B",
+        "PDE4D",
+        "PIM1",
+        "PRKAA1",
+        "PRKAB1",
+        "PRKAB2",
+        "HINT1",
+        "FBP1",
+        "PYGL",
+        "CREB1",
+        "SRC",
+        "APRT",
+        "AMPD1"
+      ],
+      "F_n": 18,
+      "F_manual": []
+    },
+    {
+      "qid": "t004",
+      "subject_id": "Compound::DB01233",
+      "subject": "Metoclopramide",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Metoclopramide bind?",
+      "gold": [
+        "CHRM1",
+        "CYP11B1",
+        "CYP11B2",
+        "CYP17A1",
+        "CYP2D6",
+        "DRD2",
+        "DRD3",
+        "HTR3A",
+        "HTR4"
+      ],
+      "n_gold": 9,
+      "linked_node": "Compound::DB01233",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "CHRM1",
+        "CYP11B1",
+        "CYP11B2",
+        "CYP17A1",
+        "CYP2D6",
+        "DRD2",
+        "DRD3",
+        "HTR3A",
+        "HTR4"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.3076923076923077,
+        "blocked_steps": 4,
+        "total_steps": 13,
+        "n_allowed": 9
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 48,
+        "n_allowed": 9
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.5833333333333334,
+        "blocked_steps": 28,
+        "total_steps": 48,
+        "n_allowed": 9
+      },
+      "A_raw": "DRD2, DRD3, HTR4, HTR3A",
+      "B_raw": "D2R, D3R, DRG1",
+      "C_raw": "I don't know",
+      "D_raw": "DRD2, HTR3A, HTR4",
+      "E_raw": "CHRM1, CYP11B1, CYP11B2, CYP17A1, CYP2D6, DRD2, DRD3, HTR3A, HTR4",
+      "F_raw": "DRD2, HTR3A, HTR4, DRD3, CHRM1, CYP2D6, CYP17A1, CYP11B1, CYP11B2",
+      "A_said": [
+        "DRD2",
+        "DRD3",
+        "HTR4",
+        "HTR3A"
+      ],
+      "A_correct": [
+        "DRD2",
+        "DRD3",
+        "HTR4",
+        "HTR3A"
+      ],
+      "A_n": 4,
+      "A_manual": [],
+      "B_said": [
+        "D2R",
+        "D3R",
+        "DRG1"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "D2R",
+        "D3R",
+        "DRG1"
+      ],
+      "C_said": [],
+      "C_correct": [],
+      "C_n": 0,
+      "C_manual": [],
+      "D_said": [
+        "DRD2",
+        "HTR3A",
+        "HTR4"
+      ],
+      "D_correct": [
+        "DRD2",
+        "HTR3A",
+        "HTR4"
+      ],
+      "D_n": 3,
+      "D_manual": [],
+      "E_said": [
+        "CHRM1",
+        "CYP11B1",
+        "CYP11B2",
+        "CYP17A1",
+        "CYP2D6",
+        "DRD2",
+        "DRD3",
+        "HTR3A",
+        "HTR4"
+      ],
+      "E_correct": [
+        "CHRM1",
+        "CYP11B1",
+        "CYP11B2",
+        "CYP17A1",
+        "CYP2D6",
+        "DRD2",
+        "DRD3",
+        "HTR3A",
+        "HTR4"
+      ],
+      "E_n": 9,
+      "E_manual": [],
+      "F_said": [
+        "DRD2",
+        "HTR3A",
+        "HTR4",
+        "DRD3",
+        "CHRM1",
+        "CYP2D6",
+        "CYP17A1",
+        "CYP11B1",
+        "CYP11B2"
+      ],
+      "F_correct": [
+        "DRD2",
+        "HTR3A",
+        "HTR4",
+        "DRD3",
+        "CHRM1",
+        "CYP2D6",
+        "CYP17A1",
+        "CYP11B1",
+        "CYP11B2"
+      ],
+      "F_n": 9,
+      "F_manual": []
+    },
+    {
+      "qid": "t005",
+      "subject_id": "Compound::DB01023",
+      "subject": "Felodipine",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Felodipine bind?",
+      "gold": [
+        "ABCB1",
+        "CACNA1C",
+        "CACNA1D",
+        "CACNA1H",
+        "CACNA1S",
+        "CACNA2D1",
+        "CACNA2D2",
+        "CACNB2",
+        "CALM1",
+        "CALM2",
+        "CALM3",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP2D6",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "NR3C2",
+        "PDE1A",
+        "PDE1B",
+        "TNNC1",
+        "TNNC2"
+      ],
+      "n_gold": 23,
+      "linked_node": "Compound::DB01023",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ABCB1",
+        "CACNA1C",
+        "CACNA1D",
+        "CACNA1H",
+        "CACNA1S",
+        "CACNA2D1",
+        "CACNA2D2",
+        "CACNB2",
+        "CALM1",
+        "CALM2",
+        "CALM3",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP2D6",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "NR3C2",
+        "PDE1A",
+        "PDE1B",
+        "TNNC1",
+        "TNNC2"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.1,
+        "blocked_steps": 1,
+        "total_steps": 10,
+        "n_allowed": 23
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 133,
+        "n_allowed": 23
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.29545454545454547,
+        "blocked_steps": 39,
+        "total_steps": 132,
+        "n_allowed": 23
+      },
+      "A_raw": "CACNA1C, CACNA1D, CACNA1S, CACNA2D1",
+      "B_raw": "I don't know",
+      "C_raw": "I don't know",
+      "D_raw": "CACNA1C, CACNB2",
+      "E_raw": "ABCB1, CACNA1C, CACNA1D, CACNA1H, CACNA1S, CACNA2D1, CACNA2D2, CACNB2, CALM1, CALM2, CALM3, CYP2C8, CYP2C9, CYP2D6, CYP3A4, CYP3A5, CYP3A7, CYP3A7-CYP3A51P, NR3C2, PDE1A, PDE1B, TNNC1, TNNC2",
+      "F_raw": "CACNA1C, CACNB2, CACNA1D, CACNA1H, CACNA1S, CACNA2D1, CACNA2D2, CYP3A4, CYP3A5, CYP3A7, CYP3A7-CYP3A51P, CYP2C9, CYP2C8, CYP2D6, ABCB1, PDE1A, PDE1B, TNNC1, TNNC2, CALM1, CALM2, CALM3, NR3C2",
+      "A_said": [
+        "CACNA1C",
+        "CACNA1D",
+        "CACNA1S",
+        "CACNA2D1"
+      ],
+      "A_correct": [
+        "CACNA1C",
+        "CACNA1D",
+        "CACNA1S",
+        "CACNA2D1"
+      ],
+      "A_n": 4,
+      "A_manual": [],
+      "B_said": [],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [],
+      "C_said": [],
+      "C_correct": [],
+      "C_n": 0,
+      "C_manual": [],
+      "D_said": [
+        "CACNA1C",
+        "CACNB2"
+      ],
+      "D_correct": [
+        "CACNA1C",
+        "CACNB2"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "ABCB1",
+        "CACNA1C",
+        "CACNA1D",
+        "CACNA1H",
+        "CACNA1S",
+        "CACNA2D1",
+        "CACNA2D2",
+        "CACNB2",
+        "CALM1",
+        "CALM2",
+        "CALM3",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP2D6",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "NR3C2",
+        "PDE1A",
+        "PDE1B",
+        "TNNC1",
+        "TNNC2"
+      ],
+      "E_correct": [
+        "ABCB1",
+        "CACNA1C",
+        "CACNA1D",
+        "CACNA1H",
+        "CACNA1S",
+        "CACNA2D1",
+        "CACNA2D2",
+        "CACNB2",
+        "CALM1",
+        "CALM2",
+        "CALM3",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP2D6",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "NR3C2",
+        "PDE1A",
+        "PDE1B",
+        "TNNC1",
+        "TNNC2"
+      ],
+      "E_n": 23,
+      "E_manual": [],
+      "F_said": [
+        "CACNA1C",
+        "CACNB2",
+        "CACNA1D",
+        "CACNA1H",
+        "CACNA1S",
+        "CACNA2D1",
+        "CACNA2D2",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "CYP2C9",
+        "CYP2C8",
+        "CYP2D6",
+        "ABCB1",
+        "PDE1A",
+        "PDE1B",
+        "TNNC1",
+        "TNNC2",
+        "CALM1",
+        "CALM2",
+        "CALM3",
+        "NR3C2"
+      ],
+      "F_correct": [
+        "CACNA1C",
+        "CACNB2",
+        "CACNA1D",
+        "CACNA1H",
+        "CACNA1S",
+        "CACNA2D1",
+        "CACNA2D2",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "CYP2C9",
+        "CYP2C8",
+        "CYP2D6",
+        "ABCB1",
+        "PDE1A",
+        "PDE1B",
+        "TNNC1",
+        "TNNC2",
+        "CALM1",
+        "CALM2",
+        "CALM3",
+        "NR3C2"
+      ],
+      "F_n": 23,
+      "F_manual": []
+    },
+    {
+      "qid": "t006",
+      "subject_id": "Disease::DOID:0050742",
+      "subject": "nicotine dependence",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease nicotine dependence?",
+      "gold": [
+        "AKR1B10",
+        "ANKK1",
+        "CCAR1",
+        "CHRNA10",
+        "CHRNA3",
+        "CHRNA4",
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB2",
+        "CHRNB3",
+        "CHRNB4",
+        "CYP2A7",
+        "DRD2",
+        "FGD1",
+        "GABRA4",
+        "OPRM1",
+        "TAS2R16",
+        "WASF1",
+        "WASF2"
+      ],
+      "n_gold": 19,
+      "linked_node": "Disease::DOID:0050742",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "AKR1B10",
+        "ANKK1",
+        "CCAR1",
+        "CHRNA10",
+        "CHRNA3",
+        "CHRNA4",
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB2",
+        "CHRNB3",
+        "CHRNB4",
+        "CYP2A7",
+        "DRD2",
+        "FGD1",
+        "GABRA4",
+        "OPRM1",
+        "TAS2R16",
+        "WASF1",
+        "WASF2"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.19047619047619047,
+        "blocked_steps": 4,
+        "total_steps": 21,
+        "n_allowed": 19
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 86,
+        "n_allowed": 19
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.5,
+        "blocked_steps": 43,
+        "total_steps": 86,
+        "n_allowed": 19
+      },
+      "A_raw": "CHRNA5, CHRNA3, CHRNB4, CYP2A6, DRD2, ANKK1, BDNF, CHRNA4, DBH",
+      "B_raw": "CHRNA5, CHRNA7, CHRNB4, CHRNA6",
+      "C_raw": "AKR1B10, ANKK1, CCAR1, CHRNA10, CHRNA3, CHRNA4, CHRNA5, CHRNA6, CHRNB2, CHRNB3, CHRNB4, CYP2A7, DRD2, FGD1, GABRA4, OPRM1, TAS2R16, WASF1, WASF2",
+      "D_raw": "CHRNA5, CHRNA6, CHRNB4, CHRNA3, CHRNA10",
+      "E_raw": "AKR1B10, ANKK1, CCAR1, CHRNA10, CHRNA3, CHRNA4, CHRNA5, CHRNA6, CHRNB2, CHRNB3, CHRNB4, CYP2A7, DRD2, FGD1, GABRA4, OPRM1, TAS2R16, WASF1, WASF2",
+      "F_raw": "CHRNA5, CHRNA6, CHRNB4, CHRNA3, CHRNA10, OPRM1, DRD2, FGD1, CYP2A7, GABRA4, ANKK1, TAS2R16, CHRNB2, CHRNB3, CHRNA4, CCAR1, AKR1B10, WASF2, WASF1",
+      "A_said": [
+        "CHRNA5",
+        "CHRNA3",
+        "CHRNB4",
+        "CYP2A6",
+        "DRD2",
+        "ANKK1",
+        "BDNF",
+        "CHRNA4",
+        "DBH"
+      ],
+      "A_correct": [
+        "CHRNA5",
+        "CHRNA3",
+        "CHRNB4",
+        "DRD2",
+        "ANKK1",
+        "CHRNA4"
+      ],
+      "A_n": 6,
+      "A_manual": [
+        "CYP2A6",
+        "BDNF",
+        "DBH"
+      ],
+      "B_said": [
+        "CHRNA5",
+        "CHRNA7",
+        "CHRNB4",
+        "CHRNA6"
+      ],
+      "B_correct": [
+        "CHRNA5",
+        "CHRNB4",
+        "CHRNA6"
+      ],
+      "B_n": 3,
+      "B_manual": [
+        "CHRNA7"
+      ],
+      "C_said": [
+        "AKR1B10",
+        "ANKK1",
+        "CCAR1",
+        "CHRNA10",
+        "CHRNA3",
+        "CHRNA4",
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB2",
+        "CHRNB3",
+        "CHRNB4",
+        "CYP2A7",
+        "DRD2",
+        "FGD1",
+        "GABRA4",
+        "OPRM1",
+        "TAS2R16",
+        "WASF1",
+        "WASF2"
+      ],
+      "C_correct": [
+        "AKR1B10",
+        "ANKK1",
+        "CCAR1",
+        "CHRNA10",
+        "CHRNA3",
+        "CHRNA4",
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB2",
+        "CHRNB3",
+        "CHRNB4",
+        "CYP2A7",
+        "DRD2",
+        "FGD1",
+        "GABRA4",
+        "OPRM1",
+        "TAS2R16",
+        "WASF1",
+        "WASF2"
+      ],
+      "C_n": 19,
+      "C_manual": [],
+      "D_said": [
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB4",
+        "CHRNA3",
+        "CHRNA10"
+      ],
+      "D_correct": [
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB4",
+        "CHRNA3",
+        "CHRNA10"
+      ],
+      "D_n": 5,
+      "D_manual": [],
+      "E_said": [
+        "AKR1B10",
+        "ANKK1",
+        "CCAR1",
+        "CHRNA10",
+        "CHRNA3",
+        "CHRNA4",
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB2",
+        "CHRNB3",
+        "CHRNB4",
+        "CYP2A7",
+        "DRD2",
+        "FGD1",
+        "GABRA4",
+        "OPRM1",
+        "TAS2R16",
+        "WASF1",
+        "WASF2"
+      ],
+      "E_correct": [
+        "AKR1B10",
+        "ANKK1",
+        "CCAR1",
+        "CHRNA10",
+        "CHRNA3",
+        "CHRNA4",
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB2",
+        "CHRNB3",
+        "CHRNB4",
+        "CYP2A7",
+        "DRD2",
+        "FGD1",
+        "GABRA4",
+        "OPRM1",
+        "TAS2R16",
+        "WASF1",
+        "WASF2"
+      ],
+      "E_n": 19,
+      "E_manual": [],
+      "F_said": [
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB4",
+        "CHRNA3",
+        "CHRNA10",
+        "OPRM1",
+        "DRD2",
+        "FGD1",
+        "CYP2A7",
+        "GABRA4",
+        "ANKK1",
+        "TAS2R16",
+        "CHRNB2",
+        "CHRNB3",
+        "CHRNA4",
+        "CCAR1",
+        "AKR1B10",
+        "WASF2",
+        "WASF1"
+      ],
+      "F_correct": [
+        "CHRNA5",
+        "CHRNA6",
+        "CHRNB4",
+        "CHRNA3",
+        "CHRNA10",
+        "OPRM1",
+        "DRD2",
+        "FGD1",
+        "CYP2A7",
+        "GABRA4",
+        "ANKK1",
+        "TAS2R16",
+        "CHRNB2",
+        "CHRNB3",
+        "CHRNA4",
+        "CCAR1",
+        "AKR1B10",
+        "WASF2",
+        "WASF1"
+      ],
+      "F_n": 19,
+      "F_manual": []
+    },
+    {
+      "qid": "t007",
+      "subject_id": "Compound::DB00537",
+      "subject": "Ciprofloxacin",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Ciprofloxacin bind?",
+      "gold": [
+        "ABCB1",
+        "CYP1A2",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "TOP2A"
+      ],
+      "n_gold": 7,
+      "linked_node": "Compound::DB00537",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ABCB1",
+        "CYP1A2",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "TOP2A"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.2222222222222222,
+        "blocked_steps": 4,
+        "total_steps": 18,
+        "n_allowed": 7
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.022222222222222223,
+        "blocked_steps": 1,
+        "total_steps": 45,
+        "n_allowed": 7
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.4222222222222222,
+        "blocked_steps": 19,
+        "total_steps": 45,
+        "n_allowed": 7
+      },
+      "A_raw": "CYP1A2, ABCB1, TOP2A, GABRA1",
+      "B_raw": "Ciprofloxacin binds to several genes including:\n- gyrA\n- gyrB\n- parC\n- parE",
+      "C_raw": "ABCB1, CYP3A4, CYP3A5, CYP3A51P, CYP3A7",
+      "D_raw": "CYP3A4, CYP1A2, CYP3A5",
+      "E_raw": "ABCB1, CYP1A2, CYP3A4, CYP3A5, CYP3A7, CYP3A7-CYP3A51P, TOP2A",
+      "F_raw": "CYP3A4, CYP1A2, CYP3A5, CYP3A7, CYP3A7-CYP3A51P, ABCB1, TOP2A",
+      "A_said": [
+        "CYP1A2",
+        "ABCB1",
+        "TOP2A",
+        "GABRA1"
+      ],
+      "A_correct": [
+        "CYP1A2",
+        "ABCB1",
+        "TOP2A"
+      ],
+      "A_n": 3,
+      "A_manual": [
+        "GABRA1"
+      ],
+      "B_said": [
+        "Ciprofloxacin binds to several genes including:",
+        "gyrA",
+        "gyrB",
+        "parC",
+        "parE"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "Ciprofloxacin binds to several genes including:",
+        "gyrA",
+        "gyrB",
+        "parC",
+        "parE"
+      ],
+      "C_said": [
+        "ABCB1",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A51P",
+        "CYP3A7"
+      ],
+      "C_correct": [
+        "ABCB1",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7"
+      ],
+      "C_n": 4,
+      "C_manual": [
+        "CYP3A51P"
+      ],
+      "D_said": [
+        "CYP3A4",
+        "CYP1A2",
+        "CYP3A5"
+      ],
+      "D_correct": [
+        "CYP3A4",
+        "CYP1A2",
+        "CYP3A5"
+      ],
+      "D_n": 3,
+      "D_manual": [],
+      "E_said": [
+        "ABCB1",
+        "CYP1A2",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "TOP2A"
+      ],
+      "E_correct": [
+        "ABCB1",
+        "CYP1A2",
+        "CYP3A4",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "TOP2A"
+      ],
+      "E_n": 7,
+      "E_manual": [],
+      "F_said": [
+        "CYP3A4",
+        "CYP1A2",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "ABCB1",
+        "TOP2A"
+      ],
+      "F_correct": [
+        "CYP3A4",
+        "CYP1A2",
+        "CYP3A5",
+        "CYP3A7",
+        "CYP3A7-CYP3A51P",
+        "ABCB1",
+        "TOP2A"
+      ],
+      "F_n": 7,
+      "F_manual": []
+    },
+    {
+      "qid": "t008",
+      "subject_id": "Compound::DB00814",
+      "subject": "Meloxicam",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Meloxicam bind?",
+      "gold": [
+        "ABCC4",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP3A4",
+        "PGD",
+        "PTGS1",
+        "PTGS2"
+      ],
+      "n_gold": 7,
+      "linked_node": "Compound::DB00814",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ABCC4",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP3A4",
+        "PGD",
+        "PTGS1",
+        "PTGS2"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.18181818181818182,
+        "blocked_steps": 4,
+        "total_steps": 22,
+        "n_allowed": 7
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 33,
+        "n_allowed": 7
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.36363636363636365,
+        "blocked_steps": 12,
+        "total_steps": 33,
+        "n_allowed": 7
+      },
+      "A_raw": "PTGS2, PTGS1",
+      "B_raw": "CYP2C9, CYP2C19, VKORC1",
+      "C_raw": "ABCC4, CYP2C8, CYP2C9, CYP3A4, PGD, PTGS1, PTGS2",
+      "D_raw": "CYP2C9, CYP2C8, CYP3A4, ABCC4",
+      "E_raw": "ABCC4, CYP2C8, CYP2C9, CYP3A4, PGD, PTGS1, PTGS2",
+      "F_raw": "CYP2C9, CYP2C8, CYP3A4, ABCC4, PTGS2, PGD, PTGS1",
+      "A_said": [
+        "PTGS2",
+        "PTGS1"
+      ],
+      "A_correct": [
+        "PTGS2",
+        "PTGS1"
+      ],
+      "A_n": 2,
+      "A_manual": [],
+      "B_said": [
+        "CYP2C9",
+        "CYP2C19",
+        "VKORC1"
+      ],
+      "B_correct": [
+        "CYP2C9"
+      ],
+      "B_n": 1,
+      "B_manual": [
+        "CYP2C19",
+        "VKORC1"
+      ],
+      "C_said": [
+        "ABCC4",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP3A4",
+        "PGD",
+        "PTGS1",
+        "PTGS2"
+      ],
+      "C_correct": [
+        "ABCC4",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP3A4",
+        "PGD",
+        "PTGS1",
+        "PTGS2"
+      ],
+      "C_n": 7,
+      "C_manual": [],
+      "D_said": [
+        "CYP2C9",
+        "CYP2C8",
+        "CYP3A4",
+        "ABCC4"
+      ],
+      "D_correct": [
+        "CYP2C9",
+        "CYP2C8",
+        "CYP3A4",
+        "ABCC4"
+      ],
+      "D_n": 4,
+      "D_manual": [],
+      "E_said": [
+        "ABCC4",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP3A4",
+        "PGD",
+        "PTGS1",
+        "PTGS2"
+      ],
+      "E_correct": [
+        "ABCC4",
+        "CYP2C8",
+        "CYP2C9",
+        "CYP3A4",
+        "PGD",
+        "PTGS1",
+        "PTGS2"
+      ],
+      "E_n": 7,
+      "E_manual": [],
+      "F_said": [
+        "CYP2C9",
+        "CYP2C8",
+        "CYP3A4",
+        "ABCC4",
+        "PTGS2",
+        "PGD",
+        "PTGS1"
+      ],
+      "F_correct": [
+        "CYP2C9",
+        "CYP2C8",
+        "CYP3A4",
+        "ABCC4",
+        "PTGS2",
+        "PGD",
+        "PTGS1"
+      ],
+      "F_n": 7,
+      "F_manual": []
+    },
+    {
+      "qid": "t009",
+      "subject_id": "Compound::DB01171",
+      "subject": "Moclobemide",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Moclobemide bind?",
+      "gold": [
+        "CYP1A2",
+        "CYP2C19",
+        "CYP2C9",
+        "CYP2D6",
+        "MAOA",
+        "MAOB"
+      ],
+      "n_gold": 6,
+      "linked_node": "Compound::DB01171",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "CYP1A2",
+        "CYP2C19",
+        "CYP2C9",
+        "CYP2D6",
+        "MAOA",
+        "MAOB"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 12,
+        "n_allowed": 6
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 31,
+        "n_allowed": 6
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.3225806451612903,
+        "blocked_steps": 10,
+        "total_steps": 31,
+        "n_allowed": 6
+      },
+      "A_raw": "MAOA, MAOB",
+      "B_raw": "CYP2D6, CYP1A2",
+      "C_raw": "CYP2C19, CYP2C9, CYP2D6",
+      "D_raw": "CYP2D6, CYP1A2",
+      "E_raw": "CYP1A2, CYP2C19, CYP2C9, CYP2D6, MAOA, MAOB",
+      "F_raw": "CYP2D6, CYP1A2, CYP2C19, CYP2C9, MAOA, MAOB",
+      "A_said": [
+        "MAOA",
+        "MAOB"
+      ],
+      "A_correct": [
+        "MAOA",
+        "MAOB"
+      ],
+      "A_n": 2,
+      "A_manual": [],
+      "B_said": [
+        "CYP2D6",
+        "CYP1A2"
+      ],
+      "B_correct": [
+        "CYP2D6",
+        "CYP1A2"
+      ],
+      "B_n": 2,
+      "B_manual": [],
+      "C_said": [
+        "CYP2C19",
+        "CYP2C9",
+        "CYP2D6"
+      ],
+      "C_correct": [
+        "CYP2C19",
+        "CYP2C9",
+        "CYP2D6"
+      ],
+      "C_n": 3,
+      "C_manual": [],
+      "D_said": [
+        "CYP2D6",
+        "CYP1A2"
+      ],
+      "D_correct": [
+        "CYP2D6",
+        "CYP1A2"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "CYP1A2",
+        "CYP2C19",
+        "CYP2C9",
+        "CYP2D6",
+        "MAOA",
+        "MAOB"
+      ],
+      "E_correct": [
+        "CYP1A2",
+        "CYP2C19",
+        "CYP2C9",
+        "CYP2D6",
+        "MAOA",
+        "MAOB"
+      ],
+      "E_n": 6,
+      "E_manual": [],
+      "F_said": [
+        "CYP2D6",
+        "CYP1A2",
+        "CYP2C19",
+        "CYP2C9",
+        "MAOA",
+        "MAOB"
+      ],
+      "F_correct": [
+        "CYP2D6",
+        "CYP1A2",
+        "CYP2C19",
+        "CYP2C9",
+        "MAOA",
+        "MAOB"
+      ],
+      "F_n": 6,
+      "F_manual": []
+    },
+    {
+      "qid": "t010",
+      "subject_id": "Compound::DB01621",
+      "subject": "Pipotiazine",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Pipotiazine bind?",
+      "gold": [
+        "ALB",
+        "CYP1A2",
+        "CYP2C19",
+        "CYP2D6",
+        "CYP3A4",
+        "DRD1",
+        "DRD2",
+        "HTR1A",
+        "HTR2A",
+        "SLC22A1"
+      ],
+      "n_gold": 10,
+      "linked_node": "Compound::DB01621",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ALB",
+        "CYP1A2",
+        "CYP2C19",
+        "CYP2D6",
+        "CYP3A4",
+        "DRD1",
+        "DRD2",
+        "HTR1A",
+        "HTR2A",
+        "SLC22A1"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.08333333333333333,
+        "blocked_steps": 1,
+        "total_steps": 12,
+        "n_allowed": 10
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 25,
+        "n_allowed": 10
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.37735849056603776,
+        "blocked_steps": 20,
+        "total_steps": 53,
+        "n_allowed": 10
+      },
+      "A_raw": "DRD2, DRD1, HTR2A, ADRA1A, HRH1, CHRM1",
+      "B_raw": "I don't know",
+      "C_raw": "I don't know",
+      "D_raw": "CYP2D6, CYP1A2",
+      "E_raw": "DRD1, DRD2, HTR1A, HTR2A, SLC22A1",
+      "F_raw": "CYP2D6, CYP1A2, CYP3A4, CYP2C19, SLC22A1, ALB, HTR1A, HTR2A, DRD2, DRD1",
+      "A_said": [
+        "DRD2",
+        "DRD1",
+        "HTR2A",
+        "ADRA1A",
+        "HRH1",
+        "CHRM1"
+      ],
+      "A_correct": [
+        "DRD2",
+        "DRD1",
+        "HTR2A"
+      ],
+      "A_n": 3,
+      "A_manual": [
+        "ADRA1A",
+        "HRH1",
+        "CHRM1"
+      ],
+      "B_said": [],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [],
+      "C_said": [],
+      "C_correct": [],
+      "C_n": 0,
+      "C_manual": [],
+      "D_said": [
+        "CYP2D6",
+        "CYP1A2"
+      ],
+      "D_correct": [
+        "CYP2D6",
+        "CYP1A2"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "DRD1",
+        "DRD2",
+        "HTR1A",
+        "HTR2A",
+        "SLC22A1"
+      ],
+      "E_correct": [
+        "DRD1",
+        "DRD2",
+        "HTR1A",
+        "HTR2A",
+        "SLC22A1"
+      ],
+      "E_n": 5,
+      "E_manual": [],
+      "F_said": [
+        "CYP2D6",
+        "CYP1A2",
+        "CYP3A4",
+        "CYP2C19",
+        "SLC22A1",
+        "ALB",
+        "HTR1A",
+        "HTR2A",
+        "DRD2",
+        "DRD1"
+      ],
+      "F_correct": [
+        "CYP2D6",
+        "CYP1A2",
+        "CYP3A4",
+        "CYP2C19",
+        "SLC22A1",
+        "ALB",
+        "HTR1A",
+        "HTR2A",
+        "DRD2",
+        "DRD1"
+      ],
+      "F_n": 10,
+      "F_manual": []
+    },
+    {
+      "qid": "t011",
+      "subject_id": "Compound::DB08827",
+      "subject": "Lomitapide",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Lomitapide bind?",
+      "gold": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "n_gold": 3,
+      "linked_node": "Compound::DB08827",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.3076923076923077,
+        "blocked_steps": 4,
+        "total_steps": 13,
+        "n_allowed": 3
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 13,
+        "n_allowed": 3
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.3076923076923077,
+        "blocked_steps": 4,
+        "total_steps": 13,
+        "n_allowed": 3
+      },
+      "A_raw": "MTTP",
+      "B_raw": "JAZF1, JAZF2, JAZF3",
+      "C_raw": "ABCB1, CYP3A4, MTTP",
+      "D_raw": "ABCB1, CYP3A4, MTTP",
+      "E_raw": "ABCB1, CYP3A4, MTTP",
+      "F_raw": "ABCB1, CYP3A4, MTTP",
+      "A_said": [
+        "MTTP"
+      ],
+      "A_correct": [
+        "MTTP"
+      ],
+      "A_n": 1,
+      "A_manual": [],
+      "B_said": [
+        "JAZF1",
+        "JAZF2",
+        "JAZF3"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "JAZF1",
+        "JAZF2",
+        "JAZF3"
+      ],
+      "C_said": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "C_correct": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "C_n": 3,
+      "C_manual": [],
+      "D_said": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "D_correct": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "D_n": 3,
+      "D_manual": [],
+      "E_said": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "E_correct": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "E_n": 3,
+      "E_manual": [],
+      "F_said": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "F_correct": [
+        "ABCB1",
+        "CYP3A4",
+        "MTTP"
+      ],
+      "F_n": 3,
+      "F_manual": []
+    },
+    {
+      "qid": "t012",
+      "subject_id": "Disease::DOID:12185",
+      "subject": "otosclerosis",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease otosclerosis?",
+      "gold": [
+        "A1BG",
+        "COL1A1",
+        "RELN",
+        "TGFB1"
+      ],
+      "n_gold": 4,
+      "linked_node": "Disease::DOID:12185",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "A1BG",
+        "COL1A1",
+        "RELN",
+        "TGFB1"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.625,
+        "blocked_steps": 10,
+        "total_steps": 16,
+        "n_allowed": 4
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 16,
+        "n_allowed": 4
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.625,
+        "blocked_steps": 10,
+        "total_steps": 16,
+        "n_allowed": 4
+      },
+      "A_raw": "COL1A1, TGFB1, RELN, MEPE, SERPINF1, BMP2, BMP4",
+      "B_raw": "SLC26A4, ITGB3, PCDH15",
+      "C_raw": "A1BG, COL1A1, RELN, TGFB1",
+      "D_raw": "A1BG, COL1A1, TGFB1, RELN",
+      "E_raw": "A1BG, COL1A1, RELN, TGFB1",
+      "F_raw": "A1BG, COL1A1, TGFB1, RELN",
+      "A_said": [
+        "COL1A1",
+        "TGFB1",
+        "RELN",
+        "MEPE",
+        "SERPINF1",
+        "BMP2",
+        "BMP4"
+      ],
+      "A_correct": [
+        "COL1A1",
+        "TGFB1",
+        "RELN"
+      ],
+      "A_n": 3,
+      "A_manual": [
+        "MEPE",
+        "SERPINF1",
+        "BMP2",
+        "BMP4"
+      ],
+      "B_said": [
+        "SLC26A4",
+        "ITGB3",
+        "PCDH15"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "SLC26A4",
+        "ITGB3",
+        "PCDH15"
+      ],
+      "C_said": [
+        "A1BG",
+        "COL1A1",
+        "RELN",
+        "TGFB1"
+      ],
+      "C_correct": [
+        "A1BG",
+        "COL1A1",
+        "RELN",
+        "TGFB1"
+      ],
+      "C_n": 4,
+      "C_manual": [],
+      "D_said": [
+        "A1BG",
+        "COL1A1",
+        "TGFB1",
+        "RELN"
+      ],
+      "D_correct": [
+        "A1BG",
+        "COL1A1",
+        "TGFB1",
+        "RELN"
+      ],
+      "D_n": 4,
+      "D_manual": [],
+      "E_said": [
+        "A1BG",
+        "COL1A1",
+        "RELN",
+        "TGFB1"
+      ],
+      "E_correct": [
+        "A1BG",
+        "COL1A1",
+        "RELN",
+        "TGFB1"
+      ],
+      "E_n": 4,
+      "E_manual": [],
+      "F_said": [
+        "A1BG",
+        "COL1A1",
+        "TGFB1",
+        "RELN"
+      ],
+      "F_correct": [
+        "A1BG",
+        "COL1A1",
+        "TGFB1",
+        "RELN"
+      ],
+      "F_n": 4,
+      "F_manual": []
+    },
+    {
+      "qid": "t013",
+      "subject_id": "Compound::DB00770",
+      "subject": "Alprostadil",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Alprostadil bind?",
+      "gold": [
+        "ABCC4",
+        "ABCC5",
+        "PTGER1",
+        "PTGER2",
+        "PTGIR",
+        "SLCO2A1",
+        "SLCO2B1",
+        "SLCO3A1"
+      ],
+      "n_gold": 8,
+      "linked_node": "Compound::DB00770",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ABCC4",
+        "ABCC5",
+        "PTGER1",
+        "PTGER2",
+        "PTGIR",
+        "SLCO2A1",
+        "SLCO2B1",
+        "SLCO3A1"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.4375,
+        "blocked_steps": 7,
+        "total_steps": 16,
+        "n_allowed": 8
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 38,
+        "n_allowed": 8
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.47368421052631576,
+        "blocked_steps": 18,
+        "total_steps": 38,
+        "n_allowed": 8
+      },
+      "A_raw": "PTGER1, PTGER2, PTGER3, PTGER4",
+      "B_raw": "NOTCH3, ADAMTS10",
+      "C_raw": "ABCC4, ABCC5, PTGER1, PTGER2, PTGIR, SLCO2A1, SLCO2B1, SLCO3A1",
+      "D_raw": "PTGIR, PTGER1, PTGER2, ABCC5",
+      "E_raw": "ABCC4, ABCC5, PTGER1, PTGER2, PTGIR, SLCO2A1, SLCO2B1, SLCO3A1",
+      "F_raw": "PTGIR, PTGER1, PTGER2, ABCC5, ABCC4, SLCO3A1, SLCO2B1, SLCO2A1",
+      "A_said": [
+        "PTGER1",
+        "PTGER2",
+        "PTGER3",
+        "PTGER4"
+      ],
+      "A_correct": [
+        "PTGER1",
+        "PTGER2"
+      ],
+      "A_n": 2,
+      "A_manual": [
+        "PTGER3",
+        "PTGER4"
+      ],
+      "B_said": [
+        "NOTCH3",
+        "ADAMTS10"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "NOTCH3",
+        "ADAMTS10"
+      ],
+      "C_said": [
+        "ABCC4",
+        "ABCC5",
+        "PTGER1",
+        "PTGER2",
+        "PTGIR",
+        "SLCO2A1",
+        "SLCO2B1",
+        "SLCO3A1"
+      ],
+      "C_correct": [
+        "ABCC4",
+        "ABCC5",
+        "PTGER1",
+        "PTGER2",
+        "PTGIR",
+        "SLCO2A1",
+        "SLCO2B1",
+        "SLCO3A1"
+      ],
+      "C_n": 8,
+      "C_manual": [],
+      "D_said": [
+        "PTGIR",
+        "PTGER1",
+        "PTGER2",
+        "ABCC5"
+      ],
+      "D_correct": [
+        "PTGIR",
+        "PTGER1",
+        "PTGER2",
+        "ABCC5"
+      ],
+      "D_n": 4,
+      "D_manual": [],
+      "E_said": [
+        "ABCC4",
+        "ABCC5",
+        "PTGER1",
+        "PTGER2",
+        "PTGIR",
+        "SLCO2A1",
+        "SLCO2B1",
+        "SLCO3A1"
+      ],
+      "E_correct": [
+        "ABCC4",
+        "ABCC5",
+        "PTGER1",
+        "PTGER2",
+        "PTGIR",
+        "SLCO2A1",
+        "SLCO2B1",
+        "SLCO3A1"
+      ],
+      "E_n": 8,
+      "E_manual": [],
+      "F_said": [
+        "PTGIR",
+        "PTGER1",
+        "PTGER2",
+        "ABCC5",
+        "ABCC4",
+        "SLCO3A1",
+        "SLCO2B1",
+        "SLCO2A1"
+      ],
+      "F_correct": [
+        "PTGIR",
+        "PTGER1",
+        "PTGER2",
+        "ABCC5",
+        "ABCC4",
+        "SLCO3A1",
+        "SLCO2B1",
+        "SLCO2A1"
+      ],
+      "F_n": 8,
+      "F_manual": []
+    },
+    {
+      "qid": "t014",
+      "subject_id": "Compound::DB00513",
+      "subject": "Aminocaproic Acid",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Aminocaproic Acid bind?",
+      "gold": [
+        "AOX1",
+        "PLAT",
+        "PLG"
+      ],
+      "n_gold": 3,
+      "linked_node": "Compound::DB00513",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "AOX1",
+        "PLAT",
+        "PLG"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.6666666666666666,
+        "blocked_steps": 4,
+        "total_steps": 6,
+        "n_allowed": 3
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 10,
+        "n_allowed": 3
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.8,
+        "blocked_steps": 8,
+        "total_steps": 10,
+        "n_allowed": 3
+      },
+      "A_raw": "PLG, PLAT",
+      "B_raw": "DPPC, ADAMTS13",
+      "C_raw": "PLAT, PLG",
+      "D_raw": "PLG, PLAT",
+      "E_raw": "AOX1, PLAT, PLG",
+      "F_raw": "PLG, PLAT, AOX1",
+      "A_said": [
+        "PLG",
+        "PLAT"
+      ],
+      "A_correct": [
+        "PLG",
+        "PLAT"
+      ],
+      "A_n": 2,
+      "A_manual": [],
+      "B_said": [
+        "DPPC",
+        "ADAMTS13"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "DPPC",
+        "ADAMTS13"
+      ],
+      "C_said": [
+        "PLAT",
+        "PLG"
+      ],
+      "C_correct": [
+        "PLAT",
+        "PLG"
+      ],
+      "C_n": 2,
+      "C_manual": [],
+      "D_said": [
+        "PLG",
+        "PLAT"
+      ],
+      "D_correct": [
+        "PLG",
+        "PLAT"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "AOX1",
+        "PLAT",
+        "PLG"
+      ],
+      "E_correct": [
+        "AOX1",
+        "PLAT",
+        "PLG"
+      ],
+      "E_n": 3,
+      "E_manual": [],
+      "F_said": [
+        "PLG",
+        "PLAT",
+        "AOX1"
+      ],
+      "F_correct": [
+        "PLG",
+        "PLAT",
+        "AOX1"
+      ],
+      "F_n": 3,
+      "F_manual": []
+    },
+    {
+      "qid": "t015",
+      "subject_id": "Compound::DB04552",
+      "subject": "Niflumic Acid",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Niflumic Acid bind?",
+      "gold": [
+        "CLCNKA",
+        "PLA2G1B",
+        "PLA2G4A",
+        "PTGS1",
+        "PTGS2",
+        "SLC16A1",
+        "SLC16A7",
+        "UGT1A9"
+      ],
+      "n_gold": 8,
+      "linked_node": "Compound::DB04552",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "CLCNKA",
+        "PLA2G1B",
+        "PLA2G4A",
+        "PTGS1",
+        "PTGS2",
+        "SLC16A1",
+        "SLC16A7",
+        "UGT1A9"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.35714285714285715,
+        "blocked_steps": 5,
+        "total_steps": 14,
+        "n_allowed": 8
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 20,
+        "n_allowed": 8
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.5909090909090909,
+        "blocked_steps": 26,
+        "total_steps": 44,
+        "n_allowed": 8
+      },
+      "A_raw": "PTGS1, PTGS2, ANO1, CFTR",
+      "B_raw": "I don't know",
+      "C_raw": "CLCNKA, PLA2G1B, PLA2G4A, PTGS1, PTGS2, SLC16A1, SLC16A7, UGT1A9",
+      "D_raw": "SLC16A1, SLC16A7",
+      "E_raw": "SLC16A1, SLC16A7, UGT1A9",
+      "F_raw": "SLC16A1, SLC16A7, UGT1A9, CLCNKA, PTGS2, PTGS1, PLA2G4A, PLA2G1B",
+      "A_said": [
+        "PTGS1",
+        "PTGS2",
+        "ANO1",
+        "CFTR"
+      ],
+      "A_correct": [
+        "PTGS1",
+        "PTGS2"
+      ],
+      "A_n": 2,
+      "A_manual": [
+        "ANO1",
+        "CFTR"
+      ],
+      "B_said": [],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [],
+      "C_said": [
+        "CLCNKA",
+        "PLA2G1B",
+        "PLA2G4A",
+        "PTGS1",
+        "PTGS2",
+        "SLC16A1",
+        "SLC16A7",
+        "UGT1A9"
+      ],
+      "C_correct": [
+        "CLCNKA",
+        "PLA2G1B",
+        "PLA2G4A",
+        "PTGS1",
+        "PTGS2",
+        "SLC16A1",
+        "SLC16A7",
+        "UGT1A9"
+      ],
+      "C_n": 8,
+      "C_manual": [],
+      "D_said": [
+        "SLC16A1",
+        "SLC16A7"
+      ],
+      "D_correct": [
+        "SLC16A1",
+        "SLC16A7"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "SLC16A1",
+        "SLC16A7",
+        "UGT1A9"
+      ],
+      "E_correct": [
+        "SLC16A1",
+        "SLC16A7",
+        "UGT1A9"
+      ],
+      "E_n": 3,
+      "E_manual": [],
+      "F_said": [
+        "SLC16A1",
+        "SLC16A7",
+        "UGT1A9",
+        "CLCNKA",
+        "PTGS2",
+        "PTGS1",
+        "PLA2G4A",
+        "PLA2G1B"
+      ],
+      "F_correct": [
+        "SLC16A1",
+        "SLC16A7",
+        "UGT1A9",
+        "CLCNKA",
+        "PTGS2",
+        "PTGS1",
+        "PLA2G4A",
+        "PLA2G1B"
+      ],
+      "F_n": 8,
+      "F_manual": []
+    },
+    {
+      "qid": "t016",
+      "subject_id": "Compound::DB00193",
+      "subject": "Tramadol",
+      "metaedge": "CbG",
+      "relation": "binds",
+      "question": "What genes does the compound Tramadol bind?",
+      "gold": [
+        "CHRM3",
+        "CYP2B6",
+        "CYP2D6",
+        "CYP3A4",
+        "GRIN3A",
+        "HTR2C",
+        "OPRD1",
+        "OPRK1",
+        "OPRM1",
+        "SLC6A2",
+        "SLC6A4"
+      ],
+      "n_gold": 11,
+      "linked_node": "Compound::DB00193",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "CHRM3",
+        "CYP2B6",
+        "CYP2D6",
+        "CYP3A4",
+        "GRIN3A",
+        "HTR2C",
+        "OPRD1",
+        "OPRK1",
+        "OPRM1",
+        "SLC6A2",
+        "SLC6A4"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.1111111111111111,
+        "blocked_steps": 2,
+        "total_steps": 18,
+        "n_allowed": 11
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 59,
+        "n_allowed": 11
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.4067796610169492,
+        "blocked_steps": 24,
+        "total_steps": 59,
+        "n_allowed": 11
+      },
+      "A_raw": "OPRM1, SLC6A4, SLC6A2, CYP2D6",
+      "B_raw": "ADORA2A, OPRM1",
+      "C_raw": "CHRM3, CYP2B6, CYP2D6, CYP3A4, GRIN3A, HTR2C, OPRD1, OPRK1, OPRM1, SLC6A2, SLC6A4",
+      "D_raw": "CYP2D6, CYP3A4, CYP2B6",
+      "E_raw": "CHRM3, CYP2B6, CYP2D6, CYP3A4, GRIN3A, HTR2C, OPRD1, OPRK1, OPRM1, SLC6A2, SLC6A4",
+      "F_raw": "CYP2D6, CYP3A4, CYP2B6, OPRM1, OPRD1, OPRK1, HTR2C, CHRM3, SLC6A4, SLC6A2, GRIN3A",
+      "A_said": [
+        "OPRM1",
+        "SLC6A4",
+        "SLC6A2",
+        "CYP2D6"
+      ],
+      "A_correct": [
+        "OPRM1",
+        "SLC6A4",
+        "SLC6A2",
+        "CYP2D6"
+      ],
+      "A_n": 4,
+      "A_manual": [],
+      "B_said": [
+        "ADORA2A",
+        "OPRM1"
+      ],
+      "B_correct": [
+        "OPRM1"
+      ],
+      "B_n": 1,
+      "B_manual": [
+        "ADORA2A"
+      ],
+      "C_said": [
+        "CHRM3",
+        "CYP2B6",
+        "CYP2D6",
+        "CYP3A4",
+        "GRIN3A",
+        "HTR2C",
+        "OPRD1",
+        "OPRK1",
+        "OPRM1",
+        "SLC6A2",
+        "SLC6A4"
+      ],
+      "C_correct": [
+        "CHRM3",
+        "CYP2B6",
+        "CYP2D6",
+        "CYP3A4",
+        "GRIN3A",
+        "HTR2C",
+        "OPRD1",
+        "OPRK1",
+        "OPRM1",
+        "SLC6A2",
+        "SLC6A4"
+      ],
+      "C_n": 11,
+      "C_manual": [],
+      "D_said": [
+        "CYP2D6",
+        "CYP3A4",
+        "CYP2B6"
+      ],
+      "D_correct": [
+        "CYP2D6",
+        "CYP3A4",
+        "CYP2B6"
+      ],
+      "D_n": 3,
+      "D_manual": [],
+      "E_said": [
+        "CHRM3",
+        "CYP2B6",
+        "CYP2D6",
+        "CYP3A4",
+        "GRIN3A",
+        "HTR2C",
+        "OPRD1",
+        "OPRK1",
+        "OPRM1",
+        "SLC6A2",
+        "SLC6A4"
+      ],
+      "E_correct": [
+        "CHRM3",
+        "CYP2B6",
+        "CYP2D6",
+        "CYP3A4",
+        "GRIN3A",
+        "HTR2C",
+        "OPRD1",
+        "OPRK1",
+        "OPRM1",
+        "SLC6A2",
+        "SLC6A4"
+      ],
+      "E_n": 11,
+      "E_manual": [],
+      "F_said": [
+        "CYP2D6",
+        "CYP3A4",
+        "CYP2B6",
+        "OPRM1",
+        "OPRD1",
+        "OPRK1",
+        "HTR2C",
+        "CHRM3",
+        "SLC6A4",
+        "SLC6A2",
+        "GRIN3A"
+      ],
+      "F_correct": [
+        "CYP2D6",
+        "CYP3A4",
+        "CYP2B6",
+        "OPRM1",
+        "OPRD1",
+        "OPRK1",
+        "HTR2C",
+        "CHRM3",
+        "SLC6A4",
+        "SLC6A2",
+        "GRIN3A"
+      ],
+      "F_n": 11,
+      "F_manual": []
+    },
+    {
+      "qid": "t017",
+      "subject_id": "Disease::DOID:11949",
+      "subject": "Creutzfeldt-Jakob disease",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease Creutzfeldt-Jakob disease?",
+      "gold": [
+        "CTSD",
+        "HLA-DQB1",
+        "MTMR7",
+        "NPAS2",
+        "PRND",
+        "PRNP",
+        "YWHAZ"
+      ],
+      "n_gold": 7,
+      "linked_node": "Disease::DOID:11949",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "CTSD",
+        "HLA-DQB1",
+        "MTMR7",
+        "NPAS2",
+        "PRND",
+        "PRNP",
+        "YWHAZ"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.3333333333333333,
+        "blocked_steps": 2,
+        "total_steps": 6,
+        "n_allowed": 7
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 28,
+        "n_allowed": 7
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.6785714285714286,
+        "blocked_steps": 19,
+        "total_steps": 28,
+        "n_allowed": 7
+      },
+      "A_raw": "PRNP, PRND, SPRN",
+      "B_raw": "FTPR, PRNP",
+      "C_raw": "PRNP, PRND, CTSD",
+      "D_raw": "CTSD, PRNP",
+      "E_raw": "PRNP, CTSD, MTMR7, HLA-DQB1, NPAS2, YWHAZ, PRND",
+      "F_raw": "CTSD, PRNP, PRND, HLA-DQB1, MTMR7, NPAS2, YWHAZ",
+      "A_said": [
+        "PRNP",
+        "PRND",
+        "SPRN"
+      ],
+      "A_correct": [
+        "PRNP",
+        "PRND"
+      ],
+      "A_n": 2,
+      "A_manual": [
+        "SPRN"
+      ],
+      "B_said": [
+        "FTPR",
+        "PRNP"
+      ],
+      "B_correct": [
+        "PRNP"
+      ],
+      "B_n": 1,
+      "B_manual": [
+        "FTPR"
+      ],
+      "C_said": [
+        "PRNP",
+        "PRND",
+        "CTSD"
+      ],
+      "C_correct": [
+        "PRNP",
+        "PRND",
+        "CTSD"
+      ],
+      "C_n": 3,
+      "C_manual": [],
+      "D_said": [
+        "CTSD",
+        "PRNP"
+      ],
+      "D_correct": [
+        "CTSD",
+        "PRNP"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "PRNP",
+        "CTSD",
+        "MTMR7",
+        "HLA-DQB1",
+        "NPAS2",
+        "YWHAZ",
+        "PRND"
+      ],
+      "E_correct": [
+        "PRNP",
+        "CTSD",
+        "MTMR7",
+        "HLA-DQB1",
+        "NPAS2",
+        "YWHAZ",
+        "PRND"
+      ],
+      "E_n": 7,
+      "E_manual": [],
+      "F_said": [
+        "CTSD",
+        "PRNP",
+        "PRND",
+        "HLA-DQB1",
+        "MTMR7",
+        "NPAS2",
+        "YWHAZ"
+      ],
+      "F_correct": [
+        "CTSD",
+        "PRNP",
+        "PRND",
+        "HLA-DQB1",
+        "MTMR7",
+        "NPAS2",
+        "YWHAZ"
+      ],
+      "F_n": 7,
+      "F_manual": []
+    },
+    {
+      "qid": "t018",
+      "subject_id": "Disease::DOID:0060119",
+      "subject": "pharynx cancer",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease pharynx cancer?",
+      "gold": [
+        "ADH1B",
+        "ADH7",
+        "B4GALT5",
+        "BPIFA1",
+        "CCND1",
+        "CD6",
+        "CD79A",
+        "CDH1",
+        "CFAP45",
+        "CNDP2",
+        "EGFR",
+        "EIF2AK1",
+        "MMP8",
+        "PDLIM7",
+        "TMEM8B",
+        "TP53"
+      ],
+      "n_gold": 16,
+      "linked_node": "Disease::DOID:0060119",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ADH1B",
+        "ADH7",
+        "B4GALT5",
+        "BPIFA1",
+        "CCND1",
+        "CD6",
+        "CD79A",
+        "CDH1",
+        "CFAP45",
+        "CNDP2",
+        "EGFR",
+        "EIF2AK1",
+        "MMP8",
+        "PDLIM7",
+        "TMEM8B",
+        "TP53"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.5681818181818182,
+        "blocked_steps": 25,
+        "total_steps": 44,
+        "n_allowed": 16
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 71,
+        "n_allowed": 16
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.6056338028169014,
+        "blocked_steps": 43,
+        "total_steps": 71,
+        "n_allowed": 16
+      },
+      "A_raw": "TP53, CDKN2A, PIK3CA, NOTCH1, FAT1, CASP8, HRAS",
+      "B_raw": "NOTES",
+      "C_raw": "ADH1B, ADH7, B4GALT5, BPIFA1, CCND1, CD6, CD79A, CDH1, CFAP45, CNDP2, EGFR, EIF2AK1, MMP8, PDLIM7, TMEM8B, TP53",
+      "D_raw": "TP53, CDH1, CD6, CCND1, EGFR, PDLIM7, BPIFA1, CNDP2, CD79A, B4GALT5",
+      "E_raw": "ADH1B, ADH7, B4GALT5, BPIFA1, CCND1, CD6, CD79A, CDH1, CFAP45, CNDP2, EGFR, EIF2AK1, MMP8, PDLIM7, TMEM8B, TP53",
+      "F_raw": "TP53, CDH1, CD6, CCND1, EGFR, PDLIM7, BPIFA1, CNDP2, CD79A, B4GALT5, ADH1B, CFAP45, TMEM8B, ADH7, EIF2AK1, MMP8",
+      "A_said": [
+        "TP53",
+        "CDKN2A",
+        "PIK3CA",
+        "NOTCH1",
+        "FAT1",
+        "CASP8",
+        "HRAS"
+      ],
+      "A_correct": [
+        "TP53"
+      ],
+      "A_n": 1,
+      "A_manual": [
+        "CDKN2A",
+        "PIK3CA",
+        "NOTCH1",
+        "FAT1",
+        "CASP8",
+        "HRAS"
+      ],
+      "B_said": [
+        "NOTES"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "NOTES"
+      ],
+      "C_said": [
+        "ADH1B",
+        "ADH7",
+        "B4GALT5",
+        "BPIFA1",
+        "CCND1",
+        "CD6",
+        "CD79A",
+        "CDH1",
+        "CFAP45",
+        "CNDP2",
+        "EGFR",
+        "EIF2AK1",
+        "MMP8",
+        "PDLIM7",
+        "TMEM8B",
+        "TP53"
+      ],
+      "C_correct": [
+        "ADH1B",
+        "ADH7",
+        "B4GALT5",
+        "BPIFA1",
+        "CCND1",
+        "CD6",
+        "CD79A",
+        "CDH1",
+        "CFAP45",
+        "CNDP2",
+        "EGFR",
+        "EIF2AK1",
+        "MMP8",
+        "PDLIM7",
+        "TMEM8B",
+        "TP53"
+      ],
+      "C_n": 16,
+      "C_manual": [],
+      "D_said": [
+        "TP53",
+        "CDH1",
+        "CD6",
+        "CCND1",
+        "EGFR",
+        "PDLIM7",
+        "BPIFA1",
+        "CNDP2",
+        "CD79A",
+        "B4GALT5"
+      ],
+      "D_correct": [
+        "TP53",
+        "CDH1",
+        "CD6",
+        "CCND1",
+        "EGFR",
+        "PDLIM7",
+        "BPIFA1",
+        "CNDP2",
+        "CD79A",
+        "B4GALT5"
+      ],
+      "D_n": 10,
+      "D_manual": [],
+      "E_said": [
+        "ADH1B",
+        "ADH7",
+        "B4GALT5",
+        "BPIFA1",
+        "CCND1",
+        "CD6",
+        "CD79A",
+        "CDH1",
+        "CFAP45",
+        "CNDP2",
+        "EGFR",
+        "EIF2AK1",
+        "MMP8",
+        "PDLIM7",
+        "TMEM8B",
+        "TP53"
+      ],
+      "E_correct": [
+        "ADH1B",
+        "ADH7",
+        "B4GALT5",
+        "BPIFA1",
+        "CCND1",
+        "CD6",
+        "CD79A",
+        "CDH1",
+        "CFAP45",
+        "CNDP2",
+        "EGFR",
+        "EIF2AK1",
+        "MMP8",
+        "PDLIM7",
+        "TMEM8B",
+        "TP53"
+      ],
+      "E_n": 16,
+      "E_manual": [],
+      "F_said": [
+        "TP53",
+        "CDH1",
+        "CD6",
+        "CCND1",
+        "EGFR",
+        "PDLIM7",
+        "BPIFA1",
+        "CNDP2",
+        "CD79A",
+        "B4GALT5",
+        "ADH1B",
+        "CFAP45",
+        "TMEM8B",
+        "ADH7",
+        "EIF2AK1",
+        "MMP8"
+      ],
+      "F_correct": [
+        "TP53",
+        "CDH1",
+        "CD6",
+        "CCND1",
+        "EGFR",
+        "PDLIM7",
+        "BPIFA1",
+        "CNDP2",
+        "CD79A",
+        "B4GALT5",
+        "ADH1B",
+        "CFAP45",
+        "TMEM8B",
+        "ADH7",
+        "EIF2AK1",
+        "MMP8"
+      ],
+      "F_n": 16,
+      "F_manual": []
+    },
+    {
+      "qid": "t019",
+      "subject_id": "Disease::DOID:90",
+      "subject": "degenerative disc disease",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease degenerative disc disease?",
+      "gold": [
+        "ADAMTS3",
+        "ADAMTS4",
+        "ADAMTS5",
+        "BMP2",
+        "CHST3",
+        "CILP",
+        "COL9A2",
+        "COL9A3",
+        "GDF5",
+        "MMP13",
+        "MMP3",
+        "PARK2",
+        "RPL34",
+        "SOX9"
+      ],
+      "n_gold": 14,
+      "linked_node": "Disease::DOID:90",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ADAMTS3",
+        "ADAMTS4",
+        "ADAMTS5",
+        "BMP2",
+        "CHST3",
+        "CILP",
+        "COL9A2",
+        "COL9A3",
+        "GDF5",
+        "MMP13",
+        "MMP3",
+        "PARK2",
+        "RPL34",
+        "SOX9"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.3,
+        "blocked_steps": 3,
+        "total_steps": 10,
+        "n_allowed": 14
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 59,
+        "n_allowed": 14
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.5254237288135594,
+        "blocked_steps": 31,
+        "total_steps": 59,
+        "n_allowed": 14
+      },
+      "A_raw": "COL9A2, COL9A3, COL11A1, ACAN, VDR, MMP3, THBS2, IL1A, IL6, ASPN",
+      "B_raw": "NOTCH3, COL1A1, COL1A2",
+      "C_raw": "ADAMTS3, ADAMTS4, ADAMTS5, BMP2, CHST3, CILP, COL9A2, COL9A3, GDF5, MMP13, MMP3, PARK2, RPL34, SOX9",
+      "D_raw": "COL9A2, COL9A3",
+      "E_raw": "ADAMTS3, ADAMTS4, ADAMTS5, BMP2, CHST3, CILP, COL9A2, COL9A3, GDF5, MMP13, MMP3, PARK2, RPL34, SOX9",
+      "F_raw": "COL9A2, COL9A3, CILP, ADAMTS5, BMP2, MMP13, ADAMTS4, ADAMTS3, GDF5, MMP3, RPL34, SOX9, CHST3, PARK2",
+      "A_said": [
+        "COL9A2",
+        "COL9A3",
+        "COL11A1",
+        "ACAN",
+        "VDR",
+        "MMP3",
+        "THBS2",
+        "IL1A",
+        "IL6",
+        "ASPN"
+      ],
+      "A_correct": [
+        "COL9A2",
+        "COL9A3",
+        "MMP3"
+      ],
+      "A_n": 3,
+      "A_manual": [
+        "COL11A1",
+        "ACAN",
+        "VDR",
+        "THBS2",
+        "IL1A",
+        "IL6",
+        "ASPN"
+      ],
+      "B_said": [
+        "NOTCH3",
+        "COL1A1",
+        "COL1A2"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "NOTCH3",
+        "COL1A1",
+        "COL1A2"
+      ],
+      "C_said": [
+        "ADAMTS3",
+        "ADAMTS4",
+        "ADAMTS5",
+        "BMP2",
+        "CHST3",
+        "CILP",
+        "COL9A2",
+        "COL9A3",
+        "GDF5",
+        "MMP13",
+        "MMP3",
+        "PARK2",
+        "RPL34",
+        "SOX9"
+      ],
+      "C_correct": [
+        "ADAMTS3",
+        "ADAMTS4",
+        "ADAMTS5",
+        "BMP2",
+        "CHST3",
+        "CILP",
+        "COL9A2",
+        "COL9A3",
+        "GDF5",
+        "MMP13",
+        "MMP3",
+        "PARK2",
+        "RPL34",
+        "SOX9"
+      ],
+      "C_n": 14,
+      "C_manual": [],
+      "D_said": [
+        "COL9A2",
+        "COL9A3"
+      ],
+      "D_correct": [
+        "COL9A2",
+        "COL9A3"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "ADAMTS3",
+        "ADAMTS4",
+        "ADAMTS5",
+        "BMP2",
+        "CHST3",
+        "CILP",
+        "COL9A2",
+        "COL9A3",
+        "GDF5",
+        "MMP13",
+        "MMP3",
+        "PARK2",
+        "RPL34",
+        "SOX9"
+      ],
+      "E_correct": [
+        "ADAMTS3",
+        "ADAMTS4",
+        "ADAMTS5",
+        "BMP2",
+        "CHST3",
+        "CILP",
+        "COL9A2",
+        "COL9A3",
+        "GDF5",
+        "MMP13",
+        "MMP3",
+        "PARK2",
+        "RPL34",
+        "SOX9"
+      ],
+      "E_n": 14,
+      "E_manual": [],
+      "F_said": [
+        "COL9A2",
+        "COL9A3",
+        "CILP",
+        "ADAMTS5",
+        "BMP2",
+        "MMP13",
+        "ADAMTS4",
+        "ADAMTS3",
+        "GDF5",
+        "MMP3",
+        "RPL34",
+        "SOX9",
+        "CHST3",
+        "PARK2"
+      ],
+      "F_correct": [
+        "COL9A2",
+        "COL9A3",
+        "CILP",
+        "ADAMTS5",
+        "BMP2",
+        "MMP13",
+        "ADAMTS4",
+        "ADAMTS3",
+        "GDF5",
+        "MMP3",
+        "RPL34",
+        "SOX9",
+        "CHST3",
+        "PARK2"
+      ],
+      "F_n": 14,
+      "F_manual": []
+    },
+    {
+      "qid": "t020",
+      "subject_id": "Disease::DOID:11555",
+      "subject": "Fuchs' endothelial dystrophy",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease Fuchs' endothelial dystrophy?",
+      "gold": [
+        "COL8A1",
+        "COL8A2",
+        "FBXO7",
+        "ITGBL1",
+        "PTPRG",
+        "TCF4"
+      ],
+      "n_gold": 6,
+      "linked_node": "Disease::DOID:11555",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "COL8A1",
+        "COL8A2",
+        "FBXO7",
+        "ITGBL1",
+        "PTPRG",
+        "TCF4"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.4444444444444444,
+        "blocked_steps": 4,
+        "total_steps": 9,
+        "n_allowed": 6
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 28,
+        "n_allowed": 6
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.5714285714285714,
+        "blocked_steps": 16,
+        "total_steps": 28,
+        "n_allowed": 6
+      },
+      "A_raw": "TCF4, COL8A2, SLC4A11, ZEB1, AGBL1, LOXHD1, KANK4",
+      "B_raw": "Fuchs' endothelial dystrophy is primarily associated with mutations in the following genes:\n\n- CFH (C5 convertase)\n- C3 \n- PLEKHF1",
+      "C_raw": "COL8A1, COL8A2",
+      "D_raw": "ITGBL1, PTPRG",
+      "E_raw": "COL8A1, COL8A2, FBXO7, ITGBL1, PTPRG, TCF4",
+      "F_raw": "ITGBL1, PTPRG, COL8A2, COL8A1, TCF4, FBXO7",
+      "A_said": [
+        "TCF4",
+        "COL8A2",
+        "SLC4A11",
+        "ZEB1",
+        "AGBL1",
+        "LOXHD1",
+        "KANK4"
+      ],
+      "A_correct": [
+        "TCF4",
+        "COL8A2"
+      ],
+      "A_n": 2,
+      "A_manual": [
+        "SLC4A11",
+        "ZEB1",
+        "AGBL1",
+        "LOXHD1",
+        "KANK4"
+      ],
+      "B_said": [
+        "CFH",
+        "C3",
+        "PLEKHF1"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "CFH",
+        "C3",
+        "PLEKHF1"
+      ],
+      "C_said": [
+        "COL8A1",
+        "COL8A2"
+      ],
+      "C_correct": [
+        "COL8A1",
+        "COL8A2"
+      ],
+      "C_n": 2,
+      "C_manual": [],
+      "D_said": [
+        "ITGBL1",
+        "PTPRG"
+      ],
+      "D_correct": [
+        "ITGBL1",
+        "PTPRG"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "COL8A1",
+        "COL8A2",
+        "FBXO7",
+        "ITGBL1",
+        "PTPRG",
+        "TCF4"
+      ],
+      "E_correct": [
+        "COL8A1",
+        "COL8A2",
+        "FBXO7",
+        "ITGBL1",
+        "PTPRG",
+        "TCF4"
+      ],
+      "E_n": 6,
+      "E_manual": [],
+      "F_said": [
+        "ITGBL1",
+        "PTPRG",
+        "COL8A2",
+        "COL8A1",
+        "TCF4",
+        "FBXO7"
+      ],
+      "F_correct": [
+        "ITGBL1",
+        "PTPRG",
+        "COL8A2",
+        "COL8A1",
+        "TCF4",
+        "FBXO7"
+      ],
+      "F_n": 6,
+      "F_manual": []
+    },
+    {
+      "qid": "t021",
+      "subject_id": "Disease::DOID:13189",
+      "subject": "gout",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease gout?",
+      "gold": [
+        "ABCG2",
+        "ALDH16A1",
+        "BCKDHA",
+        "CASP1",
+        "HPRT1",
+        "IL15",
+        "IL1RN",
+        "LRRC16A",
+        "NLRP3",
+        "POMC",
+        "PRPS1",
+        "PRPS2",
+        "SLC17A1",
+        "SLC17A3",
+        "SLC22A11",
+        "SLC22A12",
+        "SLC2A9",
+        "UMOD"
+      ],
+      "n_gold": 18,
+      "linked_node": "Disease::DOID:13189",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ABCG2",
+        "ALDH16A1",
+        "BCKDHA",
+        "CASP1",
+        "HPRT1",
+        "IL15",
+        "IL1RN",
+        "LRRC16A",
+        "NLRP3",
+        "POMC",
+        "PRPS1",
+        "PRPS2",
+        "SLC17A1",
+        "SLC17A3",
+        "SLC22A11",
+        "SLC22A12",
+        "SLC2A9",
+        "UMOD"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.2222222222222222,
+        "blocked_steps": 4,
+        "total_steps": 18,
+        "n_allowed": 18
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 94,
+        "n_allowed": 18
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.5106382978723404,
+        "blocked_steps": 48,
+        "total_steps": 94,
+        "n_allowed": 18
+      },
+      "A_raw": "SLC2A9, ABCG2, SLC22A12, SLC17A1, SLC17A3, GCKR, PDZK1, SLC16A9, INHBC, RREB1, ALDH16A1",
+      "B_raw": "NOTCH3, HMGCR",
+      "C_raw": "ABCG2, ALDH16A1, BCKDHA, CASP1, HPRT1, IL15, IL1RN, LRRC16A, NLRP3, POMC, PRPS1, PRPS2, SLC17A1, SLC17A3, SLC22A11, SLC22A12, SLC2A9, UMOD",
+      "D_raw": "ABCG2, SLC2A9, SLC22A11",
+      "E_raw": "ABCG2, ALDH16A1, BCKDHA, CASP1, HPRT1, IL15, IL1RN, LRRC16A, NLRP3, POMC, PRPS1, PRPS2, SLC17A1, SLC17A3, SLC22A11, SLC22A12, SLC2A9, UMOD",
+      "F_raw": "ABCG2, SLC2A9, SLC22A11, SLC22A12, SLC17A3, SLC17A1, UMOD, NLRP3, POMC, IL15, IL1RN, CASP1, PRPS1, ALDH16A1, LRRC16A, BCKDHA, PRPS2, HPRT1",
+      "A_said": [
+        "SLC2A9",
+        "ABCG2",
+        "SLC22A12",
+        "SLC17A1",
+        "SLC17A3",
+        "GCKR",
+        "PDZK1",
+        "SLC16A9",
+        "INHBC",
+        "RREB1",
+        "ALDH16A1"
+      ],
+      "A_correct": [
+        "SLC2A9",
+        "ABCG2",
+        "SLC22A12",
+        "SLC17A1",
+        "SLC17A3",
+        "ALDH16A1"
+      ],
+      "A_n": 6,
+      "A_manual": [
+        "GCKR",
+        "PDZK1",
+        "SLC16A9",
+        "INHBC",
+        "RREB1"
+      ],
+      "B_said": [
+        "NOTCH3",
+        "HMGCR"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "NOTCH3",
+        "HMGCR"
+      ],
+      "C_said": [
+        "ABCG2",
+        "ALDH16A1",
+        "BCKDHA",
+        "CASP1",
+        "HPRT1",
+        "IL15",
+        "IL1RN",
+        "LRRC16A",
+        "NLRP3",
+        "POMC",
+        "PRPS1",
+        "PRPS2",
+        "SLC17A1",
+        "SLC17A3",
+        "SLC22A11",
+        "SLC22A12",
+        "SLC2A9",
+        "UMOD"
+      ],
+      "C_correct": [
+        "ABCG2",
+        "ALDH16A1",
+        "BCKDHA",
+        "CASP1",
+        "HPRT1",
+        "IL15",
+        "IL1RN",
+        "LRRC16A",
+        "NLRP3",
+        "POMC",
+        "PRPS1",
+        "PRPS2",
+        "SLC17A1",
+        "SLC17A3",
+        "SLC22A11",
+        "SLC22A12",
+        "SLC2A9",
+        "UMOD"
+      ],
+      "C_n": 18,
+      "C_manual": [],
+      "D_said": [
+        "ABCG2",
+        "SLC2A9",
+        "SLC22A11"
+      ],
+      "D_correct": [
+        "ABCG2",
+        "SLC2A9",
+        "SLC22A11"
+      ],
+      "D_n": 3,
+      "D_manual": [],
+      "E_said": [
+        "ABCG2",
+        "ALDH16A1",
+        "BCKDHA",
+        "CASP1",
+        "HPRT1",
+        "IL15",
+        "IL1RN",
+        "LRRC16A",
+        "NLRP3",
+        "POMC",
+        "PRPS1",
+        "PRPS2",
+        "SLC17A1",
+        "SLC17A3",
+        "SLC22A11",
+        "SLC22A12",
+        "SLC2A9",
+        "UMOD"
+      ],
+      "E_correct": [
+        "ABCG2",
+        "ALDH16A1",
+        "BCKDHA",
+        "CASP1",
+        "HPRT1",
+        "IL15",
+        "IL1RN",
+        "LRRC16A",
+        "NLRP3",
+        "POMC",
+        "PRPS1",
+        "PRPS2",
+        "SLC17A1",
+        "SLC17A3",
+        "SLC22A11",
+        "SLC22A12",
+        "SLC2A9",
+        "UMOD"
+      ],
+      "E_n": 18,
+      "E_manual": [],
+      "F_said": [
+        "ABCG2",
+        "SLC2A9",
+        "SLC22A11",
+        "SLC22A12",
+        "SLC17A3",
+        "SLC17A1",
+        "UMOD",
+        "NLRP3",
+        "POMC",
+        "IL15",
+        "IL1RN",
+        "CASP1",
+        "PRPS1",
+        "ALDH16A1",
+        "LRRC16A",
+        "BCKDHA",
+        "PRPS2",
+        "HPRT1"
+      ],
+      "F_correct": [
+        "ABCG2",
+        "SLC2A9",
+        "SLC22A11",
+        "SLC22A12",
+        "SLC17A3",
+        "SLC17A1",
+        "UMOD",
+        "NLRP3",
+        "POMC",
+        "IL15",
+        "IL1RN",
+        "CASP1",
+        "PRPS1",
+        "ALDH16A1",
+        "LRRC16A",
+        "BCKDHA",
+        "PRPS2",
+        "HPRT1"
+      ],
+      "F_n": 18,
+      "F_manual": []
+    },
+    {
+      "qid": "t022",
+      "subject_id": "Disease::DOID:2998",
+      "subject": "testicular cancer",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease testicular cancer?",
+      "gold": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DMRT1",
+        "DNMT3L",
+        "ERCC1",
+        "ERCC4",
+        "FGFR3",
+        "GGN",
+        "H2AFZ",
+        "HPGDS",
+        "INSL3",
+        "KIT",
+        "KITLG",
+        "MAD1L1",
+        "MMP2",
+        "PITX1",
+        "PRDM14",
+        "RFWD3",
+        "SLC2A6",
+        "STK10",
+        "STK11",
+        "TFAP2C"
+      ],
+      "n_gold": 23,
+      "linked_node": "Disease::DOID:2998",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DMRT1",
+        "DNMT3L",
+        "ERCC1",
+        "ERCC4",
+        "FGFR3",
+        "GGN",
+        "H2AFZ",
+        "HPGDS",
+        "INSL3",
+        "KIT",
+        "KITLG",
+        "MAD1L1",
+        "MMP2",
+        "PITX1",
+        "PRDM14",
+        "RFWD3",
+        "SLC2A6",
+        "STK10",
+        "STK11",
+        "TFAP2C"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.5,
+        "blocked_steps": 50,
+        "total_steps": 100,
+        "n_allowed": 23
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.01,
+        "blocked_steps": 1,
+        "total_steps": 100,
+        "n_allowed": 23
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.5,
+        "blocked_steps": 50,
+        "total_steps": 100,
+        "n_allowed": 23
+      },
+      "A_raw": "KITLG, SPRY4, BAK1, DMRT1, TERT, ATF7IP, DAZL, PRDM14, HPGDS",
+      "B_raw": "ABCB1, TP53, PTEN, CDKN2A, RB1, BRCA2, STK11, PIK3CA, APC, SMAD4, NF1, DCC, NOTCH1, KIT, PTCH1, TGFB1, TGFBR2, MAPK8, MET, EGFR, KRAS, NRAS, BRAF, PIK3R1, PIK3CA, PIK3CD, PIK3CG, PIK3R3, PIK3R4, PIK3R5, PIK3R6, PIK3CE, PIK3C3, AKT1, AKT2, AKT3, CREBBP, EP300, CBX7, CHD8, ETS1, JAK2, STAT5B, MYC, CCND1, CCNE1, CCNB1, CIP1, CD",
+      "C_raw": "ATF7IP, BCL10, DAZL, DMRT1, DNMT3L, ERCC1, ERCC4, FGFR3, GGN, H2AFZ, HPGDS, INSL3, KIT, KITLG, MAD1L1, MMP2, PITX1, PRDM14, RFWD3, SLC2A6, STK10, STK11, TFAP2C",
+      "D_raw": "ATF7IP, BCL10, DAZL, DNMT3L, GGN, H2AFZ, KIT, KITLG, PRDM14, SLC2A6, STK11, TFAP2C, INSL3, HPGDS, FGFR3, MMP2, STK10, ERCC1, ERCC4, MAD1L1, DMRT1, PITX1, RFWD3",
+      "E_raw": "ATF7IP, BCL10, DAZL, DMRT1, DNMT3L, ERCC1, ERCC4, FGFR3, GGN, H2AFZ, HPGDS, INSL3, KIT, KITLG, MAD1L1, MMP2, PITX1, PRDM14, RFWD3, SLC2A6, STK10, STK11, TFAP2C",
+      "F_raw": "ATF7IP, BCL10, DAZL, DNMT3L, GGN, H2AFZ, KIT, KITLG, PRDM14, SLC2A6, STK11, TFAP2C, INSL3, HPGDS, FGFR3, MMP2, STK10, ERCC1, ERCC4, MAD1L1, DMRT1, PITX1, RFWD3",
+      "A_said": [
+        "KITLG",
+        "SPRY4",
+        "BAK1",
+        "DMRT1",
+        "TERT",
+        "ATF7IP",
+        "DAZL",
+        "PRDM14",
+        "HPGDS"
+      ],
+      "A_correct": [
+        "KITLG",
+        "DMRT1",
+        "ATF7IP",
+        "DAZL",
+        "PRDM14",
+        "HPGDS"
+      ],
+      "A_n": 6,
+      "A_manual": [
+        "SPRY4",
+        "BAK1",
+        "TERT"
+      ],
+      "B_said": [
+        "ABCB1",
+        "TP53",
+        "PTEN",
+        "CDKN2A",
+        "RB1",
+        "BRCA2",
+        "STK11",
+        "PIK3CA",
+        "APC",
+        "SMAD4",
+        "NF1",
+        "DCC",
+        "NOTCH1",
+        "KIT",
+        "PTCH1",
+        "TGFB1",
+        "TGFBR2",
+        "MAPK8",
+        "MET",
+        "EGFR",
+        "KRAS",
+        "NRAS",
+        "BRAF",
+        "PIK3R1",
+        "PIK3CA",
+        "PIK3CD",
+        "PIK3CG",
+        "PIK3R3",
+        "PIK3R4",
+        "PIK3R5",
+        "PIK3R6",
+        "PIK3CE",
+        "PIK3C3",
+        "AKT1",
+        "AKT2",
+        "AKT3",
+        "CREBBP",
+        "EP300",
+        "CBX7",
+        "CHD8",
+        "ETS1",
+        "JAK2",
+        "STAT5B",
+        "MYC",
+        "CCND1",
+        "CCNE1",
+        "CCNB1",
+        "CIP1",
+        "CD"
+      ],
+      "B_correct": [
+        "STK11",
+        "KIT"
+      ],
+      "B_n": 2,
+      "B_manual": [
+        "ABCB1",
+        "TP53",
+        "PTEN",
+        "CDKN2A",
+        "RB1",
+        "BRCA2",
+        "PIK3CA",
+        "APC",
+        "SMAD4",
+        "NF1",
+        "DCC",
+        "NOTCH1",
+        "PTCH1",
+        "TGFB1",
+        "TGFBR2",
+        "MAPK8",
+        "MET",
+        "EGFR",
+        "KRAS",
+        "NRAS",
+        "BRAF",
+        "PIK3R1",
+        "PIK3CA",
+        "PIK3CD",
+        "PIK3CG",
+        "PIK3R3",
+        "PIK3R4",
+        "PIK3R5",
+        "PIK3R6",
+        "PIK3CE",
+        "PIK3C3",
+        "AKT1",
+        "AKT2",
+        "AKT3",
+        "CREBBP",
+        "EP300",
+        "CBX7",
+        "CHD8",
+        "ETS1",
+        "JAK2",
+        "STAT5B",
+        "MYC",
+        "CCND1",
+        "CCNE1",
+        "CCNB1",
+        "CIP1",
+        "CD"
+      ],
+      "C_said": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DMRT1",
+        "DNMT3L",
+        "ERCC1",
+        "ERCC4",
+        "FGFR3",
+        "GGN",
+        "H2AFZ",
+        "HPGDS",
+        "INSL3",
+        "KIT",
+        "KITLG",
+        "MAD1L1",
+        "MMP2",
+        "PITX1",
+        "PRDM14",
+        "RFWD3",
+        "SLC2A6",
+        "STK10",
+        "STK11",
+        "TFAP2C"
+      ],
+      "C_correct": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DMRT1",
+        "DNMT3L",
+        "ERCC1",
+        "ERCC4",
+        "FGFR3",
+        "GGN",
+        "H2AFZ",
+        "HPGDS",
+        "INSL3",
+        "KIT",
+        "KITLG",
+        "MAD1L1",
+        "MMP2",
+        "PITX1",
+        "PRDM14",
+        "RFWD3",
+        "SLC2A6",
+        "STK10",
+        "STK11",
+        "TFAP2C"
+      ],
+      "C_n": 23,
+      "C_manual": [],
+      "D_said": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DNMT3L",
+        "GGN",
+        "H2AFZ",
+        "KIT",
+        "KITLG",
+        "PRDM14",
+        "SLC2A6",
+        "STK11",
+        "TFAP2C",
+        "INSL3",
+        "HPGDS",
+        "FGFR3",
+        "MMP2",
+        "STK10",
+        "ERCC1",
+        "ERCC4",
+        "MAD1L1",
+        "DMRT1",
+        "PITX1",
+        "RFWD3"
+      ],
+      "D_correct": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DNMT3L",
+        "GGN",
+        "H2AFZ",
+        "KIT",
+        "KITLG",
+        "PRDM14",
+        "SLC2A6",
+        "STK11",
+        "TFAP2C",
+        "INSL3",
+        "HPGDS",
+        "FGFR3",
+        "MMP2",
+        "STK10",
+        "ERCC1",
+        "ERCC4",
+        "MAD1L1",
+        "DMRT1",
+        "PITX1",
+        "RFWD3"
+      ],
+      "D_n": 23,
+      "D_manual": [],
+      "E_said": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DMRT1",
+        "DNMT3L",
+        "ERCC1",
+        "ERCC4",
+        "FGFR3",
+        "GGN",
+        "H2AFZ",
+        "HPGDS",
+        "INSL3",
+        "KIT",
+        "KITLG",
+        "MAD1L1",
+        "MMP2",
+        "PITX1",
+        "PRDM14",
+        "RFWD3",
+        "SLC2A6",
+        "STK10",
+        "STK11",
+        "TFAP2C"
+      ],
+      "E_correct": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DMRT1",
+        "DNMT3L",
+        "ERCC1",
+        "ERCC4",
+        "FGFR3",
+        "GGN",
+        "H2AFZ",
+        "HPGDS",
+        "INSL3",
+        "KIT",
+        "KITLG",
+        "MAD1L1",
+        "MMP2",
+        "PITX1",
+        "PRDM14",
+        "RFWD3",
+        "SLC2A6",
+        "STK10",
+        "STK11",
+        "TFAP2C"
+      ],
+      "E_n": 23,
+      "E_manual": [],
+      "F_said": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DNMT3L",
+        "GGN",
+        "H2AFZ",
+        "KIT",
+        "KITLG",
+        "PRDM14",
+        "SLC2A6",
+        "STK11",
+        "TFAP2C",
+        "INSL3",
+        "HPGDS",
+        "FGFR3",
+        "MMP2",
+        "STK10",
+        "ERCC1",
+        "ERCC4",
+        "MAD1L1",
+        "DMRT1",
+        "PITX1",
+        "RFWD3"
+      ],
+      "F_correct": [
+        "ATF7IP",
+        "BCL10",
+        "DAZL",
+        "DNMT3L",
+        "GGN",
+        "H2AFZ",
+        "KIT",
+        "KITLG",
+        "PRDM14",
+        "SLC2A6",
+        "STK11",
+        "TFAP2C",
+        "INSL3",
+        "HPGDS",
+        "FGFR3",
+        "MMP2",
+        "STK10",
+        "ERCC1",
+        "ERCC4",
+        "MAD1L1",
+        "DMRT1",
+        "PITX1",
+        "RFWD3"
+      ],
+      "F_n": 23,
+      "F_manual": []
+    },
+    {
+      "qid": "t023",
+      "subject_id": "Disease::DOID:13378",
+      "subject": "Kawasaki disease",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease Kawasaki disease?",
+      "gold": [
+        "ADCK4",
+        "BLK",
+        "CA8",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CENPU",
+        "CRP",
+        "FCGR2A",
+        "IL10",
+        "ITGAE",
+        "ITPKC",
+        "MMP9",
+        "VEGFA"
+      ],
+      "n_gold": 14,
+      "linked_node": "Disease::DOID:13378",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ADCK4",
+        "BLK",
+        "CA8",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CENPU",
+        "CRP",
+        "FCGR2A",
+        "IL10",
+        "ITGAE",
+        "ITPKC",
+        "MMP9",
+        "VEGFA"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.5961538461538461,
+        "blocked_steps": 31,
+        "total_steps": 52,
+        "n_allowed": 14
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 52,
+        "n_allowed": 14
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.5961538461538461,
+        "blocked_steps": 31,
+        "total_steps": 52,
+        "n_allowed": 14
+      },
+      "A_raw": "ITPKC, CASP3, FCGR2A, BLK, CD40, TGFB2, ORAI1",
+      "B_raw": "I don't know",
+      "C_raw": "ADCK4, BLK, CA8, CCR5, CD4, CD40, CENPU, CRP, FCGR2A, IL10, ITGAE, ITPKC, MMP9, VEGFA",
+      "D_raw": "ITGAE, FCGR2A, IL10, CCR5, CD4, CD40, CRP, CENPU, ADCK4, VEGFA, ITPKC, BLK, MMP9, CA8",
+      "E_raw": "ADCK4, BLK, CA8, CCR5, CD4, CD40, CENPU, CRP, FCGR2A, IL10, ITGAE, ITPKC, MMP9, VEGFA",
+      "F_raw": "ITGAE, FCGR2A, IL10, CCR5, CD4, CD40, CRP, CENPU, ADCK4, VEGFA, ITPKC, BLK, MMP9, CA8",
+      "A_said": [
+        "ITPKC",
+        "CASP3",
+        "FCGR2A",
+        "BLK",
+        "CD40",
+        "TGFB2",
+        "ORAI1"
+      ],
+      "A_correct": [
+        "ITPKC",
+        "FCGR2A",
+        "BLK",
+        "CD40"
+      ],
+      "A_n": 4,
+      "A_manual": [
+        "CASP3",
+        "TGFB2",
+        "ORAI1"
+      ],
+      "B_said": [],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [],
+      "C_said": [
+        "ADCK4",
+        "BLK",
+        "CA8",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CENPU",
+        "CRP",
+        "FCGR2A",
+        "IL10",
+        "ITGAE",
+        "ITPKC",
+        "MMP9",
+        "VEGFA"
+      ],
+      "C_correct": [
+        "ADCK4",
+        "BLK",
+        "CA8",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CENPU",
+        "CRP",
+        "FCGR2A",
+        "IL10",
+        "ITGAE",
+        "ITPKC",
+        "MMP9",
+        "VEGFA"
+      ],
+      "C_n": 14,
+      "C_manual": [],
+      "D_said": [
+        "ITGAE",
+        "FCGR2A",
+        "IL10",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CRP",
+        "CENPU",
+        "ADCK4",
+        "VEGFA",
+        "ITPKC",
+        "BLK",
+        "MMP9",
+        "CA8"
+      ],
+      "D_correct": [
+        "ITGAE",
+        "FCGR2A",
+        "IL10",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CRP",
+        "CENPU",
+        "ADCK4",
+        "VEGFA",
+        "ITPKC",
+        "BLK",
+        "MMP9",
+        "CA8"
+      ],
+      "D_n": 14,
+      "D_manual": [],
+      "E_said": [
+        "ADCK4",
+        "BLK",
+        "CA8",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CENPU",
+        "CRP",
+        "FCGR2A",
+        "IL10",
+        "ITGAE",
+        "ITPKC",
+        "MMP9",
+        "VEGFA"
+      ],
+      "E_correct": [
+        "ADCK4",
+        "BLK",
+        "CA8",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CENPU",
+        "CRP",
+        "FCGR2A",
+        "IL10",
+        "ITGAE",
+        "ITPKC",
+        "MMP9",
+        "VEGFA"
+      ],
+      "E_n": 14,
+      "E_manual": [],
+      "F_said": [
+        "ITGAE",
+        "FCGR2A",
+        "IL10",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CRP",
+        "CENPU",
+        "ADCK4",
+        "VEGFA",
+        "ITPKC",
+        "BLK",
+        "MMP9",
+        "CA8"
+      ],
+      "F_correct": [
+        "ITGAE",
+        "FCGR2A",
+        "IL10",
+        "CCR5",
+        "CD4",
+        "CD40",
+        "CRP",
+        "CENPU",
+        "ADCK4",
+        "VEGFA",
+        "ITPKC",
+        "BLK",
+        "MMP9",
+        "CA8"
+      ],
+      "F_n": 14,
+      "F_manual": []
+    },
+    {
+      "qid": "t024",
+      "subject_id": "Disease::DOID:0060073",
+      "subject": "lymphatic system cancer",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease lymphatic system cancer?",
+      "gold": [
+        "ALK",
+        "BCL6",
+        "CENPV",
+        "HNRNPH3",
+        "NPM1",
+        "PROX1",
+        "RRP8",
+        "TIA1",
+        "TNFRSF8"
+      ],
+      "n_gold": 9,
+      "linked_node": "Disease::DOID:0060073",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ALK",
+        "BCL6",
+        "CENPV",
+        "HNRNPH3",
+        "NPM1",
+        "PROX1",
+        "RRP8",
+        "TIA1",
+        "TNFRSF8"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.6086956521739131,
+        "blocked_steps": 14,
+        "total_steps": 23,
+        "n_allowed": 9
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.02702702702702703,
+        "blocked_steps": 1,
+        "total_steps": 37,
+        "n_allowed": 9
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.6578947368421053,
+        "blocked_steps": 25,
+        "total_steps": 38,
+        "n_allowed": 9
+      },
+      "A_raw": "BCL2, MYC, BCL6, TP53, CREBBP, EZH2, ATM, TNFRSF13B",
+      "B_raw": "NOTES",
+      "C_raw": "ALK, BCL6, CENPV, HNRNPH3, NPM1, PROX1, RRP8, TIA1, TNFRSF8",
+      "D_raw": "BCL6, TNFRSF8, TIA1, RRP8, HNRNPH3",
+      "E_raw": "ALK, BCL6, CENPV, HNRNPH3, NPM1, PROX1, RRP8, TIA1, TNFRSF8",
+      "F_raw": "BCL6, TNFRSF8, TIA1, RRP8, HNRNPH3, CENPV, NPM1, ALK, PROX1",
+      "A_said": [
+        "BCL2",
+        "MYC",
+        "BCL6",
+        "TP53",
+        "CREBBP",
+        "EZH2",
+        "ATM",
+        "TNFRSF13B"
+      ],
+      "A_correct": [
+        "BCL6"
+      ],
+      "A_n": 1,
+      "A_manual": [
+        "BCL2",
+        "MYC",
+        "TP53",
+        "CREBBP",
+        "EZH2",
+        "ATM",
+        "TNFRSF13B"
+      ],
+      "B_said": [
+        "NOTES"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "NOTES"
+      ],
+      "C_said": [
+        "ALK",
+        "BCL6",
+        "CENPV",
+        "HNRNPH3",
+        "NPM1",
+        "PROX1",
+        "RRP8",
+        "TIA1",
+        "TNFRSF8"
+      ],
+      "C_correct": [
+        "ALK",
+        "BCL6",
+        "CENPV",
+        "HNRNPH3",
+        "NPM1",
+        "PROX1",
+        "RRP8",
+        "TIA1",
+        "TNFRSF8"
+      ],
+      "C_n": 9,
+      "C_manual": [],
+      "D_said": [
+        "BCL6",
+        "TNFRSF8",
+        "TIA1",
+        "RRP8",
+        "HNRNPH3"
+      ],
+      "D_correct": [
+        "BCL6",
+        "TNFRSF8",
+        "TIA1",
+        "RRP8",
+        "HNRNPH3"
+      ],
+      "D_n": 5,
+      "D_manual": [],
+      "E_said": [
+        "ALK",
+        "BCL6",
+        "CENPV",
+        "HNRNPH3",
+        "NPM1",
+        "PROX1",
+        "RRP8",
+        "TIA1",
+        "TNFRSF8"
+      ],
+      "E_correct": [
+        "ALK",
+        "BCL6",
+        "CENPV",
+        "HNRNPH3",
+        "NPM1",
+        "PROX1",
+        "RRP8",
+        "TIA1",
+        "TNFRSF8"
+      ],
+      "E_n": 9,
+      "E_manual": [],
+      "F_said": [
+        "BCL6",
+        "TNFRSF8",
+        "TIA1",
+        "RRP8",
+        "HNRNPH3",
+        "CENPV",
+        "NPM1",
+        "ALK",
+        "PROX1"
+      ],
+      "F_correct": [
+        "BCL6",
+        "TNFRSF8",
+        "TIA1",
+        "RRP8",
+        "HNRNPH3",
+        "CENPV",
+        "NPM1",
+        "ALK",
+        "PROX1"
+      ],
+      "F_n": 9,
+      "F_manual": []
+    },
+    {
+      "qid": "t025",
+      "subject_id": "Disease::DOID:216",
+      "subject": "dental caries",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease dental caries?",
+      "gold": [
+        "ANGPTL6",
+        "CD79A",
+        "CDIPT",
+        "CNOT8",
+        "CPQ",
+        "DEDD",
+        "DMTF1",
+        "INO80",
+        "IRF6",
+        "LTF",
+        "LYZL2",
+        "SMARCA2",
+        "SMARCA4"
+      ],
+      "n_gold": 13,
+      "linked_node": "Disease::DOID:216",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ANGPTL6",
+        "CD79A",
+        "CDIPT",
+        "CNOT8",
+        "CPQ",
+        "DEDD",
+        "DMTF1",
+        "INO80",
+        "IRF6",
+        "LTF",
+        "LYZL2",
+        "SMARCA2",
+        "SMARCA4"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.6875,
+        "blocked_steps": 11,
+        "total_steps": 16,
+        "n_allowed": 13
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 57,
+        "n_allowed": 13
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.6842105263157895,
+        "blocked_steps": 39,
+        "total_steps": 57,
+        "n_allowed": 13
+      },
+      "A_raw": "AMELX, ENAM, TUFT1, MMP20, KLK4, TAS2R38, AQP5, LTF, DEFB1",
+      "B_raw": "I don't know",
+      "C_raw": "ANGPTL6, CD79A, CDIPT, CNOT8, CPQ, DEDD, DMTF1, INO80, IRF6, LTF, LYZL2, SMARCA2, SMARCA4",
+      "D_raw": "DMTF1, DEDD, LTF, LYZL2",
+      "E_raw": "ANGPTL6, CD79A, CDIPT, CNOT8, CPQ, DEDD, DMTF1, INO80, IRF6, LTF, LYZL2, SMARCA2, SMARCA4",
+      "F_raw": "DMTF1, DEDD, LTF, LYZL2, CNOT8, CD79A, CDIPT, IRF6, SMARCA4, SMARCA2, ANGPTL6, INO80, CPQ",
+      "A_said": [
+        "AMELX",
+        "ENAM",
+        "TUFT1",
+        "MMP20",
+        "KLK4",
+        "TAS2R38",
+        "AQP5",
+        "LTF",
+        "DEFB1"
+      ],
+      "A_correct": [
+        "LTF"
+      ],
+      "A_n": 1,
+      "A_manual": [
+        "AMELX",
+        "ENAM",
+        "TUFT1",
+        "MMP20",
+        "KLK4",
+        "TAS2R38",
+        "AQP5",
+        "DEFB1"
+      ],
+      "B_said": [],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [],
+      "C_said": [
+        "ANGPTL6",
+        "CD79A",
+        "CDIPT",
+        "CNOT8",
+        "CPQ",
+        "DEDD",
+        "DMTF1",
+        "INO80",
+        "IRF6",
+        "LTF",
+        "LYZL2",
+        "SMARCA2",
+        "SMARCA4"
+      ],
+      "C_correct": [
+        "ANGPTL6",
+        "CD79A",
+        "CDIPT",
+        "CNOT8",
+        "CPQ",
+        "DEDD",
+        "DMTF1",
+        "INO80",
+        "IRF6",
+        "LTF",
+        "LYZL2",
+        "SMARCA2",
+        "SMARCA4"
+      ],
+      "C_n": 13,
+      "C_manual": [],
+      "D_said": [
+        "DMTF1",
+        "DEDD",
+        "LTF",
+        "LYZL2"
+      ],
+      "D_correct": [
+        "DMTF1",
+        "DEDD",
+        "LTF",
+        "LYZL2"
+      ],
+      "D_n": 4,
+      "D_manual": [],
+      "E_said": [
+        "ANGPTL6",
+        "CD79A",
+        "CDIPT",
+        "CNOT8",
+        "CPQ",
+        "DEDD",
+        "DMTF1",
+        "INO80",
+        "IRF6",
+        "LTF",
+        "LYZL2",
+        "SMARCA2",
+        "SMARCA4"
+      ],
+      "E_correct": [
+        "ANGPTL6",
+        "CD79A",
+        "CDIPT",
+        "CNOT8",
+        "CPQ",
+        "DEDD",
+        "DMTF1",
+        "INO80",
+        "IRF6",
+        "LTF",
+        "LYZL2",
+        "SMARCA2",
+        "SMARCA4"
+      ],
+      "E_n": 13,
+      "E_manual": [],
+      "F_said": [
+        "DMTF1",
+        "DEDD",
+        "LTF",
+        "LYZL2",
+        "CNOT8",
+        "CD79A",
+        "CDIPT",
+        "IRF6",
+        "SMARCA4",
+        "SMARCA2",
+        "ANGPTL6",
+        "INO80",
+        "CPQ"
+      ],
+      "F_correct": [
+        "DMTF1",
+        "DEDD",
+        "LTF",
+        "LYZL2",
+        "CNOT8",
+        "CD79A",
+        "CDIPT",
+        "IRF6",
+        "SMARCA4",
+        "SMARCA2",
+        "ANGPTL6",
+        "INO80",
+        "CPQ"
+      ],
+      "F_n": 13,
+      "F_manual": []
+    },
+    {
+      "qid": "t026",
+      "subject_id": "Disease::DOID:10941",
+      "subject": "intracranial aneurysm",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease intracranial aneurysm?",
+      "gold": [
+        "AGER",
+        "AOC3",
+        "ASAH1",
+        "BOLL",
+        "CCL2",
+        "CNNM2",
+        "CST3",
+        "CTSB",
+        "CTSK",
+        "CTSS",
+        "EDNRA",
+        "ELN",
+        "MMP2",
+        "MMP9",
+        "NCF1",
+        "NOS3",
+        "RBBP8",
+        "SLC25A16",
+        "SOX17",
+        "STARD13",
+        "TIMP1",
+        "TIMP2",
+        "TMEM132B"
+      ],
+      "n_gold": 23,
+      "linked_node": "Disease::DOID:10941",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "AGER",
+        "AOC3",
+        "ASAH1",
+        "BOLL",
+        "CCL2",
+        "CNNM2",
+        "CST3",
+        "CTSB",
+        "CTSK",
+        "CTSS",
+        "EDNRA",
+        "ELN",
+        "MMP2",
+        "MMP9",
+        "NCF1",
+        "NOS3",
+        "RBBP8",
+        "SLC25A16",
+        "SOX17",
+        "STARD13",
+        "TIMP1",
+        "TIMP2",
+        "TMEM132B"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.5416666666666666,
+        "blocked_steps": 13,
+        "total_steps": 24,
+        "n_allowed": 23
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.010638297872340425,
+        "blocked_steps": 1,
+        "total_steps": 94,
+        "n_allowed": 23
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.6354166666666666,
+        "blocked_steps": 61,
+        "total_steps": 96,
+        "n_allowed": 23
+      },
+      "A_raw": "CDKN2B-AS1, SOX17, EDNRA, COL3A1, ELN, THSD1, RNF213",
+      "B_raw": "NOTCH3, TMEM106B",
+      "C_raw": "AGER, AOC3, ASAH1, BOLL, CCL2, CNNM2, CST3, CTSB, CTSK, CTSS, EDNRA, ELN, MMP2, MMP9, NCF1, NOS3, RBBP8, SLC25A16, SOX17, STARD13, TIMP1, TIMP2, TMEM132B",
+      "D_raw": "CST3, TMEM132B, CTSB, RBBP8, NOS3",
+      "E_raw": "AGER, AOC3, ASAH1, BOLL, CCL2, CNNM2, CST3, CTSB, CTSK, CTSS, EDNRA, ELN, MMP2, MMP9, NCF1, NOS3, RBBP8, SLC25A16, SOX17, STARD13, TIMP1, TIMP2, TMEM132B",
+      "F_raw": "CST3, TMEM132B, CTSB, RBBP8, NOS3, SLC25A16, STARD13, AGER, CTSK, MMP2, MMP9, CTSS, CCL2, TIMP1, TIMP2, BOLL, NCF1, AOC3, ELN, EDNRA, ASAH1, SOX17, CNNM2",
+      "A_said": [
+        "CDKN2B-AS1",
+        "SOX17",
+        "EDNRA",
+        "COL3A1",
+        "ELN",
+        "THSD1",
+        "RNF213"
+      ],
+      "A_correct": [
+        "SOX17",
+        "EDNRA",
+        "ELN"
+      ],
+      "A_n": 3,
+      "A_manual": [
+        "CDKN2B-AS1",
+        "COL3A1",
+        "THSD1",
+        "RNF213"
+      ],
+      "B_said": [
+        "NOTCH3",
+        "TMEM106B"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "NOTCH3",
+        "TMEM106B"
+      ],
+      "C_said": [
+        "AGER",
+        "AOC3",
+        "ASAH1",
+        "BOLL",
+        "CCL2",
+        "CNNM2",
+        "CST3",
+        "CTSB",
+        "CTSK",
+        "CTSS",
+        "EDNRA",
+        "ELN",
+        "MMP2",
+        "MMP9",
+        "NCF1",
+        "NOS3",
+        "RBBP8",
+        "SLC25A16",
+        "SOX17",
+        "STARD13",
+        "TIMP1",
+        "TIMP2",
+        "TMEM132B"
+      ],
+      "C_correct": [
+        "AGER",
+        "AOC3",
+        "ASAH1",
+        "BOLL",
+        "CCL2",
+        "CNNM2",
+        "CST3",
+        "CTSB",
+        "CTSK",
+        "CTSS",
+        "EDNRA",
+        "ELN",
+        "MMP2",
+        "MMP9",
+        "NCF1",
+        "NOS3",
+        "RBBP8",
+        "SLC25A16",
+        "SOX17",
+        "STARD13",
+        "TIMP1",
+        "TIMP2",
+        "TMEM132B"
+      ],
+      "C_n": 23,
+      "C_manual": [],
+      "D_said": [
+        "CST3",
+        "TMEM132B",
+        "CTSB",
+        "RBBP8",
+        "NOS3"
+      ],
+      "D_correct": [
+        "CST3",
+        "TMEM132B",
+        "CTSB",
+        "RBBP8",
+        "NOS3"
+      ],
+      "D_n": 5,
+      "D_manual": [],
+      "E_said": [
+        "AGER",
+        "AOC3",
+        "ASAH1",
+        "BOLL",
+        "CCL2",
+        "CNNM2",
+        "CST3",
+        "CTSB",
+        "CTSK",
+        "CTSS",
+        "EDNRA",
+        "ELN",
+        "MMP2",
+        "MMP9",
+        "NCF1",
+        "NOS3",
+        "RBBP8",
+        "SLC25A16",
+        "SOX17",
+        "STARD13",
+        "TIMP1",
+        "TIMP2",
+        "TMEM132B"
+      ],
+      "E_correct": [
+        "AGER",
+        "AOC3",
+        "ASAH1",
+        "BOLL",
+        "CCL2",
+        "CNNM2",
+        "CST3",
+        "CTSB",
+        "CTSK",
+        "CTSS",
+        "EDNRA",
+        "ELN",
+        "MMP2",
+        "MMP9",
+        "NCF1",
+        "NOS3",
+        "RBBP8",
+        "SLC25A16",
+        "SOX17",
+        "STARD13",
+        "TIMP1",
+        "TIMP2",
+        "TMEM132B"
+      ],
+      "E_n": 23,
+      "E_manual": [],
+      "F_said": [
+        "CST3",
+        "TMEM132B",
+        "CTSB",
+        "RBBP8",
+        "NOS3",
+        "SLC25A16",
+        "STARD13",
+        "AGER",
+        "CTSK",
+        "MMP2",
+        "MMP9",
+        "CTSS",
+        "CCL2",
+        "TIMP1",
+        "TIMP2",
+        "BOLL",
+        "NCF1",
+        "AOC3",
+        "ELN",
+        "EDNRA",
+        "ASAH1",
+        "SOX17",
+        "CNNM2"
+      ],
+      "F_correct": [
+        "CST3",
+        "TMEM132B",
+        "CTSB",
+        "RBBP8",
+        "NOS3",
+        "SLC25A16",
+        "STARD13",
+        "AGER",
+        "CTSK",
+        "MMP2",
+        "MMP9",
+        "CTSS",
+        "CCL2",
+        "TIMP1",
+        "TIMP2",
+        "BOLL",
+        "NCF1",
+        "AOC3",
+        "ELN",
+        "EDNRA",
+        "ASAH1",
+        "SOX17",
+        "CNNM2"
+      ],
+      "F_n": 23,
+      "F_manual": []
+    },
+    {
+      "qid": "t027",
+      "subject_id": "Disease::DOID:1964",
+      "subject": "fallopian tube cancer",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease fallopian tube cancer?",
+      "gold": [
+        "BRCA2",
+        "INHA",
+        "TSPAN9"
+      ],
+      "n_gold": 3,
+      "linked_node": "Disease::DOID:1964",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "BRCA2",
+        "INHA",
+        "TSPAN9"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.625,
+        "blocked_steps": 5,
+        "total_steps": 8,
+        "n_allowed": 3
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 11,
+        "n_allowed": 3
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.7272727272727273,
+        "blocked_steps": 8,
+        "total_steps": 11,
+        "n_allowed": 3
+      },
+      "A_raw": "BRCA1, BRCA2, TP53, MSH2, MLH1",
+      "B_raw": "I don't know",
+      "C_raw": "I don't know",
+      "D_raw": "BRCA2, TSPAN9",
+      "E_raw": "BRCA2, INHA, TSPAN9",
+      "F_raw": "BRCA2, TSPAN9, INHA",
+      "A_said": [
+        "BRCA1",
+        "BRCA2",
+        "TP53",
+        "MSH2",
+        "MLH1"
+      ],
+      "A_correct": [
+        "BRCA2"
+      ],
+      "A_n": 1,
+      "A_manual": [
+        "BRCA1",
+        "TP53",
+        "MSH2",
+        "MLH1"
+      ],
+      "B_said": [],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [],
+      "C_said": [],
+      "C_correct": [],
+      "C_n": 0,
+      "C_manual": [],
+      "D_said": [
+        "BRCA2",
+        "TSPAN9"
+      ],
+      "D_correct": [
+        "BRCA2",
+        "TSPAN9"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "BRCA2",
+        "INHA",
+        "TSPAN9"
+      ],
+      "E_correct": [
+        "BRCA2",
+        "INHA",
+        "TSPAN9"
+      ],
+      "E_n": 3,
+      "E_manual": [],
+      "F_said": [
+        "BRCA2",
+        "TSPAN9",
+        "INHA"
+      ],
+      "F_correct": [
+        "BRCA2",
+        "TSPAN9",
+        "INHA"
+      ],
+      "F_n": 3,
+      "F_manual": []
+    },
+    {
+      "qid": "t028",
+      "subject_id": "Disease::DOID:1245",
+      "subject": "vulva cancer",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease vulva cancer?",
+      "gold": [
+        "KRT20",
+        "KRT7",
+        "NHS",
+        "PIP",
+        "RREB1",
+        "SLC10A2"
+      ],
+      "n_gold": 6,
+      "linked_node": "Disease::DOID:1245",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "KRT20",
+        "KRT7",
+        "NHS",
+        "PIP",
+        "RREB1",
+        "SLC10A2"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.5294117647058824,
+        "blocked_steps": 9,
+        "total_steps": 17,
+        "n_allowed": 6
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 26,
+        "n_allowed": 6
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.6153846153846154,
+        "blocked_steps": 16,
+        "total_steps": 26,
+        "n_allowed": 6
+      },
+      "A_raw": "TP53, CDKN2A, PIK3CA, EGFR",
+      "B_raw": "I don't know",
+      "C_raw": "KRT20, KRT7, NHS, PIP, RREB1, SLC10A2",
+      "D_raw": "KRT7, KRT20, PIP, RREB1",
+      "E_raw": "KRT20, KRT7, NHS, PIP, RREB1, SLC10A2",
+      "F_raw": "KRT7, KRT20, PIP, RREB1, SLC10A2, NHS",
+      "A_said": [
+        "TP53",
+        "CDKN2A",
+        "PIK3CA",
+        "EGFR"
+      ],
+      "A_correct": [],
+      "A_n": 0,
+      "A_manual": [
+        "TP53",
+        "CDKN2A",
+        "PIK3CA",
+        "EGFR"
+      ],
+      "B_said": [],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [],
+      "C_said": [
+        "KRT20",
+        "KRT7",
+        "NHS",
+        "PIP",
+        "RREB1",
+        "SLC10A2"
+      ],
+      "C_correct": [
+        "KRT20",
+        "KRT7",
+        "NHS",
+        "PIP",
+        "RREB1",
+        "SLC10A2"
+      ],
+      "C_n": 6,
+      "C_manual": [],
+      "D_said": [
+        "KRT7",
+        "KRT20",
+        "PIP",
+        "RREB1"
+      ],
+      "D_correct": [
+        "KRT7",
+        "KRT20",
+        "PIP",
+        "RREB1"
+      ],
+      "D_n": 4,
+      "D_manual": [],
+      "E_said": [
+        "KRT20",
+        "KRT7",
+        "NHS",
+        "PIP",
+        "RREB1",
+        "SLC10A2"
+      ],
+      "E_correct": [
+        "KRT20",
+        "KRT7",
+        "NHS",
+        "PIP",
+        "RREB1",
+        "SLC10A2"
+      ],
+      "E_n": 6,
+      "E_manual": [],
+      "F_said": [
+        "KRT7",
+        "KRT20",
+        "PIP",
+        "RREB1",
+        "SLC10A2",
+        "NHS"
+      ],
+      "F_correct": [
+        "KRT7",
+        "KRT20",
+        "PIP",
+        "RREB1",
+        "SLC10A2",
+        "NHS"
+      ],
+      "F_n": 6,
+      "F_manual": []
+    },
+    {
+      "qid": "t029",
+      "subject_id": "Disease::DOID:5408",
+      "subject": "Paget's disease of bone",
+      "metaedge": "DaG",
+      "relation": "associates",
+      "question": "What genes are associated with the disease Paget's disease of bone?",
+      "gold": [
+        "ALPL",
+        "ALPP",
+        "ALPPL2",
+        "BGLAP",
+        "CALCA",
+        "CSF1",
+        "DCSTAMP",
+        "INPP5D",
+        "NUP205",
+        "OPTN",
+        "PML",
+        "RIN3",
+        "SQSTM1",
+        "TNFRSF11A",
+        "TNFRSF11B",
+        "VCP"
+      ],
+      "n_gold": 16,
+      "linked_node": "Disease::DOID:5408",
+      "link_score": 1.0,
+      "facts_from_graph": [
+        "ALPL",
+        "ALPP",
+        "ALPPL2",
+        "BGLAP",
+        "CALCA",
+        "CSF1",
+        "DCSTAMP",
+        "INPP5D",
+        "NUP205",
+        "OPTN",
+        "PML",
+        "RIN3",
+        "SQSTM1",
+        "TNFRSF11A",
+        "TNFRSF11B",
+        "VCP"
+      ],
+      "constrain_stats": {
+        "intervention_rate": 0.8571428571428571,
+        "blocked_steps": 6,
+        "total_steps": 7,
+        "n_allowed": 16
+      },
+      "constrain_stats_e": {
+        "intervention_rate": 0.0,
+        "blocked_steps": 0,
+        "total_steps": 68,
+        "n_allowed": 16
+      },
+      "constrain_stats_f": {
+        "intervention_rate": 0.6617647058823529,
+        "blocked_steps": 45,
+        "total_steps": 68,
+        "n_allowed": 16
+      },
+      "A_raw": "SQSTM1, TNFRSF11A, TNFRSF11B, CSF1, OPTN, DCSTAMP, VCP, RIN3, NUP205",
+      "B_raw": "NOTCH3, RUNX2",
+      "C_raw": "ALPL, ALPP, ALPPL2, BGLAP, CALCA, CSF1, DCSTAMP, INPP5D, NUP205, OPTN, PML, RIN3, SQSTM1, TNFRSF11A, TNFRSF11B, VCP",
+      "D_raw": "PML, RIN3",
+      "E_raw": "ALPL, ALPP, ALPPL2, BGLAP, CALCA, CSF1, DCSTAMP, INPP5D, NUP205, OPTN, PML, RIN3, SQSTM1, TNFRSF11A, TNFRSF11B, VCP",
+      "F_raw": "PML, RIN3, TNFRSF11B, BGLAP, ALPL, CSF1, TNFRSF11A, NUP205, VCP, OPTN, SQSTM1, CALCA, INPP5D, ALPPL2, ALPP, DCSTAMP",
+      "A_said": [
+        "SQSTM1",
+        "TNFRSF11A",
+        "TNFRSF11B",
+        "CSF1",
+        "OPTN",
+        "DCSTAMP",
+        "VCP",
+        "RIN3",
+        "NUP205"
+      ],
+      "A_correct": [
+        "SQSTM1",
+        "TNFRSF11A",
+        "TNFRSF11B",
+        "CSF1",
+        "OPTN",
+        "DCSTAMP",
+        "VCP",
+        "RIN3",
+        "NUP205"
+      ],
+      "A_n": 9,
+      "A_manual": [],
+      "B_said": [
+        "NOTCH3",
+        "RUNX2"
+      ],
+      "B_correct": [],
+      "B_n": 0,
+      "B_manual": [
+        "NOTCH3",
+        "RUNX2"
+      ],
+      "C_said": [
+        "ALPL",
+        "ALPP",
+        "ALPPL2",
+        "BGLAP",
+        "CALCA",
+        "CSF1",
+        "DCSTAMP",
+        "INPP5D",
+        "NUP205",
+        "OPTN",
+        "PML",
+        "RIN3",
+        "SQSTM1",
+        "TNFRSF11A",
+        "TNFRSF11B",
+        "VCP"
+      ],
+      "C_correct": [
+        "ALPL",
+        "ALPP",
+        "ALPPL2",
+        "BGLAP",
+        "CALCA",
+        "CSF1",
+        "DCSTAMP",
+        "INPP5D",
+        "NUP205",
+        "OPTN",
+        "PML",
+        "RIN3",
+        "SQSTM1",
+        "TNFRSF11A",
+        "TNFRSF11B",
+        "VCP"
+      ],
+      "C_n": 16,
+      "C_manual": [],
+      "D_said": [
+        "PML",
+        "RIN3"
+      ],
+      "D_correct": [
+        "PML",
+        "RIN3"
+      ],
+      "D_n": 2,
+      "D_manual": [],
+      "E_said": [
+        "ALPL",
+        "ALPP",
+        "ALPPL2",
+        "BGLAP",
+        "CALCA",
+        "CSF1",
+        "DCSTAMP",
+        "INPP5D",
+        "NUP205",
+        "OPTN",
+        "PML",
+        "RIN3",
+        "SQSTM1",
+        "TNFRSF11A",
+        "TNFRSF11B",
+        "VCP"
+      ],
+      "E_correct": [
+        "ALPL",
+        "ALPP",
+        "ALPPL2",
+        "BGLAP",
+        "CALCA",
+        "CSF1",
+        "DCSTAMP",
+        "INPP5D",
+        "NUP205",
+        "OPTN",
+        "PML",
+        "RIN3",
+        "SQSTM1",
+        "TNFRSF11A",
+        "TNFRSF11B",
+        "VCP"
+      ],
+      "E_n": 16,
+      "E_manual": [],
+      "F_said": [
+        "PML",
+        "RIN3",
+        "TNFRSF11B",
+        "BGLAP",
+        "ALPL",
+        "CSF1",
+        "TNFRSF11A",
+        "NUP205",
+        "VCP",
+        "OPTN",
+        "SQSTM1",
+        "CALCA",
+        "INPP5D",
+        "ALPPL2",
+        "ALPP",
+        "DCSTAMP"
+      ],
+      "F_correct": [
+        "PML",
+        "RIN3",
+        "TNFRSF11B",
+        "BGLAP",
+        "ALPL",
+        "CSF1",
+        "TNFRSF11A",
+        "NUP205",
+        "VCP",
+        "OPTN",
+        "SQSTM1",
+        "CALCA",
+        "INPP5D",
+        "ALPPL2",
+        "ALPP",
+        "DCSTAMP"
+      ],
+      "F_n": 16,
+      "F_manual": []
+    }
+  ]
+}

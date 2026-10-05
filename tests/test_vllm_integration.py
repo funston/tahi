@@ -1,19 +1,20 @@
 """
-Unit tests for vLLM Native Worker Integration & AsyncPrefetchWorker (src/octo/native/vllm_integration.py).
+Unit tests for vLLM Native Worker Integration & AsyncPrefetchWorker (src/tahi/native/vllm_integration.py).
 
 Verifies:
 1. AsyncPrefetchWorker off-thread retrieval and CUDA/CPU tensor staging.
-2. OctoVLLMAdapter memory state setting and forward pass hook delegation.
+2. TahiVLLMAdapter memory state setting and forward pass hook delegation.
 """
 
 from __future__ import annotations
 
 import time
+
 import pytest
 import torch
 import torch.nn as nn
 
-from octo.native import AsyncPrefetchWorker, OctoVLLMAdapter
+from tahi.native import AsyncPrefetchWorker, TahiVLLMAdapter
 
 
 class DummyCognitiveState:
@@ -81,13 +82,13 @@ def test_async_prefetch_worker():
     assert worker.get_prefetched_tensor() is None
 
 
-def test_octo_vllm_adapter_memory_flow():
-    """Verify OctoVLLMAdapter integrates prefetch worker and injects memory into GCCA layers."""
+def test_tahi_vllm_adapter_memory_flow():
+    """Verify TahiVLLMAdapter integrates prefetch worker and injects memory into GCCA layers."""
     device = "cuda" if torch.cuda.is_available() else "cpu"
     base_model = DummyModel(num_layers=4, d_model=64)
     if device == "cuda":
         base_model = base_model.cuda()
-    adapter = OctoVLLMAdapter(base_model, d_retriever=32, interleave_step=2, device=device)
+    adapter = TahiVLLMAdapter(base_model, d_retriever=32, interleave_step=2, device=device)
 
     runtime = DummyRuntime(vector_dim=32)
 

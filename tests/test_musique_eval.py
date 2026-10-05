@@ -1,4 +1,4 @@
-"""Tests for the OCTO MuSiQue evaluation."""
+"""Tests for the TAHI MuSiQue evaluation."""
 
 from implementations.musique import evaluate_musique, load_musique_sample
 from implementations.musique.musique_eval import MusiqueCoprocessor
@@ -32,6 +32,6 @@ def test_retrieval_returns_evidence():
 def test_evaluate_musique_runs():
     report = evaluate_musique(max_samples=2)
     assert "rag" in report
-    assert "octo" in report
+    assert "tahi" in report
     assert "delta" in report
     assert report["rag"]["total"] == 2

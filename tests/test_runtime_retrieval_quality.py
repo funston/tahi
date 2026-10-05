@@ -1,15 +1,15 @@
 """
-Regression test: OctoRuntime must not degrade its own retrieval.
+Regression test: TahiRuntime must not degrade its own retrieval.
 
 `WorldModel.retrieve` lets a caller supply `query_embedding`, which overrides
-the sentence-transformer encoding. `OctoRuntime.infer` used to pass
+the sentence-transformer encoding. `TahiRuntime.infer` used to pass
 `frame.text_embedding` -- the character-sum hash from
-`octo.retrieval.legacy.embed_text`, generated at the encoder's width so the
+`tahi.retrieval.legacy.embed_text`, generated at the encoder's width so the
 dimensions matched and nothing raised.
 
-Effect: every OCTO arm retrieved with a hash while the RAG baseline it was
+Effect: every TAHI arm retrieved with a hash while the RAG baseline it was
 compared against used real embeddings. That is a confounded comparison, and it
-is consistent with OCTO never beating a baseline anywhere in this repo.
+is consistent with TAHI never beating a baseline anywhere in this repo.
 """
 
 import os
@@ -21,8 +21,8 @@ for p in (ROOT, os.path.join(ROOT, "src")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from octo.runtime import OctoRuntime  # noqa: E402
-from octo.world_state import WorldModel  # noqa: E402
+from tahi.runtime import TahiRuntime  # noqa: E402
+from tahi.world_state import WorldModel  # noqa: E402
 
 DOCS = {
     "doc::kickoff": "Kickoff for Project Atlas. Owner Dana.",
@@ -48,22 +48,22 @@ class RuntimeRetrievalQualityTests(unittest.TestCase):
         """infer() must not retrieve worse than calling the world model directly."""
         wm = _world()
         direct = [r.node_id for r in wm.retrieve(QUERY, top_k=2)]
-        runtime = OctoRuntime(world_model=_world(), top_k=2)
+        runtime = TahiRuntime(world_model=_world(), top_k=2)
         via_runtime = [r.node_id for r in runtime.infer(query=QUERY).retrievals]
         self.assertEqual(
             direct, via_runtime,
-            "OctoRuntime returned different results than WorldModel.retrieve -- "
+            "TahiRuntime returned different results than WorldModel.retrieve -- "
             "it is overriding the real encoder with a hash embedding.",
         )
 
     def test_runtime_finds_the_relevant_document(self):
         """The document that answers the question must be retrieved."""
-        runtime = OctoRuntime(world_model=_world(), top_k=2)
+        runtime = TahiRuntime(world_model=_world(), top_k=2)
         found = [r.node_id for r in runtime.infer(query=QUERY).retrievals]
         self.assertIn("doc::latency", found, f"relevant doc missing; got {found}")
 
     def test_runtime_does_not_surface_the_obvious_distractor(self):
-        runtime = OctoRuntime(world_model=_world(), top_k=2)
+        runtime = TahiRuntime(world_model=_world(), top_k=2)
         found = [r.node_id for r in runtime.infer(query=QUERY).retrievals]
         self.assertNotIn("doc::snacks", found, f"distractor retrieved; got {found}")
 

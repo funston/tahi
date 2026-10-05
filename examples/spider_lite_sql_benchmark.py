@@ -23,7 +23,7 @@ def main() -> None:
     parser.add_argument("--snapshot-manifest", required=True)
     parser.add_argument(
         "--world-cache-index",
-        help="Optional world cache index JSON for prebuilt BENDER worlds.",
+        help="Optional world cache index JSON for prebuilt TAHI worlds.",
     )
     parser.add_argument(
         "--tasks",

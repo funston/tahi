@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from octo import (
+from tahi import (
     SpiderSnowWorkspace,
     enrich_world_with_spider_snow_metadata,
     snapshot_to_world_model,

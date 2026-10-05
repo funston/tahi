@@ -36,8 +36,8 @@ for p in (str(ROOT), str(ROOT / "src")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
+from tahi.validate.constrained import generate_constrained  # noqa: E402
 from scripts.run_coverage import load, norm, parse_items  # noqa: E402
-from octo.validate.constrained import generate_constrained  # noqa: E402
 
 TRIAL_RELATIONS = {
     "CbG": ("What genes does the compound {s} bind?", "binds"),
@@ -105,9 +105,9 @@ def main() -> int:
     ap.add_argument("--nodes", default="data/hetionet/nodes.tsv")
     ap.add_argument("--edges", default="data/hetionet/edges.sif.gz")
     ap.add_argument("--questions",
-                    default="benchmarks/results/octo_trial/questions.json")
+                    default="benchmarks/results/tahi_trial/questions.json")
     ap.add_argument("--frontier-answers",
-                    default="benchmarks/results/octo_trial/frontier_answers.json")
+                    default="benchmarks/results/tahi_trial/frontier_answers.json")
     ap.add_argument("--model", default="Qwen/Qwen2.5-1.5B-Instruct")
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--max-new-tokens", type=int, default=200)

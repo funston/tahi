@@ -34,7 +34,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from implementations.wikipedia import WikipediaCoprocessor
-from octo.world_state import WorldModel
+from tahi.world_state import WorldModel
 
 
 # ---------------------------------------------------------------------------
@@ -111,7 +111,7 @@ def baseline_iterative_rag(
 # Systems
 # ---------------------------------------------------------------------------
 
-def make_octo_answer_fn(
+def make_tahi_answer_fn(
     world_model: WorldModel,
     llm_generate_fn: Callable[[str], str] | None = None,
 ) -> Callable[[str], dict[str, Any]]:
@@ -249,7 +249,7 @@ def main() -> None:
     llm_generate_fn = None if args.no_llm else llm_stub
 
     systems = {
-        "octo": make_octo_answer_fn(world_model, llm_generate_fn),
+        "tahi": make_tahi_answer_fn(world_model, llm_generate_fn),
         # "single_shot_rag": lambda q: {"answer": baseline_single_shot_rag(q, world_model)},
         # "iterative_rag": lambda q: {"answer": baseline_iterative_rag(q, world_model)},
     }

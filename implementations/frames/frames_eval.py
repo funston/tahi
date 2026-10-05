@@ -1,5 +1,5 @@
 """
-FRAMES factuality evaluation for OCTO.
+FRAMES factuality evaluation for TAHI.
 
 FRAMES (Factuality, Retrieval, And reasoning over Multiple Evidence Sources) is
 a benchmark for testing whether models can correctly answer questions that
@@ -8,7 +8,7 @@ small sample and supports loading a local JSON file.
 
 Comparison:
   - RAG baseline: vector retrieval over evidence paragraphs
-  - OCTO: vector retrieval + graph edges between evidence sources
+  - TAHI: vector retrieval + graph edges between evidence sources
 """
 
 from __future__ import annotations
@@ -19,9 +19,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from octo.baseline_rag import RAGDocument, StandaloneRAG
-from octo.llm_client import LLMClient
-from octo.world_state import WorldModel
+from tahi.baseline_rag import RAGDocument, StandaloneRAG
+from tahi.llm_client import LLMClient
+from tahi.world_state import WorldModel
 
 
 @dataclass
@@ -148,7 +148,7 @@ class FramesCoprocessor:
         return collected[: self.top_k + self.graph_expand]
 
     def answer(self) -> FramesEvidencePacket:
-        """Answer a FRAMES question using the OCTO world model."""
+        """Answer a FRAMES question using the TAHI world model."""
         evidence = self.retrieve()
         context = "\n\n".join(
             f"[{i+1}] {e['source'] or 'unknown'}\n{e['text']}"
@@ -195,7 +195,7 @@ def load_frames_sample(path: Path | str | None = None) -> list[tuple[FramesQuest
 
 
 def _coprocessor_documents(coprocessor: FramesCoprocessor) -> list[RAGDocument]:
-    """Extract raw text documents from the OCTO world model for the RAG baseline."""
+    """Extract raw text documents from the TAHI world model for the RAG baseline."""
     documents: list[RAGDocument] = []
     for node_id, node in coprocessor.world_model.nodes.items():
         text = node.get("text", "")
@@ -220,13 +220,13 @@ def evaluate_frames(
     *,
     llm_client: LLMClient | None = None,
 ) -> dict[str, Any]:
-    """Compare OCTO vs a standalone RAG baseline on FRAMES evidence paragraphs."""
+    """Compare TAHI vs a standalone RAG baseline on FRAMES evidence paragraphs."""
     samples = load_frames_sample(path)[:max_samples]
     llm_client = llm_client or LLMClient.from_env()
 
-    octo_correct = 0
+    tahi_correct = 0
     rag_correct = 0
-    octo_recall = 0
+    tahi_recall = 0
     rag_recall = 0
     total = 0
     results: list[dict[str, Any]] = []
@@ -237,7 +237,7 @@ def evaluate_frames(
             paragraphs=paragraphs,
             llm_client=llm_client,
         )
-        octo_packet = coprocessor.answer()
+        tahi_packet = coprocessor.answer()
 
         # Standalone RAG baseline over the same raw documents, no graph access.
         rag = StandaloneRAG(top_k=4, llm_client=llm_client)
@@ -248,14 +248,14 @@ def evaluate_frames(
             {"text": r.text, "source": r.doc_id, "score": r.score} for r in rag_retrievals
         ]
 
-        octo_ok = _score(octo_packet.answer, question.answer)
+        tahi_ok = _score(tahi_packet.answer, question.answer)
         rag_ok = _score(rag_answer, question.answer)
-        octo_rec = _retrieval_recall(question.answer, octo_packet.evidence)
+        tahi_rec = _retrieval_recall(question.answer, tahi_packet.evidence)
         rag_rec = _retrieval_recall(question.answer, rag_evidence)
 
-        octo_correct += int(octo_ok)
+        tahi_correct += int(tahi_ok)
         rag_correct += int(rag_ok)
-        octo_recall += int(octo_rec)
+        tahi_recall += int(tahi_rec)
         rag_recall += int(rag_rec)
         total += 1
 
@@ -265,17 +265,17 @@ def evaluate_frames(
                 "question": question.text,
                 "expected": question.answer,
                 "rag_answer": rag_answer,
-                "octo_answer": octo_packet.answer,
+                "tahi_answer": tahi_packet.answer,
                 "rag_correct": rag_ok,
-                "octo_correct": octo_ok,
+                "tahi_correct": tahi_ok,
                 "rag_retrieval_recall": rag_rec,
-                "octo_retrieval_recall": octo_rec,
+                "tahi_retrieval_recall": tahi_rec,
                 "rag_model": rag_model,
-                "octo_model": octo_packet.model,
+                "tahi_model": tahi_packet.model,
             }
         )
 
-    octo_accuracy = octo_correct / total if total else 0.0
+    tahi_accuracy = tahi_correct / total if total else 0.0
     rag_accuracy = rag_correct / total if total else 0.0
 
     return {
@@ -287,14 +287,14 @@ def evaluate_frames(
             "retrieval_correct": rag_recall,
             "retrieval_recall": rag_recall / total if total else 0.0,
         },
-        "octo": {
-            "method": "OCTO",
-            "correct": octo_correct,
+        "tahi": {
+            "method": "TAHI",
+            "correct": tahi_correct,
             "total": total,
-            "accuracy": octo_accuracy,
-            "retrieval_correct": octo_recall,
-            "retrieval_recall": octo_recall / total if total else 0.0,
+            "accuracy": tahi_accuracy,
+            "retrieval_correct": tahi_recall,
+            "retrieval_recall": tahi_recall / total if total else 0.0,
         },
-        "delta": octo_accuracy - rag_accuracy,
+        "delta": tahi_accuracy - rag_accuracy,
         "results": results,
     }

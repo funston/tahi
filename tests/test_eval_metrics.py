@@ -16,13 +16,13 @@ for p in (ROOT, SRC):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from octo.eval.metrics import (  # noqa: E402
+from tahi.eval.metrics import (  # noqa: E402
     exact_match,
     normalize_answer,
     supporting_fact_recall,
     token_f1,
 )
-from octo.eval.stats import (  # noqa: E402
+from tahi.eval.stats import (  # noqa: E402
     bootstrap_paired_delta,
     mcnemar_p_value,
     minimum_detectable_effect,
@@ -85,7 +85,7 @@ class StatsRegressionTests(unittest.TestCase):
     def test_regression_tiny_delta_is_not_significant(self):
         """The headline deltas from the retracted runs must fail significance.
 
-        OCTO L1 vs Standard RAG was reported as F1 0.194 vs 0.107 on n=20 and
+        TAHI L1 vs Standard RAG was reported as F1 0.194 vs 0.107 on n=20 and
         presented as a win. Per-item QA F1 is highly variable (many 0.0s, a few
         near 1.0), and at n=20 that spread swamps a 0.087 mean difference.
         """
@@ -110,7 +110,7 @@ class StatsRegressionTests(unittest.TestCase):
             arm_b.append(max(0.0, min(1.0, base + delta)))
 
         result = bootstrap_paired_delta(
-            arm_a, arm_b, arm_a="RAG", arm_b="OCTO", n_resamples=2000
+            arm_a, arm_b, arm_a="RAG", arm_b="TAHI", n_resamples=2000
         )
         self.assertFalse(
             result.ci_excludes_zero,

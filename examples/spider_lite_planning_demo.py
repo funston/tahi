@@ -10,7 +10,7 @@ if ROOT not in sys.path:
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from octo import build_pagila_fixture_snapshot
+from tahi import build_pagila_fixture_snapshot
 from implementations.spider import SpiderLiteBenchmarkAdapter, SpiderLiteTaskLoader, SpiderLiteWorkspace
 
 

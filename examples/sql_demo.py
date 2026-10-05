@@ -2,11 +2,11 @@
 """
 sql_demo.py
 
-Demonstrable, provable demo: BENDER SQL schema coprocessor vs. RAG-style
+Demonstrable, provable demo: TAHI SQL schema coprocessor vs. RAG-style
 keyword retrieval on the Pagila fixture schema.
 
 This script proves three claims simultaneously:
-  1. BENDER beats RAG on a real-world multi-hop reasoning task (SQL join planning).
+  1. TAHI beats RAG on a real-world multi-hop reasoning task (SQL join planning).
   2. A world coprocessor is built automatically from domain data (the schema graph).
   3. The result is measurable, auditable, and useful.
 
@@ -37,8 +37,8 @@ if str(SRC) not in sys.path:
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from octo import build_pagila_fixture_snapshot
-from octo.database import SQLSchemaSnapshot, snapshot_to_world_model
+from tahi import build_pagila_fixture_snapshot
+from tahi.database import SQLSchemaSnapshot, snapshot_to_world_model
 from implementations.sql import SQLSchemaCoprocessor
 
 
@@ -157,7 +157,7 @@ def generate_sql_from_control_packet(
     candidate_tables: list[str],
     join_path: list[str],
 ) -> str:
-    """Deterministic SQL generator from a BENDER control packet.
+    """Deterministic SQL generator from a TAHI control packet.
 
     Uses the actual foreign-key columns from the schema snapshot, so the
     generated JOIN conditions are semantically valid for the Pagila fixture.
@@ -294,10 +294,10 @@ def run_demo(execute: bool = False) -> dict[str, Any]:
     coprocessor = SQLSchemaCoprocessor.from_snapshot(snapshot, top_k=8)
 
     rag_results: list[dict[str, Any]] = []
-    octo_results: list[dict[str, Any]] = []
+    tahi_results: list[dict[str, Any]] = []
 
     print("=" * 70)
-    print("BENDER SQL World-Coprocessor Demo")
+    print("TAHI SQL World-Coprocessor Demo")
     print("Schema:", snapshot.database_name)
     print("Tables:", len(snapshot.tables), "| Foreign keys:", len(snapshot.foreign_keys))
     print("=" * 70)
@@ -312,23 +312,23 @@ def run_demo(execute: bool = False) -> dict[str, Any]:
         print("RAG baseline tables:", rag_tables)
         print("RAG scores:", rag_score)
 
-        # BENDER coprocessor.
+        # TAHI coprocessor.
         result = coprocessor.ask(gold.question, trace=True)
         constraints = result.get("constraints", {})
-        octo_tables = constraints.get("candidate_tables", [])
-        octo_path = constraints.get("candidate_join_path", [])
-        octo_score = evaluate_result(gold, octo_tables, octo_path)
-        octo_results.append({
+        tahi_tables = constraints.get("candidate_tables", [])
+        tahi_path = constraints.get("candidate_join_path", [])
+        tahi_score = evaluate_result(gold, tahi_tables, tahi_path)
+        tahi_results.append({
             "id": gold.id,
-            **octo_score,
-            "predicted_tables": octo_tables,
-            "predicted_join_path": octo_path,
+            **tahi_score,
+            "predicted_tables": tahi_tables,
+            "predicted_join_path": tahi_path,
         })
-        print("BENDER tables:", octo_tables)
-        print("BENDER join path:", octo_path)
-        print("BENDER scores:", octo_score)
+        print("TAHI tables:", tahi_tables)
+        print("TAHI join path:", tahi_path)
+        print("TAHI scores:", tahi_score)
 
-        sql = generate_sql_from_control_packet(snapshot, gold.question, octo_tables, octo_path)
+        sql = generate_sql_from_control_packet(snapshot, gold.question, tahi_tables, tahi_path)
         print("Generated SQL:\n", sql)
 
         if execute:
@@ -344,7 +344,7 @@ def run_demo(execute: bool = False) -> dict[str, Any]:
 
     summary = {
         "rag": aggregate(rag_results),
-        "octo": aggregate(octo_results),
+        "tahi": aggregate(tahi_results),
     }
 
     print("\n" + "=" * 70)
@@ -354,13 +354,13 @@ def run_demo(execute: bool = False) -> dict[str, Any]:
 
     return {
         "rag_results": rag_results,
-        "octo_results": octo_results,
+        "tahi_results": tahi_results,
         "summary": summary,
     }
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="BENDER SQL schema coprocessor demo")
+    parser = argparse.ArgumentParser(description="TAHI SQL schema coprocessor demo")
     parser.add_argument(
         "--execute",
         action="store_true",

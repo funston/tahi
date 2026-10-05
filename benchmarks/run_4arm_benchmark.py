@@ -1,11 +1,11 @@
 """
-OCTO 4-Arm Benchmark Protocol Harness (DGX Multi-Arm Evaluation)
+TAHI 4-Arm Benchmark Protocol Harness (DGX Multi-Arm Evaluation)
 
 Evaluates:
 - Arm 1: Base LLM (Zero-retrieval)
 - Arm 2: Standard RAG Baseline (Dense vector similarity search, no graph)
-- Arm 3: OCTO Level 1 (Black-box prompt context hints)
-- Arm 4: OCTO Level 3 Native GCCA (Latent cross-attention residual injection)
+- Arm 3: TAHI Level 1 (Black-box prompt context hints)
+- Arm 4: TAHI Level 3 Native GCCA (Latent cross-attention residual injection)
 
 Across Metrics:
 - Accuracy (EM / F1)
@@ -20,27 +20,26 @@ import argparse
 import json
 import logging
 import os
+import re
 import sys
 import time
-from dataclasses import asdict, dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Any
 
 import torch
 
-from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from octo.integration import BlackBoxIntegration, NativeIntegration
-from octo.llm_client import LLMClient
-from octo.models import CognitiveState, ControlPacket, EntityRef, FusedSignal
-from octo.native import GatedChunkedCrossAttention, OctoNativeAdapter
-
-
+from tahi.integration import BlackBoxIntegration, NativeIntegration
+from tahi.llm_client import LLMClient
+from tahi.models import CognitiveState, EntityRef, FusedSignal
+from tahi.native import GatedChunkedCrossAttention
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger("octo.benchmark")
+logger = logging.getLogger("tahi.benchmark")
 
 
 @dataclass
@@ -63,13 +62,13 @@ class BenchmarkItem:
     query: str
     target_answer: str
     retrieved_context: str
-    graph_entities: List[str]
-    constraints: Dict[str, Any]
+    graph_entities: list[str]
+    constraints: dict[str, Any]
     distractor_context_20pct: str
     distractor_context_50pct: str
 
 
-def compute_f1_and_em(prediction: str, reference: str) -> Tuple[float, float]:
+def compute_f1_and_em(prediction: str, reference: str) -> tuple[float, float]:
     """Compute Exact Match (EM) and F1 token score between prediction and ground truth."""
     pred_clean = prediction.strip().lower()
     ref_clean = reference.strip().lower()
@@ -91,7 +90,7 @@ def compute_f1_and_em(prediction: str, reference: str) -> Tuple[float, float]:
 
 
 
-def check_constraint_violation(prediction: str, constraints: Dict[str, Any]) -> bool:
+def check_constraint_violation(prediction: str, constraints: dict[str, Any]) -> bool:
     """Check if prediction violates any key structural constraint using word boundary matching."""
     if not constraints:
         return False
@@ -118,7 +117,7 @@ class BenchmarkRunner:
         self.llm_client = llm_client
         self.use_cuda_native = use_cuda_native and torch.cuda.is_available()
 
-    def run_arm1_base_llm(self, dataset: List[BenchmarkItem]) -> ArmResult:
+    def run_arm1_base_llm(self, dataset: list[BenchmarkItem]) -> ArmResult:
         """Arm 1: Base LLM (Zero-Retrieval)."""
         logger.info("Evaluating Arm 1: Base LLM (Zero-Retrieval)...")
         em_list, f1_list, violations = [], [], []
@@ -162,7 +161,7 @@ class BenchmarkRunner:
         )
 
 
-    def run_arm2_standard_rag(self, dataset: List[BenchmarkItem]) -> ArmResult:
+    def run_arm2_standard_rag(self, dataset: list[BenchmarkItem]) -> ArmResult:
         """Arm 2: Standard RAG Baseline (Dense vector retrieval context)."""
         logger.info("Evaluating Arm 2: Standard RAG Baseline...")
         em_list, f1_list, violations = [], [], []
@@ -211,9 +210,9 @@ class BenchmarkRunner:
             peak_vram_gb=get_peak_vram_gb(),
         )
 
-    def run_arm3_octo_level1(self, dataset: List[BenchmarkItem]) -> ArmResult:
-        """Arm 3: OCTO Level 1 (Black-Box Prompt Context Hints)."""
-        logger.info("Evaluating Arm 3: OCTO Level 1 (Prompt Context)...")
+    def run_arm3_tahi_level1(self, dataset: list[BenchmarkItem]) -> ArmResult:
+        """Arm 3: TAHI Level 1 (Black-Box Prompt Context Hints)."""
+        logger.info("Evaluating Arm 3: TAHI Level 1 (Prompt Context)...")
         integration = BlackBoxIntegration()
         em_list, f1_list, violations = [], [], []
         ttft_list, tps_list = [], []
@@ -265,7 +264,7 @@ class BenchmarkRunner:
             rej_50.append(em_50)
 
         return ArmResult(
-            arm_name="Arm 3: OCTO Level 1",
+            arm_name="Arm 3: TAHI Level 1",
             em_score=sum(em_list) / len(em_list),
             f1_score=sum(f1_list) / len(f1_list),
             constraint_violation_rate=sum(violations) / len(violations) * 100,
@@ -276,9 +275,9 @@ class BenchmarkRunner:
             peak_vram_gb=get_peak_vram_gb(),
         )
 
-    def run_arm4_octo_level3_gcca(self, dataset: List[BenchmarkItem]) -> ArmResult:
-        """Arm 4: OCTO Level 3 (Native GCCA Residual Injection)."""
-        logger.info("Evaluating Arm 4: OCTO Level 3 Native GCCA Residual Injection...")
+    def run_arm4_tahi_level3_gcca(self, dataset: list[BenchmarkItem]) -> ArmResult:
+        """Arm 4: TAHI Level 3 (Native GCCA Residual Injection)."""
+        logger.info("Evaluating Arm 4: TAHI Level 3 Native GCCA Residual Injection...")
         integration = NativeIntegration()
         em_list, f1_list, violations = [], [], []
         ttft_list, tps_list = [], []
@@ -349,7 +348,7 @@ class BenchmarkRunner:
             rej_50.append(em_50)
 
         return ArmResult(
-            arm_name="Arm 4: OCTO Level 3 GCCA",
+            arm_name="Arm 4: TAHI Level 3 GCCA",
             em_score=sum(em_list) / len(em_list),
             f1_score=sum(f1_list) / len(f1_list),
             constraint_violation_rate=sum(violations) / len(violations) * 100,
@@ -361,7 +360,7 @@ class BenchmarkRunner:
         )
 
 
-def load_legalbench_dataset(num_samples: int = 10) -> List[BenchmarkItem]:
+def load_legalbench_dataset(num_samples: int = 10) -> list[BenchmarkItem]:
     """Load LegalBench statutory reasoning benchmark questions."""
     from implementations.legal.legal_coprocessor import LegalQuestion
     samples = [
@@ -394,12 +393,12 @@ def load_legalbench_dataset(num_samples: int = 10) -> List[BenchmarkItem]:
     return dataset
 
 
-def load_hotpotqa_dataset(num_samples: int = 10) -> List[BenchmarkItem]:
+def load_hotpotqa_dataset(num_samples: int = 10) -> list[BenchmarkItem]:
     """Load real HotpotQA multi-hop benchmark questions."""
     from implementations.hotpotqa.hotpotqa_eval import load_hotpotqa_sample
     samples = load_hotpotqa_sample(max_samples=num_samples)
     dataset = []
-    for i, (q, facts) in enumerate(samples):
+    for _i, (q, facts) in enumerate(samples):
         context_str = "\n".join(f"[{title}] {sent}" for title, s_id, sent in facts)
         entities = list(set([title for title, _, _ in facts]))
         dataset.append(
@@ -419,7 +418,7 @@ def load_hotpotqa_dataset(num_samples: int = 10) -> List[BenchmarkItem]:
 
 
 
-def create_synthetic_dataset(num_samples: int = 10) -> List[BenchmarkItem]:
+def create_synthetic_dataset(num_samples: int = 10) -> list[BenchmarkItem]:
     """Generate multi-domain evaluation benchmark items (HotpotQA, LegalBench, DEA)."""
     dataset = []
     domains = ["HotpotQA", "LegalBench", "DEA_Analogue"]
@@ -429,22 +428,22 @@ def create_synthetic_dataset(num_samples: int = 10) -> List[BenchmarkItem]:
         item = BenchmarkItem(
             item_id=f"item_{i+1}",
             domain=dom,
-            query=f"What is the compliant structure for entity compound OCTO-{i+1} under rule R-10{i}?",
-            target_answer=f"Entity OCTO-{i+1} follows schedule A-4 under specification R-10{i}.",
-            retrieved_context=f"Document snippet: Entity OCTO-{i+1} was approved under rule R-10{i} with schedule A-4 compliance.",
-            graph_entities=[f"OCTO-{i+1}", f"Rule-R10{i}", "Schedule-A4"],
+            query=f"What is the compliant structure for entity compound TAHI-{i+1} under rule R-10{i}?",
+            target_answer=f"Entity TAHI-{i+1} follows schedule A-4 under specification R-10{i}.",
+            retrieved_context=f"Document snippet: Entity TAHI-{i+1} was approved under rule R-10{i} with schedule A-4 compliance.",
+            graph_entities=[f"TAHI-{i+1}", f"Rule-R10{i}", "Schedule-A4"],
             constraints={"forbidden_terms": ["unregistered", "illicit"], "required_terms": ["schedule"]},
-            distractor_context_20pct=f"Document snippet: Entity OCTO-{i+1} was approved under rule R-10{i}. [NOISE] Irrelevant company Acme Corp reported 10% growth.",
-            distractor_context_50pct=f"[DISTRACTOR] Foreign entity Beta-9 failed rule X. [NOISE] Weather forecast is sunny. Document snippet: Entity OCTO-{i+1} approved under rule R-10{i} with schedule A-4.",
+            distractor_context_20pct=f"Document snippet: Entity TAHI-{i+1} was approved under rule R-10{i}. [NOISE] Irrelevant company Acme Corp reported 10% growth.",
+            distractor_context_50pct=f"[DISTRACTOR] Foreign entity Beta-9 failed rule X. [NOISE] Weather forecast is sunny. Document snippet: Entity TAHI-{i+1} approved under rule R-10{i} with schedule A-4.",
         )
         dataset.append(item)
     return dataset
 
 
-def print_markdown_summary(results: List[ArmResult]) -> str:
+def print_markdown_summary(results: list[ArmResult]) -> str:
     """Format benchmark results into Markdown summary table."""
     md = []
-    md.append("## OCTO 4-Arm Benchmark Protocol Evaluation Report\n")
+    md.append("## TAHI 4-Arm Benchmark Protocol Evaluation Report\n")
     md.append("| Arm | Accuracy (EM) | F1 Score | Constraint Violation Rate | Distractor Rej (20%) | Distractor Rej (50%) | TTFT (ms) | TPS | Peak VRAM (GB) |")
     md.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
 
@@ -456,7 +455,7 @@ def print_markdown_summary(results: List[ArmResult]) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run OCTO 4-Arm Benchmark Protocol")
+    parser = argparse.ArgumentParser(description="Run TAHI 4-Arm Benchmark Protocol")
     parser.add_argument("--num-samples", type=int, default=10, help="Number of benchmark items to evaluate per arm")
     parser.add_argument("--max-tokens", type=int, default=128, help="Max tokens per generation request to keep benchmark fast")
     parser.add_argument("--dataset", type=str, default="synthetic", choices=["synthetic", "hotpotqa", "legalbench"], help="Dataset to run: 'synthetic', 'hotpotqa', or 'legalbench'")
@@ -477,15 +476,15 @@ def main():
     logger.info(f"Loaded {len(dataset)} benchmark dataset items from dataset='{args.dataset}' (max_tokens={args.max_tokens}).")
 
 
-    results: List[ArmResult] = []
+    results: list[ArmResult] = []
     if args.arm in ("1", "all"):
         results.append(runner.run_arm1_base_llm(dataset))
     if args.arm in ("2", "all"):
         results.append(runner.run_arm2_standard_rag(dataset))
     if args.arm in ("3", "all"):
-        results.append(runner.run_arm3_octo_level1(dataset))
+        results.append(runner.run_arm3_tahi_level1(dataset))
     if args.arm in ("4", "all"):
-        results.append(runner.run_arm4_octo_level3_gcca(dataset))
+        results.append(runner.run_arm4_tahi_level3_gcca(dataset))
 
     summary_md = print_markdown_summary(results)
     print("\n" + summary_md + "\n")

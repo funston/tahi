@@ -1,0 +1,1008 @@
+{
+  "manifest": {
+    "benchmark": "Fragment Verification (KG/vector claim grounding)",
+    "dataset": "data/enterprise_rag/questions.jsonl",
+    "dataset_sha256": "bbe869ee09e327c515f4acc23681ff0addc0f58a42f34db1fb498f52da9ec4e3",
+    "n_items": 100,
+    "seed": 0,
+    "git_sha": "21f89b3",
+    "git_dirty": true,
+    "timestamp_utc": "2026-08-03T20:40:14.446633+00:00",
+    "python": "3.12.3",
+    "platform": "Linux-6.17.0-1014-nvidia-aarch64-with-glibc2.39",
+    "provider": "retrieval-only",
+    "model": "none (no generation)",
+    "judge_model": "",
+    "encoder": "sentence-transformers (d=384)",
+    "encoder_is_fallback": false,
+    "strict_mode": true,
+    "wall_clock_s": 151.0098975088913,
+    "llm_usage": {
+      "total_calls": 0,
+      "est_cost_usd": 0.0,
+      "fallback_calls": 0
+    },
+    "notes": "No LLM in the loop -- ground truth is by construction. Corpus: 2000 docs (CAPPED at 2000), 2283 edges. top_k=5. Perturbations: {'swap': 22, 'negation': 15, 'entity': 11, 'numeric': 2}. AUC 0.5 = chance."
+  },
+  "arms": [
+    {
+      "name": "vector_only",
+      "n": 100,
+      "auc": 0.5744,
+      "mean_true": -0.20688241164200008,
+      "mean_false": -0.24072122839512303,
+      "gap": 0.03383881675312295,
+      "exact_match": null,
+      "token_f1": null,
+      "fact_coverage": null,
+      "groundedness": -0.20688241164200008,
+      "unsupported_rate": 1.206882411642,
+      "supporting_fact_recall": null,
+      "abstention_accuracy": null,
+      "ttft_ms": null,
+      "output_tokens": null,
+      "cost_per_correct_usd": null
+    },
+    {
+      "name": "tahi_graph",
+      "n": 100,
+      "auc": 0.522,
+      "mean_true": -0.2555683174403384,
+      "mean_false": -0.3243691562849563,
+      "gap": 0.06880083884461785,
+      "exact_match": null,
+      "token_f1": null,
+      "fact_coverage": null,
+      "groundedness": -0.2555683174403384,
+      "unsupported_rate": 1.2555683174403385,
+      "supporting_fact_recall": null,
+      "abstention_accuracy": null,
+      "ttft_ms": null,
+      "output_tokens": null,
+      "cost_per_correct_usd": null
+    }
+  ],
+  "comparisons": [
+    {
+      "arm_a": "vector_only[margin]",
+      "arm_b": "tahi_graph[margin]",
+      "n": 50,
+      "mean_a": 0.033838816753122954,
+      "mean_b": 0.06880083884461782,
+      "delta": 0.034962022091494876,
+      "ci_low": -0.09070777198998257,
+      "ci_high": 0.1640842526522465,
+      "ci_excludes_zero": false,
+      "p_value": null,
+      "test": "paired bootstrap (10000 resamples, seed=0)",
+      "verdict": "NOT SIGNIFICANT: tahi_graph[margin] vs vector_only[margin] delta=+0.0350, 95% CI [-0.0907, +0.1641] includes zero (n=50)."
+    }
+  ],
+  "auc_by_perturbation": {
+    "entity": {
+      "vector_only": 0.54,
+      "tahi_graph": 0.4509090909090909
+    },
+    "negation": {
+      "vector_only": 0.6226666666666667,
+      "tahi_graph": 0.49866666666666665
+    },
+    "numeric": {
+      "vector_only": 0.65,
+      "tahi_graph": 0.73
+    },
+    "swap": {
+      "vector_only": 0.5518181818181818,
+      "tahi_graph": 0.5545454545454546
+    }
+  },
+  "graph_stats": {
+    "documents": 2000,
+    "source::confluence": 2000,
+    "edge::in_space": 2000,
+    "edge::mentions": 283,
+    "total_nodes": 2208
+  },
+  "per_fragment": [
+    {
+      "text": "Temporarily increase purge capacity for request_logs in us-east, preferring a modest concurrency increase over very large batch sizes.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0376",
+      "vector_only": 0.001511436712462455,
+      "tahi_graph": -0.050032125785946846
+    },
+    {
+      "text": "Temporarily increase purge capacity for request_logs in us-east, preferring was also tagged \"latest\", instead of resolving to the stable-quantized variant.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "project_related",
+      "source_qid": "qst_0376",
+      "vector_only": 0.4713131785392761,
+      "tahi_graph": 0.0009847080800682306
+    },
+    {
+      "text": "The demo was supposed to include metrics such as time to first successful API call and top errors.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0296",
+      "vector_only": -0.009235937846824527,
+      "tahi_graph": -0.0006576837040483952
+    },
+    {
+      "text": "The demo was supposed to include metrics such as default hot retention period of 90 days.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "semantic",
+      "source_qid": "qst_0296",
+      "vector_only": -0.0011919380049221218,
+      "tahi_graph": -0.01182672439608723
+    },
+    {
+      "text": "The answer must not describe the 2026-04-18 incident where session-checkpoint serialization/compression and synchronous session-store writes caused stalls, nor list mitigations like disabling compression or switching session persistence to best-effort.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "constrained",
+      "source_qid": "qst_0391",
+      "vector_only": -0.997906016302295,
+      "tahi_graph": -0.2016084841452539
+    },
+    {
+      "text": "The answer must not not describe the 2026-04-18 incident where session-checkpoint serialization/compression and synchronous session-store writes caused stalls, nor list mitigations like disabling compression or switching session persistence to best-effort.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "constrained",
+      "source_qid": "qst_0391",
+      "vector_only": -0.9961123638786376,
+      "tahi_graph": -0.053735824301838875
+    },
+    {
+      "text": "Snapshots older than 7 days can be kept in a cold archive for up to 90 days if they are pinned (for example by a runbook or regression alert).",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0040",
+      "vector_only": -0.009388350881636143,
+      "tahi_graph": -0.01583646354265511
+    },
+    {
+      "text": "Phase older than 7 days can be kept in a cold archive for up to 90 days if they are pinned (for example by a runbook or regression alert).",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "basic",
+      "source_qid": "qst_0040",
+      "vector_only": 0.0004058573395013809,
+      "tahi_graph": -0.016943414695560932
+    },
+    {
+      "text": "Preserve the original sign and exact cents for each line item to eliminate penny level rounding drift.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0278",
+      "vector_only": 0.0009264568798244,
+      "tahi_graph": 0.0009264568798244
+    },
+    {
+      "text": "SDKs the original sign and exact cents for each line item to eliminate penny level rounding drift.",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "semantic",
+      "source_qid": "qst_0278",
+      "vector_only": -0.7651200816035271,
+      "tahi_graph": 0.006067140493541956
+    },
+    {
+      "text": "A per-model backoff cooldown mechanism was added to the AdaptiveScratchManager to prevent allocator oscillations that can trigger repeated micro-batch splits",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0075",
+      "vector_only": 0.002414402028080076,
+      "tahi_graph": 0.0010035571758635342
+    },
+    {
+      "text": "A per-model backoff cooldown mechanism was not added to the AdaptiveScratchManager to prevent allocator oscillations that can trigger repeated micro-batch splits",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "basic",
+      "source_qid": "qst_0075",
+      "vector_only": -0.009475382277742028,
+      "tahi_graph": 0.000509359932038933
+    },
+    {
+      "text": "The incorrect proxy-ARP caused the switch to advertise ARP responses for VPN-assigned IP addresses",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0012",
+      "vector_only": -0.9807367953471839,
+      "tahi_graph": -0.00992692494764924
+    },
+    {
+      "text": "The incorrect proxy-ARP caused the switch to decoding path with large or complex JSON schemas",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "basic",
+      "source_qid": "qst_0012",
+      "vector_only": -0.0026923890691250563,
+      "tahi_graph": 0.0004791845567524433
+    },
+    {
+      "text": "Audit log exports were missing key admin event types because the audit-log-exporter used a stale hardcoded event-type allowlist in the Customer Evidence Admin Actions template that filtered out RBAC role assignment and API key lifecycle events even though the events existed in the source audit log store.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0363",
+      "vector_only": -0.0056069777347147465,
+      "tahi_graph": -0.9918131222948432
+    },
+    {
+      "text": "Audit log exports were missing key admin event types because the audit-log-exporter used a stale hardcoded event-type allowlist in the Customer Evidence Admin if any instability appears",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "project_related",
+      "source_qid": "qst_0363",
+      "vector_only": -0.004999807104468346,
+      "tahi_graph": 0.005016707698814571
+    },
+    {
+      "text": "The answer must not describe April 2025 model fallback behavior (fallback to a smaller model) or its canary/quality-regression details, since the query is about region fallback in March 2025.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "constrained",
+      "source_qid": "qst_0397",
+      "vector_only": -0.9822321813553572,
+      "tahi_graph": -0.9822321813553572
+    },
+    {
+      "text": "The answer must not describe April 2025 model fallback behavior (fallback to a smaller model) or its canary/quality-regression details, since the query is about region fallback in Rollback 2025.",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "constrained",
+      "source_qid": "qst_0397",
+      "vector_only": -0.9869820715393871,
+      "tahi_graph": -0.9869820715393871
+    },
+    {
+      "text": "The GREEN credit tier uses a hysteresis window of 30 seconds.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0081",
+      "vector_only": -0.007942365016788244,
+      "tahi_graph": -0.016081440378911793
+    },
+    {
+      "text": "The Meet credit tier uses a hysteresis window of 30 seconds.",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "basic",
+      "source_qid": "qst_0081",
+      "vector_only": -0.007930148858577013,
+      "tahi_graph": -0.014085445902310312
+    },
+    {
+      "text": "Customer-side mitigation was to force a session refresh via POST /v1/sessions/refresh to restore the pin for affected long-poll sessions.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "constrained",
+      "source_qid": "qst_0392",
+      "vector_only": -0.01974241086281836,
+      "tahi_graph": 0.0014345449162647128
+    },
+    {
+      "text": "RBAC-side mitigation was to force a session refresh via POST /v1/sessions/refresh to restore the pin for affected long-poll sessions.",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "constrained",
+      "source_qid": "qst_0392",
+      "vector_only": -0.007479613879695535,
+      "tahi_graph": 0.0020857423078268766
+    },
+    {
+      "text": "Deploy execution must follow the relevant runbook.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "completeness",
+      "source_qid": "qst_0442",
+      "vector_only": 0.6394064767519012,
+      "tahi_graph": 0.6394064767519012
+    },
+    {
+      "text": "Deploy execution must hit during the window or if the customer requests rollback.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "completeness",
+      "source_qid": "qst_0442",
+      "vector_only": 0.0036586225032806396,
+      "tahi_graph": -0.0018281510565429926
+    },
+    {
+      "text": "The executive briefing meeting time window was ultimately confirmed for Tue, Jul 7, 2026 from 3:00 to 3:45pm PDT.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "intra_document_reasoning",
+      "source_qid": "qst_0335",
+      "vector_only": -0.7389444559812546,
+      "tahi_graph": -0.1657143454067409
+    },
+    {
+      "text": "The executive briefing meeting time window was not ultimately confirmed for Tue, Jul 7, 2026 from 3:00 to 3:45pm PDT.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "intra_document_reasoning",
+      "source_qid": "qst_0335",
+      "vector_only": -0.001398678170517087,
+      "tahi_graph": -0.001398678170517087
+    },
+    {
+      "text": "Default credit application is a billing adjustment on the next invoice unless Customer Success leadership explicitly approves mid cycle.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0367",
+      "vector_only": 0.000601908890530467,
+      "tahi_graph": 0.0016787659842520952
+    },
+    {
+      "text": "Default credit application is not a billing adjustment on the next invoice unless Customer Success leadership explicitly approves mid cycle.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "project_related",
+      "source_qid": "qst_0367",
+      "vector_only": 0.0018008481711149216,
+      "tahi_graph": -0.002903962740674615
+    },
+    {
+      "text": "The proposal suggested emitting a telemetry field named estimated_token_cost.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0051",
+      "vector_only": -0.16450552991591394,
+      "tahi_graph": -0.35610133135924116
+    },
+    {
+      "text": "The proposal suggested emitting guidance as the specific underlying parsing bug or patch.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "basic",
+      "source_qid": "qst_0051",
+      "vector_only": -0.19673451292328537,
+      "tahi_graph": -0.4589387138839811
+    },
+    {
+      "text": "Within 30 to 50 minutes, validate restoration by running synthetic probes, verifying p95 and p99 latency and error rates are returning to baseline, and capturing pre and post metrics and the commands used.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0197",
+      "vector_only": 0.00420231674797833,
+      "tahi_graph": -0.2485547848045826
+    },
+    {
+      "text": "Within 30 to 50 minutes, validate restoration by running synthetic probes, verifying p95 and p99 latency 1.005, it is suspicious for token undercount.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "semantic",
+      "source_qid": "qst_0197",
+      "vector_only": -0.016456011682748795,
+      "tahi_graph": -0.03574676113203168
+    },
+    {
+      "text": "For the smallest configuration, the estimated cache or KV warmup cost was about 12,000 token-hours",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0281",
+      "vector_only": -0.011045969207771122,
+      "tahi_graph": -0.012433105148375034
+    },
+    {
+      "text": "For the smallest configuration, the estimated cache approved, approved-with-restrictions, or blocked, with a linked Security risk review entry as the artifact.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "semantic",
+      "source_qid": "qst_0281",
+      "vector_only": -0.018885025288909674,
+      "tahi_graph": -0.9311732752248645
+    },
+    {
+      "text": "Support said the incident was declared internally at about 16:09 UTC.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0065",
+      "vector_only": -0.47054423729423434,
+      "tahi_graph": -0.9887434763368219
+    },
+    {
+      "text": "Support said the incident was disconnect classification and suppressing retries after content.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "basic",
+      "source_qid": "qst_0065",
+      "vector_only": -0.9944750424474478,
+      "tahi_graph": -0.9555061000864953
+    },
+    {
+      "text": "The answer must not discuss SDK canary publishing to npm/PyPI, version re-tagging, or mismatched uploader IDs; that incident is unrelated to GitLab prod release runner artifact verification after the 2026-03-09 org key rotation.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "constrained",
+      "source_qid": "qst_0401",
+      "vector_only": -0.9981961343437433,
+      "tahi_graph": -0.8488104585558176
+    },
+    {
+      "text": "The answer must not discuss SDK canary publishing to npm/PyPI, version re-tagging, or mismatched uploader IDs; that incident is unrelated to NGINX prod release runner artifact verification after the 2026-03-09 org key rotation.",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "constrained",
+      "source_qid": "qst_0401",
+      "vector_only": -0.9983473679749295,
+      "tahi_graph": -0.05213989317417145
+    },
+    {
+      "text": "As a result, the client can see a brief stall, no explicit end marker, and a truncated final JSON object.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0215",
+      "vector_only": 0.008518509974237531,
+      "tahi_graph": -0.0024408705066889524
+    },
+    {
+      "text": "As a result, the client cannot see a brief stall, no explicit end marker, and a truncated final JSON object.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "semantic",
+      "source_qid": "qst_0215",
+      "vector_only": 0.01724663097411394,
+      "tahi_graph": -0.0016491576097905636
+    },
+    {
+      "text": "Kernel auto-selection v2 was disabled for the affected Llama models on Northwind Dedicated pool nw-analytics-ded-01 (us-east, L40S), forcing v1 behavior",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0368",
+      "vector_only": 0.02585723763331771,
+      "tahi_graph": 0.08186233043670654
+    },
+    {
+      "text": "Kernel auto-selection v2 was disabled for the affected Llama models on Northwind Larger pool nw-analytics-ded-01 (us-east, L40S), forcing v1 behavior",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "project_related",
+      "source_qid": "qst_0368",
+      "vector_only": 0.022324989084154367,
+      "tahi_graph": 0.012006837874650955
+    },
+    {
+      "text": "The stable profile used a smaller batch size, kv_prefetch set to false, and quant_profile set to latency-safe.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0080",
+      "vector_only": 0.002502423245459795,
+      "tahi_graph": -0.6664785360917449
+    },
+    {
+      "text": "The stable profile used a smaller batch size, follow the relevant runbook.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "basic",
+      "source_qid": "qst_0080",
+      "vector_only": -0.012049704790115356,
+      "tahi_graph": -0.8498885646695271
+    },
+    {
+      "text": "The answer must not substitute general quantization rollback/eval thresholds (RSI, fidelity deltas, etc.) in place of the routing requirements requested.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "constrained",
+      "source_qid": "qst_0404",
+      "vector_only": -0.9404417295008898,
+      "tahi_graph": -0.026578569784760475
+    },
+    {
+      "text": "The answer must not substitute general quantization rollback/eval thresholds (RSI, outage and should not disclose exact timeout, retry, or circuit breaker thresholds.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "constrained",
+      "source_qid": "qst_0404",
+      "vector_only": -0.9943324404885061,
+      "tahi_graph": -0.9743632096797228
+    },
+    {
+      "text": "Redwoods smart routing can use latency as a policy dimension to route requests",
+      "label": 1,
+      "perturbation": "none",
+      "category": "high_level",
+      "source_qid": "qst_0475",
+      "vector_only": 0.8826238021720201,
+      "tahi_graph": -0.0046644327230751514
+    },
+    {
+      "text": "Redwoods smart routing can use latency feature flags or routing or policy bundles, and redeploying the last known-good build.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "high_level",
+      "source_qid": "qst_0475",
+      "vector_only": -0.8032809440046549,
+      "tahi_graph": -0.9922370854765177
+    },
+    {
+      "text": "The answer must not attribute the failure to CI signing failing due to missing private/secret keys or pinentry/interactive GPG issues (those are signing-step problems, not verification failures on prod release runners).",
+      "label": 1,
+      "perturbation": "none",
+      "category": "constrained",
+      "source_qid": "qst_0401",
+      "vector_only": -0.0018867498729377985,
+      "tahi_graph": -0.0022503663785755634
+    },
+    {
+      "text": "The answer must not attribute the failure to CI signing failing due to missing private/secret keys or pinentry/interactive GPG issues (those are not signing-step problems, not verification failures on prod release runners).",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "constrained",
+      "source_qid": "qst_0401",
+      "vector_only": -0.0007994282059371471,
+      "tahi_graph": 0.0007927622646093369
+    },
+    {
+      "text": "Decision actions map to DS as: 15 < DS <= 35 means CAUTION (slow rollout to 10%).",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0210",
+      "vector_only": -0.03640036005526781,
+      "tahi_graph": -0.9242804683744907
+    },
+    {
+      "text": "Decision actions map to DS as: 15 < for KMS and Vault decrypts for 90 days.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "semantic",
+      "source_qid": "qst_0210",
+      "vector_only": -0.031475890427827835,
+      "tahi_graph": -0.996236969018355
+    },
+    {
+      "text": "Each contract conformance results ledger entry must include test_case_id",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0174",
+      "vector_only": -0.009422371629625559,
+      "tahi_graph": -0.009422371629625559
+    },
+    {
+      "text": "Each contract conformance results split remains biased, investigate cohorting key behavior rather than config propagation.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "basic",
+      "source_qid": "qst_0174",
+      "vector_only": -0.023996569914743304,
+      "tahi_graph": -0.9894479503855109
+    },
+    {
+      "text": "A performance bar and reliability gate is owned by Serving Runtime with enforcement by Release Engineering and SRE.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "completeness",
+      "source_qid": "qst_0444",
+      "vector_only": 0.06251748441718519,
+      "tahi_graph": -0.8704333454370499
+    },
+    {
+      "text": "A performance bar and reliability gate is owned by Support Runtime with enforcement by Release Engineering and SRE.",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "completeness",
+      "source_qid": "qst_0444",
+      "vector_only": -0.0006856247782707214,
+      "tahi_graph": -0.7613001316785812
+    },
+    {
+      "text": "The planned cutoff date is 2026-06-01.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0147",
+      "vector_only": -0.00048721121856942773,
+      "tahi_graph": -0.0006873951060697436
+    },
+    {
+      "text": "The planned cutoff date is 10137-06-01.",
+      "label": 0,
+      "perturbation": "numeric",
+      "category": "basic",
+      "source_qid": "qst_0147",
+      "vector_only": 0.0010072547011077404,
+      "tahi_graph": -0.010518873983528465
+    },
+    {
+      "text": "The customer executive sponsor is Tanya Bennett (CPO).",
+      "label": 1,
+      "perturbation": "none",
+      "category": "intra_document_reasoning",
+      "source_qid": "qst_0335",
+      "vector_only": 0.000656390911899507,
+      "tahi_graph": -0.00013346457853913307
+    },
+    {
+      "text": "The customer executive sponsor ledger entry must include test_case_id",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "intra_document_reasoning",
+      "source_qid": "qst_0335",
+      "vector_only": -0.0020492611220106483,
+      "tahi_graph": -0.013931924942880869
+    },
+    {
+      "text": "Without tagged requests, analytics must rely on CLI init/doctor funnel signals and cannot reliably compute TTFS or activation from first tagged request to first_success for those installs.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0360",
+      "vector_only": -0.24829065520316362,
+      "tahi_graph": -0.7565404213964939
+    },
+    {
+      "text": "Without tagged requests, analytics must not rely on CLI init/doctor funnel signals and cannot reliably compute TTFS or activation from first tagged request to first_success for those installs.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "project_related",
+      "source_qid": "qst_0360",
+      "vector_only": -0.7765990057960153,
+      "tahi_graph": -0.924491461366415
+    },
+    {
+      "text": "The rollout strategy must include blast-radius controls such as per-region caps, max traffic percent, allowlists, and concurrency caps, and must include an A B plan if A B is used.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "completeness",
+      "source_qid": "qst_0445",
+      "vector_only": -0.01399297546595335,
+      "tahi_graph": -0.9899085573852062
+    },
+    {
+      "text": "The rollout strategy must include blast-radius controls such as per-region caps, max traffic percent, allowlists, be tracked in the deal record or CRM.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "completeness",
+      "source_qid": "qst_0445",
+      "vector_only": 0.000765303848311305,
+      "tahi_graph": 0.003783629974350333
+    },
+    {
+      "text": "For Private rollouts, the plan must include the customer-approved maintenance window details (local time, approver, downtime requirement), current pinning or opt-out and how long the prior version stays available (at least 30 days unless contract says otherwise), confirmation rollback artifacts are pre-staged and verified, data residency, retention, and telemetry changes, network identity RBAC dependencies with customer approval, and customer-specific post-upgrade validation.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "completeness",
+      "source_qid": "qst_0445",
+      "vector_only": 0.19903726875782013,
+      "tahi_graph": -0.8165994882583618
+    },
+    {
+      "text": "For Private rollouts, the plan must include the customer-approved maintenance window details (local time, approver, downtime requirement), current pinning or opt-out and how long the prior version stays available (at least 30 days unless contract says otherwise), confirmation rollback artifacts are not pre-staged and verified, data residency, retention, and telemetry changes, network identity RBAC dependencies with customer approval, and customer-specific post-upgrade validation.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "completeness",
+      "source_qid": "qst_0445",
+      "vector_only": -0.26386138796806335,
+      "tahi_graph": -0.8379510045051575
+    },
+    {
+      "text": "Per the Dedicated staged rollouts audit-log spec, the dedicated-pool-rollouts-service must emit the canonical audit events.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "constrained",
+      "source_qid": "qst_0408",
+      "vector_only": -0.9914502520114183,
+      "tahi_graph": 0.003012692090123892
+    },
+    {
+      "text": "Per the Dedicated staged rollouts audit-log spec, the dedicated-pool-rollouts-service must not emit the canonical audit events.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "constrained",
+      "source_qid": "qst_0408",
+      "vector_only": -0.991901739500463,
+      "tahi_graph": 0.004751637461595237
+    },
+    {
+      "text": "Escalate from a Support bridge to a formal incident in #incidents and open a status page incident when the issue is no longer customer specific triage and meets comms alignment criteria, defaulting to escalating unless explicitly waived by the Incident Commander and Customer Success leadership.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0367",
+      "vector_only": -0.969375925604254,
+      "tahi_graph": -0.004000178538262844
+    },
+    {
+      "text": "Escalate from a Support bridge to a formal incident in #incidents and open a status page incident when the issue is not no longer customer specific triage and meets comms alignment criteria, defaulting to escalating unless explicitly waived by the Incident Commander and Customer Success leadership.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "project_related",
+      "source_qid": "qst_0367",
+      "vector_only": -0.9732836680486798,
+      "tahi_graph": -0.003759730840101838
+    },
+    {
+      "text": "For SLO and error budget accounting, client_abort or customer-cancelled disconnects are excluded from streaming reliability and excluded from streaming and latency SLIs per the exclusion rules.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0361",
+      "vector_only": -0.24971135333180428,
+      "tahi_graph": 0.014625513693317771
+    },
+    {
+      "text": "For SLO and error budget accounting, client_abort or customer-cancelled disconnects are excluded from streaming reliability and excluded from streaming and latency Hosted per the exclusion rules.",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "project_related",
+      "source_qid": "qst_0361",
+      "vector_only": -0.0031485646031796932,
+      "tahi_graph": 0.010207370040006936
+    },
+    {
+      "text": "The sidebar provides a guarded safe rollback action that requires two-step confirmation and triggers a canary first.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0269",
+      "vector_only": 0.007591239642351866,
+      "tahi_graph": -0.989237392321229
+    },
+    {
+      "text": "The sidebar provides a guarded safe rollback action are exempt from the string-level equivalence requirement.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "semantic",
+      "source_qid": "qst_0269",
+      "vector_only": -0.0027055791579186916,
+      "tahi_graph": -0.9907824387773871
+    },
+    {
+      "text": "The key exceptions to the SOPs liability cap are willful misconduct and breach of confidentiality.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0022",
+      "vector_only": -0.00964295188896358,
+      "tahi_graph": -0.11235588695853949
+    },
+    {
+      "text": "The key exceptions to the Variant liability cap are willful misconduct and breach of confidentiality.",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "basic",
+      "source_qid": "qst_0022",
+      "vector_only": 0.0005473506753332913,
+      "tahi_graph": 0.0005473506753332913
+    },
+    {
+      "text": "If prerequisites are missing, the installer will write a redacted restore report marked as a preflight failure.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0347",
+      "vector_only": 0.10032186657190323,
+      "tahi_graph": 0.10032186657190323
+    },
+    {
+      "text": "If prerequisites are not missing, the installer will write a redacted restore report marked as a preflight failure.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "project_related",
+      "source_qid": "qst_0347",
+      "vector_only": -0.0002200789749622345,
+      "tahi_graph": -0.0002200789749622345
+    },
+    {
+      "text": "A hotpatch changed the audit-forwarder to treat key-ID drift or rotation errors as retryable and to buffer events until re-encryption succeeds.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "constrained",
+      "source_qid": "qst_0409",
+      "vector_only": -0.011587249988224357,
+      "tahi_graph": 0.003175321500748396
+    },
+    {
+      "text": "A hotpatch changed the audit-forwarder to treat key-ID drift or week micro credential pilot with SI partners.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "constrained",
+      "source_qid": "qst_0409",
+      "vector_only": -0.012515774462372065,
+      "tahi_graph": -0.004056514240801334
+    },
+    {
+      "text": "The pricing catalog and token definitions for these units are referenced in the Confluence file at /confluence/product-docs/pricing-and-packaging/token-bundle-flex-enterprise-metering-2026-08-20.json.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "intra_document_reasoning",
+      "source_qid": "qst_0327",
+      "vector_only": 0.0015103328041732311,
+      "tahi_graph": 0.0007183980196714401
+    },
+    {
+      "text": "The pricing catalog and token definitions for these units are not referenced in the Confluence file at /confluence/product-docs/pricing-and-packaging/token-bundle-flex-enterprise-metering-2026-08-20.json.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "intra_document_reasoning",
+      "source_qid": "qst_0327",
+      "vector_only": -0.053439767099916935,
+      "tahi_graph": -0.9882937129586935
+    },
+    {
+      "text": "The hospital system targeted an end-to-end p95 response time of 18 seconds or less to generate about a 200-token response under peak load",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0200",
+      "vector_only": 0.01594320684671402,
+      "tahi_graph": 0.009944507852196693
+    },
+    {
+      "text": "The hospital system targeted an end-to-end p95 response time of 18 (redaction_reason), GDPR lawful ground (legal_basis), and any consent time (consent_timestamp) as separate fields/columns",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "semantic",
+      "source_qid": "qst_0200",
+      "vector_only": -0.02980116754770279,
+      "tahi_graph": 0.00012312550097703934
+    },
+    {
+      "text": "If a customer requests credits for that period, Support should not pre-approve the request.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0344",
+      "vector_only": -0.5329500798252411,
+      "tahi_graph": -0.5329500798252411
+    },
+    {
+      "text": "If a customer requests credits for that (from a fixed bundle), variant (control or shadow), and outcome_class.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "project_related",
+      "source_qid": "qst_0344",
+      "vector_only": -0.27780664898455143,
+      "tahi_graph": -0.27780664898455143
+    },
+    {
+      "text": "The sidebar includes a liveness visualization showing the last 5 heartbeats (sparkline).",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0269",
+      "vector_only": -0.9690497026313096,
+      "tahi_graph": -0.018166581576224416
+    },
+    {
+      "text": "The sidebar includes a liveness visualization covering all delivered export artifacts",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "semantic",
+      "source_qid": "qst_0269",
+      "vector_only": -0.03054639883339405,
+      "tahi_graph": 0.0015159033937379718
+    },
+    {
+      "text": "If TPHeartbeatGapCritical or TPCollectiveNoProgress spike right after enabling the watchdog and are accompanied by drain storms, roll back.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0374",
+      "vector_only": 0.00852353498339653,
+      "tahi_graph": -0.9953712851274759
+    },
+    {
+      "text": "If Rollback or TPCollectiveNoProgress spike right after enabling the watchdog and are accompanied by drain storms, roll back.",
+      "label": 0,
+      "perturbation": "entity",
+      "category": "project_related",
+      "source_qid": "qst_0374",
+      "vector_only": -0.04976420849561691,
+      "tahi_graph": -0.9943847064860165
+    },
+    {
+      "text": "These rules prevent intent-only browsing from enrolling the create-task workflow by ensuring the router only updates properties or notes while HubSpot sees suppressed_until or opt-out and does not create tasks.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0378",
+      "vector_only": -0.08363582845777273,
+      "tahi_graph": -0.013985768891870975
+    },
+    {
+      "text": "These rules prevent intent-only browsing from enrolling the create-task workflow by ensuring the router only updates properties or notes while HubSpot sees suppressed_until or opt-out and does not not create tasks.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "project_related",
+      "source_qid": "qst_0378",
+      "vector_only": -0.08640157571062446,
+      "tahi_graph": -0.012532013934105635
+    },
+    {
+      "text": "The canonicalization applied was normalization of the idempotency key to UTF-8 NFC.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "constrained",
+      "source_qid": "qst_0407",
+      "vector_only": -0.8277200232259929,
+      "tahi_graph": -0.02106842491775751
+    },
+    {
+      "text": "The canonicalization applied was not normalization of the idempotency key to UTF-8 NFC.",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "constrained",
+      "source_qid": "qst_0407",
+      "vector_only": -0.12916314601898193,
+      "tahi_graph": -0.12916314601898193
+    },
+    {
+      "text": "The demo was supposed to highlight onboarding funnel and performance and user journeys.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "semantic",
+      "source_qid": "qst_0296",
+      "vector_only": 0.000922907143831253,
+      "tahi_graph": -0.0009204079397022724
+    },
+    {
+      "text": "The demo was supposed to highlight peak GPU memory usage dropped by about 36 percent.",
+      "label": 0,
+      "perturbation": "swap",
+      "category": "semantic",
+      "source_qid": "qst_0296",
+      "vector_only": -0.0021135055576451123,
+      "tahi_graph": 0.0008883272530511022
+    },
+    {
+      "text": "By 2025-03-13 the purge backlog was cleared and request logs older than 7 days were no longer queryable.",
+      "label": 1,
+      "perturbation": "none",
+      "category": "project_related",
+      "source_qid": "qst_0363",
+      "vector_only": -0.9983760605100542,
+      "tahi_graph": -0.9835974450688809
+    },
+    {
+      "text": "By 2025-03-72 the purge backlog was cleared and request logs older than 7 days were no longer queryable.",
+      "label": 0,
+      "perturbation": "numeric",
+      "category": "project_related",
+      "source_qid": "qst_0363",
+      "vector_only": -0.9984061570139602,
+      "tahi_graph": -0.995490477536805
+    },
+    {
+      "text": "Each contract conformance results ledger entry must include run_id",
+      "label": 1,
+      "perturbation": "none",
+      "category": "basic",
+      "source_qid": "qst_0174",
+      "vector_only": -0.01926094270311296,
+      "tahi_graph": -0.005908637307584286
+    },
+    {
+      "text": "Each contract conformance results ledger entry must not include run_id",
+      "label": 0,
+      "perturbation": "negation",
+      "category": "basic",
+      "source_qid": "qst_0174",
+      "vector_only": -0.9965027833823115,
+      "tahi_graph": -0.9965027833823115
+    }
+  ]
+}
