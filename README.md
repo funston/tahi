@@ -1,5 +1,7 @@
 # Tahi
 
+*TAHI: Typed-graph Augmented Hidden-state Injection*
+
 **Tahi is a world-model coprocessor framework for LLMs.**
 
 It is built around a simple premise: specialized knowledge work should not require either retraining a base model or forcing the model to reconstruct structure from long retrieved prompts. Tahi builds explicit world state at runtime, reasons over that state, and returns structured control to the model.
